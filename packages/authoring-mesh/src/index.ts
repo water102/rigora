@@ -66,3 +66,12 @@ export {
   type DeformAuthoringMode,
   type DeformState,
 } from "./deform.js";
+
+export {
+  createAuthoringDocument,
+  parseAuthoringDocument,
+  persistMesh,
+  persistPath,
+  serializeAuthoringDocument,
+  type AuthoringDocument,
+} from "./persistence.js";

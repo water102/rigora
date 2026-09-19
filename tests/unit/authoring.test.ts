@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyWeightBrush,
+  createAuthoringDocument,
   applyBrushAtPoint,
   applyWeightDeltas,
   createWeightDeltaCommand,
@@ -15,6 +16,9 @@ import {
   zeroDeform,
   createAuthoringMesh,
   createEditablePath,
+  parseAuthoringDocument,
+  persistMesh,
+  serializeAuthoringDocument,
   deleteVertex,
   meshEdges,
   moveVertex,
@@ -103,6 +107,24 @@ describe("Phase 6 authoring core", () => {
     expect(weights.v0!.boneB).toBe(0);
     command.execute();
     expect(weights.v0!.boneB).toBeGreaterThan(0);
+  });
+
+  it("round-trips authoring state for project persistence", () => {
+    const mesh = createAuthoringMesh(
+      [
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+        { x: 0, y: 1 },
+      ],
+      [0, 1, 2],
+    );
+    const saved = persistMesh(createAuthoringDocument(), mesh);
+    const loaded = parseAuthoringDocument(serializeAuthoringDocument(saved));
+    expect(loaded.version).toBe(1);
+    expect(loaded.meshes[0]!.vertices[1]!.id).toBe("v1");
+    expect(() => parseAuthoringDocument("{}" as string)).toThrow(
+      "AUTHORING_STATE_UNSUPPORTED_VERSION",
+    );
   });
 
   it("computes path tangent previews", () => {
