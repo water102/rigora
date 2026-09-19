@@ -488,6 +488,20 @@ function Timeline() {
       redraw((value) => value + 1);
     }
   };
+  const addChannelKey = (channelId: string) => {
+    const channel = store.active?.channels.find(
+      (item) => item.id === channelId,
+    );
+    if (!channel || !clip) return;
+    const value =
+      channel.kind === "slot" && channel.property === "attachment"
+        ? "default"
+        : channel.kind === "slot" && channel.property !== "drawOrder"
+          ? "ffffffff"
+          : 0;
+    store.upsertKey(channel.id, playback.time, value);
+    redraw((value) => value + 1);
+  };
   return (
     <section className="panel timeline-panel">
       <header className="timeline-header">
@@ -671,7 +685,14 @@ function Timeline() {
           <div className="timeline-grid">
             <div className="timeline-labels">
               {store.view.rows.map((row) => (
-                <span key={row.id}>{row.label}</span>
+                <span key={row.id}>
+                  <button
+                    onClick={() => addChannelKey(row.channelId ?? row.id)}
+                  >
+                    +
+                  </button>{" "}
+                  {row.label}
+                </span>
               ))}
             </div>
             <div className="timeline-keys">
