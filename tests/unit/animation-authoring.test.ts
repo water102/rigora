@@ -93,6 +93,20 @@ it("applies auto-key policy and groups undoable gestures", () => {
   expect(value).toBe(3);
 });
 
+it("applies auto-key through the authoring store", () => {
+  const store = new AnimationAuthoringStore();
+  store.create("walk", 1, 30, "walk");
+  const channel = store.addChannel({
+    id: "root.rotate",
+    kind: "bone",
+    targetId: "root",
+    property: "rotate",
+  });
+  store.setAutoKey("first-frame");
+  expect(store.autoKeyValue(channel.id, 0, 15)?.value).toBe(15);
+  expect(store.active?.channels[0]?.keys).toHaveLength(1);
+});
+
 it("authors event definitions and previews loop crossings", () => {
   const track = new EventAuthoringTrack<{ damage: number }>(1);
   track.addDefinition({ id: "hit", name: "Hit" });

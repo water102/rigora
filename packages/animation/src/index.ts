@@ -1142,6 +1142,26 @@ export class AnimationAuthoringStore {
       this.nextId(prefix),
     ).map((key) => key.id);
   }
+  autoKeyValue<T>(
+    channelId: string,
+    time: number,
+    value: T,
+  ): AuthoredKey<T> | undefined {
+    const channel = this.activeMutable().channels.find(
+      (item) => item.id === channelId,
+    ) as AuthoringChannel<T> | undefined;
+    if (!channel) throw new Error("ANIMATION_AUTHORING_CHANNEL_NOT_FOUND");
+    validateChannelValue(channel, value);
+    return applyAutoKey<T>({
+      channel,
+      time,
+      value,
+      mode: this.autoKey,
+      propertyChanged: true,
+      isFirstFrame: time === 0,
+      idFactory: (prefix) => this.nextId(prefix),
+    });
+  }
   setAutoKey(mode: AutoKeyMode): void {
     this.autoKey = mode;
   }

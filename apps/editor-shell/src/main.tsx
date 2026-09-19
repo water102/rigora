@@ -42,6 +42,7 @@ import {
   AnimationAuthoringStore,
   AuthoringPlayback,
   EventAuthoringTrack,
+  type AutoKeyMode,
   copyKeys,
   type KeyClipboard,
   virtualizeRows,
@@ -408,6 +409,7 @@ function Timeline() {
   const [selectionEnd, setSelectionEnd] = useState(1);
   const [rowScrollTop, setRowScrollTop] = useState(0);
   const [clipboard, setClipboard] = useState<KeyClipboard | null>(null);
+  const [autoKeyMode, setAutoKeyMode] = useState<AutoKeyMode>("off");
   const [, redraw] = useState(0);
   const clip = store.active;
   const rowWindow = virtualizeRows(store.view.rows, rowScrollTop, 220, 24);
@@ -528,7 +530,9 @@ function Timeline() {
         : channel.kind === "slot" && channel.property !== "drawOrder"
           ? "ffffffff"
           : 0;
-    store.upsertKey(channel.id, playback.time, value);
+    if (autoKeyMode === "off")
+      store.upsertKey(channel.id, playback.time, value);
+    else store.autoKeyValue(channel.id, playback.time, value);
     redraw((value) => value + 1);
   };
   const copySelectedKeys = () => {
@@ -660,6 +664,21 @@ function Timeline() {
             <button onClick={() => playback.step(1)}>Frame +1</button>
             <button onClick={addRotationKey}>Key rotation</button>
             <button onClick={addEvent}>Add event</button>
+            <label>
+              Auto-key{" "}
+              <select
+                value={autoKeyMode}
+                onChange={(event) => {
+                  const mode = event.target.value as AutoKeyMode;
+                  setAutoKeyMode(mode);
+                  store.setAutoKey(mode);
+                }}
+              >
+                <option value="off">Off</option>
+                <option value="changed-property">Changed</option>
+                <option value="first-frame">First frame</option>
+              </select>
+            </label>
             <button
               onClick={copySelectedKeys}
               disabled={!store.view.selectedKeyIds.size}
