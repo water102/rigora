@@ -6,6 +6,7 @@ import {
   serializeSpine38,
   serializeDragonBones55,
   planDeterministicAtlas,
+  createCrossFormatReport,
 } from "../../packages/format-export/src/index.js";
 import { minimalSkeleton } from "../fixtures/canonical/minimal.js";
 import { importSpine38 } from "../../packages/format-spine-38/src/index.js";
@@ -43,6 +44,13 @@ describe("export planning", () => {
         { name: "a", width: 5, height: 5 },
       ]).map((x) => x.name),
     ).toEqual(["a", "z"]);
+    const report = createCrossFormatReport(
+      skeleton,
+      "spine-3.8",
+      "dragonbones-5.5",
+    );
+    expect(report.path).toEqual(["spine-3.8", "hnn", "dragonbones-5.5"]);
+    expect(report.checksums).toHaveLength(2);
   });
   it("round-trips a region through both compatibility targets", () => {
     const skeleton = minimalSkeleton();

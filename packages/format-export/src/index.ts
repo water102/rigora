@@ -328,3 +328,38 @@ export function planDeterministicAtlas(
       return result;
     });
 }
+
+export interface CrossFormatReport {
+  path: string[];
+  losses: ExportIssue[];
+  checksums: string[];
+}
+export function createCrossFormatReport(
+  skeleton: SkeletonData,
+  first: ExportPlan["target"],
+  second: ExportPlan["target"],
+): CrossFormatReport {
+  const a = createExportPlan(skeleton, first);
+  const b = createExportPlan(skeleton, second);
+  const reportA = createExportReport(
+    skeleton,
+    a,
+    new Set(
+      a.issues.filter((i) => i.action !== "block").map((i) => i.entityId),
+    ),
+  );
+  const reportB = createExportReport(
+    skeleton,
+    b,
+    new Set(
+      b.issues.filter((i) => i.action !== "block").map((i) => i.entityId),
+    ),
+  );
+  return {
+    path: [first, "hnn", second],
+    losses: [...a.issues, ...b.issues].filter(
+      (i) => i.action === "drop" || i.action === "bake",
+    ),
+    checksums: [reportA.checksum, reportB.checksum],
+  };
+}
