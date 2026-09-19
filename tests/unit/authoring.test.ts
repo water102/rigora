@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyWeightBrush,
+  createAttachmentFromLibrary,
   applyVertexDrag,
   beginDrag,
   cancelDrag,
@@ -41,6 +42,50 @@ import {
 } from "../../packages/authoring-mesh/src/index.js";
 
 describe("Phase 6 authoring core", () => {
+  it("creates canonical attachment variants from immutable library assets", () => {
+    const asset = {
+      id: "hero",
+      name: "Hero",
+      textureId: "hero-texture",
+      width: 32,
+      height: 48,
+      vertices: [
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+        { x: 0, y: 1 },
+      ],
+      uvs: [
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+        { x: 0, y: 1 },
+      ],
+      triangles: [0, 1, 2],
+    };
+    expect(createAttachmentFromLibrary("region", asset).type).toBe("region");
+    expect(createAttachmentFromLibrary("mesh", asset)).toMatchObject({
+      type: "mesh",
+      vertices: asset.vertices,
+      triangles: [0, 1, 2],
+    });
+    expect(createAttachmentFromLibrary("clipping", asset).type).toBe(
+      "clipping",
+    );
+    expect(
+      createAttachmentFromLibrary("path", asset, { closed: true }),
+    ).toMatchObject({
+      type: "path",
+      closed: true,
+    });
+    expect(createAttachmentFromLibrary("boundingBox", asset).type).toBe(
+      "boundingBox",
+    );
+    expect(asset.vertices).toEqual([
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 0, y: 1 },
+    ]);
+  });
+
   it("builds deterministic auto-mesh previews from alpha", () => {
     const rgba = new Uint8Array(16 * 4);
     for (const i of [5, 6, 9, 10]) rgba[i * 4 + 3] = 255;

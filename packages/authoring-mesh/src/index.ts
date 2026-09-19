@@ -14,6 +14,13 @@ export {
 } from "./weights.js";
 
 export {
+  createAttachmentFromLibrary,
+  type AttachmentCreateOptions,
+  type AuthoringAttachmentKind,
+  type LibraryAsset,
+} from "./attachments.js";
+
+export {
   applyWeightBrush,
   applyBrushAtPoint,
   applyWeightDeltas,
