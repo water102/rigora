@@ -564,9 +564,9 @@ function Timeline() {
   const createClip = () => {
     const created = store.create("walk", 1, 30);
     store.addChannel({
-      id: "root.rotate",
+      id: `${selectedBoneId}.rotate`,
       kind: "bone",
-      targetId: "root",
+      targetId: selectedBoneId,
       property: "rotate",
     });
     store.syncRows();
