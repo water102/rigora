@@ -217,6 +217,19 @@ export function weightHeatmap(
     Math.max(0, Math.min(1, weights[id]?.[boneId] ?? 0)),
   );
 }
+export function weightHeatmapOverview(
+  weights: Record<string, Record<string, number>>,
+  vertexIds: readonly string[],
+  boneId?: string,
+): number[] {
+  return vertexIds.map((id) => {
+    const row = weights[id] ?? {};
+    const value = boneId
+      ? (row[boneId] ?? 0)
+      : Math.max(0, ...Object.values(row));
+    return Math.max(0, Math.min(1, value));
+  });
+}
 export interface InfluenceEntry {
   boneId: string;
   weight: number;

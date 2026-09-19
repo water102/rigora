@@ -5,6 +5,7 @@ import {
   listInfluences,
   limitInfluences,
   smoothWeightRows,
+  weightHeatmapOverview,
   selectMeshByPolygon,
   TopologyHistory,
   applyVertexDrag,
@@ -158,6 +159,20 @@ describe("Phase 6 authoring core", () => {
       expect(
         Object.values(row).reduce((sum, value) => sum + value, 0),
       ).toBeCloseTo(1);
+  });
+
+  it("supports active-bone and overview heatmap contributions", () => {
+    const weights = {
+      v0: { root: 0.25, arm: 0.75 },
+      v1: { root: 1 },
+      v2: {},
+    };
+    expect(weightHeatmapOverview(weights, ["v0", "v1", "v2"])).toEqual([
+      0.75, 1, 0,
+    ]);
+    expect(weightHeatmapOverview(weights, ["v0", "v1"], "root")).toEqual([
+      0.25, 1,
+    ]);
   });
 
   it("survives repeated topology undo/redo without aliasing or losing IDs", () => {

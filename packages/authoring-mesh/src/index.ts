@@ -52,6 +52,7 @@ export {
   unbindVertices,
   updatePathPoint,
   weightHeatmap,
+  weightHeatmapOverview,
   listInfluences,
   limitInfluences,
   smoothWeightRows,
