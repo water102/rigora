@@ -1147,6 +1147,23 @@ export class AnimationAuthoringStore {
         if (ids.has(key.id)) key.curve = cloneAuthoring(curve);
   }
 
+  setBezierHandles(
+    keyIds: readonly string[],
+    handles: { cx1: number; cy1: number; cx2: number; cy2: number },
+  ): void {
+    if (
+      ![handles.cx1, handles.cy1, handles.cx2, handles.cy2].every(
+        Number.isFinite,
+      ) ||
+      handles.cx1 < 0 ||
+      handles.cx1 > 1 ||
+      handles.cx2 < 0 ||
+      handles.cx2 > 1
+    )
+      throw new Error("ANIMATION_AUTHORING_INVALID_BEZIER_HANDLES");
+    this.setKeyCurve(keyIds, { type: "bezier", ...handles });
+  }
+
   offsetNumericValues(keyIds: readonly string[], delta: number): void {
     finiteAuthoring(delta, "delta");
     const ids = new Set(keyIds);
