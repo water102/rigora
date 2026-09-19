@@ -437,6 +437,10 @@ function Timeline() {
     store.syncRows();
     redraw((value) => value + 1);
   };
+  const setSelectedCurve = (curve: "linear" | "stepped") => {
+    store.setKeyCurve([...store.view.selectedKeyIds], { type: curve });
+    redraw((value) => value + 1);
+  };
   return (
     <section className="panel timeline-panel">
       <header className="timeline-header">
@@ -456,6 +460,18 @@ function Timeline() {
             <button onClick={addRotationKey}>Key rotation</button>
             <button onClick={toggleLoop}>
               {playback.loop ? "Loop on" : "Loop off"}
+            </button>
+            <button
+              onClick={() => setSelectedCurve("linear")}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              Linear
+            </button>
+            <button
+              onClick={() => setSelectedCurve("stepped")}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              Stepped
             </button>
             <label>
               Speed{" "}
@@ -503,6 +519,11 @@ function Timeline() {
                       className="timeline-key"
                       title={`${key.time}s`}
                       onClick={() => playback.seek(key.time)}
+                      aria-pressed={store.view.selectedKeyIds.has(key.id)}
+                      onDoubleClick={() => {
+                        store.selectKeys([key.id]);
+                        redraw((value) => value + 1);
+                      }}
                       style={{ left: `${(key.time / clip.duration) * 100}%` }}
                     >
                       ◆
