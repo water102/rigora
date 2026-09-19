@@ -2,12 +2,15 @@ import { describe, expect, it } from "vitest";
 import {
   applyWeightBrush,
   applyWeightDeltas,
+  addEdge,
   buildAutoMeshPreview,
   createAuthoringMesh,
   createEditablePath,
   deleteVertex,
   meshEdges,
   moveVertex,
+  removeEdge,
+  resetTopology,
   selectPolygon,
   updatePathPoint,
   triangulatePolygon,
@@ -42,6 +45,10 @@ describe("Phase 6 authoring core", () => {
     expect(moved.vertices[1]!.id).toBe("v1");
     expect(meshEdges(moved)).toHaveLength(3);
     expect(deleteVertex(moved, "v0").triangles).toEqual([]);
+    expect(resetTopology(moved).triangles).toEqual([]);
+    expect(
+      removeEdge(addEdge(resetTopology(moved), 0, 1), 0, 1).triangles,
+    ).toEqual([]);
   });
 
   it("returns sparse reversible brush deltas and supports polygon/path editing", () => {

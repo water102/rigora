@@ -62,6 +62,54 @@ export function meshEdges(mesh: AuthoringMesh): Array<[number, number]> {
     }
   return [...edges.values()];
 }
+export function addEdge(
+  mesh: AuthoringMesh,
+  a: number,
+  b: number,
+): AuthoringMesh {
+  if (
+    a === b ||
+    a < 0 ||
+    b < 0 ||
+    a >= mesh.vertices.length ||
+    b >= mesh.vertices.length
+  )
+    throw new Error("MESH_EDGE_INVALID");
+  const triangles = [...mesh.triangles];
+  if (
+    !meshEdges(mesh).some(
+      ([x, y]) => x === Math.min(a, b) && y === Math.max(a, b),
+    )
+  )
+    triangles.push(a, b, a);
+  return {
+    vertices: mesh.vertices.map((v) => ({ ...v, position: { ...v.position } })),
+    triangles,
+  };
+}
+export function removeEdge(
+  mesh: AuthoringMesh,
+  a: number,
+  b: number,
+): AuthoringMesh {
+  const triangles: number[] = [];
+  for (let i = 0; i < mesh.triangles.length; i += 3) {
+    const tri = mesh.triangles.slice(i, i + 3);
+    const hasA = tri.includes(a),
+      hasB = tri.includes(b);
+    if (!(hasA && hasB)) triangles.push(...tri);
+  }
+  return {
+    vertices: mesh.vertices.map((v) => ({ ...v, position: { ...v.position } })),
+    triangles,
+  };
+}
+export function resetTopology(mesh: AuthoringMesh): AuthoringMesh {
+  return {
+    vertices: mesh.vertices.map((v) => ({ ...v, position: { ...v.position } })),
+    triangles: [],
+  };
+}
 
 export interface WeightDelta {
   vertexId: string;

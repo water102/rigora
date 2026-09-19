@@ -16,6 +16,7 @@ export {
 export {
   applyWeightBrush,
   applyWeightDeltas,
+  addEdge,
   bindVertices,
   connectedSelection,
   createAuthoringMesh,
@@ -23,6 +24,8 @@ export {
   deleteVertex,
   meshEdges,
   moveVertex,
+  removeEdge,
+  resetTopology,
   invertSelection,
   pointInPolygon,
   selectPolygon,
