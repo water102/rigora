@@ -31,7 +31,9 @@ import {
   createAuthoringDocument,
   createWeightDeltaCommand,
   applyWeightBrush,
+  createAuthoringMesh,
   parseAuthoringDocument,
+  persistMesh,
   serializeAuthoringDocument,
 } from "@rigora/authoring-mesh";
 import {
@@ -1749,6 +1751,18 @@ function App() {
   const demoWeightsRef = useRef<Record<string, Record<string, number>>>({
     v0: { bone: 1 },
   });
+  const demoAuthoringMesh = useMemo(
+    () =>
+      createAuthoringMesh(
+        [
+          { x: 0, y: 0 },
+          { x: 1, y: 0 },
+          { x: 0, y: 1 },
+        ],
+        [0, 1, 2],
+      ),
+    [],
+  );
   const paintThroughHistory = () => {
     const weights = demoWeightsRef.current;
     const deltas = applyWeightBrush(weights, ["v0"], "painted", "add", 0.25);
@@ -1763,9 +1777,15 @@ function App() {
       execute: () => sparse.execute(),
       undo: () => sparse.undo(),
     });
+    const nextDocument = persistMesh(
+      authoringDocumentRef.current,
+      demoAuthoringMesh,
+    );
+    nextDocument.deformOffsets["demo-mesh"] = [0, 0, 0, 0, 0, 0];
+    authoringDocumentRef.current = nextDocument;
     setProject((current) => ({
       ...current,
-      editorState: serializeAuthoringDocument(authoringDocumentRef.current),
+      editorState: serializeAuthoringDocument(nextDocument),
     }));
   };
 
