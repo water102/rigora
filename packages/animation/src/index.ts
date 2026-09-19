@@ -673,6 +673,77 @@ export interface EventPreviewEntry<T = unknown> {
   payload?: T;
 }
 
+export interface EventDefinition {
+  id: string;
+  name: string;
+  payloadSchema?: unknown;
+}
+
+export class EventAuthoringTrack<T = unknown> {
+  #events: AuthoredEvent[] = [];
+  constructor(
+    readonly duration: number,
+    readonly definitions: EventDefinition[] = [],
+  ) {
+    if (!Number.isFinite(duration) || duration < 0)
+      throw new Error("ANIMATION_AUTHORING_INVALID_DURATION");
+  }
+  get events(): readonly AuthoredEvent[] {
+    return cloneAuthoring(this.#events);
+  }
+  addDefinition(definition: EventDefinition): void {
+    if (
+      !definition.id ||
+      !definition.name ||
+      this.definitions.some((item) => item.id === definition.id)
+    )
+      throw new Error("ANIMATION_AUTHORING_INVALID_EVENT_DEFINITION");
+    this.definitions.push(cloneAuthoring(definition));
+  }
+  upsert(id: string, time: number, name: string, payload?: T): AuthoredEvent {
+    assertTime(time, this.duration);
+    if (!name.trim()) throw new Error("ANIMATION_AUTHORING_INVALID_EVENT_NAME");
+    const existing = this.#events.find((event) => event.id === id);
+    const event = existing ?? { id, time, name, payload };
+    event.time = time;
+    event.name = name;
+    if (payload !== undefined) event.payload = cloneAuthoring(payload);
+    if (!existing) this.#events.push(event);
+    this.#events.sort((a, b) => a.time - b.time);
+    return cloneAuthoring(event);
+  }
+  remove(id: string): void {
+    this.#events = this.#events.filter((event) => event.id !== id);
+  }
+  preview(
+    previous: number,
+    current: number,
+    loop = false,
+  ): EventOccurrence<T>[] {
+    if (current < previous)
+      throw new Error("ANIMATION_AUTHORING_REVERSE_PREVIEW");
+    const crossed = (
+      start: number,
+      end: number,
+      offset: number,
+    ): EventOccurrence<T>[] =>
+      this.#events
+        .map((event, keyIndex) => ({ event, keyIndex }))
+        .filter(({ event }) => event.time > start && event.time <= end)
+        .map(({ event, keyIndex }) => ({
+          absoluteTime: offset + event.time,
+          keyIndex,
+          value: cloneAuthoring(event.payload as T),
+        }));
+    if (loop && this.duration > 0 && current >= this.duration)
+      return [
+        ...crossed(previous, this.duration, 0),
+        ...crossed(-1, current % this.duration, this.duration),
+      ];
+    return crossed(previous, current, 0);
+  }
+}
+
 export function previewEvents<T>(
   events: readonly EventPreviewEntry<T>[],
   time: number,
