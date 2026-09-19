@@ -69,6 +69,48 @@ export interface WeightDelta {
   before: number;
   after: number;
 }
+
+export function bindVertices(
+  weights: Record<string, Record<string, number>>,
+  vertexIds: readonly string[],
+  boneId: string,
+): WeightDelta[] {
+  const deltas: WeightDelta[] = [];
+  for (const id of vertexIds) {
+    const row = (weights[id] ??= {});
+    const before = row[boneId] ?? 0;
+    row[boneId] = 1;
+    for (const key of Object.keys(row)) if (key !== boneId) row[key] = 0;
+    if (before !== 1) deltas.push({ vertexId: id, boneId, before, after: 1 });
+  }
+  return deltas;
+}
+export function unbindVertices(
+  weights: Record<string, Record<string, number>>,
+  vertexIds: readonly string[],
+  boneId: string,
+): WeightDelta[] {
+  const deltas: WeightDelta[] = [];
+  for (const id of vertexIds) {
+    const row = weights[id];
+    if (!row || row[boneId] === undefined) continue;
+    const before = row[boneId]!;
+    delete row[boneId];
+    const sum = Object.values(row).reduce((a, b) => a + b, 0);
+    if (sum > 0) for (const key of Object.keys(row)) row[key]! /= sum;
+    deltas.push({ vertexId: id, boneId, before, after: 0 });
+  }
+  return deltas;
+}
+export function weightHeatmap(
+  weights: Record<string, Record<string, number>>,
+  vertexIds: readonly string[],
+  boneId: string,
+): number[] {
+  return vertexIds.map((id) =>
+    Math.max(0, Math.min(1, weights[id]?.[boneId] ?? 0)),
+  );
+}
 export function applyWeightBrush(
   weights: Record<string, Record<string, number>>,
   vertexIds: readonly string[],
@@ -119,6 +161,36 @@ export function selectPolygon(
     .map((p, i) => [i, pointInPolygon(p, polygon)] as const)
     .filter(([, hit]) => hit)
     .map(([i]) => i);
+}
+export function invertSelection(
+  count: number,
+  selected: readonly number[],
+): number[] {
+  const set = new Set(selected);
+  return Array.from({ length: count }, (_, i) => i).filter((i) => !set.has(i));
+}
+export function connectedSelection(
+  mesh: AuthoringMesh,
+  seed: number,
+): number[] {
+  const seen = new Set([seed]);
+  let changed = true;
+  const edges = meshEdges(mesh);
+  while (changed) {
+    changed = false;
+    for (const [a, b] of edges)
+      if (seen.has(a) || seen.has(b)) {
+        if (!seen.has(a)) {
+          seen.add(a);
+          changed = true;
+        }
+        if (!seen.has(b)) {
+          seen.add(b);
+          changed = true;
+        }
+      }
+  }
+  return [...seen].sort((a, b) => a - b);
 }
 export function pointInPolygon(point: Vec2, polygon: readonly Vec2[]): boolean {
   let inside = false;
