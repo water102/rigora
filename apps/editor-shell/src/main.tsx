@@ -42,6 +42,7 @@ import {
   AnimationAuthoringStore,
   AuthoringPlayback,
   EventAuthoringTrack,
+  virtualizeRows,
 } from "@rigora/animation";
 import "flexlayout-react/style/dark.css";
 import "./style.css";
@@ -403,8 +404,10 @@ function Timeline() {
   const [events] = useState(() => new EventAuthoringTrack(1));
   const [selectionStart, setSelectionStart] = useState(0);
   const [selectionEnd, setSelectionEnd] = useState(1);
+  const [rowScrollTop, setRowScrollTop] = useState(0);
   const [, redraw] = useState(0);
   const clip = store.active;
+  const rowWindow = virtualizeRows(store.view.rows, rowScrollTop, 220, 24);
   useEffect(() => {
     if (!playback.playing) return;
     let previous = performance.now();
@@ -742,44 +745,57 @@ function Timeline() {
             value={playback.time}
             onChange={(event) => playback.seek(Number(event.target.value))}
           />
-          <div className="timeline-grid">
-            <div className="timeline-labels">
-              {store.view.rows.map((row) => (
-                <span key={row.id}>
-                  <button
-                    onClick={() => addChannelKey(row.channelId ?? row.id)}
-                  >
-                    +
-                  </button>{" "}
-                  {row.label}
-                </span>
-              ))}
-            </div>
-            <div className="timeline-keys">
-              {store.view.rows.map((row) => (
-                <div key={row.id} className="timeline-row">
-                  {(
-                    clip.channels.find(
-                      (channel) => channel.id === row.channelId,
-                    )?.keys ?? []
-                  ).map((key) => (
+          <div
+            className="timeline-grid timeline-virtual-scroll"
+            onScroll={(event) => setRowScrollTop(event.currentTarget.scrollTop)}
+          >
+            <div
+              style={{ height: rowWindow.totalHeight, position: "relative" }}
+            >
+              <div className="timeline-labels">
+                <div style={{ height: rowWindow.offsetTop }} />
+                {rowWindow.items.map((row) => (
+                  <span key={row.id}>
                     <button
-                      key={key.id}
-                      className="timeline-key"
-                      title={`${key.time}s`}
-                      onClick={() => playback.seek(key.time)}
-                      aria-pressed={store.view.selectedKeyIds.has(key.id)}
-                      onDoubleClick={() => {
-                        store.selectKeys([key.id]);
-                        redraw((value) => value + 1);
-                      }}
-                      style={{ left: `${(key.time / clip.duration) * 100}%` }}
+                      onClick={() => addChannelKey(row.channelId ?? row.id)}
                     >
-                      ◆
-                    </button>
-                  ))}
-                </div>
-              ))}
+                      +
+                    </button>{" "}
+                    {row.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div
+              style={{ height: rowWindow.totalHeight, position: "relative" }}
+            >
+              <div className="timeline-keys">
+                <div style={{ height: rowWindow.offsetTop }} />
+                {rowWindow.items.map((row) => (
+                  <div key={row.id} className="timeline-row">
+                    {(
+                      clip.channels.find(
+                        (channel) => channel.id === row.channelId,
+                      )?.keys ?? []
+                    ).map((key) => (
+                      <button
+                        key={key.id}
+                        className="timeline-key"
+                        title={`${key.time}s`}
+                        onClick={() => playback.seek(key.time)}
+                        aria-pressed={store.view.selectedKeyIds.has(key.id)}
+                        onDoubleClick={() => {
+                          store.selectKeys([key.id]);
+                          redraw((value) => value + 1);
+                        }}
+                        style={{ left: `${(key.time / clip.duration) * 100}%` }}
+                      >
+                        ◆
+                      </button>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           <div className="timeline-events">

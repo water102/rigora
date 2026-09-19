@@ -236,6 +236,10 @@ button:disabled {
   margin-top: 8px;
   overflow: hidden;
 }
+.timeline-virtual-scroll {
+  max-height: 220px;
+  overflow-y: auto;
+}
 .timeline-labels,
 .timeline-keys {
   display: flex;
