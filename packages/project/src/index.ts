@@ -118,11 +118,79 @@ export class AutosaveManager {
     return path;
   }
   async recover(projectPath: string): Promise<HboneProject | undefined> {
+    const result = await this.recoverDetailed(projectPath);
+    return result.ok ? result.project : undefined;
+  }
+  async recoverDetailed(
+    projectPath: string,
+  ): Promise<
+    { ok: true; project: HboneProject } | { ok: false; error: string }
+  > {
     const bytes = await this.repository.read(this.pathFor(projectPath));
-    return bytes ? parseProject(bytes, { verifyChecksums: true }) : undefined;
+    if (!bytes) return { ok: false, error: "AUTOSAVE_NOT_FOUND" };
+    try {
+      return {
+        ok: true,
+        project: parseProject(bytes, { verifyChecksums: true }),
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: error instanceof Error ? error.message : "AUTOSAVE_CORRUPT",
+      };
+    }
   }
   async clear(projectPath: string): Promise<void> {
     await this.repository.remove(this.pathFor(projectPath));
+  }
+}
+
+export interface AutosaveControllerOptions {
+  debounceMs?: number;
+  intervalMs?: number;
+}
+export class AutosaveController {
+  #timer: ReturnType<typeof setTimeout> | undefined;
+  #interval: ReturnType<typeof setInterval> | undefined;
+  #dirty = false;
+  constructor(
+    readonly manager: AutosaveManager,
+    readonly projectPath: string,
+    readonly getProject: () => HboneProject | undefined,
+    readonly options: AutosaveControllerOptions = {},
+  ) {}
+  start(): void {
+    this.stop();
+    if (this.options.intervalMs !== undefined && this.options.intervalMs > 0)
+      this.#interval = setInterval(
+        () => void this.flush(),
+        this.options.intervalMs,
+      );
+  }
+  stop(): void {
+    if (this.#timer) clearTimeout(this.#timer);
+    if (this.#interval) clearInterval(this.#interval);
+    this.#timer = undefined;
+    this.#interval = undefined;
+  }
+  markDirty(): void {
+    this.#dirty = true;
+    if (this.#timer) clearTimeout(this.#timer);
+    this.#timer = setTimeout(
+      () => void this.flush(),
+      Math.max(0, this.options.debounceMs ?? 500),
+    );
+  }
+  async flush(): Promise<void> {
+    if (!this.#dirty) return;
+    const project = this.getProject();
+    if (!project) return;
+    await this.manager.save(this.projectPath, project);
+    this.#dirty = false;
+    this.#timer = undefined;
+  }
+  get isDirty(): boolean {
+    return this.#dirty;
   }
 }
 

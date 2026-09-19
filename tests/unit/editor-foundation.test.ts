@@ -4,6 +4,7 @@ import {
   createProject,
   InMemoryProjectRepository,
   AutosaveManager,
+  AutosaveController,
   parseProject,
   ProjectLifecycle,
   serializeProject,
@@ -737,5 +738,29 @@ describe("Batch 23 autosave recovery", () => {
     );
     await autosave.clear("hero.hbone");
     expect(await autosave.recover("hero.hbone")).toBeUndefined();
+  });
+
+  it("reports corrupt recovery safely and supports explicit flush", async () => {
+    const repository = new InMemoryProjectRepository();
+    const autosave = new AutosaveManager(repository);
+    expect(await autosave.recoverDetailed("missing.hbone")).toEqual({
+      ok: false,
+      error: "AUTOSAVE_NOT_FOUND",
+    });
+    await repository.write("broken.hbone.autosave", new Uint8Array([1, 2, 3]));
+    expect((await autosave.recoverDetailed("broken.hbone")).ok).toBe(false);
+    const project = createProject({ main: ikSkeleton().skeleton });
+    const controller = new AutosaveController(
+      autosave,
+      "hero.hbone",
+      () => project,
+      { debounceMs: 60_000 },
+    );
+    controller.markDirty();
+    expect(controller.isDirty).toBe(true);
+    await controller.flush();
+    expect(controller.isDirty).toBe(false);
+    expect(await repository.list()).toContain("hero.hbone.autosave");
+    controller.stop();
   });
 });
