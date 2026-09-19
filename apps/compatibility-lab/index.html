@@ -20,9 +20,36 @@
             <option value="dragonbones">DragonBones 5.5</option>
             <option value="mesh">Canonical Weighted Mesh</option>
             <option value="worker">Auto-Mesh Worker (BBW/Laplacian)</option>
+            <option value="animated">Animated Mesh Playback</option>
           </select></label
         ><label><input id="debug" type="checkbox" checked /> Debug bones</label
         ><button id="snapshot">Download pose JSON</button>
+        <span
+          id="playback-controls"
+          style="
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 12px;
+          "
+        >
+          <button id="play-btn" type="button">Play</button>
+          <input
+            id="time-slider"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0"
+            style="width: 140px"
+          />
+          <span
+            id="time-display"
+            style="font-family: monospace; font-size: 12px; min-width: 48px"
+            >0.00s</span
+          >
+          <label><input id="loop" type="checkbox" checked /> Loop</label>
+        </span>
       </nav>
       <section id="stage" aria-label="Skeleton preview"></section>
       <pre id="status" role="status">Initializing renderer…</pre>

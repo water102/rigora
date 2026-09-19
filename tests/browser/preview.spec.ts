@@ -54,5 +54,19 @@ test("canonical weighted mesh and auto-mesh worker render on canvas", async ({
   await expect(page.locator("#status")).toContainText("Auto-Mesh Worker");
   await expect(page.locator("#status")).toContainText("1 mesh");
 
+  // Select animated mesh playback
+  await page.locator("#source").selectOption("animated");
+  await expect(page.locator("#status")).toContainText("Animated Mesh Playback");
+  await expect(page.locator("#status")).toContainText("[walk @ 0.00s]");
+
+  // Scrub time slider to 0.50s
+  await page.locator("#time-slider").fill("0.5");
+  await expect(page.locator("#time-display")).toHaveText("0.50s");
+  await expect(page.locator("#status")).toContainText("[walk @ 0.50s]");
+
+  // Click Play button
+  await page.locator("#play-btn").click();
+  await expect(page.locator("#play-btn")).toHaveText("Pause");
+
   expect(errors).toEqual([]);
 });

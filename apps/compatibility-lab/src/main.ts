@@ -2,7 +2,12 @@ import { Application, CanvasSource } from "pixi.js";
 import * as Comlink from "comlink";
 import { importSpine38 } from "@rigora/format-spine-38";
 import { importDragonBones55 } from "@rigora/format-dragonbones";
-import { createSetupSnapshot, type RenderSnapshot } from "@rigora/runtime";
+import {
+  createSetupSnapshot,
+  createPoseSnapshot,
+  type RenderSnapshot,
+} from "@rigora/runtime";
+import type { SkeletonData } from "@rigora/model";
 import {
   createAtlasTexture,
   PixiRegionRenderer,
@@ -10,6 +15,7 @@ import {
 } from "@rigora/renderer-pixi";
 import type { MeshWorkerApi } from "./mesh-worker.js";
 import { weightedMeshSkeleton } from "../../../tests/fixtures/canonical/weighted-mesh.js";
+import { animatedMeshSkeleton } from "../../../tests/fixtures/canonical/animated-skeleton.js";
 import spine from "../../../tests/fixtures/imports/spine38-region.json";
 import dragon from "../../../tests/fixtures/imports/dragonbones55-region.json";
 import "./style.css";
@@ -18,6 +24,10 @@ const stage = document.querySelector<HTMLElement>("#stage")!;
 const status = document.querySelector<HTMLElement>("#status")!;
 const select = document.querySelector<HTMLSelectElement>("#source")!;
 const debug = document.querySelector<HTMLInputElement>("#debug")!;
+const playBtn = document.querySelector<HTMLButtonElement>("#play-btn")!;
+const timeSlider = document.querySelector<HTMLInputElement>("#time-slider")!;
+const timeDisplay = document.querySelector<HTMLElement>("#time-display")!;
+const loopCheck = document.querySelector<HTMLInputElement>("#loop")!;
 
 async function start() {
   const app = new Application();
@@ -78,27 +88,24 @@ async function start() {
   }
 
   let snapshot: RenderSnapshot | undefined;
+  let currentSkeleton: SkeletonData | undefined;
+  let currentAnimationName: string | undefined;
+  let animationDuration = 1.0;
+  let isPlaying = false;
+  let currentTime = 0;
+  let lastFrameTime = performance.now();
+  let rafId: number | null = null;
 
-  function applySnapshot(result: {
-    success: boolean;
-    skeletons?: any[];
-    diagnostics: any[];
-  }) {
-    if (!result.success || !result.skeletons?.[0]) {
-      status.textContent = JSON.stringify(result.diagnostics, null, 2);
-      return;
-    }
+  let currentImportDiagnostics: any[] = [];
 
-    const pose = createSetupSnapshot(result.skeletons[0]);
-    if (!pose.success) {
-      status.textContent = JSON.stringify(pose.diagnostics, null, 2);
-      return;
-    }
-
-    snapshot = pose.snapshot;
+  function renderPose(
+    poseSnapshot: RenderSnapshot,
+    extraDiagnostics: any[] = [],
+  ) {
+    snapshot = poseSnapshot;
     const diagnostics = [
-      ...result.diagnostics,
-      ...pose.diagnostics,
+      ...currentImportDiagnostics,
+      ...extraDiagnostics,
       ...regionRenderer.render(snapshot, debug.checked),
       ...meshRenderer.render(snapshot, debug.checked),
     ];
@@ -110,8 +117,49 @@ async function start() {
       counts.push(`${snapshot.regions.length} region`);
     if (snapshot.meshes.length) counts.push(`${snapshot.meshes.length} mesh`);
 
-    status.textContent = `${select.selectedOptions[0]!.text} · ${snapshot.bones.length} bones · ${counts.join(", ") || "0 items"}\n${diagnostics.map((d) => `${d.severity}: ${d.code}`).join("\n") || "No diagnostics."}`;
+    const animInfo = currentAnimationName
+      ? ` · [${currentAnimationName} @ ${currentTime.toFixed(2)}s]`
+      : "";
+    status.textContent = `${select.selectedOptions[0]!.text}${animInfo} · ${snapshot.bones.length} bones · ${counts.join(", ") || "0 items"}\n${diagnostics.map((d) => `${d.severity}: ${d.code}`).join("\n") || "No diagnostics."}`;
     stage.dataset["ready"] = "true";
+  }
+
+  function evaluateCurrentTime() {
+    if (!currentSkeleton) return;
+    if (currentAnimationName) {
+      const pose = createPoseSnapshot(currentSkeleton, {
+        animationName: currentAnimationName,
+        time: currentTime,
+        loop: loopCheck.checked,
+      });
+      if (pose.success) {
+        renderPose(pose.snapshot, pose.diagnostics);
+      } else {
+        status.textContent = JSON.stringify(pose.diagnostics, null, 2);
+      }
+    } else {
+      const pose = createSetupSnapshot(currentSkeleton);
+      if (pose.success) {
+        renderPose(pose.snapshot, pose.diagnostics);
+      } else {
+        status.textContent = JSON.stringify(pose.diagnostics, null, 2);
+      }
+    }
+  }
+
+  function applySnapshot(result: {
+    success: boolean;
+    skeletons?: SkeletonData[];
+    diagnostics: any[];
+  }) {
+    if (!result.success || !result.skeletons?.[0]) {
+      status.textContent = JSON.stringify(result.diagnostics, null, 2);
+      return;
+    }
+    currentSkeleton = result.skeletons[0];
+    currentAnimationName = undefined;
+    currentImportDiagnostics = result.diagnostics;
+    evaluateCurrentTime();
   }
 
   async function runWorkerAuthoring() {
@@ -145,6 +193,12 @@ async function start() {
   }
 
   function refresh() {
+    isPlaying = false;
+    playBtn.textContent = "Play";
+    currentTime = 0;
+    timeSlider.value = "0";
+    timeDisplay.textContent = "0.00s";
+
     const options = {
       namespace: "preview",
       textures: new Map([
@@ -163,13 +217,67 @@ async function start() {
         skeletons: [fixture.skeleton],
         diagnostics: [],
       });
+    } else if (select.value === "animated") {
+      const fixture = animatedMeshSkeleton();
+      currentSkeleton = fixture.skeleton;
+      currentAnimationName = fixture.animationName;
+      animationDuration = fixture.skeleton.animations[0]?.duration ?? 1.0;
+      timeSlider.max = animationDuration.toString();
+      currentImportDiagnostics = [];
+      evaluateCurrentTime();
     } else {
       void runWorkerAuthoring();
     }
   }
 
+  function tick(timestamp: number) {
+    const dt = Math.min((timestamp - lastFrameTime) / 1000, 0.1);
+    lastFrameTime = timestamp;
+
+    if (isPlaying && currentAnimationName) {
+      currentTime += dt;
+      if (loopCheck.checked) {
+        if (currentTime >= animationDuration) {
+          currentTime = currentTime % animationDuration;
+        }
+      } else {
+        if (currentTime >= animationDuration) {
+          currentTime = animationDuration;
+          isPlaying = false;
+          playBtn.textContent = "Play";
+        }
+      }
+      timeSlider.value = currentTime.toFixed(2);
+      timeDisplay.textContent = `${currentTime.toFixed(2)}s`;
+      evaluateCurrentTime();
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  playBtn.addEventListener("click", () => {
+    if (!currentAnimationName) return;
+    isPlaying = !isPlaying;
+    playBtn.textContent = isPlaying ? "Pause" : "Play";
+    if (isPlaying && currentTime >= animationDuration && !loopCheck.checked) {
+      currentTime = 0;
+      timeSlider.value = "0";
+      timeDisplay.textContent = "0.00s";
+    }
+  });
+
+  timeSlider.addEventListener("input", () => {
+    currentTime = parseFloat(timeSlider.value);
+    timeDisplay.textContent = `${currentTime.toFixed(2)}s`;
+    evaluateCurrentTime();
+  });
+
+  loopCheck.addEventListener("change", () => {
+    evaluateCurrentTime();
+  });
+
   select.addEventListener("change", refresh);
-  debug.addEventListener("change", refresh);
+  debug.addEventListener("change", () => evaluateCurrentTime());
 
   document
     .querySelector<HTMLButtonElement>("#snapshot")!
@@ -188,10 +296,12 @@ async function start() {
     });
 
   refresh();
+  rafId = requestAnimationFrame(tick);
 
   window.addEventListener(
     "pagehide",
     () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
       regionRenderer.destroy();
       meshRenderer.destroy();
       texture.destroy();

@@ -48,10 +48,24 @@ export type SnapshotResult =
   | { success: true; snapshot: RenderSnapshot; diagnostics: Diagnostic[] }
   | { success: false; diagnostics: Diagnostic[] };
 
-/** Setup-only reference path. No animation/constraint evaluation is implied. */
-export function createSetupSnapshot(
+import {
+  NumericTimeline,
+  DeformTimeline,
+  animationTime,
+  type DeformKeyframe,
+} from "@rigora/animation";
+
+export interface PoseOptions {
+  animationName?: string | undefined;
+  time?: number | undefined;
+  loop?: boolean | undefined;
+  skinId?: string | undefined;
+}
+
+/** Evaluates a skeleton pose at a given time or setup pose if no animation is specified. */
+export function createPoseSnapshot(
   input: SkeletonData,
-  skinId?: string,
+  options?: PoseOptions,
 ): SnapshotResult {
   const validation = validateSkeleton(input);
   const diagnostics: Diagnostic[] = [...validation.diagnostics];
@@ -64,11 +78,14 @@ export function createSetupSnapshot(
       message,
       ...(entityId ? { entityId } : {}),
     });
+
   if (data.constraints.length)
     error(
       "RUNTIME_CONSTRAINTS_UNSUPPORTED",
       "Setup region runtime does not evaluate constraints.",
     );
+
+  const skinId = options?.skinId;
   const selected =
     skinId === undefined
       ? (data.skins.find((skin) => skin.name === "default") ?? data.skins[0])
@@ -83,10 +100,103 @@ export function createSetupSnapshot(
       "RUNTIME_SKIN_REQUIREMENTS_UNSUPPORTED",
       "Skin activation requirements are not evaluated.",
     );
+
+  const anim =
+    options?.animationName !== undefined
+      ? (data.animations.find(
+          (a) =>
+            a.name === options.animationName || a.id === options.animationName,
+        ) ??
+        (() => {
+          error(
+            "RUNTIME_ANIMATION_NOT_FOUND",
+            `Animation not found: ${options.animationName}`,
+          );
+          return undefined;
+        })())
+      : undefined;
+
+  const localTime = anim
+    ? animationTime(options?.time ?? 0, anim.duration, options?.loop ?? true)
+    : 0;
+
   try {
-    const hierarchy = compileTransformHierarchy(data.bones);
+    const bones = data.bones.map((bone) => {
+      const setup = { ...bone.setup };
+      if (anim) {
+        // Rotate timeline
+        const rotTl = anim.timelines.find(
+          (tl) => tl.type === "bone.rotate" && tl.targetId === bone.id,
+        );
+        if (rotTl) {
+          const tl = new NumericTimeline(
+            rotTl.keyframes.map((k) => ({
+              time: k.time,
+              value: k.value as number,
+              curve: k.curve as any,
+            })),
+            "shortest",
+          );
+          const sample = tl.sample(localTime);
+          if (sample !== undefined) setup.rotation += sample;
+        }
+
+        // Translate timeline
+        const transTl = anim.timelines.find(
+          (tl) => tl.type === "bone.translate" && tl.targetId === bone.id,
+        );
+        if (transTl) {
+          const tlX = new NumericTimeline(
+            transTl.keyframes.map((k) => ({
+              time: k.time,
+              value: (k.value as any).x,
+              curve: k.curve as any,
+            })),
+          );
+          const tlY = new NumericTimeline(
+            transTl.keyframes.map((k) => ({
+              time: k.time,
+              value: (k.value as any).y,
+              curve: k.curve as any,
+            })),
+          );
+          const dx = tlX.sample(localTime);
+          const dy = tlY.sample(localTime);
+          if (dx !== undefined) setup.x += dx;
+          if (dy !== undefined) setup.y += dy;
+        }
+
+        // Scale timeline
+        const scaleTl = anim.timelines.find(
+          (tl) => tl.type === "bone.scale" && tl.targetId === bone.id,
+        );
+        if (scaleTl) {
+          const tlX = new NumericTimeline(
+            scaleTl.keyframes.map((k) => ({
+              time: k.time,
+              value: typeof k.value === "number" ? k.value : (k.value as any).x,
+              curve: k.curve as any,
+            })),
+          );
+          const tlY = new NumericTimeline(
+            scaleTl.keyframes.map((k) => ({
+              time: k.time,
+              value: typeof k.value === "number" ? k.value : (k.value as any).y,
+              curve: k.curve as any,
+            })),
+          );
+          const sx = tlX.sample(localTime);
+          const sy = tlY.sample(localTime);
+          if (sx !== undefined) setup.scaleX *= sx;
+          if (sy !== undefined) setup.scaleY *= sy;
+        }
+      }
+      return { ...bone, setup };
+    });
+
+    const hierarchy = compileTransformHierarchy(bones);
     const world = evaluateTransformHierarchy(hierarchy);
-    const lengths = new Map(data.bones.map((bone) => [bone.id, bone.length]));
+    const lengths = new Map(bones.map((bone) => [bone.id, bone.length]));
     const snapshot: RenderSnapshot = {
       regions: [],
       meshes: [],
@@ -99,15 +209,76 @@ export function createSetupSnapshot(
         }),
       })),
     };
+
     for (const slot of [...data.slots].sort((a, b) => a.zIndex - b.zIndex)) {
-      if (slot.setupAttachmentId === undefined) continue;
+      let activeAttachmentId = slot.setupAttachmentId;
+      const slotColor = { ...slot.color };
+
+      if (anim) {
+        // Attachment switch timeline
+        const attachTl = anim.timelines.find(
+          (tl) => tl.type === "slot.attachment" && tl.targetId === slot.id,
+        );
+        if (attachTl) {
+          for (const k of attachTl.keyframes) {
+            if (k.time <= localTime) {
+              activeAttachmentId = (k.value as string) || undefined;
+            } else break;
+          }
+        }
+
+        // Slot color timeline
+        const colorTl = anim.timelines.find(
+          (tl) => tl.type === "slot.color" && tl.targetId === slot.id,
+        );
+        if (colorTl) {
+          const tlR = new NumericTimeline(
+            colorTl.keyframes.map((k) => ({
+              time: k.time,
+              value: (k.value as any).r,
+              curve: k.curve as any,
+            })),
+          );
+          const tlG = new NumericTimeline(
+            colorTl.keyframes.map((k) => ({
+              time: k.time,
+              value: (k.value as any).g,
+              curve: k.curve as any,
+            })),
+          );
+          const tlB = new NumericTimeline(
+            colorTl.keyframes.map((k) => ({
+              time: k.time,
+              value: (k.value as any).b,
+              curve: k.curve as any,
+            })),
+          );
+          const tlA = new NumericTimeline(
+            colorTl.keyframes.map((k) => ({
+              time: k.time,
+              value: (k.value as any).a,
+              curve: k.curve as any,
+            })),
+          );
+          const r = tlR.sample(localTime);
+          const g = tlG.sample(localTime);
+          const b = tlB.sample(localTime);
+          const a = tlA.sample(localTime);
+          if (r !== undefined) slotColor.r = r;
+          if (g !== undefined) slotColor.g = g;
+          if (b !== undefined) slotColor.b = b;
+          if (a !== undefined) slotColor.a = a;
+        }
+      }
+
+      if (activeAttachmentId === undefined) continue;
       const attachment = selected?.attachments[slot.id]?.find(
-        (item) => item.id === slot.setupAttachmentId,
+        (item) => item.id === activeAttachmentId,
       );
       if (!attachment) {
         error(
           "RUNTIME_ATTACHMENT_NOT_FOUND",
-          "Setup attachment is absent from the selected skin; no fallback applied.",
+          "Attachment is absent from the selected skin; no fallback applied.",
           slot.id,
         );
         continue;
@@ -139,7 +310,7 @@ export function createSetupSnapshot(
           ),
           width: attachment.width,
           height: attachment.height,
-          color: { ...slot.color },
+          color: slotColor,
           blendMode: slot.blendMode,
         });
       } else if (attachment.type === "mesh") {
@@ -162,7 +333,24 @@ export function createSetupSnapshot(
         }
         try {
           const meshInstance = new MeshInstance(data, attachment.id);
-          const worldXY = meshInstance.evaluate(world);
+          let deformTl: DeformTimeline | undefined;
+          if (anim) {
+            const rawDeformTl = anim.timelines.find(
+              (tl) => tl.type === "deform" && tl.targetId === attachment.id,
+            );
+            if (rawDeformTl) {
+              deformTl = new DeformTimeline(
+                attachment.id,
+                meshInstance.deform.length,
+                rawDeformTl.keyframes as unknown as readonly DeformKeyframe[],
+              );
+            }
+          }
+          const worldXY = meshInstance.sampleAndEvaluate(
+            localTime,
+            world,
+            deformTl,
+          );
           snapshot.meshes.push({
             slotId: slot.id,
             attachmentId: attachment.id,
@@ -170,7 +358,7 @@ export function createSetupSnapshot(
             worldXY: new Float32Array(worldXY),
             uvs: new Float32Array(meshInstance.uvs),
             triangles: new Uint32Array(meshInstance.triangles),
-            color: { ...slot.color },
+            color: slotColor,
             blendMode: slot.blendMode,
           });
         } catch (meshErr) {
@@ -204,4 +392,12 @@ export function createSetupSnapshot(
     );
     return { success: false, diagnostics };
   }
+}
+
+/** Setup-only reference path. Calls createPoseSnapshot without an animation. */
+export function createSetupSnapshot(
+  input: SkeletonData,
+  skinId?: string,
+): SnapshotResult {
+  return createPoseSnapshot(input, { skinId });
 }
