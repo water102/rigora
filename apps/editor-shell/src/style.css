@@ -1,0 +1,146 @@
+:root {
+  font: 14px system-ui;
+  color: #dbe7f5;
+  background: #0b1020;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+body,
+#root,
+.app {
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+.app {
+  display: flex;
+  flex-direction: column;
+}
+.topbar {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+  background: #111a2b;
+  border-bottom: 1px solid #2a3a53;
+}
+.topbar strong {
+  color: #65dccb;
+  letter-spacing: 0.16em;
+}
+.topbar span,
+.muted {
+  color: #8ea0b9;
+}
+.topbar button {
+  margin-left: auto;
+}
+.dock {
+  min-height: 0;
+  flex: 1;
+}
+.panel,
+.stage-panel {
+  height: 100%;
+  background: #101827;
+}
+.panel header,
+.stage-toolbar {
+  padding: 10px 12px;
+  border-bottom: 1px solid #26364e;
+  font-weight: 600;
+}
+.tree-item {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+.tree-item:hover,
+.selected {
+  background: #203452;
+}
+.panel label {
+  display: block;
+  padding: 12px;
+  color: #9db0c9;
+}
+.panel input {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 7px;
+  background: #0b1220;
+  border: 1px solid #344966;
+  color: inherit;
+}
+.stage-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+.stage-toolbar span {
+  font-size: 12px;
+  color: #8ea0b9;
+  font-weight: 400;
+}
+.stage-grid {
+  position: relative;
+  height: calc(100% - 42px);
+  overflow: hidden;
+  background-color: #111b2c;
+  background-image:
+    linear-gradient(#26364e 1px, transparent 1px),
+    linear-gradient(90deg, #26364e 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+\.axis {
+  position: absolute;
+  background: #4a6a8f;
+}
+.axis.x {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+}
+.axis.y {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+}
+.stage-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 24px 38px;
+  text-align: center;
+  border: 1px solid #65dccb;
+  border-radius: 8px;
+  background: #13273b;
+  color: #65dccb;
+}
+.stage-card small {
+  color: #9db0c9;
+}
+.recovery {
+  padding: 48px;
+  font-family: system-ui;
+}
+button {
+  padding: 6px 10px;
+  border: 1px solid #405572;
+  border-radius: 4px;
+  background: #1b2b43;
+  color: inherit;
+  cursor: pointer;
+}
