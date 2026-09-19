@@ -1223,12 +1223,28 @@ export class AuthoringPlayback {
   playing = false;
   speed = 1;
   loop = true;
+  loopStart = 0;
+  loopEnd: number;
   constructor(
     public duration: number,
     public fps = 30,
   ) {
     finiteAuthoring(duration, "duration");
     finiteAuthoring(fps, "fps");
+    this.loopEnd = duration;
+  }
+  setLoopRange(start: number, end: number): void {
+    if (
+      !Number.isFinite(start) ||
+      !Number.isFinite(end) ||
+      start < 0 ||
+      end <= start ||
+      end > this.duration
+    )
+      throw new Error("ANIMATION_AUTHORING_INVALID_LOOP");
+    this.loopStart = start;
+    this.loopEnd = end;
+    this.seek(Math.max(start, Math.min(end, this.time)));
   }
   seek(time: number): void {
     this.time = Math.max(0, Math.min(this.duration, time));
@@ -1242,8 +1258,11 @@ export class AuthoringPlayback {
     if (!this.playing) return this.time;
     const next = this.time + seconds * this.speed;
     this.time =
-      this.loop && this.duration > 0
-        ? ((next % this.duration) + this.duration) % this.duration
+      this.loop && this.loopEnd > this.loopStart
+        ? this.loopStart +
+          ((((next - this.loopStart) % (this.loopEnd - this.loopStart)) +
+            (this.loopEnd - this.loopStart)) %
+            (this.loopEnd - this.loopStart))
         : Math.min(this.duration, Math.max(0, next));
     if (!this.loop && this.time === this.duration) this.playing = false;
     return this.time;

@@ -532,6 +532,38 @@ function Timeline() {
             <button onClick={toggleLoop}>
               {playback.loop ? "Loop on" : "Loop off"}
             </button>
+            <label>
+              Loop{" "}
+              <input
+                className="timeline-loop-input"
+                type="number"
+                min={0}
+                max={clip.duration}
+                step={1 / clip.fps}
+                value={playback.loopStart}
+                onChange={(event) =>
+                  playback.setLoopRange(
+                    Number(event.target.value),
+                    playback.loopEnd,
+                  )
+                }
+              />
+              –
+              <input
+                className="timeline-loop-input"
+                type="number"
+                min={0}
+                max={clip.duration}
+                step={1 / clip.fps}
+                value={playback.loopEnd}
+                onChange={(event) =>
+                  playback.setLoopRange(
+                    playback.loopStart,
+                    Number(event.target.value),
+                  )
+                }
+              />
+            </label>
             <button
               onClick={() => setSelectedCurve("linear")}
               disabled={!store.view.selectedKeyIds.size}
