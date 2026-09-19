@@ -8,12 +8,14 @@ import {
   serializeProject,
 } from "../../packages/project/src/index.js";
 import {
+  boundsFromPoints,
   buildGridLines,
   Camera2D,
   CommandHistory,
   SelectionStore,
   snapPointToGrid,
   snapToGrid,
+  framePoints,
   type EditorCommand,
 } from "../../packages/editor-core/src/index.js";
 import { ikSkeleton } from "../fixtures/canonical/ik-skeleton.js";
@@ -609,5 +611,39 @@ describe("Batch 19 stage grid", () => {
       ),
     ).toEqual([]);
     expect(() => snapToGrid(1, 0)).toThrow("GRID_INVALID_SPACING");
+  });
+});
+
+describe("Batch 20 stage framing", () => {
+  it("computes bounds and frames visible points", () => {
+    const points = [
+      { x: -10, y: 5 },
+      { x: 30, y: 25 },
+      { x: 0, y: -5 },
+    ];
+    expect(boundsFromPoints(points)).toEqual({
+      x: -10,
+      y: -5,
+      width: 40,
+      height: 30,
+    });
+    const camera = new Camera2D(800, 600);
+    expect(framePoints(camera, points, 0)).toEqual({
+      x: -10,
+      y: -5,
+      width: 40,
+      height: 30,
+    });
+    expect(camera.center).toEqual({ x: 10, y: 10 });
+    expect(camera.worldToScreen({ x: 10, y: 10 })).toEqual({ x: 400, y: 300 });
+  });
+
+  it("handles empty and invalid point sets", () => {
+    const camera = new Camera2D(800, 600);
+    expect(boundsFromPoints([])).toBeNull();
+    expect(framePoints(camera, [])).toBeNull();
+    expect(() => boundsFromPoints([{ x: NaN, y: 0 }])).toThrow(
+      "STAGE_NON_FINITE_POINT",
+    );
   });
 });

@@ -216,6 +216,33 @@ export function buildGridLines(
   return lines;
 }
 
+export function boundsFromPoints(points: readonly Point2[]): Bounds2 | null {
+  if (points.length === 0) return null;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (const point of points) {
+    if (!Number.isFinite(point.x) || !Number.isFinite(point.y))
+      throw new Error("STAGE_NON_FINITE_POINT");
+    minX = Math.min(minX, point.x);
+    minY = Math.min(minY, point.y);
+    maxX = Math.max(maxX, point.x);
+    maxY = Math.max(maxY, point.y);
+  }
+  return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+}
+
+export function framePoints(
+  camera: Camera2D,
+  points: readonly Point2[],
+  padding = 0.1,
+): Bounds2 | null {
+  const bounds = boundsFromPoints(points);
+  if (bounds) camera.frameBounds(bounds, padding);
+  return bounds;
+}
+
 interface UndoEntry {
   command: EditorCommand<unknown>;
   payload: unknown;
