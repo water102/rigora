@@ -1,0 +1,25 @@
+{
+  "name": "equivalent",
+  "version": "5.5",
+  "armature": [
+    {
+      "name": "character",
+      "bone": [
+        { "name": "root", "transform": { "skX": -90, "skY": -90 } },
+        { "name": "tip", "parent": "root", "transform": { "x": 10 } }
+      ],
+      "slot": [{ "name": "body", "parent": "tip" }],
+      "skin": [
+        {
+          "name": "default",
+          "slot": [
+            {
+              "name": "body",
+              "display": [{ "name": "actual", "path": "body-image" }]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

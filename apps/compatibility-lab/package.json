@@ -1,0 +1,21 @@
+{
+  "name": "@rigora/compatibility-lab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@rigora/format-spine-38": "workspace:*",
+    "@rigora/format-dragonbones": "workspace:*",
+    "@rigora/runtime": "workspace:*",
+    "@rigora/renderer-pixi": "workspace:*",
+    "pixi.js": "8.21.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.0"
+  }
+}

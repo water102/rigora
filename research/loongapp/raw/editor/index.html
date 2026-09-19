@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="loong bones is the best animation tool"
+    />
+    <link rel="apple-touch-icon" href="./logo192.png" />
+    <link rel="manifest" href="./manifest.json" />
+    <title>LoongBones web</title>
+  </head>
+  <body oncontextmenu="self.event.returnValue=false">
+    <div id="preload"></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script>
+        function loadCss(src) {
+            return new Promise((resolve, reject) => {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = src;
+                link.onload = function () {
+                    resolve();
+                };
+                link.onerror = function () {
+                    reject();
+                };
+                document.head.appendChild(link);
+            });
+        }
+        function loadScript(src, progress, callback) {
+            return new Promise((resolve, reject) => {
+                var script = document.createElement('script');
+                script.src = src;
+                script.onload = function () {
+                    progress && progress(1);
+                    callback && callback();
+                    resolve();
+                };
+                script.onerror = function () {
+                    progress && progress(0);
+                    callback && callback();
+                    reject();
+                };
+                document.body.appendChild(script);
+            });
+        }
+        var preload = document.getElementById('preload');
+        preload.style.position = 'absolute';
+        preload.style.top = '0';
+        preload.style.textAlign = 'center';
+        preload.style.paddingTop = '50%';
+        preload.style.width = '100%';
+        preload.style.height = '100%';
+        preload.style.overflow = 'hidden';
+        preload.style.color = '#fff';
+        preload.style.backgroundColor = '#1B2025';
+        preload.innerHTML = 'loading...';
+
+        const cssToLoad = [
+            './libs/gboxlayout.css?v=0.0.11',
+            './static/css/main.b498f431.css',
+        ];
+        const jsToLoad = [
+            {src: './libs/gmvc.js'},
+            {src: './libs/gboxlayout.js'},
+            {src: './libs/amf.js'},
+            {src: './libs/dragonBones/dragonBones.js?v=0.0.11'},
+            {src: './libs/triangle.js'},
+            {src: './libs/numeric-1.2.6.min.js'},
+            {src: './libs/bbw.js', pre: ['./libs/numeric-1.2.6.min.js']},
+            {src: './static/js/main.94c63af5.js', pre:['./libs/dragonBones/dragonBones.js?v=0.0.11']},
+        ];
+        let cssLoadedNum = 0;
+        let jsLoadedNum = 0;
+        const jsLoded = [];
+        const total = cssToLoad.length + jsToLoad.length;
+        const jsTotal = jsToLoad.length;
+        const cssTotal = cssToLoad.length;
+        cssToLoad.forEach((src) => {
+            loadCss(src).then(() => {
+                cssLoadedNum++;
+                preload.innerHTML = `loading... ${Math.floor(((cssLoadedNum + jsLoadedNum) / total) * 100)}%`;
+                checkLoadComplete();
+            });
+        });
+        const isPreLoaded = (pre) => {
+            if(pre && pre.length) {
+                for(let i = 0; i < pre.length; i++) {
+                    if(jsLoded.indexOf(pre[i]) === -1) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        const loadJs = () => {
+            for(let i = 0; i < jsToLoad.length; i++) {
+                const {src, pre} = jsToLoad[i];
+                if(!pre || (pre && isPreLoaded(pre))) {
+                    jsToLoad.splice(i, 1);
+                    i--;
+                    loadScript(src, (status) => {
+                        if (status) {
+                            jsLoded.push(src);
+                            jsLoadedNum++;
+                            preload.innerHTML = `loading... ${Math.floor(((cssLoadedNum + jsLoadedNum) / total) * 100)}%`;
+                            checkLoadComplete();
+                        }
+                    });
+                }
+            }
+        }
+        
+        const checkLoadComplete = () => {
+            loadJs();
+            if (cssLoadedNum === cssTotal && jsLoadedNum === jsTotal) {
+                preload.style.display = 'none';
+                document.body.removeChild(preload);
+            }
+        };
+        loadJs();
+        </script>
+    <div id="root"></div>
+  </body>
+</html>

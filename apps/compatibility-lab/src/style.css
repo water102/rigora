@@ -1,0 +1,72 @@
+:root {
+  font:
+    15px/1.6 system-ui,
+    sans-serif;
+  color: #e5edf8;
+  background: #0b1020;
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 960px;
+  margin: 48px auto;
+  padding: 0 24px;
+}
+header p:first-child {
+  color: #65dccb;
+  letter-spacing: 0.15em;
+  font-size: 12px;
+}
+h1 {
+  font-size: 42px;
+  line-height: 1.2;
+  margin: 14px 0;
+}
+header p,
+footer {
+  color: #99a9c3;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+  margin: 28px 0 18px;
+}
+select,
+button {
+  padding: 9px 14px;
+  border: 1px solid #38475e;
+  background: #1a263b;
+  color: inherit;
+  border-radius: 6px;
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+#stage {
+  display: flex;
+  justify-content: center;
+  border: 1px solid #2c3b52;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111827;
+}
+canvas {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+}
+pre {
+  white-space: pre-wrap;
+  padding: 16px;
+  background: #121c30;
+  border-radius: 8px;
+  color: #bdd3ed;
+}
+footer {
+  font-size: 13px;
+}

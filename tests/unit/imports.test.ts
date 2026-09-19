@@ -1,0 +1,141 @@
+import { expect, it } from "vitest";
+import spineFixture from "../fixtures/imports/spine38-region.json";
+import dragonFixture from "../fixtures/imports/dragonbones55-region.json";
+import { importSpine38 } from "../../packages/format-spine-38/src/index.js";
+import { importDragonBones55 } from "../../packages/format-dragonbones/src/index.js";
+import { detectSpineVersion } from "../../packages/format-spine-common/src/index.js";
+import {
+  compileTransformHierarchy,
+  evaluateTransformHierarchy,
+} from "../../packages/math/src/index.js";
+const options = {
+  namespace: "fixture",
+  textures: new Map([
+    ["body-image", { id: "texture:body", width: 20, height: 10 }],
+  ]),
+};
+it("normalizes both formats into the same numeric setup pose", () => {
+  for (const result of [
+    importSpine38(JSON.stringify(spineFixture), options),
+    importDragonBones55(JSON.stringify(dragonFixture), options),
+  ]) {
+    expect(result.success).toBe(true);
+    if (!result.success) throw new Error(JSON.stringify(result.diagnostics));
+    const data = result.skeletons[0]!;
+    const world = evaluateTransformHierarchy(
+      compileTransformHierarchy(data.bones),
+    )[1]!;
+    [world.a, world.b, world.c, world.d, world.tx, world.ty].forEach((v, i) =>
+      expect(v).toBeCloseTo([0, 1, -1, 0, 0, 10][i]!, 9),
+    );
+    const attachment = data.skins[0]!.attachments[data.slots[0]!.id]![0]!;
+    expect(attachment).toMatchObject({
+      name: "actual",
+      type: "region",
+      textureId: "texture:body",
+      width: 20,
+      height: 10,
+    });
+    expect(data.slots[0]!.setupAttachmentId).toBe(attachment.id);
+  }
+});
+it("always warns on exact 3.8.75 and persists stable IDs independent of display names", () => {
+  const first = importSpine38(JSON.stringify(spineFixture), options);
+  expect(
+    first.diagnostics.some((d) => d.code === "SP38_3875_KNOWN_VERSION_RISK"),
+  ).toBe(true);
+  expect(first).toEqual(importSpine38(JSON.stringify(spineFixture), options));
+  expect(detectSpineVersion({ skeleton: { spine: "4.2.1" } }).family).toBe(
+    "4.2",
+  );
+  expect(detectSpineVersion({}).code).toBe("SPINE_VERSION_MISSING");
+  expect(detectSpineVersion({ skeleton: { spine: "3.8.75junk" } }).code).toBe(
+    "SPINE_VERSION_INVALID",
+  );
+});
+it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
+  expect(importSpine38("{", options).success).toBe(false);
+  expect(
+    importSpine38(
+      JSON.stringify({ ...spineFixture, skeleton: { spine: "4.2.1" } }),
+      options,
+    ).success,
+  ).toBe(false);
+  const fixture = structuredClone(spineFixture);
+  fixture.bones[1]!.parent = "absent";
+  const missing = importSpine38(JSON.stringify(fixture), options);
+  expect(missing.success).toBe(false);
+  expect(missing).not.toHaveProperty("skeletons");
+  fixture.bones[1]!.name = "root";
+  expect(
+    importSpine38(JSON.stringify(fixture), options).diagnostics.some(
+      (d) => d.code === "CORE_DUPLICATE_SOURCE_NAME",
+    ),
+  ).toBe(true);
+});
+it("does not silently drop unsupported behaviors in compatible or repair mode", () => {
+  for (const mode of ["compatible", "repair"] as const) {
+    const result = importSpine38(
+      JSON.stringify({ ...spineFixture, animations: { walk: {} } }),
+      { ...options, mode },
+    );
+    expect(result.success).toBe(false);
+    expect(
+      result.diagnostics.some(
+        (d) => d.code === "CORE_UNSUPPORTED_SOURCE_FIELD",
+      ),
+    ).toBe(true);
+  }
+});
+it("reports unresolved texture metadata rather than inventing image dimensions", () => {
+  expect(
+    importDragonBones55(JSON.stringify(dragonFixture), {
+      namespace: "missing",
+    }).diagnostics.some((d) => d.code === "ASSET_REGION_SIZE_REQUIRED"),
+  ).toBe(true);
+  const result = importSpine38(JSON.stringify(spineFixture), {
+    namespace: "missing",
+  });
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some((d) => d.code === "ASSET_TEXTURE_NOT_FOUND"),
+  ).toBe(true);
+});
+it("converts DragonBones pivot offset and rejects color offsets", () => {
+  const fixture = structuredClone(dragonFixture);
+  const armature = fixture.armature[0]!;
+  Object.assign(armature.skin[0]!.slot[0]!.display[0]!, {
+    pivot: { x: 0, y: 0 },
+  });
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(
+      result.skeletons[0]!.skins[0]!.attachments[
+        result.skeletons[0]!.slots[0]!.id
+      ]![0],
+    ).toMatchObject({ transform: { x: 10, y: -5 } });
+  Object.assign(armature.slot[0]!, { color: { rO: 1 } });
+  expect(
+    importDragonBones55(JSON.stringify(fixture), options).diagnostics.some(
+      (d) => d.code === "DB55_UNSUPPORTED_COLOR_OFFSET",
+    ),
+  ).toBe(true);
+});
+it("isolates armature namespaces and rejects invalid display indices", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.armature.push({
+    ...structuredClone(fixture.armature[0]!),
+    name: "second",
+  });
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.bones[0]!.id).not.toBe(
+      result.skeletons[1]!.bones[0]!.id,
+    );
+  Object.assign(fixture.armature[0]!.slot[0]!, { displayIndex: 10 });
+  expect(importDragonBones55(JSON.stringify(fixture), options).success).toBe(
+    false,
+  );
+});

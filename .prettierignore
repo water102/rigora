@@ -1,0 +1,8 @@
+spec/
+research/
+pnpm-lock.yaml
+node_modules/
+dist/
+coverage/
+test-results/
+playwright-report/

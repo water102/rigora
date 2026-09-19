@@ -1,0 +1,23 @@
+{
+  "skeleton": { "spine": "3.8.75" },
+  "bones": [
+    { "name": "root", "rotation": 90 },
+    { "name": "tip", "parent": "root", "x": 10 }
+  ],
+  "slots": [{ "name": "body", "bone": "tip", "attachment": "logical" }],
+  "skins": [
+    {
+      "name": "default",
+      "attachments": {
+        "body": {
+          "logical": {
+            "name": "actual",
+            "path": "body-image",
+            "width": 20,
+            "height": 10
+          }
+        }
+      }
+    }
+  ]
+}

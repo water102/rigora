@@ -1,0 +1,281 @@
+import {
+  transaction,
+  object,
+  list,
+  string,
+  number,
+  fields,
+  names,
+  reference,
+  base,
+  texture,
+  fail,
+  type ImportOptions,
+} from "@rigora/format-common";
+import type { SkinData, SlotData } from "@rigora/model";
+import {
+  detectDragonBonesVersion,
+  inspectDragonBonesExtensions,
+} from "./detection.js";
+export {
+  detectDragonBonesVersion,
+  inspectDragonBonesExtensions,
+} from "./detection.js";
+export type {
+  DragonBonesVersionDetection,
+  DragonBonesFeatureDiagnostic,
+} from "./detection.js";
+const radians = Math.PI / 180;
+function transform(value: unknown, path: string) {
+  const item = value === undefined || value === null ? {} : object(value, path);
+  fields(item, "x y skX skY scX scY", path);
+  // Basis change C M C, C=diag(1,-1), converts source Y-down to canonical Y-up.
+  return {
+    x: number(item["x"], path + "/x"),
+    y: -number(item["y"], path + "/y"),
+    rotation: 0,
+    shearX: -number(item["skY"], path + "/skY") * radians,
+    shearY: -number(item["skX"], path + "/skX") * radians,
+    scaleX: number(item["scX"], path + "/scX", 1),
+    scaleY: number(item["scY"], path + "/scY", 1),
+  };
+}
+function color(value: unknown, path: string) {
+  const item = value === undefined || value === null ? {} : object(value, path);
+  fields(item, "aM rM gM bM aO rO gO bO", path);
+  for (const key of ["aO", "rO", "gO", "bO"])
+    if (number(item[key], `${path}/${key}`) !== 0)
+      fail(
+        "DB55_UNSUPPORTED_COLOR_OFFSET",
+        "Color offsets require an extended canonical color contract.",
+        `${path}/${key}`,
+      );
+  return {
+    a: number(item["aM"], path + "/aM", 100) / 100,
+    r: number(item["rM"], path + "/rM", 100) / 100,
+    g: number(item["gM"], path + "/gM", 100) / 100,
+    b: number(item["bM"], path + "/bM", 100) / 100,
+  };
+}
+export function importDragonBones55(text: string, options: ImportOptions) {
+  return transaction(text, options, (source, diagnostics) => {
+    const extensionDiagnostics = inspectDragonBonesExtensions(source);
+    diagnostics.push(
+      ...extensionDiagnostics.map((diagnostic) => ({
+        ...diagnostic,
+        ...(options.originalFile ? { sourcePath: options.originalFile } : {}),
+      })),
+    );
+    const detection = detectDragonBonesVersion(source);
+    if (detection.family === "6.0") {
+      diagnostics.push({
+        code: "DB60_UNSUPPORTED_VERSION",
+        severity: "error",
+        message:
+          "DragonBones 6.0 is recognized; 5.5 normalization cannot be applied to this family.",
+        jsonPointer: "/version",
+        ...(options.originalFile ? { sourcePath: options.originalFile } : {}),
+      });
+      return [];
+    }
+    if (extensionDiagnostics.length) return [];
+    const version = string(source["version"], "/version");
+    if (!/^5\.5(?:\.\d+)?$/.test(version))
+      fail(
+        "DB55_UNSUPPORTED_VERSION",
+        "Expected DragonBones 5.5 JSON.",
+        "/version",
+      );
+    fields(
+      source,
+      "name version compatibleVersion frameRate armature userData",
+      "",
+    );
+    if (
+      source["compatibleVersion"] !== undefined &&
+      source["compatibleVersion"] !== "5.5"
+    )
+      fail(
+        "DB55_UNSUPPORTED_VERSION",
+        "Unsupported compatibleVersion.",
+        "/compatibleVersion",
+      );
+    const armatures = list(source["armature"], "/armature").map((v, i) =>
+      object(v, `/armature/${i}`),
+    );
+    names(armatures, options.namespace, "armature", "/armature");
+    return armatures.map((armature, armatureIndex) => {
+      const root = `/armature/${armatureIndex}`,
+        namespace = `${options.namespace}:armature:${armatureIndex}`;
+      fields(armature, "name type frameRate bone slot skin userData", root);
+      if (armature["type"] !== undefined && armature["type"] !== "Armature")
+        fail(
+          "DB55_UNSUPPORTED_ARMATURE",
+          "Only skeletal armatures are supported.",
+          root + "/type",
+        );
+      const data = base(
+        String(armature["name"]),
+        namespace,
+        "dragonbones",
+        version,
+        number(
+          armature["frameRate"] ?? source["frameRate"],
+          root + "/frameRate",
+          24,
+        ),
+        options,
+      );
+      const bones = list(armature["bone"], root + "/bone").map((v, i) =>
+        object(v, `${root}/bone/${i}`),
+      );
+      const slots = list(armature["slot"], root + "/slot").map((v, i) =>
+        object(v, `${root}/slot/${i}`),
+      );
+      const boneIds = names(bones, namespace, "bone", root + "/bone"),
+        slotIds = names(slots, namespace, "slot", root + "/slot");
+      data.bones = bones.map((bone, i) => {
+        const path = `${root}/bone/${i}`;
+        fields(bone, "name parent length transform userData", path);
+        return {
+          id: boneIds.get(String(bone["name"]))!,
+          name: String(bone["name"]),
+          ...(bone["parent"] === undefined || bone["parent"] === null
+            ? {}
+            : {
+                parentId: reference(bone["parent"], boneIds, path + "/parent"),
+              }),
+          setup: transform(bone["transform"], path + "/transform"),
+          length: number(bone["length"], path + "/length"),
+          inherit: "normal",
+        };
+      });
+      data.slots = slots.map((slot, i): SlotData => {
+        const path = `${root}/slot/${i}`;
+        fields(slot, "name parent displayIndex blendMode color userData", path);
+        const blend =
+          slot["blendMode"] === null
+            ? "normal"
+            : string(slot["blendMode"], path + "/blendMode", "normal");
+        if (!["normal", "add", "multiply", "screen"].includes(blend))
+          fail(
+            "DB55_UNSUPPORTED_BLEND",
+            "Unknown blend mode.",
+            path + "/blendMode",
+          );
+        return {
+          id: slotIds.get(String(slot["name"]))!,
+          name: String(slot["name"]),
+          boneId: reference(slot["parent"], boneIds, path + "/parent"),
+          color: color(slot["color"], path + "/color"),
+          blendMode: (blend === "add"
+            ? "additive"
+            : blend) as SlotData["blendMode"],
+          zIndex: i,
+        };
+      });
+      const skins = list(armature["skin"], root + "/skin").map((v, i) =>
+        object(v, `${root}/skin/${i}`),
+      );
+      const skinIds = names(skins, namespace, "skin", root + "/skin");
+      const defaultIndex = Math.max(
+        0,
+        skins.findIndex((skin) => skin["name"] === "default"),
+      );
+      data.skins = skins.map((skin, i): SkinData => {
+        const path = `${root}/skin/${i}`;
+        fields(skin, "name slot", path);
+        const attachments: SkinData["attachments"] = Object.create(
+          null,
+        ) as SkinData["attachments"];
+        const skinSlots = list(skin["slot"], path + "/slot").map((v, j) =>
+          object(v, `${path}/slot/${j}`),
+        );
+        names(skinSlots, namespace, "skinSlot", path + "/slot");
+        skinSlots.forEach((slot, j) => {
+          const at = `${path}/slot/${j}`;
+          fields(slot, "name display", at);
+          const slotId = reference(slot["name"], slotIds, at + "/name");
+          attachments[slotId] = list(slot["display"], at + "/display").map(
+            (value, k) => {
+              const loc = `${at}/display/${k}`,
+                item = object(value, loc);
+              fields(item, "name path type transform pivot", loc);
+              if (item["type"] !== undefined && item["type"] !== "image")
+                fail(
+                  "DB55_UNSUPPORTED_DISPLAY",
+                  "Only image displays are supported.",
+                  loc + "/type",
+                );
+              const name = string(item["name"], loc + "/name");
+              const image =
+                item["path"] === null
+                  ? name
+                  : string(item["path"], loc + "/path", name);
+              const region = texture(
+                image,
+                undefined,
+                undefined,
+                options,
+                diagnostics,
+                loc,
+              );
+              const pivot =
+                item["pivot"] === undefined || item["pivot"] === null
+                  ? {}
+                  : object(item["pivot"], loc + "/pivot");
+              fields(pivot, "x y", loc + "/pivot");
+              const px = number(pivot["x"], loc + "/pivot/x", 0.5),
+                py = number(pivot["y"], loc + "/pivot/y", 0.5);
+              const local = transform(item["transform"], loc + "/transform");
+              // Convert source normalized pivot to a centered canonical region by shifting its local origin.
+              const dx = (0.5 - px) * region.width,
+                dy = (py - 0.5) * region.height;
+              local.x +=
+                Math.cos(local.shearX) * local.scaleX * dx -
+                Math.sin(local.shearY) * local.scaleY * dy;
+              local.y +=
+                Math.sin(local.shearX) * local.scaleX * dx +
+                Math.cos(local.shearY) * local.scaleY * dy;
+              return {
+                type: "region",
+                id: `${namespace}:attachment:${i}:${j}:${k}`,
+                name,
+                ...region,
+                transform: local,
+              };
+            },
+          );
+        });
+        return {
+          id: skinIds.get(String(skin["name"]))!,
+          name: String(skin["name"]),
+          attachments,
+        };
+      });
+      slots.forEach((slot, i) => {
+        const path = `${root}/slot/${i}/displayIndex`,
+          index = number(slot["displayIndex"], path);
+        if (!Number.isInteger(index) || index < -1)
+          fail(
+            "DB55_INVALID_DISPLAY_INDEX",
+            "Expected -1 or a nonnegative integer.",
+            path,
+          );
+        if (index === -1) return;
+        const displays =
+          data.skins[defaultIndex]?.attachments[data.slots[i]!.id];
+        if (!displays?.length && slot["displayIndex"] === undefined) return;
+        const selected = displays?.[index];
+        if (!selected)
+          fail(
+            "DB55_INVALID_DISPLAY_INDEX",
+            "Display index is outside default skin displays.",
+            path,
+          );
+        data.slots[i]!.setupAttachmentId = selected.id;
+      });
+      return data;
+    });
+  });
+}
