@@ -204,13 +204,31 @@ async function start() {
       return false;
     }
   };
-  restoreAuthoring();
-  let demoDeform = createDeformState(1);
+  let demoDeform = createDeformState(demoTopology.vertices.length);
   let demoPath = createEditablePath([
     { x: -2, y: 0 },
     { x: 0, y: 2 },
     { x: 2, y: 0 },
   ]);
+  const restoreResult = restoreAuthoring();
+  if (restoreResult) {
+    const raw = localStorage.getItem("rigora.authoring.preview");
+    if (raw) {
+      try {
+        const document = parseAuthoringDocument(raw);
+        if (document.paths[0])
+          demoPath = createEditablePath(
+            document.paths[0].points,
+            document.paths[0].closed,
+          );
+        const offsets = document.deformOffsets["demo-mesh"];
+        if (offsets?.length === demoDeform.offsets.length)
+          demoDeform = { ...demoDeform, offsets: [...offsets] };
+      } catch {
+        // The first guarded parse already handled invalid persisted state.
+      }
+    }
+  }
   let vertexDrag: ReturnType<typeof beginDrag> | null = null;
   let lassoPoints: Array<{ x: number; y: number }> = [];
   let brushStrokeCount = 0;

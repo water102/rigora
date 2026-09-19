@@ -26,6 +26,7 @@ import {
   createEditablePath,
   parseAuthoringDocument,
   persistMesh,
+  persistPath,
   serializeAuthoringDocument,
   deleteVertex,
   meshEdges,
@@ -215,9 +216,20 @@ describe("Phase 6 authoring core", () => {
       [0, 1, 2],
     );
     const saved = persistMesh(createAuthoringDocument(), mesh);
-    const loaded = parseAuthoringDocument(serializeAuthoringDocument(saved));
+    const withPath = persistPath(
+      saved,
+      [
+        { x: 0, y: 0 },
+        { x: 1, y: 1 },
+      ],
+      true,
+    );
+    withPath.deformOffsets["demo-mesh"] = [0, 0, 0.25, -0.5];
+    const loaded = parseAuthoringDocument(serializeAuthoringDocument(withPath));
     expect(loaded.version).toBe(1);
     expect(loaded.meshes[0]!.vertices[1]!.id).toBe("v1");
+    expect(loaded.paths[0]!.closed).toBe(true);
+    expect(loaded.deformOffsets["demo-mesh"]).toEqual([0, 0, 0.25, -0.5]);
     expect(() => parseAuthoringDocument("{}" as string)).toThrow(
       "AUTHORING_STATE_UNSUPPORTED_VERSION",
     );
