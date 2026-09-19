@@ -730,6 +730,9 @@ export class EventAuthoringTrack<T = unknown> {
   get events(): readonly AuthoredEvent[] {
     return cloneAuthoring(this.#events);
   }
+  clear(): void {
+    this.#events = [];
+  }
   addDefinition(definition: EventDefinition): void {
     if (
       !definition.id ||

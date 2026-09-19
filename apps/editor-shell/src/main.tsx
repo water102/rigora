@@ -428,6 +428,22 @@ function Timeline() {
   const selectedValue = clip?.channels
     .flatMap((channel) => channel.keys)
     .find((key) => store.view.selectedKeyIds.has(key.id))?.value;
+  const syncEventTrack = () => {
+    events.clear();
+    const eventChannel = store.active?.channels.find(
+      (channel) => channel.kind === "event",
+    );
+    for (const key of eventChannel?.keys ?? []) {
+      if (!key.value || typeof key.value !== "object") continue;
+      const value = key.value as { name?: unknown; payload?: unknown };
+      events.upsert(
+        key.id,
+        key.time,
+        typeof value.name === "string" ? value.name : "event",
+        value.payload,
+      );
+    }
+  };
   const graphChannel = clip?.channels.find((channel) =>
     channel.keys.some(
       (key) =>
@@ -450,19 +466,7 @@ function Timeline() {
       );
       setClipId(imported.id);
       playback.duration = imported.duration;
-      const eventChannel = imported.channels.find(
-        (channel) => channel.kind === "event",
-      );
-      for (const key of eventChannel?.keys ?? []) {
-        if (!key.value || typeof key.value !== "object") continue;
-        const value = key.value as { name?: unknown; payload?: unknown };
-        events.upsert(
-          key.id,
-          key.time,
-          typeof value.name === "string" ? value.name : "event",
-          value.payload,
-        );
-      }
+      syncEventTrack();
       redraw((value) => value + 1);
     }
   }, [services, store]);
@@ -843,6 +847,7 @@ function Timeline() {
             <button
               onClick={() => {
                 authoringHistory.undo();
+                syncEventTrack();
                 redraw((value) => value + 1);
               }}
               disabled={!authoringHistory.canUndo}
@@ -852,6 +857,7 @@ function Timeline() {
             <button
               onClick={() => {
                 authoringHistory.redo();
+                syncEventTrack();
                 redraw((value) => value + 1);
               }}
               disabled={!authoringHistory.canRedo}
