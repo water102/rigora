@@ -52,6 +52,17 @@
           >
           <label><input id="loop" type="checkbox" checked /> Loop</label>
         </span>
+        <label
+          >Alpha
+          <input
+            id="auto-threshold"
+            type="number"
+            min="0"
+            max="255"
+            value="128"
+        /></label>
+        <button id="auto-preview" type="button">Preview alpha mesh</button>
+        <button id="auto-cancel" type="button">Cancel preview</button>
       </nav>
       <section id="stage" aria-label="Skeleton preview"></section>
       <pre id="status" role="status">Initializing renderer…</pre>

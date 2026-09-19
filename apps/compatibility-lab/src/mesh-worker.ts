@@ -3,6 +3,9 @@ import {
   generateGridMesh,
   computeAutoWeights,
   smoothWeightsLaplacian,
+  runAutoMeshJob,
+  type AlphaImage,
+  type AutoMeshOptions,
   type BoneSegment,
 } from "@rigora/authoring-mesh";
 import type { Vec2 } from "@rigora/math";
@@ -24,6 +27,10 @@ export interface MeshWorkerApi {
     bones: readonly BoneSegment[],
     smoothIterations?: number,
   ): MeshWorkerResult;
+  previewAutoMesh(
+    image: AlphaImage,
+    options?: AutoMeshOptions,
+  ): ReturnType<typeof runAutoMeshJob>;
 }
 
 const api: MeshWorkerApi = {
@@ -56,6 +63,13 @@ const api: MeshWorkerApi = {
       triangles: mesh.triangles,
       weightedVertices: smoothedWeights,
     };
+  },
+  previewAutoMesh(image, options) {
+    return runAutoMeshJob(
+      options
+        ? { type: "preview", image, options }
+        : { type: "preview", image },
+    );
   },
 };
 

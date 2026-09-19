@@ -30,6 +30,12 @@ const playBtn = document.querySelector<HTMLButtonElement>("#play-btn")!;
 const timeSlider = document.querySelector<HTMLInputElement>("#time-slider")!;
 const timeDisplay = document.querySelector<HTMLElement>("#time-display")!;
 const loopCheck = document.querySelector<HTMLInputElement>("#loop")!;
+const autoPreviewBtn =
+  document.querySelector<HTMLButtonElement>("#auto-preview")!;
+const autoCancelBtn =
+  document.querySelector<HTMLButtonElement>("#auto-cancel")!;
+const autoThreshold =
+  document.querySelector<HTMLInputElement>("#auto-threshold")!;
 
 async function start() {
   const app = new Application();
@@ -97,6 +103,7 @@ async function start() {
   let currentTime = 0;
   let lastFrameTime = performance.now();
   let rafId: number | null = null;
+  let autoPreviewActive = false;
 
   let currentImportDiagnostics: any[] = [];
 
@@ -193,6 +200,28 @@ async function start() {
       diagnostics: [],
     });
   }
+
+  autoCancelBtn.addEventListener("click", () => {
+    autoPreviewActive = false;
+    status.textContent = "Auto-mesh preview cancelled.";
+  });
+  autoPreviewBtn.addEventListener("click", async () => {
+    autoPreviewActive = true;
+    status.textContent = "Generating alpha contour preview…";
+    const pixels = new Uint8Array(image.width * image.height * 4);
+    image
+      .getContext("2d")!
+      .getImageData(0, 0, image.width, image.height)
+      .data.forEach((v, i) => {
+        pixels[i] = v;
+      });
+    const preview = await getMeshWorker().previewAutoMesh(
+      { width: image.width, height: image.height, rgba: pixels },
+      { threshold: Number(autoThreshold.value), simplify: 1 },
+    );
+    if (autoPreviewActive)
+      status.textContent = `Preview ready · ${preview.preview.contour.length} contour points · ${preview.preview.mesh.triangles.length / 3} triangles. Apply through authoring command.`;
+  });
 
   function refresh() {
     isPlaying = false;
