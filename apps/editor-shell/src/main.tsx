@@ -428,10 +428,25 @@ function Timeline() {
     const skeleton = (services.project as HboneProject).skeletons.main;
     const animation = skeleton?.animations[0];
     if (!store.active && animation) {
-      store.importClip(
+      const imported = store.importClip(
         animation as Parameters<typeof store.importClip>[0],
         skeleton.fps,
       );
+      setClipId(imported.id);
+      playback.duration = imported.duration;
+      const eventChannel = imported.channels.find(
+        (channel) => channel.kind === "event",
+      );
+      for (const key of eventChannel?.keys ?? []) {
+        if (!key.value || typeof key.value !== "object") continue;
+        const value = key.value as { name?: unknown; payload?: unknown };
+        events.upsert(
+          key.id,
+          key.time,
+          typeof value.name === "string" ? value.name : "event",
+          value.payload,
+        );
+      }
       redraw((value) => value + 1);
     }
   }, [services, store]);
