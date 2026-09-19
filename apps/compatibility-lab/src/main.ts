@@ -17,6 +17,7 @@ import type { MeshWorkerApi } from "./mesh-worker.js";
 import {
   applyWeightBrush,
   applyBrushAtPoint,
+  createWeightDeltaCommand,
   createAuthoringMesh,
   applyVertexDrag,
   beginDrag,
@@ -60,6 +61,8 @@ const topologyDemo =
   document.querySelector<HTMLButtonElement>("#topology-demo")!;
 const deformDemo = document.querySelector<HTMLButtonElement>("#deform-demo")!;
 const canvasMode = document.querySelector<HTMLSelectElement>("#canvas-mode")!;
+const brushUndo = document.querySelector<HTMLButtonElement>("#brush-undo")!;
+const brushRedo = document.querySelector<HTMLButtonElement>("#brush-redo")!;
 
 async function start() {
   const app = new Application();
@@ -141,6 +144,14 @@ async function start() {
   let vertexDrag: ReturnType<typeof beginDrag> | null = null;
   let lassoPoints: Array<{ x: number; y: number }> = [];
   let brushStrokeCount = 0;
+  let activeBrushDeltas: Array<{
+    vertexId: string;
+    boneId: string;
+    before: number;
+    after: number;
+  }> = [];
+  const brushUndoStack: ReturnType<typeof createWeightDeltaCommand>[] = [];
+  const brushRedoStack: ReturnType<typeof createWeightDeltaCommand>[] = [];
   const brushVertices = () =>
     demoTopology.vertices.map((vertex) => ({
       id: vertex.id,
@@ -157,13 +168,14 @@ async function start() {
       return;
     }
     if (canvasMode.value === "brush") {
-      brushStrokeCount = applyBrushAtPoint(
+      activeBrushDeltas = applyBrushAtPoint(
         demoWeights,
         brushVertices(),
         canvasPoint(event),
         "bone-2",
         { radius: 2, strength: 0.25, falloff: "smoothstep", mode: "add" },
-      ).length;
+      );
+      brushStrokeCount = activeBrushDeltas.length;
       app.canvas.setPointerCapture(event.pointerId);
       status.textContent = `Brush preview · ${brushStrokeCount} sparse deltas`;
       return;
@@ -178,13 +190,15 @@ async function start() {
       return;
     }
     if (canvasMode.value === "brush" && event.buttons) {
-      brushStrokeCount += applyBrushAtPoint(
+      const moveDeltas = applyBrushAtPoint(
         demoWeights,
         brushVertices(),
         canvasPoint(event),
         "bone-2",
         { radius: 2, strength: 0.15, falloff: "smoothstep", mode: "add" },
-      ).length;
+      );
+      activeBrushDeltas.push(...moveDeltas);
+      brushStrokeCount += moveDeltas.length;
       status.textContent = `Brush preview · ${brushStrokeCount} sparse deltas`;
       return;
     }
@@ -203,8 +217,18 @@ async function start() {
     }
     if (canvasMode.value === "brush") {
       app.canvas.releasePointerCapture(event.pointerId);
+      if (activeBrushDeltas.length)
+        brushUndoStack.push(
+          createWeightDeltaCommand(
+            demoWeights,
+            activeBrushDeltas,
+            "Canvas brush stroke",
+          ),
+        );
+      brushRedoStack.length = 0;
       status.textContent = `Brush stroke committed · ${brushStrokeCount} sparse deltas`;
       brushStrokeCount = 0;
+      activeBrushDeltas = [];
       return;
     }
     if (!vertexDrag) return;
@@ -218,6 +242,20 @@ async function start() {
     lassoPoints = [];
     brushStrokeCount = 0;
     status.textContent = "Canvas gesture cancelled.";
+  });
+  brushUndo.addEventListener("click", () => {
+    const command = brushUndoStack.pop();
+    if (!command) return;
+    command.undo();
+    brushRedoStack.push(command);
+    status.textContent = "Canvas brush undone.";
+  });
+  brushRedo.addEventListener("click", () => {
+    const command = brushRedoStack.pop();
+    if (!command) return;
+    command.execute();
+    brushUndoStack.push(command);
+    status.textContent = "Canvas brush redone.";
   });
 
   let currentImportDiagnostics: any[] = [];
