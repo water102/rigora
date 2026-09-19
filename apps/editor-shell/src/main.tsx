@@ -515,11 +515,22 @@ function Timeline() {
     redraw((value) => value + 1);
   };
   const addRotationKey = () => {
-    const channel = store.active?.channels.find(
-      (item) => item.id === "root.rotate",
-    );
+    addTransformKey("rotate");
+  };
+  const addTransformKey = (property: string) => {
+    if (!clip) return;
+    const id = `root.${property}`;
+    const channel =
+      store.active?.channels.find((item) => item.id === id) ??
+      store.addChannel({
+        id,
+        kind: "bone",
+        targetId: "root",
+        property,
+      });
     if (!channel || !clip) return;
-    store.upsertKey(channel.id, playback.time, 0, { type: "linear" });
+    const value = property.startsWith("scale") ? 1 : 0;
+    store.upsertKey(channel.id, playback.time, value, { type: "linear" });
     store.syncRows();
     redraw((value) => value + 1);
   };
@@ -771,6 +782,16 @@ function Timeline() {
             </button>
             <button onClick={() => playback.step(1)}>Frame +1</button>
             <button onClick={addRotationKey}>Key rotation</button>
+            <button onClick={() => addTransformKey("x")}>Key X</button>
+            <button onClick={() => addTransformKey("y")}>Key Y</button>
+            <button onClick={() => addTransformKey("scaleX")}>
+              Key scale X
+            </button>
+            <button onClick={() => addTransformKey("scaleY")}>
+              Key scale Y
+            </button>
+            <button onClick={() => addTransformKey("skewX")}>Key skew X</button>
+            <button onClick={() => addTransformKey("skewY")}>Key skew Y</button>
             <button onClick={addEvent}>Add event</button>
             <label>
               Auto-key{" "}
