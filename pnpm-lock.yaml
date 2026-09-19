@@ -142,6 +142,9 @@ importers:
       '@rigora/animation':
         specifier: workspace:*
         version: link:../../packages/animation
+      '@rigora/authoring-mesh':
+        specifier: workspace:*
+        version: link:../../packages/authoring-mesh
       '@rigora/editor-core':
         specifier: workspace:*
         version: link:../../packages/editor-core

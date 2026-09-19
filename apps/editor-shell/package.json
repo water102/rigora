@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@rigora/animation": "workspace:*",
+    "@rigora/authoring-mesh": "workspace:*",
     "@rigora/editor-core": "workspace:*",
     "@rigora/model": "workspace:*",
     "@rigora/project": "workspace:*",

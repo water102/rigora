@@ -28,6 +28,10 @@ import {
   buildGridLines,
 } from "@rigora/editor-core";
 import {
+  createWeightDeltaCommand,
+  applyWeightBrush,
+} from "@rigora/authoring-mesh";
+import {
   createProject,
   parseProject,
   serializeProject,
@@ -1727,6 +1731,24 @@ function App() {
   const [canUndo, setCanUndo] = useState(services.commands.canUndo);
   const [canRedo, setCanRedo] = useState(services.commands.canRedo);
   const [isDirty, setIsDirty] = useState(services.commands.isDirty);
+  const demoWeightsRef = useRef<Record<string, Record<string, number>>>({
+    v0: { bone: 1 },
+  });
+  const paintThroughHistory = () => {
+    const weights = demoWeightsRef.current;
+    const deltas = applyWeightBrush(weights, ["v0"], "painted", "add", 0.25);
+    const sparse = createWeightDeltaCommand(
+      weights,
+      deltas,
+      "Weight brush stroke",
+    );
+    services.commands.execute({
+      id: sparse.id,
+      label: sparse.label,
+      execute: () => sparse.execute(),
+      undo: () => sparse.undo(),
+    });
+  };
 
   useEffect(() => {
     return services.commands.subscribe(() => {
@@ -1943,6 +1965,12 @@ function App() {
               title="Redo (Ctrl+Y)"
             >
               Redo
+            </button>
+            <button
+              onClick={paintThroughHistory}
+              title="Apply a sparse authoring brush command"
+            >
+              Paint stroke
             </button>
           </div>
           <span className="autosave-status">{autosaveStatus}</span>
