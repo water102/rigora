@@ -91,7 +91,13 @@ export class Camera2D {
   constructor(
     public viewportWidth = 1,
     public viewportHeight = 1,
-  ) {}
+    readonly minZoom = 0.05,
+    readonly maxZoom = 50,
+  ) {
+    this.setViewport(viewportWidth, viewportHeight);
+    if (!(minZoom > 0 && Number.isFinite(minZoom) && maxZoom >= minZoom))
+      throw new Error("CAMERA_INVALID_ZOOM_BOUNDS");
+  }
   get center(): Point2 {
     return { ...this.#center };
   }
@@ -103,21 +109,28 @@ export class Camera2D {
     this.viewportWidth = width;
     this.viewportHeight = height;
   }
+  /** Moves the camera; positive deltas move world content in the opposite direction. */
   panBy(dx: number, dy: number): void {
+    if (!Number.isFinite(dx) || !Number.isFinite(dy))
+      throw new Error("CAMERA_INVALID_PAN");
     this.#center.x += dx / this.#zoom;
     this.#center.y += dy / this.#zoom;
   }
   setCenter(center: Point2): void {
+    if (!Number.isFinite(center.x) || !Number.isFinite(center.y))
+      throw new Error("CAMERA_INVALID_CENTER");
     this.#center = { ...center };
   }
   setZoom(zoom: number): void {
     if (!(zoom > 0 && Number.isFinite(zoom)))
       throw new Error("CAMERA_INVALID_ZOOM");
-    this.#zoom = zoom;
+    this.#zoom = Math.max(this.minZoom, Math.min(this.maxZoom, zoom));
   }
   zoomAt(factor: number, screen: Point2): void {
     if (!(factor > 0 && Number.isFinite(factor)))
       throw new Error("CAMERA_INVALID_ZOOM_FACTOR");
+    if (!Number.isFinite(screen.x) || !Number.isFinite(screen.y))
+      throw new Error("CAMERA_INVALID_SCREEN_POINT");
     const before = this.screenToWorld(screen);
     this.setZoom(this.#zoom * factor);
     const after = this.screenToWorld(screen);

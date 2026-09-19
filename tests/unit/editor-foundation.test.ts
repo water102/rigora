@@ -570,5 +570,15 @@ describe("Batch 18 stage camera", () => {
     expect(camera.worldToScreen({ x: 100, y: 50 }).x).toBeCloseTo(66.67, 1);
     expect(() => camera.setZoom(0)).toThrow("CAMERA_INVALID_ZOOM");
     expect(() => camera.setViewport(0, 600)).toThrow("CAMERA_INVALID_VIEWPORT");
+    expect(() => new Camera2D(0, 600)).toThrow("CAMERA_INVALID_VIEWPORT");
+    expect(() => new Camera2D(800, 600, 10, 1)).toThrow(
+      "CAMERA_INVALID_ZOOM_BOUNDS",
+    );
+    expect(() => camera.setCenter({ x: NaN, y: 0 })).toThrow(
+      "CAMERA_INVALID_CENTER",
+    );
+    expect(() => camera.panBy(Infinity, 0)).toThrow("CAMERA_INVALID_PAN");
+    camera.setZoom(1000);
+    expect(camera.zoom).toBe(50);
   });
 });
