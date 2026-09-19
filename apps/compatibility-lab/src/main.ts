@@ -17,6 +17,10 @@ import type { MeshWorkerApi } from "./mesh-worker.js";
 import {
   applyWeightBrush,
   addVertex,
+  deleteVertex,
+  addEdge,
+  removeEdge,
+  retriangulate,
   applyBrushAtPoint,
   createAttachmentFromLibrary,
   bindVertices,
@@ -96,6 +100,17 @@ const topologyDemo =
   document.querySelector<HTMLButtonElement>("#topology-demo")!;
 const topologyAddVertex = document.querySelector<HTMLButtonElement>(
   "#topology-add-vertex",
+)!;
+const topologyDeleteVertex = document.querySelector<HTMLButtonElement>(
+  "#topology-delete-vertex",
+)!;
+const topologyAddEdge =
+  document.querySelector<HTMLButtonElement>("#topology-add-edge")!;
+const topologyRemoveEdge = document.querySelector<HTMLButtonElement>(
+  "#topology-remove-edge",
+)!;
+const topologyRetriangulate = document.querySelector<HTMLButtonElement>(
+  "#topology-retriangulate",
 )!;
 const deformDemo = document.querySelector<HTMLButtonElement>("#deform-demo")!;
 const deformMode = document.querySelector<HTMLSelectElement>("#deform-mode")!;
@@ -743,6 +758,34 @@ async function start() {
     });
     persistAuthoring();
     status.textContent = `Added vertex ${demoTopology.vertices.at(-1)!.id}.`;
+  });
+  topologyDeleteVertex.addEventListener("click", () => {
+    if (!demoTopology.vertices.some((vertex) => vertex.id === "v0")) {
+      status.textContent = "Vertex v0 is not present.";
+      return;
+    }
+    demoTopology = deleteVertex(demoTopology, "v0");
+    persistAuthoring();
+    status.textContent = "Deleted vertex v0.";
+  });
+  topologyAddEdge.addEventListener("click", () => {
+    demoTopology = addEdge(demoTopology, 0, 1);
+    persistAuthoring();
+    status.textContent = "Added edge 0-1.";
+  });
+  topologyRemoveEdge.addEventListener("click", () => {
+    demoTopology = removeEdge(demoTopology, 0, 1);
+    persistAuthoring();
+    status.textContent = "Removed edge 0-1.";
+  });
+  topologyRetriangulate.addEventListener("click", () => {
+    if (demoTopology.vertices.length < 3) {
+      status.textContent = "At least three vertices are required.";
+      return;
+    }
+    demoTopology = retriangulate(demoTopology);
+    persistAuthoring();
+    status.textContent = `Retriangulated ${demoTopology.triangles.length / 3} faces.`;
   });
   deformDemo.addEventListener("click", () => {
     let deform = createDeformState(1);
