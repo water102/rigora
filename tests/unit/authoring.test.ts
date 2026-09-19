@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
   applyWeightBrush,
+  applyVertexDrag,
+  beginDrag,
+  cancelDrag,
   createAuthoringDocument,
   applyBrushAtPoint,
   applyWeightDeltas,
   createWeightDeltaCommand,
+  endDrag,
   addEdge,
   buildAutoMeshPreview,
   createDeformState,
@@ -13,6 +17,7 @@ import {
   pathTangents,
   sampleDeform,
   setDeformOffset,
+  updateDrag,
   zeroDeform,
   createAuthoringMesh,
   createEditablePath,
@@ -125,6 +130,26 @@ describe("Phase 6 authoring core", () => {
     expect(() => parseAuthoringDocument("{}" as string)).toThrow(
       "AUTHORING_STATE_UNSUPPORTED_VERSION",
     );
+  });
+
+  it("supports cancellable vertex drag sessions", () => {
+    const mesh = createAuthoringMesh(
+      [
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+        { x: 0, y: 1 },
+      ],
+      [0, 1, 2],
+    );
+    const session = updateDrag(beginDrag("vertex", { x: 0, y: 0 }, "v0"), {
+      x: 4,
+      y: 5,
+    });
+    expect(applyVertexDrag(mesh, session).vertices[0]!.position).toEqual({
+      x: 4,
+      y: 5,
+    });
+    expect(cancelDrag(endDrag(session)).active).toBe(false);
   });
 
   it("computes path tangent previews", () => {

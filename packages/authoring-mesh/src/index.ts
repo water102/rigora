@@ -75,3 +75,13 @@ export {
   serializeAuthoringDocument,
   type AuthoringDocument,
 } from "./persistence.js";
+
+export {
+  applyVertexDrag,
+  beginDrag,
+  cancelDrag,
+  endDrag,
+  updateDrag,
+  type DragMode,
+  type DragSession,
+} from "./interaction.js";
