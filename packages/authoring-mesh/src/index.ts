@@ -50,11 +50,14 @@ export {
   unbindVertices,
   updatePathPoint,
   weightHeatmap,
+  listInfluences,
+  limitInfluences,
   type AuthoringMesh,
   type EditablePath,
   type MeshMode,
   type WeightDelta,
   type SparseDeltaCommand,
+  type InfluenceEntry,
 } from "./authoring.js";
 
 export {

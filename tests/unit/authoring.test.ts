@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   applyWeightBrush,
   createAttachmentFromLibrary,
+  listInfluences,
+  limitInfluences,
   selectMeshByPolygon,
   TopologyHistory,
   applyVertexDrag,
@@ -109,6 +111,28 @@ describe("Phase 6 authoring core", () => {
     expect(selectMeshByPolygon(mesh, polygon, "edge")).toEqual([0, 1, 2]);
     expect(selectMeshByPolygon(mesh, polygon, "face")).toEqual([0]);
     expect(selectMeshByPolygon(mesh, polygon, "boundary")).toEqual([0, 1, 2]);
+  });
+
+  it("lists influences and enforces max influences without dropping locked bones", () => {
+    const weights = {
+      v0: { root: 0.1, arm: 0.4, hand: 0.3, finger: 0.2 },
+    };
+    const locked = new Set(["root"]);
+    limitInfluences(weights, ["v0"], 2, locked);
+    expect(Object.keys(weights.v0!)).toEqual(["root", "arm"]);
+    expect(weights.v0!.root! + weights.v0!.arm!).toBeCloseTo(1);
+    expect(listInfluences(weights, "v0", locked)[0]).toMatchObject({
+      boneId: "arm",
+      locked: false,
+    });
+    expect(() =>
+      limitInfluences(
+        { v0: { root: 0.5, arm: 0.5 } },
+        ["v0"],
+        1,
+        new Set(["root", "arm"]),
+      ),
+    ).toThrow("WEIGHTS_TOO_MANY_LOCKED_INFLUENCES");
   });
 
   it("survives repeated topology undo/redo without aliasing or losing IDs", () => {

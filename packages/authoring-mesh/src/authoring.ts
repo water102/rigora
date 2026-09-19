@@ -183,6 +183,49 @@ export function weightHeatmap(
     Math.max(0, Math.min(1, weights[id]?.[boneId] ?? 0)),
   );
 }
+export interface InfluenceEntry {
+  boneId: string;
+  weight: number;
+  locked: boolean;
+}
+export function listInfluences(
+  weights: Record<string, Record<string, number>>,
+  vertexId: string,
+  locked: ReadonlySet<string> = new Set(),
+): InfluenceEntry[] {
+  return Object.entries(weights[vertexId] ?? {})
+    .map(([boneId, weight]) => ({ boneId, weight, locked: locked.has(boneId) }))
+    .sort((a, b) => b.weight - a.weight || a.boneId.localeCompare(b.boneId));
+}
+export function limitInfluences(
+  weights: Record<string, Record<string, number>>,
+  vertexIds: readonly string[],
+  maxInfluences: number,
+  locked: ReadonlySet<string> = new Set(),
+): void {
+  if (!Number.isInteger(maxInfluences) || maxInfluences < 1)
+    throw new Error("WEIGHTS_INVALID_MAX_INFLUENCES");
+  for (const vertexId of vertexIds) {
+    const row = weights[vertexId];
+    if (!row) continue;
+    const entries = Object.entries(row).sort(
+      ([a, aw], [b, bw]) => bw - aw || a.localeCompare(b),
+    );
+    const retained = entries.filter(([boneId]) => locked.has(boneId));
+    if (retained.length > maxInfluences)
+      throw new Error("WEIGHTS_TOO_MANY_LOCKED_INFLUENCES");
+    for (const entry of entries) {
+      if (retained.length >= maxInfluences) break;
+      if (!retained.some(([boneId]) => boneId === entry[0]))
+        retained.push(entry);
+    }
+    const keep = new Set(retained.map(([boneId]) => boneId));
+    for (const boneId of Object.keys(row))
+      if (!keep.has(boneId)) delete row[boneId];
+    const sum = Object.values(row).reduce((total, weight) => total + weight, 0);
+    if (sum > 0) for (const boneId of Object.keys(row)) row[boneId]! /= sum;
+  }
+}
 export function applyWeightBrush(
   weights: Record<string, Record<string, number>>,
   vertexIds: readonly string[],
