@@ -520,6 +520,15 @@ function Timeline() {
     playback.loop = !playback.loop;
     redraw((value) => value + 1);
   };
+  const addMarker = () => {
+    const marker = {
+      id: `marker-${Date.now()}`,
+      time: playback.time,
+      label: `Marker ${store.view.markers.length + 1}`,
+    };
+    store.setMarkers([...store.view.markers, marker]);
+    redraw((value) => value + 1);
+  };
   const addRotationKey = () => {
     addTransformKey("rotate");
   };
@@ -807,6 +816,7 @@ function Timeline() {
               {playback.playing ? "Pause" : "Play"}
             </button>
             <button onClick={() => playback.step(1)}>Frame +1</button>
+            <button onClick={addMarker}>Add marker</button>
             <button onClick={addRotationKey}>Key rotation</button>
             <button onClick={() => addTransformKey("x")}>Key X</button>
             <button onClick={() => addTransformKey("y")}>Key Y</button>
@@ -1048,6 +1058,18 @@ function Timeline() {
               {playback.time.toFixed(3)}s / {clip.duration.toFixed(3)}s
             </output>
           </div>
+          {store.view.markers.length > 0 && (
+            <div className="timeline-markers">
+              {store.view.markers.map((marker) => (
+                <button
+                  key={marker.id}
+                  onClick={() => playback.seek(marker.time)}
+                >
+                  {marker.label} @ {marker.time.toFixed(2)}s
+                </button>
+              ))}
+            </div>
+          )}
           <input
             className="timeline-scrubber"
             type="range"

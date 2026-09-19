@@ -227,6 +227,12 @@ button:disabled {
   margin-left: auto;
   color: #9aa4b2;
 }
+.timeline-markers {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 6px 0;
+}
 .timeline-scrubber {
   width: 100%;
 }
