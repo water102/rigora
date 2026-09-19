@@ -3,6 +3,7 @@ import type { Vec2 } from "@rigora/math";
 export interface AuthoringMesh {
   vertices: Array<{ id: string; position: Vec2 }>;
   triangles: number[];
+  edges: Array<[number, number]>;
 }
 export type MeshMode = "vertex" | "edge" | "face" | "boundary";
 
@@ -10,12 +11,24 @@ export function createAuthoringMesh(
   points: readonly Vec2[],
   triangles: readonly number[] = [],
 ): AuthoringMesh {
+  const edges = new Map<string, [number, number]>();
+  for (let i = 0; i < triangles.length; i += 3) {
+    for (const [a, b] of [
+      [triangles[i]!, triangles[i + 1]!],
+      [triangles[i + 1]!, triangles[i + 2]!],
+      [triangles[i + 2]!, triangles[i]!],
+    ] as Array<[number, number]>) {
+      const key = a < b ? `${a}:${b}` : `${b}:${a}`;
+      if (!edges.has(key)) edges.set(key, a < b ? [a, b] : [b, a]);
+    }
+  }
   return {
     vertices: points.map((position, i) => ({
       id: `v${i}`,
       position: { ...position },
     })),
     triangles: [...triangles],
+    edges: [...edges.values()],
   };
 }
 export function moveVertex(
@@ -32,6 +45,7 @@ export function moveVertex(
         : { ...v, position: { ...v.position } },
     ),
     triangles: [...mesh.triangles],
+    edges: mesh.edges.map(([a, b]) => [a, b]),
   };
 }
 export function deleteVertex(mesh: AuthoringMesh, id: string): AuthoringMesh {
@@ -44,23 +58,20 @@ export function deleteVertex(mesh: AuthoringMesh, id: string): AuthoringMesh {
     if (tri.includes(index)) continue;
     triangles.push(...tri.map((n) => (n > index ? n - 1 : n)));
   }
+  const edges = mesh.edges
+    .filter(([a, b]) => a !== index && b !== index)
+    .map(
+      ([a, b]) =>
+        [a > index ? a - 1 : a, b > index ? b - 1 : b] as [number, number],
+    );
   return {
     vertices: vertices.map((v) => ({ ...v, position: { ...v.position } })),
     triangles,
+    edges,
   };
 }
 export function meshEdges(mesh: AuthoringMesh): Array<[number, number]> {
-  const edges = new Map<string, [number, number]>();
-  for (let i = 0; i < mesh.triangles.length; i += 3)
-    for (const [a, b] of [
-      [mesh.triangles[i]!, mesh.triangles[i + 1]!],
-      [mesh.triangles[i + 1]!, mesh.triangles[i + 2]!],
-      [mesh.triangles[i + 2]!, mesh.triangles[i]!],
-    ] as Array<[number, number]>) {
-      const key = a < b ? `${a}:${b}` : `${b}:${a}`;
-      if (!edges.has(key)) edges.set(key, a < b ? [a, b] : [b, a]);
-    }
-  return [...edges.values()];
+  return mesh.edges.map(([a, b]) => [a, b]);
 }
 export function addEdge(
   mesh: AuthoringMesh,
@@ -75,16 +86,13 @@ export function addEdge(
     b >= mesh.vertices.length
   )
     throw new Error("MESH_EDGE_INVALID");
-  const triangles = [...mesh.triangles];
-  if (
-    !meshEdges(mesh).some(
-      ([x, y]) => x === Math.min(a, b) && y === Math.max(a, b),
-    )
-  )
-    triangles.push(a, b, a);
+  const edges = meshEdges(mesh);
+  if (!edges.some(([x, y]) => x === Math.min(a, b) && y === Math.max(a, b)))
+    edges.push(a < b ? [a, b] : [b, a]);
   return {
     vertices: mesh.vertices.map((v) => ({ ...v, position: { ...v.position } })),
-    triangles,
+    triangles: [...mesh.triangles],
+    edges,
   };
 }
 export function removeEdge(
@@ -92,22 +100,20 @@ export function removeEdge(
   a: number,
   b: number,
 ): AuthoringMesh {
-  const triangles: number[] = [];
-  for (let i = 0; i < mesh.triangles.length; i += 3) {
-    const tri = mesh.triangles.slice(i, i + 3);
-    const hasA = tri.includes(a),
-      hasB = tri.includes(b);
-    if (!(hasA && hasB)) triangles.push(...tri);
-  }
+  const edges = meshEdges(mesh).filter(
+    ([x, y]) => !(x === Math.min(a, b) && y === Math.max(a, b)),
+  );
   return {
     vertices: mesh.vertices.map((v) => ({ ...v, position: { ...v.position } })),
-    triangles,
+    triangles: [...mesh.triangles],
+    edges,
   };
 }
 export function resetTopology(mesh: AuthoringMesh): AuthoringMesh {
   return {
     vertices: mesh.vertices.map((v) => ({ ...v, position: { ...v.position } })),
     triangles: [],
+    edges: [],
   };
 }
 
