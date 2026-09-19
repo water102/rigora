@@ -1,3 +1,5 @@
+export { TopologyHistory } from "./topology-history.js";
+
 export {
   selectMeshByPolygon,
   type MeshSelectionPriority,

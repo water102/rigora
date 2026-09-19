@@ -3,6 +3,7 @@ import {
   applyWeightBrush,
   createAttachmentFromLibrary,
   selectMeshByPolygon,
+  TopologyHistory,
   applyVertexDrag,
   beginDrag,
   cancelDrag,
@@ -107,6 +108,28 @@ describe("Phase 6 authoring core", () => {
     expect(selectMeshByPolygon(mesh, polygon, "edge")).toEqual([0, 1, 2]);
     expect(selectMeshByPolygon(mesh, polygon, "face")).toEqual([0]);
     expect(selectMeshByPolygon(mesh, polygon, "boundary")).toEqual([0, 1, 2]);
+  });
+
+  it("survives repeated topology undo/redo without aliasing or losing IDs", () => {
+    const initial = createAuthoringMesh([
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+    ]);
+    const history = new TopologyHistory(initial, 32);
+    let current = initial;
+    for (let i = 0; i < 20; i++) {
+      current = moveVertex(current, "v0", { x: i, y: i * 2 });
+      history.commit(current);
+    }
+    const beforeUndo = history.mesh;
+    expect(beforeUndo.vertices[0]!.id).toBe("v0");
+    for (let i = 0; i < 20; i++) history.undo();
+    expect(history.mesh).toEqual(initial);
+    for (let i = 0; i < 20; i++) history.redo();
+    expect(history.mesh).toEqual(beforeUndo);
+    const detached = history.mesh;
+    detached.vertices[0]!.position.x = 999;
+    expect(history.mesh.vertices[0]!.position.x).not.toBe(999);
   });
 
   it("builds deterministic auto-mesh previews from alpha", () => {
