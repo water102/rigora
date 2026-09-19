@@ -397,6 +397,17 @@ function Timeline() {
   const [playback] = useState(() => new AuthoringPlayback(1, 30));
   const [, redraw] = useState(0);
   const clip = store.active;
+  useEffect(() => {
+    if (!playback.playing) return;
+    let previous = performance.now();
+    const timer = window.setInterval(() => {
+      const now = performance.now();
+      playback.advance((now - previous) / 1000);
+      previous = now;
+      redraw((value) => value + 1);
+    }, 16);
+    return () => window.clearInterval(timer);
+  }, [playback, playback.playing]);
   const createClip = () => {
     const created = store.create("walk", 1, 30);
     store.addChannel({
@@ -411,6 +422,10 @@ function Timeline() {
   };
   const togglePlay = () => {
     playback.playing = !playback.playing;
+    redraw((value) => value + 1);
+  };
+  const toggleLoop = () => {
+    playback.loop = !playback.loop;
     redraw((value) => value + 1);
   };
   const addRotationKey = () => {
@@ -439,6 +454,23 @@ function Timeline() {
             </button>
             <button onClick={() => playback.step(1)}>Frame +1</button>
             <button onClick={addRotationKey}>Key rotation</button>
+            <button onClick={toggleLoop}>
+              {playback.loop ? "Loop on" : "Loop off"}
+            </button>
+            <label>
+              Speed{" "}
+              <select
+                value={playback.speed}
+                onChange={(event) => {
+                  playback.speed = Number(event.target.value);
+                  redraw((value) => value + 1);
+                }}
+              >
+                <option value={0.5}>0.5×</option>
+                <option value={1}>1×</option>
+                <option value={2}>2×</option>
+              </select>
+            </label>
             <output>
               {playback.time.toFixed(3)}s / {clip.duration.toFixed(3)}s
             </output>
