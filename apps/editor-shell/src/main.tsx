@@ -400,6 +400,8 @@ function Timeline() {
   const [clipId, setClipId] = useState<string | null>(null);
   const [playback] = useState(() => new AuthoringPlayback(1, 30));
   const [events] = useState(() => new EventAuthoringTrack(1));
+  const [selectionStart, setSelectionStart] = useState(0);
+  const [selectionEnd, setSelectionEnd] = useState(1);
   const [, redraw] = useState(0);
   const clip = store.active;
   useEffect(() => {
@@ -500,6 +502,10 @@ function Timeline() {
           ? "ffffffff"
           : 0;
     store.upsertKey(channel.id, playback.time, value);
+    redraw((value) => value + 1);
+  };
+  const selectTimeRange = () => {
+    store.selectKeysInBox(selectionStart, selectionEnd);
     redraw((value) => value + 1);
   };
   return (
@@ -655,6 +661,31 @@ function Timeline() {
             >
               Frame →
             </button>
+            <label>
+              Select{" "}
+              <input
+                className="timeline-loop-input"
+                type="number"
+                min={0}
+                step={1 / clip.fps}
+                value={selectionStart}
+                onChange={(event) =>
+                  setSelectionStart(Number(event.target.value))
+                }
+              />
+              –
+              <input
+                className="timeline-loop-input"
+                type="number"
+                min={0}
+                step={1 / clip.fps}
+                value={selectionEnd}
+                onChange={(event) =>
+                  setSelectionEnd(Number(event.target.value))
+                }
+              />
+            </label>
+            <button onClick={selectTimeRange}>Select range</button>
             <label>
               Speed{" "}
               <select
