@@ -60,6 +60,7 @@ import {
 } from "@rigora/animation";
 import "flexlayout-react/style/dark.css";
 import "./style.css";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const ServicesContext = React.createContext<EditorServices | null>(null);
 
@@ -2045,6 +2046,8 @@ class BrowserPreferences {
 }
 createRoot(document.getElementById("root")!).render(
   <ErrorBoundary>
-    <App />
+    <TooltipProvider delayDuration={250}>
+      <App />
+    </TooltipProvider>
   </ErrorBoundary>,
 );
