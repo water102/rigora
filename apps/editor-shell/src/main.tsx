@@ -258,7 +258,6 @@ function Stage() {
   const vRulerRef = useRef<HTMLCanvasElement>(null);
   const cameraRef = useRef<Camera2D | null>(null);
   const drawRef = useRef<(() => void) | null>(null);
-  const [viewInfo, setViewInfo] = useState({ zoom: 100, gridStep: "100px" });
   const selectionRef = useRef(selection);
   selectionRef.current = selection;
 
@@ -301,6 +300,9 @@ function Stage() {
       if (disposed || !app.renderer) return;
       const width = host.clientWidth || 640;
       const height = host.clientHeight || 420;
+      if (app.renderer.width !== width || app.renderer.height !== height) {
+        app.renderer.resize(width, height);
+      }
       camera.setViewport(width, height);
       grid.clear();
 
@@ -321,13 +323,6 @@ function Stage() {
       const ratio = targetWorldStep / power;
       const step = ratio < 2 ? 1 : ratio < 5 ? 2 : 5;
       const spacing = Math.max(0.01, step * power);
-
-      const stepText =
-        spacing >= 1 ? `${Math.round(spacing)}px` : `${spacing.toFixed(1)}px`;
-      setViewInfo({
-        zoom: Math.round(camera.zoom * 100),
-        gridStep: stepText,
-      });
 
       // 1. Draw Alternating Checkerboard Tiles (Mẫu xám xen kẽ chuẩn LoongApp / Spine)
       const tileStartX = Math.floor(bounds.x / spacing);
@@ -593,12 +588,6 @@ function Stage() {
       <div className="stage-toolbar">
         <div className="stage-toolbar-left">
           <strong>Stage</strong>
-          <span
-            className="stage-info-badge"
-            title="Mức phóng to và khoảng cách ô lưới caro hiện tại"
-          >
-            🔍 Zoom: {viewInfo.zoom}% · 📏 Lưới: {viewInfo.gridStep}
-          </span>
           <span className="stage-selection">
             {selection
               ? `${selection.kind}: ${selection.id}`

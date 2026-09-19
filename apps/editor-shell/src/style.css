@@ -126,9 +126,16 @@ body,
   min-height: 0;
   flex: 1;
 }
-.panel,
-.stage-panel {
+.panel {
   height: 100%;
+  background: #101827;
+}
+.stage-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
   background: #101827;
 }
 .panel header,
@@ -172,6 +179,7 @@ body,
   padding: 6px 12px;
   background: #111a2b;
   border-bottom: 1px solid #26364e;
+  flex-shrink: 0;
 }
 .stage-toolbar-left {
   display: flex;
@@ -182,15 +190,6 @@ body,
   display: flex;
   align-items: center;
   gap: 6px;
-}
-.stage-info-badge {
-  font-size: 11px;
-  background: #19273c;
-  color: #67e8f9;
-  padding: 2px 8px;
-  border-radius: 4px;
-  border: 1px solid #2b4263;
-  font-family: monospace;
 }
 .stage-selection {
   font-size: 12px;
@@ -216,9 +215,10 @@ body,
 .stage-viewport {
   position: relative;
   flex: 1;
+  min-height: 0;
   width: 100%;
   overflow: hidden;
-  background: #1e1e23;
+  background: #35353c;
 }
 .stage-corner {
   position: absolute;
@@ -268,6 +268,11 @@ body,
   bottom: 0;
   overflow: hidden;
   background-color: #35353c;
+}
+.pixi-stage canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
 }
 \.axis {
   position: absolute;
