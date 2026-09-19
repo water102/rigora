@@ -46,6 +46,7 @@ export {
   lassoSelection,
   pointInPolygon,
   pathTangents,
+  pathConstraintPreview,
   selectPolygon,
   unbindVertices,
   updatePathPoint,
@@ -59,6 +60,7 @@ export {
   type WeightDelta,
   type SparseDeltaCommand,
   type InfluenceEntry,
+  type PathConstraintPreviewPoint,
 } from "./authoring.js";
 
 export {

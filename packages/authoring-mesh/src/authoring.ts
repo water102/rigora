@@ -462,3 +462,43 @@ export function pathTangents(path: EditablePath): Vec2[] {
     return { x: (next.x - prev.x) / 2, y: (next.y - prev.y) / 2 };
   });
 }
+export interface PathConstraintPreviewPoint {
+  position: Vec2;
+  tangent: Vec2;
+  t: number;
+}
+/** Sample a polyline path for a constraint preview without mutating the path. */
+export function pathConstraintPreview(
+  path: EditablePath,
+  sampleCount = 16,
+): PathConstraintPreviewPoint[] {
+  if (!Number.isInteger(sampleCount) || sampleCount < 2)
+    throw new Error("PATH_INVALID_SAMPLE_COUNT");
+  if (!path.points.length) return [];
+  const tangents = pathTangents(path);
+  const last = path.closed ? path.points.length : path.points.length - 1;
+  return Array.from({ length: sampleCount }, (_, index) => {
+    const t = index / (sampleCount - 1);
+    const scaled = t * last;
+    const left = Math.min(Math.floor(scaled), path.points.length - 1);
+    const next = path.closed
+      ? (left + 1) % path.points.length
+      : Math.min(left + 1, path.points.length - 1);
+    const amount = scaled - Math.floor(scaled);
+    const a = path.points[left]!;
+    const b = path.points[next]!;
+    const tangent = tangents[left]!;
+    const length = Math.hypot(tangent.x, tangent.y);
+    return {
+      t,
+      position: {
+        x: a.x + (b.x - a.x) * amount,
+        y: a.y + (b.y - a.y) * amount,
+      },
+      tangent:
+        length > 0
+          ? { x: tangent.x / length, y: tangent.y / length }
+          : { x: 0, y: 0 },
+    };
+  });
+}

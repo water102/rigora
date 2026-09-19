@@ -21,6 +21,7 @@ import {
   inheritLinkedDeform,
   keyDeform,
   pathTangents,
+  pathConstraintPreview,
   sampleDeform,
   setDeformOffset,
   updateDrag,
@@ -311,6 +312,20 @@ describe("Phase 6 authoring core", () => {
         ]),
       )[0],
     ).toEqual({ x: 2, y: 0 });
+    const preview = pathConstraintPreview(
+      createEditablePath([
+        { x: 0, y: 0 },
+        { x: 2, y: 0 },
+        { x: 2, y: 2 },
+      ]),
+      5,
+    );
+    expect(preview).toHaveLength(5);
+    expect(preview[0]!.tangent).toEqual({ x: 1, y: 0 });
+    expect(preview.at(-1)!.position).toEqual({ x: 2, y: 2 });
+    expect(() => pathConstraintPreview(createEditablePath(), 1)).toThrow(
+      "PATH_INVALID_SAMPLE_COUNT",
+    );
   });
 
   it("returns sparse reversible brush deltas and supports polygon/path editing", () => {
