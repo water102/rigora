@@ -44,6 +44,7 @@ import {
   EventAuthoringTrack,
   type AutoKeyMode,
   copyKeys,
+  fitGraphRange,
   type KeyClipboard,
   virtualizeRows,
 } from "@rigora/animation";
@@ -424,6 +425,18 @@ function Timeline() {
   const selectedValue = clip?.channels
     .flatMap((channel) => channel.keys)
     .find((key) => store.view.selectedKeyIds.has(key.id))?.value;
+  const graphChannel = clip?.channels.find((channel) =>
+    channel.keys.some(
+      (key) =>
+        store.view.selectedKeyIds.has(key.id) && typeof key.value === "number",
+    ),
+  );
+  const graphKeys =
+    graphChannel?.keys.filter(
+      (key): key is typeof key & { value: number } =>
+        typeof key.value === "number",
+    ) ?? [];
+  const graphRange = graphKeys.length ? fitGraphRange(graphKeys) : undefined;
   useEffect(() => {
     const skeleton = (services.project as HboneProject).skeletons.main;
     const animation = skeleton?.animations[0];
@@ -517,6 +530,11 @@ function Timeline() {
       frames / (clip?.fps ?? 30),
       1 / (clip?.fps ?? 30),
     );
+    redraw((value) => value + 1);
+  };
+  const scaleSelectedKeys = () => {
+    if (!clip || !store.view.selectedKeyIds.size) return;
+    store.scaleKeys([...store.view.selectedKeyIds], playback.time, 0.5);
     redraw((value) => value + 1);
   };
   const addEvent = () => {
@@ -844,6 +862,12 @@ function Timeline() {
             >
               Frame →
             </button>
+            <button
+              onClick={scaleSelectedKeys}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              Scale ×0.5
+            </button>
             <label>
               Select{" "}
               <input
@@ -896,6 +920,48 @@ function Timeline() {
             value={playback.time}
             onChange={(event) => playback.seek(Number(event.target.value))}
           />
+          <div className="timeline-graph" aria-label="Graph editor">
+            <strong>Graph</strong>
+            {graphRange && graphChannel ? (
+              <svg viewBox="0 0 640 160" role="img">
+                <line x1="0" y1="150" x2="640" y2="150" />
+                <line x1="0" y1="0" x2="0" y2="150" />
+                <polyline
+                  fill="none"
+                  points={graphKeys
+                    .map((key) => {
+                      const x =
+                        ((key.time - graphRange.start) /
+                          (graphRange.end - graphRange.start)) *
+                        640;
+                      const y =
+                        150 -
+                        ((key.value - graphRange.valueMin) /
+                          (graphRange.valueMax - graphRange.valueMin)) *
+                          150;
+                      return `${x},${y}`;
+                    })
+                    .join(" ")}
+                />
+                {graphKeys.map((key) => {
+                  const x =
+                    ((key.time - graphRange.start) /
+                      (graphRange.end - graphRange.start)) *
+                    640;
+                  const y =
+                    150 -
+                    ((key.value - graphRange.valueMin) /
+                      (graphRange.valueMax - graphRange.valueMin)) *
+                      150;
+                  return <circle key={key.id} cx={x} cy={y} r="4" />;
+                })}
+              </svg>
+            ) : (
+              <span className="muted">
+                Select numeric keys to edit their curve.
+              </span>
+            )}
+          </div>
           <div
             className="timeline-grid timeline-virtual-scroll"
             onScroll={(event) => setRowScrollTop(event.currentTarget.scrollTop)}

@@ -1109,6 +1109,21 @@ export class AnimationAuthoringStore {
     for (const channel of clip.channels)
       channel.keys.sort((a, b) => a.time - b.time);
   }
+  scaleKeys(keyIds: readonly string[], pivot: number, factor: number): void {
+    const clip = this.activeMutable();
+    const ids = [...new Set(keyIds)];
+    for (const channel of clip.channels) {
+      const scaled = scaleKeyTimes(
+        channel.keys,
+        ids,
+        pivot,
+        factor,
+        clip.duration,
+      );
+      channel.keys.splice(0, channel.keys.length, ...scaled);
+      channel.keys.sort((a, b) => a.time - b.time);
+    }
+  }
   duplicateKeys(keyIds: readonly string[], delta = 0): string[] {
     const ids = new Set(keyIds);
     const created: string[] = [];
