@@ -25,12 +25,12 @@
     "@types/rbush": "^4.0.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "pixi.js": "8.21.0",
     "prettier": "3.6.2",
     "typescript": "5.9.2",
     "vitest": "3.2.4"
   },
   "dependencies": {
+    "pixi.js": "8.21.0",
     "bezier-js": "^6.1.4",
     "comlink": "^4.4.2",
     "delaunator": "^5.1.0",

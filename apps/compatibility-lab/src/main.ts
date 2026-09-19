@@ -17,6 +17,7 @@ import type { MeshWorkerApi } from "./mesh-worker.js";
 import {
   applyWeightBrush,
   applyBrushAtPoint,
+  bindVertices,
   createWeightDeltaCommand,
   createAuthoringDocument,
   parseAuthoringDocument,
@@ -34,6 +35,7 @@ import {
   pathTangents,
   setDeformOffset,
   updatePathPoint,
+  unbindVertices,
   keyDeform,
   resetTopology,
   weightHeatmap,
@@ -75,6 +77,9 @@ const authoringSave =
   document.querySelector<HTMLButtonElement>("#authoring-save")!;
 const authoringLoad =
   document.querySelector<HTMLButtonElement>("#authoring-load")!;
+const bindingBone = document.querySelector<HTMLSelectElement>("#binding-bone")!;
+const bindDemo = document.querySelector<HTMLButtonElement>("#bind-demo")!;
+const unbindDemo = document.querySelector<HTMLButtonElement>("#unbind-demo")!;
 
 async function start() {
   const app = new Application();
@@ -149,6 +154,7 @@ async function start() {
   > = Object.fromEntries(
     Array.from({ length: 15 }, (_, i) => [`v${i}`, { "bone-1": 1 }]),
   );
+  const selectedBindingVertices = () => Object.keys(demoWeights).slice(0, 3);
   let demoTopology = createAuthoringMesh(
     Array.from({ length: 6 }, (_, i) => ({ x: i % 3, y: Math.floor(i / 3) })),
     [0, 1, 3, 1, 4, 3, 1, 2, 4, 2, 5, 4],
@@ -350,6 +356,24 @@ async function start() {
     status.textContent = restoreAuthoring()
       ? "Authoring state loaded."
       : "No valid authoring state found.";
+  });
+  bindDemo.addEventListener("click", () => {
+    const deltas = bindVertices(
+      demoWeights,
+      selectedBindingVertices(),
+      bindingBone.value,
+    );
+    persistAuthoring();
+    status.textContent = `Bound ${deltas.length} vertices to ${bindingBone.value}.`;
+  });
+  unbindDemo.addEventListener("click", () => {
+    const deltas = unbindVertices(
+      demoWeights,
+      selectedBindingVertices(),
+      bindingBone.value,
+    );
+    persistAuthoring();
+    status.textContent = `Unbound ${deltas.length} vertices from ${bindingBone.value}.`;
   });
 
   let currentImportDiagnostics: any[] = [];
