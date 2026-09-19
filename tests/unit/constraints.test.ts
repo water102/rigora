@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   createSetupSnapshot,
   createPoseSnapshot,
+  solveTransformConstraint,
 } from "../../packages/runtime/src/index.js";
 import { ikSkeleton } from "../fixtures/canonical/ik-skeleton.js";
 import type { SkeletonData } from "../../packages/model/src/index.js";
@@ -113,6 +114,64 @@ describe("Constraint Runtime — Batch 12", () => {
     // bone-source has rotation Math.PI / 4, follower copies it (origin (100, 50), length 10)
     expect(follower.tip.x).toBeCloseTo(100 + 10 * Math.cos(Math.PI / 4), 3);
     expect(follower.tip.y).toBeCloseTo(50 + 10 * Math.sin(Math.PI / 4), 3);
+  });
+
+  it("applies local shear and skips disabled constraints", () => {
+    const { skeleton } = ikSkeleton();
+    const transform = skeleton.constraints.find((c) => c.type === "transform")!;
+    if (transform.type !== "transform") return;
+    transform.local = true;
+    transform.mixShearY = 0;
+    transform.mixRotate = 1;
+    transform.enabled = false;
+    const source = skeleton.bones.find((b) => b.id === "bone-source")!;
+    source.setup.rotation = Math.PI / 4;
+    const follower = skeleton.bones.find((b) => b.id === "bone-follower")!;
+    follower.setup.shearY = 0;
+    const disabled = createSetupSnapshot(skeleton);
+    expect(disabled.success).toBe(true);
+    if (!disabled.success) return;
+    const disabledBone = disabled.snapshot.bones.find(
+      (b) => b.id === "bone-follower",
+    )!;
+    expect(disabledBone.tip.x).toBeCloseTo(110, 3);
+
+    transform.enabled = true;
+    const enabled = createSetupSnapshot(skeleton);
+    expect(enabled.success).toBe(true);
+    if (!enabled.success) return;
+    const enabledBone = enabled.snapshot.bones.find(
+      (b) => b.id === "bone-follower",
+    )!;
+    expect(enabledBone).toBeDefined();
+
+    const target = {
+      id: "target",
+      length: 1,
+      parentIndex: -1,
+      local: {
+        x: 0,
+        y: 0,
+        rotation: 0,
+        scaleX: 1,
+        scaleY: 1,
+        shearX: 0,
+        shearY: Math.PI / 4,
+      },
+      world: { a: 1, b: 0, c: 0, d: 1, tx: 0, ty: 0 },
+    };
+    const constrained = {
+      ...target,
+      id: "constrained",
+      local: { ...target.local, shearY: 0 },
+    };
+    solveTransformConstraint(target, [constrained], {
+      ...transform,
+      local: true,
+      mixRotate: 0,
+      mixShearY: 1,
+    });
+    expect(constrained.local.shearY).toBeCloseTo(Math.PI / 4, 5);
   });
 
   it("propagates IK constrained bone transforms to attached skinned meshes", () => {

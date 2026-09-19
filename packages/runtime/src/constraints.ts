@@ -158,6 +158,7 @@ export function solveTransformConstraint(
           (targetBone.local.scaleX - 1) * constraint.mixScaleX;
         bone.local.scaleY +=
           (targetBone.local.scaleY - 1) * constraint.mixScaleY;
+        bone.local.shearY += targetBone.local.shearY * constraint.mixShearY;
       } else {
         bone.local.rotation =
           bone.local.rotation * (1 - constraint.mixRotate) +
@@ -174,6 +175,9 @@ export function solveTransformConstraint(
         bone.local.scaleY =
           bone.local.scaleY * (1 - constraint.mixScaleY) +
           targetBone.local.scaleY * constraint.mixScaleY;
+        bone.local.shearY =
+          bone.local.shearY * (1 - constraint.mixShearY) +
+          targetBone.local.shearY * constraint.mixShearY;
       }
     } else {
       // World mixing
@@ -237,7 +241,8 @@ export function applyConstraints(
     boneMap.set(bones[i]!.id, { bone: bones[i]!, index: i });
   }
 
-  for (const c of constraints) {
+  for (const c of [...constraints].sort((a, b) => a.order - b.order)) {
+    if (c.enabled === false) continue;
     if (c.type === "ik") {
       const targetEntry = boneMap.get(c.targetBoneId);
       if (!targetEntry) {
