@@ -463,6 +463,52 @@ export interface TimelineMarker {
   color?: string;
 }
 
+export interface GraphRange {
+  start: number;
+  end: number;
+  valueMin: number;
+  valueMax: number;
+}
+
+export function fitGraphRange(
+  keys: readonly AuthoredKey<number>[],
+  selectedIds?: readonly string[],
+  padding = 0.05,
+): GraphRange {
+  const selected = selectedIds ? new Set(selectedIds) : undefined;
+  const source = keys.filter((key) => !selected || selected.has(key.id));
+  if (!source.length) throw new Error("ANIMATION_AUTHORING_NO_GRAPH_KEYS");
+  const times = source.map((key) => key.time);
+  const values = source.map((key) => key.value);
+  const timeSpan = Math.max(Math.max(...times) - Math.min(...times), 1 / 60);
+  const valueSpan = Math.max(Math.max(...values) - Math.min(...values), 1);
+  return {
+    start: Math.min(...times) - timeSpan * padding,
+    end: Math.max(...times) + timeSpan * padding,
+    valueMin: Math.min(...values) - valueSpan * padding,
+    valueMax: Math.max(...values) + valueSpan * padding,
+  };
+}
+
+export function scaleKeyTimes(
+  keys: readonly AuthoredKey[],
+  keyIds: readonly string[],
+  pivot: number,
+  factor: number,
+  duration: number,
+): AuthoredKey[] {
+  finiteAuthoring(pivot, "pivot");
+  finiteAuthoring(factor, "factor");
+  if (factor < 0) throw new Error("ANIMATION_AUTHORING_INVALID_TIME_SCALE");
+  const ids = new Set(keyIds);
+  return keys.map((key) => {
+    if (!ids.has(key.id)) return cloneAuthoring(key);
+    const time = pivot + (key.time - pivot) * factor;
+    assertTime(time, duration);
+    return { ...cloneAuthoring(key), time };
+  });
+}
+
 function finiteAuthoring(value: number, name: string): void {
   if (!Number.isFinite(value))
     throw new Error(`ANIMATION_AUTHORING_INVALID_${name.toUpperCase()}`);
