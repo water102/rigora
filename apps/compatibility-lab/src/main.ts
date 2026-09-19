@@ -61,6 +61,13 @@ const autoPreviewBtn =
   document.querySelector<HTMLButtonElement>("#auto-preview")!;
 const autoCancelBtn =
   document.querySelector<HTMLButtonElement>("#auto-cancel")!;
+const autoWeightPower =
+  document.querySelector<HTMLInputElement>("#auto-weight-power")!;
+const autoWeightMax =
+  document.querySelector<HTMLInputElement>("#auto-weight-max")!;
+const autoWeightPreview = document.querySelector<HTMLButtonElement>(
+  "#auto-weight-preview",
+)!;
 const autoThreshold =
   document.querySelector<HTMLInputElement>("#auto-threshold")!;
 const brushMode = document.querySelector<HTMLSelectElement>("#brush-mode")!;
@@ -413,6 +420,30 @@ async function start() {
     );
     persistAuthoring();
     status.textContent = `Unbound ${deltas.length} vertices from ${bindingBone.value}.`;
+  });
+  autoWeightPreview.addEventListener("click", async () => {
+    const power = Number(autoWeightPower.value);
+    const maxInfluences = Number(autoWeightMax.value);
+    const bones = [
+      { id: "bone-1", start: { x: 0, y: 0 }, end: { x: 0, y: 3 } },
+      { id: "bone-2", start: { x: 2, y: 0 }, end: { x: 2, y: 3 } },
+    ];
+    try {
+      const preview = await getMeshWorker().previewAutoWeights(
+        demoTopology.vertices.map((vertex) => vertex.position),
+        bones,
+        power,
+        maxInfluences,
+      );
+      const influenceCount = preview.reduce(
+        (sum, vertex) => sum + vertex.influences.length,
+        0,
+      );
+      status.textContent = `Auto weights preview: ${preview.length} vertices, ${influenceCount} influences (power ${power}, max ${maxInfluences}).`;
+    } catch (error) {
+      status.textContent =
+        error instanceof Error ? error.message : "Auto weights preview failed.";
+    }
   });
   createAttachment.addEventListener("click", () => {
     try {

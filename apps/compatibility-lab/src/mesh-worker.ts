@@ -19,6 +19,12 @@ export interface MeshWorkerResult {
 }
 
 export interface MeshWorkerApi {
+  previewAutoWeights(
+    vertices: readonly Vec2[],
+    bones: readonly BoneSegment[],
+    power?: number,
+    maxInfluences?: number,
+  ): ReturnType<typeof computeAutoWeights>;
   generateGridMeshAndWeights(
     width: number,
     height: number,
@@ -34,6 +40,12 @@ export interface MeshWorkerApi {
 }
 
 const api: MeshWorkerApi = {
+  previewAutoWeights(vertices, bones, power, maxInfluences) {
+    return computeAutoWeights(vertices, bones, {
+      ...(power === undefined ? {} : { power }),
+      ...(maxInfluences === undefined ? {} : { maxInfluences }),
+    });
+  },
   generateGridMeshAndWeights(
     width,
     height,

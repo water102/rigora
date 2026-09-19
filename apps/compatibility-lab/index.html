@@ -90,6 +90,28 @@
         <button id="auto-preview" type="button">Preview alpha mesh</button>
         <button id="auto-cancel" type="button">Cancel preview</button>
         <label
+          >Weight exponent
+          <input
+            id="auto-weight-power"
+            type="number"
+            min="0.1"
+            step="0.1"
+            value="2"
+        /></label>
+        <label
+          >Max influences
+          <input
+            id="auto-weight-max"
+            type="number"
+            min="1"
+            max="8"
+            step="1"
+            value="4"
+        /></label>
+        <button id="auto-weight-preview" type="button">
+          Preview auto weights
+        </button>
+        <label
           >Brush
           <select id="brush-mode">
             <option value="add">Add</option>
