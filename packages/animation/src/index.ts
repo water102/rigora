@@ -411,3 +411,292 @@ export class AnimationClock<T> {
     return result;
   }
 }
+
+export type AuthoringChannelKind =
+  | "bone"
+  | "slot"
+  | "constraint"
+  | "deform"
+  | "event";
+export type AutoKeyMode = "off" | "changed-property" | "first-frame";
+
+export interface AuthoredKey<T = unknown> {
+  id: string;
+  time: number;
+  value: T;
+  curve: CurveSpec;
+}
+export interface AuthoringChannel<T = unknown> {
+  id: string;
+  kind: AuthoringChannelKind;
+  targetId?: string;
+  property: string;
+  keys: AuthoredKey<T>[];
+}
+export interface AnimationClip {
+  id: string;
+  name: string;
+  duration: number;
+  fps: number;
+  channels: AuthoringChannel[];
+}
+export interface TimelineRow {
+  id: string;
+  label: string;
+  channelId?: string;
+  children?: TimelineRow[];
+}
+export interface TimelineViewModel {
+  rows: TimelineRow[];
+  selectedKeyIds: ReadonlySet<string>;
+  playhead: number;
+  visibleStart: number;
+  visibleEnd: number;
+  zoom: number;
+  markers: readonly TimelineMarker[];
+  loop: { start: number; end: number; enabled: boolean };
+}
+export interface TimelineMarker {
+  id: string;
+  time: number;
+  label?: string;
+  color?: string;
+}
+
+function finiteAuthoring(value: number, name: string): void {
+  if (!Number.isFinite(value))
+    throw new Error(`ANIMATION_AUTHORING_INVALID_${name.toUpperCase()}`);
+}
+function cloneAuthoring<T>(value: T): T {
+  return structuredClone(value);
+}
+function assertTime(time: number, duration: number): void {
+  finiteAuthoring(time, "time");
+  if (time < 0 || time > duration)
+    throw new Error("ANIMATION_AUTHORING_TIME_OUT_OF_RANGE");
+}
+
+export class AnimationAuthoringStore {
+  #clips: AnimationClip[] = [];
+  #activeId: string | null = null;
+  #sequence = 0;
+  readonly view: TimelineViewModel = {
+    rows: [],
+    selectedKeyIds: new Set(),
+    playhead: 0,
+    visibleStart: 0,
+    visibleEnd: 1,
+    zoom: 1,
+    markers: [],
+    loop: { start: 0, end: 1, enabled: false },
+  };
+  get clips(): readonly AnimationClip[] {
+    return this.#clips.map(cloneAuthoring);
+  }
+  get active(): AnimationClip | undefined {
+    const clip = this.#clips.find((item) => item.id === this.#activeId);
+    return clip && cloneAuthoring(clip);
+  }
+  create(
+    name: string,
+    duration = 1,
+    fps = 30,
+    id = this.nextId("animation"),
+  ): AnimationClip {
+    if (!name.trim() || duration < 0 || fps <= 0)
+      throw new Error("ANIMATION_AUTHORING_INVALID_CLIP");
+    finiteAuthoring(duration, "duration");
+    finiteAuthoring(fps, "fps");
+    const clip = { id, name, duration, fps, channels: [] };
+    this.#clips.push(clip);
+    this.#activeId = id;
+    this.setRange(0, duration || 1);
+    return cloneAuthoring(clip);
+  }
+  rename(id: string, name: string): void {
+    const clip = this.require(id);
+    if (!name.trim()) throw new Error("ANIMATION_AUTHORING_INVALID_NAME");
+    clip.name = name;
+  }
+  duplicate(id: string, newId = this.nextId("animation")): AnimationClip {
+    const copy = cloneAuthoring(this.require(id));
+    copy.id = newId;
+    copy.name = `${copy.name} copy`;
+    copy.channels = copy.channels.map((channel) => ({
+      ...channel,
+      id: this.nextId(channel.id),
+      keys: channel.keys.map((key) => ({ ...key, id: this.nextId(key.id) })),
+    }));
+    this.#clips.push(copy);
+    return cloneAuthoring(copy);
+  }
+  delete(id: string): void {
+    const index = this.#clips.findIndex((clip) => clip.id === id);
+    if (index < 0) throw new Error("ANIMATION_AUTHORING_NOT_FOUND");
+    this.#clips.splice(index, 1);
+    if (this.#activeId === id) this.#activeId = this.#clips[0]?.id ?? null;
+  }
+  select(id: string): void {
+    this.require(id);
+    this.#activeId = id;
+  }
+  addChannel(
+    channel: Omit<AuthoringChannel, "keys"> & { keys?: readonly AuthoredKey[] },
+  ): AuthoringChannel {
+    const clip = this.activeMutable();
+    const result: AuthoringChannel = {
+      ...channel,
+      keys: [...(channel.keys ?? [])].map(cloneAuthoring),
+    };
+    clip.channels.push(result);
+    return cloneAuthoring(result);
+  }
+  upsertKey<T>(
+    channelId: string,
+    time: number,
+    value: T,
+    curve: CurveSpec = { type: "linear" },
+    id = this.nextId("key"),
+  ): AuthoredKey<T> {
+    const clip = this.activeMutable();
+    assertTime(time, clip.duration);
+    const channel = clip.channels.find((item) => item.id === channelId);
+    if (!channel) throw new Error("ANIMATION_AUTHORING_CHANNEL_NOT_FOUND");
+    const existing = channel.keys.find((key) => key.time === time);
+    const key = existing ?? {
+      id,
+      time,
+      value: cloneAuthoring(value),
+      curve,
+    };
+    Object.assign(key, { time, value: cloneAuthoring(value), curve });
+    if (!existing) channel.keys.push(key);
+    channel.keys.sort((a, b) => a.time - b.time);
+    return cloneAuthoring(key as AuthoredKey<T>);
+  }
+  removeKeys(keyIds: readonly string[]): void {
+    const ids = new Set(keyIds);
+    for (const channel of this.activeMutable().channels)
+      channel.keys = channel.keys.filter((key) => !ids.has(key.id));
+    this.selectKeys([]);
+  }
+  moveKeys(keyIds: readonly string[], delta: number, snap = 0): void {
+    finiteAuthoring(delta, "delta");
+    const ids = new Set(keyIds);
+    const clip = this.activeMutable();
+    for (const channel of clip.channels)
+      for (const key of channel.keys)
+        if (ids.has(key.id)) {
+          const next =
+            snap > 0
+              ? Math.round((key.time + delta) / snap) * snap
+              : key.time + delta;
+          assertTime(next, clip.duration);
+          key.time = next;
+        }
+    for (const channel of clip.channels)
+      channel.keys.sort((a, b) => a.time - b.time);
+  }
+  duplicateKeys(keyIds: readonly string[], delta = 0): string[] {
+    const ids = new Set(keyIds);
+    const created: string[] = [];
+    for (const channel of this.activeMutable().channels) {
+      const copies = channel.keys
+        .filter((key) => ids.has(key.id))
+        .map((key) => {
+          const copy = {
+            ...cloneAuthoring(key),
+            id: this.nextId("key"),
+            time: key.time + delta,
+          };
+          assertTime(copy.time, this.activeMutable().duration);
+          created.push(copy.id);
+          return copy;
+        });
+      channel.keys.push(...copies);
+      channel.keys.sort((a, b) => a.time - b.time);
+    }
+    return created;
+  }
+  setAutoKey(mode: AutoKeyMode): void {
+    this.autoKey = mode;
+  }
+  autoKey: AutoKeyMode = "off";
+  selectKeys(ids: readonly string[]): void {
+    this.view.selectedKeyIds = new Set(ids);
+  }
+  setPlayhead(time: number): void {
+    const clip = this.active;
+    if (clip) assertTime(time, clip.duration);
+    this.view.playhead = time;
+  }
+  setRange(start: number, end: number): void {
+    finiteAuthoring(start, "range");
+    finiteAuthoring(end, "range");
+    if (start < 0 || end <= start)
+      throw new Error("ANIMATION_AUTHORING_INVALID_RANGE");
+    this.view.visibleStart = start;
+    this.view.visibleEnd = end;
+    this.view.loop.end = end;
+  }
+  private nextId(prefix: string): string {
+    return `${prefix}-${++this.#sequence}`;
+  }
+  private require(id: string): AnimationClip {
+    const clip = this.#clips.find((item) => item.id === id);
+    if (!clip) throw new Error("ANIMATION_AUTHORING_NOT_FOUND");
+    return clip;
+  }
+  private activeMutable(): AnimationClip {
+    if (!this.#activeId) throw new Error("ANIMATION_AUTHORING_NO_ACTIVE_CLIP");
+    return this.require(this.#activeId);
+  }
+}
+
+export class AuthoringPlayback {
+  time = 0;
+  playing = false;
+  speed = 1;
+  loop = true;
+  constructor(
+    public duration: number,
+    public fps = 30,
+  ) {
+    finiteAuthoring(duration, "duration");
+    finiteAuthoring(fps, "fps");
+  }
+  seek(time: number): void {
+    this.time = Math.max(0, Math.min(this.duration, time));
+  }
+  step(frames: number): number {
+    this.seek(this.time + frames / this.fps);
+    return this.time;
+  }
+  advance(seconds: number): number {
+    finiteAuthoring(seconds, "delta");
+    if (!this.playing) return this.time;
+    const next = this.time + seconds * this.speed;
+    this.time =
+      this.loop && this.duration > 0
+        ? ((next % this.duration) + this.duration) % this.duration
+        : Math.min(this.duration, Math.max(0, next));
+    if (!this.loop && this.time === this.duration) this.playing = false;
+    return this.time;
+  }
+}
+
+export interface AuthoredEvent {
+  id: string;
+  time: number;
+  name: string;
+  payload?: unknown;
+}
+export function eventsCrossed(
+  events: readonly AuthoredEvent[],
+  previous: number,
+  current: number,
+): AuthoredEvent[] {
+  return events
+    .filter((event) => event.time > previous && event.time <= current)
+    .map(cloneAuthoring);
+}

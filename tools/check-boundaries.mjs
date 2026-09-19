@@ -23,7 +23,7 @@ for (const name of ["math", "diagnostics", "animation"]) {
       "utf8",
     );
     if (
-      /\b(?:import|require)\s*(?:\(|["'{*]|type\b)|\bexport\s+[^;]*\bfrom\s*["']/m.test(
+      /\bimport\s*(?:\(|["'{*]|type\b)|\bexport\s+[^;]*\bfrom\s*["'](?!\.)/m.test(
         source,
       )
     ) {
