@@ -712,6 +712,14 @@ function Timeline() {
   const applyToProject = () => {
     if (!clip) return;
     const nextAnimation = store.exportActive();
+    const skeletonBefore = (services.project as HboneProject).skeletons.main;
+    const previousEvents = skeletonBefore?.events
+      ? [...skeletonBefore.events]
+      : [];
+    const authoredEvents = events.definitions.map((definition) => ({
+      id: definition.id,
+      name: definition.name,
+    }));
     services.commands.execute({
       id: `apply-animation-${nextAnimation.id}`,
       label: `Apply animation ${nextAnimation.name}`,
@@ -725,6 +733,7 @@ function Timeline() {
           ),
           nextAnimation as HboneProject["skeletons"][string]["animations"][number],
         ];
+        skeleton.events = authoredEvents;
       },
       undo: (context) => {
         const project = context.project as HboneProject;
@@ -733,6 +742,7 @@ function Timeline() {
           skeleton.animations = skeleton.animations.filter(
             (animation) => animation.id !== nextAnimation.id,
           );
+        if (skeleton) skeleton.events = previousEvents;
       },
     });
   };
