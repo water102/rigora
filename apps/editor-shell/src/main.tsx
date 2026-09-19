@@ -441,6 +441,15 @@ function Timeline() {
     store.setKeyCurve([...store.view.selectedKeyIds], { type: curve });
     redraw((value) => value + 1);
   };
+  const setSelectedBezier = () => {
+    store.setBezierHandles([...store.view.selectedKeyIds], {
+      cx1: 0.25,
+      cy1: 0.1,
+      cx2: 0.75,
+      cy2: 0.9,
+    });
+    redraw((value) => value + 1);
+  };
   const deleteSelectedKeys = () => {
     store.removeKeys([...store.view.selectedKeyIds]);
     redraw((value) => value + 1);
@@ -480,6 +489,12 @@ function Timeline() {
               disabled={!store.view.selectedKeyIds.size}
             >
               Stepped
+            </button>
+            <button
+              onClick={setSelectedBezier}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              Bezier
             </button>
             <button
               onClick={duplicateSelectedKeys}
