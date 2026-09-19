@@ -458,6 +458,14 @@ function Timeline() {
     store.duplicateKeys([...store.view.selectedKeyIds], 1 / (clip?.fps ?? 30));
     redraw((value) => value + 1);
   };
+  const moveSelectedKeys = (frames: number) => {
+    store.moveKeys(
+      [...store.view.selectedKeyIds],
+      frames / (clip?.fps ?? 30),
+      1 / (clip?.fps ?? 30),
+    );
+    redraw((value) => value + 1);
+  };
   return (
     <section className="panel timeline-panel">
       <header className="timeline-header">
@@ -507,6 +515,18 @@ function Timeline() {
               disabled={!store.view.selectedKeyIds.size}
             >
               Delete
+            </button>
+            <button
+              onClick={() => moveSelectedKeys(-1)}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              ← Frame
+            </button>
+            <button
+              onClick={() => moveSelectedKeys(1)}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              Frame →
             </button>
             <label>
               Speed{" "}
