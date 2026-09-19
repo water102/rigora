@@ -33,3 +33,26 @@ test("both source fixtures render identical nonempty WebGL pixels", async ({
   });
   expect(errors).toEqual([]);
 });
+
+test("canonical weighted mesh and auto-mesh worker render on canvas", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("http://127.0.0.1:4173");
+  await expect(page.locator("#stage")).toHaveAttribute("data-ready", "true");
+
+  // Select canonical weighted mesh
+  await page.locator("#source").selectOption("mesh");
+  await expect(page.locator("#status")).toContainText(
+    "Canonical Weighted Mesh",
+  );
+  await expect(page.locator("#status")).toContainText("1 mesh");
+
+  // Select auto-mesh worker
+  await page.locator("#source").selectOption("worker");
+  await expect(page.locator("#status")).toContainText("Auto-Mesh Worker");
+  await expect(page.locator("#status")).toContainText("1 mesh");
+
+  expect(errors).toEqual([]);
+});

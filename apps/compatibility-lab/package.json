@@ -13,6 +13,10 @@
     "@rigora/format-dragonbones": "workspace:*",
     "@rigora/runtime": "workspace:*",
     "@rigora/renderer-pixi": "workspace:*",
+    "@rigora/authoring-mesh": "workspace:*",
+    "@rigora/math": "workspace:*",
+    "@rigora/model": "workspace:*",
+    "comlink": "^4.4.2",
     "pixi.js": "8.21.0"
   },
   "devDependencies": {

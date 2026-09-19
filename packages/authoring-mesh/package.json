@@ -1,0 +1,28 @@
+{
+  "name": "@rigora/authoring-mesh",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@rigora/math": "workspace:*",
+    "@rigora/model": "workspace:*",
+    "@rigora/diagnostics": "workspace:*",
+    "earcut": "^3.2.3",
+    "delaunator": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/earcut": "^3.0.0",
+    "@types/delaunator": "^5.0.3",
+    "typescript": "5.9.2"
+  }
+}

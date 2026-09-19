@@ -99,18 +99,30 @@ importers:
 
   apps/compatibility-lab:
     dependencies:
+      '@rigora/authoring-mesh':
+        specifier: workspace:*
+        version: link:../../packages/authoring-mesh
       '@rigora/format-dragonbones':
         specifier: workspace:*
         version: link:../../packages/format-dragonbones
       '@rigora/format-spine-38':
         specifier: workspace:*
         version: link:../../packages/format-spine-38
+      '@rigora/math':
+        specifier: workspace:*
+        version: link:../../packages/math
+      '@rigora/model':
+        specifier: workspace:*
+        version: link:../../packages/model
       '@rigora/renderer-pixi':
         specifier: workspace:*
         version: link:../../packages/renderer-pixi
       '@rigora/runtime':
         specifier: workspace:*
         version: link:../../packages/runtime
+      comlink:
+        specifier: ^4.4.2
+        version: 4.4.2
       pixi.js:
         specifier: 8.21.0
         version: 8.21.0
@@ -120,6 +132,34 @@ importers:
         version: 8.3.0(esbuild@0.28.2)
 
   packages/animation: {}
+
+  packages/authoring-mesh:
+    dependencies:
+      '@rigora/diagnostics':
+        specifier: workspace:*
+        version: link:../diagnostics
+      '@rigora/math':
+        specifier: workspace:*
+        version: link:../math
+      '@rigora/model':
+        specifier: workspace:*
+        version: link:../model
+      delaunator:
+        specifier: ^5.1.0
+        version: 5.1.0
+      earcut:
+        specifier: ^3.2.3
+        version: 3.2.3
+    devDependencies:
+      '@types/delaunator':
+        specifier: ^5.0.3
+        version: 5.0.3
+      '@types/earcut':
+        specifier: ^3.0.0
+        version: 3.0.0
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
 
   packages/diagnostics: {}
 

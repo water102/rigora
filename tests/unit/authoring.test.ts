@@ -1,0 +1,151 @@
+import { describe, expect, it } from "vitest";
+import {
+  triangulatePolygon,
+  generateGridMesh,
+  triangulatePoints,
+  pointToSegmentDistance,
+  computeAutoWeights,
+  smoothWeightsLaplacian,
+} from "../../packages/authoring-mesh/src/index.js";
+
+describe("Triangulation Engine", () => {
+  it("triangulates simple rectangle polygon into 2 triangles with [0, 1] UVs", () => {
+    const ring = [
+      { x: 0, y: 0 },
+      { x: 100, y: 0 },
+      { x: 100, y: 50 },
+      { x: 0, y: 50 },
+    ];
+    const mesh = triangulatePolygon(ring);
+    expect(mesh.vertices).toHaveLength(4);
+    expect(mesh.triangles).toHaveLength(6); // 2 triangles
+    expect(mesh.uvs[0]).toEqual({ x: 0, y: 0 });
+    expect(mesh.uvs[1]).toEqual({ x: 1, y: 0 });
+    expect(mesh.uvs[2]).toEqual({ x: 1, y: 1 });
+    expect(mesh.uvs[3]).toEqual({ x: 0, y: 1 });
+  });
+
+  it("rejects polygon rings with fewer than 3 vertices", () => {
+    expect(() =>
+      triangulatePolygon([
+        { x: 0, y: 0 },
+        { x: 10, y: 10 },
+      ]),
+    ).toThrow("TRIANGULATION_TOO_FEW_VERTICES");
+  });
+
+  it("generates regular grid mesh with correct vertex count and indices", () => {
+    // 2 columns, 2 rows -> 3x3 vertices = 9 vertices, 2*2*2 = 8 triangles = 24 indices
+    const grid = generateGridMesh(100, 50, 2, 2);
+    expect(grid.vertices).toHaveLength(9);
+    expect(grid.triangles).toHaveLength(24);
+    expect(grid.uvs[0]).toEqual({ x: 0, y: 0 });
+    expect(grid.uvs[8]).toEqual({ x: 1, y: 1 });
+  });
+
+  it("triangulates unordered point set via Delaunay", () => {
+    const points = [
+      { x: 0, y: 0 },
+      { x: 10, y: 0 },
+      { x: 5, y: 10 },
+      { x: 5, y: 5 },
+    ];
+    const mesh = triangulatePoints(points);
+    expect(mesh.vertices).toHaveLength(4);
+    expect(mesh.triangles.length).toBeGreaterThanOrEqual(3);
+    expect(mesh.triangles.length % 3).toBe(0);
+  });
+});
+
+describe("Auto-Weighting Engine", () => {
+  it("calculates point-to-segment distance correctly", () => {
+    const a = { x: 0, y: 0 };
+    const b = { x: 10, y: 0 };
+
+    // Point exactly on segment
+    expect(pointToSegmentDistance({ x: 5, y: 0 }, a, b)).toBe(0);
+
+    // Point perpendicular to segment
+    expect(pointToSegmentDistance({ x: 5, y: 4 }, a, b)).toBe(4);
+
+    // Point before segment start
+    expect(pointToSegmentDistance({ x: -3, y: 4 }, a, b)).toBe(5);
+
+    // Point after segment end
+    expect(pointToSegmentDistance({ x: 13, y: 4 }, a, b)).toBe(5);
+  });
+
+  it("computes inverse distance auto-weights with sum normalized to 1.0", () => {
+    const bones = [
+      { id: "root", start: { x: 0, y: 0 }, end: { x: 10, y: 0 } },
+      { id: "tip", start: { x: 10, y: 0 }, end: { x: 20, y: 0 } },
+    ];
+
+    const vertices = [
+      { x: 2, y: 1 }, // Very close to root
+      { x: 18, y: 1 }, // Very close to tip
+      { x: 10, y: 5 }, // Equidistant to both
+    ];
+
+    const weights = computeAutoWeights(vertices, bones);
+    expect(weights).toHaveLength(3);
+
+    // Check vertex 0 (close to root)
+    const v0Root = weights[0]!.influences.find((i) => i.boneId === "root");
+    const v0Tip = weights[0]!.influences.find((i) => i.boneId === "tip");
+    expect(v0Root).toBeDefined();
+    expect(v0Root!.weight).toBeGreaterThan(0.9);
+    if (v0Tip) expect(v0Tip.weight).toBeLessThan(0.1);
+
+    // Check sum of weights equals 1
+    for (const v of weights) {
+      const sum = v.influences.reduce((acc, i) => acc + i.weight, 0);
+      expect(sum).toBeCloseTo(1.0);
+    }
+
+    // Check vertex 2 (equidistant)
+    const v2Root = weights[2]!.influences.find((i) => i.boneId === "root")!;
+    const v2Tip = weights[2]!.influences.find((i) => i.boneId === "tip")!;
+    expect(v2Root.weight).toBeCloseTo(0.5, 1);
+    expect(v2Tip.weight).toBeCloseTo(0.5, 1);
+  });
+
+  it("smooths weights across triangle topology using Laplacian smoothing", () => {
+    // 3 vertices forming a triangle
+    // v0 has 100% bone-1, v1 has 100% bone-2, v2 has 100% bone-2
+    const weightedVertices = [
+      {
+        bindPosition: { x: 0, y: 0 },
+        influences: [{ boneId: "bone-1", weight: 1.0 }],
+      },
+      {
+        bindPosition: { x: 10, y: 0 },
+        influences: [{ boneId: "bone-2", weight: 1.0 }],
+      },
+      {
+        bindPosition: { x: 5, y: 10 },
+        influences: [{ boneId: "bone-2", weight: 1.0 }],
+      },
+    ];
+    const triangles = [0, 1, 2];
+
+    const smoothed = smoothWeightsLaplacian(
+      weightedVertices,
+      triangles,
+      0.5,
+      1,
+    );
+    expect(smoothed).toHaveLength(3);
+
+    // v0 should now have some influence from bone-2
+    const v0Bone2 = smoothed[0]!.influences.find((i) => i.boneId === "bone-2");
+    expect(v0Bone2).toBeDefined();
+    expect(v0Bone2!.weight).toBeGreaterThan(0.2);
+
+    // Total weights should still sum to 1.0
+    for (const v of smoothed) {
+      const sum = v.influences.reduce((acc, i) => acc + i.weight, 0);
+      expect(sum).toBeCloseTo(1.0);
+    }
+  });
+});
