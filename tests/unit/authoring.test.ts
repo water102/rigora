@@ -4,6 +4,7 @@ import {
   createAttachmentFromLibrary,
   listInfluences,
   limitInfluences,
+  smoothWeightRows,
   selectMeshByPolygon,
   TopologyHistory,
   applyVertexDrag,
@@ -133,6 +134,28 @@ describe("Phase 6 authoring core", () => {
         new Set(["root", "arm"]),
       ),
     ).toThrow("WEIGHTS_TOO_MANY_LOCKED_INFLUENCES");
+  });
+
+  it("smooths weight rows simultaneously and preserves locked influences", () => {
+    const weights = {
+      a: { root: 1 },
+      b: { root: 0.5, tip: 0.5 },
+      c: { tip: 1 },
+    };
+    const deltas = smoothWeightRows(
+      weights,
+      ["a", "b", "c"],
+      { a: ["b"], b: ["a", "c"], c: ["b"] },
+      1,
+      new Set(["root"]),
+    );
+    expect(deltas.length).toBeGreaterThan(0);
+    expect(weights.a.root).toBeGreaterThan(0);
+    expect(weights.c.tip).toBeGreaterThan(0);
+    for (const row of Object.values(weights))
+      expect(
+        Object.values(row).reduce((sum, value) => sum + value, 0),
+      ).toBeCloseTo(1);
   });
 
   it("survives repeated topology undo/redo without aliasing or losing IDs", () => {

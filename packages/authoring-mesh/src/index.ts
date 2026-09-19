@@ -52,6 +52,7 @@ export {
   weightHeatmap,
   listInfluences,
   limitInfluences,
+  smoothWeightRows,
   type AuthoringMesh,
   type EditablePath,
   type MeshMode,

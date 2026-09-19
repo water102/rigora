@@ -226,6 +226,58 @@ export function limitInfluences(
     if (sum > 0) for (const boneId of Object.keys(row)) row[boneId]! /= sum;
   }
 }
+export function smoothWeightRows(
+  weights: Record<string, Record<string, number>>,
+  vertexIds: readonly string[],
+  neighbors: Readonly<Record<string, readonly string[]>>,
+  strength: number,
+  locked: ReadonlySet<string> = new Set(),
+): WeightDelta[] {
+  const amount = Math.max(0, Math.min(1, strength));
+  const before = new Map(
+    vertexIds.map((id) => [id, { ...(weights[id] ?? {}) }]),
+  );
+  const deltas: WeightDelta[] = [];
+  for (const vertexId of vertexIds) {
+    const row = (weights[vertexId] ??= {});
+    const adjacent = (neighbors[vertexId] ?? []).map(
+      (id) => before.get(id) ?? weights[id] ?? {},
+    );
+    if (!adjacent.length) continue;
+    const bones = new Set([
+      ...Object.keys(before.get(vertexId) ?? {}),
+      ...adjacent.flatMap((neighbor) => Object.keys(neighbor)),
+    ]);
+    for (const boneId of bones) {
+      if (locked.has(boneId)) continue;
+      const old = row[boneId] ?? 0;
+      const average =
+        adjacent.reduce((sum, neighbor) => sum + (neighbor[boneId] ?? 0), 0) /
+        adjacent.length;
+      const next = old + (average - old) * amount;
+      if (next > 0) row[boneId] = next;
+      else delete row[boneId];
+    }
+    const sum = Object.values(row).reduce((total, value) => total + value, 0);
+    if (sum > 0) for (const boneId of Object.keys(row)) row[boneId]! /= sum;
+  }
+  for (const vertexId of vertexIds) {
+    const old = before.get(vertexId) ?? {};
+    const next = weights[vertexId] ?? {};
+    for (const boneId of new Set([...Object.keys(old), ...Object.keys(next)])) {
+      const beforeWeight = old[boneId] ?? 0;
+      const afterWeight = next[boneId] ?? 0;
+      if (beforeWeight !== afterWeight)
+        deltas.push({
+          vertexId,
+          boneId,
+          before: beforeWeight,
+          after: afterWeight,
+        });
+    }
+  }
+  return deltas;
+}
 export function applyWeightBrush(
   weights: Record<string, Record<string, number>>,
   vertexIds: readonly string[],
