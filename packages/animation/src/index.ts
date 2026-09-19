@@ -621,6 +621,66 @@ export class AnimationAuthoringStore {
   setAutoKey(mode: AutoKeyMode): void {
     this.autoKey = mode;
   }
+
+  syncRows(labels: ReadonlyMap<string, string> = new Map()): TimelineRow[] {
+    const clip = this.active;
+    this.view.rows = (clip?.channels ?? []).map((channel) => ({
+      id: channel.id,
+      label: labels.get(channel.id) ?? `${channel.kind}.${channel.property}`,
+      channelId: channel.id,
+    }));
+    return cloneAuthoring(this.view.rows);
+  }
+
+  setMarkers(markers: readonly TimelineMarker[]): void {
+    const clip = this.active;
+    if (clip)
+      markers.forEach((marker) => assertTime(marker.time, clip.duration));
+    this.view.markers = cloneAuthoring([...markers]).sort(
+      (a, b) => a.time - b.time,
+    );
+  }
+
+  setLoop(start: number, end: number, enabled = true): void {
+    const clip = this.active;
+    if (!clip || start < 0 || end <= start || end > clip.duration)
+      throw new Error("ANIMATION_AUTHORING_INVALID_LOOP");
+    this.view.loop = { start, end, enabled };
+  }
+
+  setZoom(zoom: number): void {
+    finiteAuthoring(zoom, "zoom");
+    if (zoom <= 0) throw new Error("ANIMATION_AUTHORING_INVALID_ZOOM");
+    this.view.zoom = zoom;
+  }
+
+  snapFrame(time: number): number {
+    const clip = this.active;
+    if (!clip) return time;
+    return Math.max(
+      0,
+      Math.min(clip.duration, Math.round(time * clip.fps) / clip.fps),
+    );
+  }
+
+  selectKeysInBox(
+    start: number,
+    end: number,
+    channelIds?: readonly string[],
+  ): string[] {
+    const low = Math.min(start, end),
+      high = Math.max(start, end);
+    const allowed = channelIds ? new Set(channelIds) : undefined;
+    const ids = (this.active?.channels ?? []).flatMap((channel) =>
+      allowed?.has(channel.id) === false
+        ? []
+        : channel.keys
+            .filter((key) => key.time >= low && key.time <= high)
+            .map((key) => key.id),
+    );
+    this.selectKeys(ids);
+    return ids;
+  }
   autoKey: AutoKeyMode = "off";
   selectKeys(ids: readonly string[]): void {
     this.view.selectedKeyIds = new Set(ids);
