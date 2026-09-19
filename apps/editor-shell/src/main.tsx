@@ -414,6 +414,9 @@ function Timeline() {
       (key) =>
         store.view.selectedKeyIds.has(key.id) && typeof key.value === "number",
     )?.value as number | undefined;
+  const selectedValue = clip?.channels
+    .flatMap((channel) => channel.keys)
+    .find((key) => store.view.selectedKeyIds.has(key.id))?.value;
   useEffect(() => {
     if (!playback.playing) return;
     let previous = performance.now();
@@ -679,16 +682,20 @@ function Timeline() {
               Value{" "}
               <input
                 className="timeline-loop-input"
-                type="number"
-                disabled={selectedNumericValue === undefined}
-                value={selectedNumericValue ?? 0}
+                type={selectedNumericValue === undefined ? "text" : "number"}
+                disabled={selectedValue === undefined}
+                value={
+                  typeof selectedValue === "string"
+                    ? selectedValue
+                    : (selectedNumericValue ?? 0)
+                }
                 onChange={(event) => {
-                  const value = Number(event.target.value);
-                  if (Number.isFinite(value)) {
-                    store.setNumericValues(
-                      [...store.view.selectedKeyIds],
-                      value,
-                    );
+                  const value =
+                    selectedNumericValue === undefined
+                      ? event.target.value
+                      : Number(event.target.value);
+                  if (typeof value === "string" || Number.isFinite(value)) {
+                    store.setValues([...store.view.selectedKeyIds], value);
                     redraw((current) => current + 1);
                   }
                 }}

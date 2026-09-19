@@ -1233,6 +1233,14 @@ export class AnimationAuthoringStore {
       for (const key of channel.keys)
         if (ids.has(key.id) && typeof key.value === "number") key.value = value;
   }
+  setValues(keyIds: readonly string[], value: unknown): void {
+    const ids = new Set(keyIds);
+    for (const channel of this.activeMutable().channels) {
+      validateChannelValue(channel, value);
+      for (const key of channel.keys)
+        if (ids.has(key.id)) key.value = cloneAuthoring(value);
+    }
+  }
   autoKey: AutoKeyMode = "off";
   selectKeys(ids: readonly string[]): void {
     this.view.selectedKeyIds = new Set(ids);
