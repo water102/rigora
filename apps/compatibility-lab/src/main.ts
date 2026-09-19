@@ -18,6 +18,10 @@ import {
   applyWeightBrush,
   applyBrushAtPoint,
   createWeightDeltaCommand,
+  createAuthoringDocument,
+  parseAuthoringDocument,
+  persistMesh,
+  serializeAuthoringDocument,
   createAuthoringMesh,
   applyVertexDrag,
   beginDrag,
@@ -63,6 +67,10 @@ const deformDemo = document.querySelector<HTMLButtonElement>("#deform-demo")!;
 const canvasMode = document.querySelector<HTMLSelectElement>("#canvas-mode")!;
 const brushUndo = document.querySelector<HTMLButtonElement>("#brush-undo")!;
 const brushRedo = document.querySelector<HTMLButtonElement>("#brush-redo")!;
+const authoringSave =
+  document.querySelector<HTMLButtonElement>("#authoring-save")!;
+const authoringLoad =
+  document.querySelector<HTMLButtonElement>("#authoring-load")!;
 
 async function start() {
   const app = new Application();
@@ -141,6 +149,26 @@ async function start() {
     Array.from({ length: 6 }, (_, i) => ({ x: i % 3, y: Math.floor(i / 3) })),
     [0, 1, 3, 1, 4, 3, 1, 2, 4, 2, 5, 4],
   );
+  const persistAuthoring = () => {
+    const document = persistMesh(createAuthoringDocument(), demoTopology);
+    document.deformOffsets["demo-mesh"] = [0, 0, 0, 0, 0, 0];
+    localStorage.setItem(
+      "rigora.authoring.preview",
+      serializeAuthoringDocument(document),
+    );
+  };
+  const restoreAuthoring = () => {
+    const raw = localStorage.getItem("rigora.authoring.preview");
+    if (!raw) return false;
+    try {
+      const document = parseAuthoringDocument(raw);
+      if (document.meshes[0]) demoTopology = document.meshes[0];
+      return true;
+    } catch {
+      return false;
+    }
+  };
+  restoreAuthoring();
   let vertexDrag: ReturnType<typeof beginDrag> | null = null;
   let lassoPoints: Array<{ x: number; y: number }> = [];
   let brushStrokeCount = 0;
@@ -233,6 +261,7 @@ async function start() {
     }
     if (!vertexDrag) return;
     vertexDrag = endDrag(vertexDrag);
+    persistAuthoring();
     app.canvas.releasePointerCapture(event.pointerId);
     status.textContent = `Vertex drag committed · v0 = (${vertexDrag.current.x.toFixed(2)}, ${vertexDrag.current.y.toFixed(2)})`;
     vertexDrag = null;
@@ -247,6 +276,7 @@ async function start() {
     const command = brushUndoStack.pop();
     if (!command) return;
     command.undo();
+    persistAuthoring();
     brushRedoStack.push(command);
     status.textContent = "Canvas brush undone.";
   });
@@ -254,8 +284,18 @@ async function start() {
     const command = brushRedoStack.pop();
     if (!command) return;
     command.execute();
+    persistAuthoring();
     brushUndoStack.push(command);
     status.textContent = "Canvas brush redone.";
+  });
+  authoringSave.addEventListener("click", () => {
+    persistAuthoring();
+    status.textContent = "Authoring state saved locally.";
+  });
+  authoringLoad.addEventListener("click", () => {
+    status.textContent = restoreAuthoring()
+      ? "Authoring state loaded."
+      : "No valid authoring state found.";
   });
 
   let currentImportDiagnostics: any[] = [];
@@ -396,6 +436,7 @@ async function start() {
   });
   topologyDemo.addEventListener("click", () => {
     demoTopology = resetTopology(demoTopology);
+    persistAuthoring();
     status.textContent = `Topology reset · ${demoTopology.vertices.length} stable vertices retained · 0 triangles`;
   });
   deformDemo.addEventListener("click", () => {
