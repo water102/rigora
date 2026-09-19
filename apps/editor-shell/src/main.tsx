@@ -659,7 +659,9 @@ function Timeline() {
       clip?.channels.find((item) => item.id === clipboard?.sourceChannelId) ??
       clip?.channels[0];
     if (!channel || !clipboard || !clip) return;
-    store.pasteClipboard(clipboard, channel.id, playback.time);
+    store.runAtomic(authoringHistory, "Paste timeline keys", () => {
+      store.pasteClipboard(clipboard, channel.id, playback.time);
+    });
     redraw((value) => value + 1);
   };
   const selectTimeRange = () => {

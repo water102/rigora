@@ -8,6 +8,7 @@ import {
   createAutoKey,
   AuthoringPlayback,
   benchmarkAuthoringKeys,
+  copyKeys,
   virtualizeRows,
 } from "../../packages/animation/src/index.js";
 
@@ -126,6 +127,30 @@ it("restores authored snapshots through atomic history", () => {
   expect(store.active?.channels[0]?.keys[0]?.value).toBe(10);
   history.redo();
   expect(store.active?.channels[0]?.keys[0]?.value).toBe(30);
+});
+
+it("undoes clipboard paste without losing key identity", () => {
+  const store = new AnimationAuthoringStore();
+  store.create("walk", 2, 30, "walk");
+  const channel = store.addChannel({
+    id: "root.x",
+    kind: "bone",
+    targetId: "root",
+    property: "x",
+  });
+  store.upsertKey(channel.id, 0, 4);
+  const clipboard = copyKeys(store.active!.channels[0]!, [
+    store.active!.channels[0]!.keys[0]!.id,
+  ]);
+  const history = new AuthoringHistory();
+  store.runAtomic(history, "paste", () => {
+    store.pasteClipboard(clipboard, channel.id, 1);
+  });
+  expect(store.active?.channels[0]?.keys).toHaveLength(2);
+  history.undo();
+  expect(store.active?.channels[0]?.keys).toHaveLength(1);
+  history.redo();
+  expect(store.active?.channels[0]?.keys).toHaveLength(2);
 });
 
 it("authors event definitions and previews loop crossings", () => {
