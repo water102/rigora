@@ -372,6 +372,7 @@ interface UndoEntry {
 export class CommandHistory {
   readonly #undo: UndoEntry[] = [];
   readonly #redo: UndoEntry[] = [];
+  readonly #listeners = new Set<() => void>();
   #activeTransaction: {
     label: string;
     commands: UndoEntry[];
@@ -385,6 +386,17 @@ export class CommandHistory {
     readonly context: CommandContext,
     readonly limit = 100,
   ) {}
+
+  subscribe(listener: () => void): () => void {
+    this.#listeners.add(listener);
+    return () => this.#listeners.delete(listener);
+  }
+
+  #emit(): void {
+    for (const listener of this.#listeners) {
+      listener();
+    }
+  }
 
   execute<T>(command: EditorCommand<T>, payload?: T): void {
     if (this.#activeTransaction) {
@@ -409,6 +421,7 @@ export class CommandHistory {
       last.afterState = this.#nextState++;
       this.#currentState = last.afterState;
       this.#redo.length = 0;
+      this.#emit();
       return;
     }
 
@@ -425,6 +438,7 @@ export class CommandHistory {
     }
 
     this.#redo.length = 0;
+    this.#emit();
   }
 
   beginTransaction(label = "Transaction"): void {
@@ -488,6 +502,7 @@ export class CommandHistory {
     }
 
     this.#redo.length = 0;
+    this.#emit();
     return true;
   }
 
@@ -500,6 +515,7 @@ export class CommandHistory {
       tx.commands[i]!.command.undo(this.context);
     }
     this.#currentState = tx.beforeState;
+    this.#emit();
     return true;
   }
 
@@ -522,6 +538,7 @@ export class CommandHistory {
     entry.command.undo(this.context);
     this.#currentState = entry.beforeState;
     this.#redo.push(entry);
+    this.#emit();
     return true;
   }
 
@@ -532,11 +549,13 @@ export class CommandHistory {
     entry.command.execute(this.context, entry.payload);
     this.#currentState = entry.afterState;
     this.#undo.push(entry);
+    this.#emit();
     return true;
   }
 
   markClean(): void {
     this.#cleanState = this.#currentState;
+    this.#emit();
   }
 
   get isDirty(): boolean {
@@ -549,6 +568,7 @@ export class CommandHistory {
     this.#activeTransaction = null;
     this.#currentState = 0;
     this.#cleanState = 0;
+    this.#emit();
   }
 
   get canUndo(): boolean {

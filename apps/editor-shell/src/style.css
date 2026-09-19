@@ -23,7 +23,7 @@ body,
   height: 42px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   padding: 0 14px;
   background: #111a2b;
   border-bottom: 1px solid #2a3a53;
@@ -36,8 +36,42 @@ body,
 .muted {
   color: #8ea0b9;
 }
-.topbar button {
+.topbar .btn-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.topbar .project-badge {
+  background: #1c2b42;
+  color: #e2eeff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #334868;
+  font-size: 12px;
+  font-family: monospace;
+}
+.topbar .project-badge.dirty {
+  border-color: #e5a93c;
+  color: #f7ca7a;
+}
+.topbar .autosave-status {
+  font-size: 12px;
+  color: #6983a5;
   margin-left: auto;
+}
+.recovery-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #2b1f0c;
+  color: #ffcf70;
+  border-bottom: 1px solid #6b4d1b;
+  padding: 8px 16px;
+  font-size: 13px;
+}
+.recovery-banner button {
+  padding: 3px 8px;
+  font-size: 12px;
 }
 .dock {
   min-height: 0;
@@ -144,4 +178,8 @@ button {
   background: #1b2b43;
   color: inherit;
   cursor: pointer;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }

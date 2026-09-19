@@ -27,6 +27,17 @@ import {
   Camera2D,
   buildGridLines,
 } from "@rigora/editor-core";
+import {
+  createProject,
+  parseProject,
+  serializeProject,
+  ProjectLifecycle,
+  InMemoryProjectRepository,
+  AutosaveManager,
+  AutosaveController,
+  type HboneProject,
+} from "@rigora/project";
+import type { SkeletonData } from "@rigora/model";
 import "flexlayout-react/style/dark.css";
 import "./style.css";
 
@@ -290,15 +301,24 @@ function Inspector() {
           <label>
             Name
             <input
+              key={selected.id}
               defaultValue={selected.id}
               onBlur={(event) => {
+                const val = event.target.value.trim();
+                if (!val || val === selected.id) return;
+                const prev = selected.id;
+                const kind = selected.kind;
                 const command = {
-                  id: "rename",
-                  label: "Rename",
-                  execute: () => undefined,
-                  undo: () => undefined,
+                  id: `rename-${prev}`,
+                  label: `Rename ${prev} to ${val}`,
+                  execute: () => {
+                    services.selection.select({ kind, id: val });
+                  },
+                  undo: () => {
+                    services.selection.select({ kind, id: prev });
+                  },
                 };
-                services.commands.execute(command, event.target.value);
+                services.commands.execute(command, val);
               }}
             />
           </label>
@@ -340,15 +360,327 @@ const layout: IJsonModel = {
   },
 };
 
+function createSampleSkeleton(): SkeletonData {
+  return {
+    id: "hero-skeleton",
+    name: "Hero",
+    coordinateSystem: "x-right-y-up-ccw-radians",
+    fps: 30,
+    bones: [
+      {
+        id: "root",
+        name: "root",
+        length: 0,
+        setup: {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        inherit: "normal",
+      },
+      {
+        id: "body",
+        name: "Body",
+        parentId: "root",
+        length: 80,
+        setup: {
+          x: 0,
+          y: 80,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        inherit: "normal",
+      },
+      {
+        id: "hand",
+        name: "Hand",
+        parentId: "body",
+        length: 45,
+        setup: {
+          x: 55,
+          y: 55,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        inherit: "normal",
+      },
+      {
+        id: "head",
+        name: "Head",
+        parentId: "root",
+        length: 40,
+        setup: {
+          x: -5,
+          y: 70,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        inherit: "normal",
+      },
+    ],
+    slots: [],
+    skins: [],
+    constraints: [],
+    animations: [],
+    events: [],
+  };
+}
+
+function createSampleProject(): HboneProject {
+  return createProject({ main: createSampleSkeleton() });
+}
+
+class BrowserProjectRepository extends InMemoryProjectRepository {
+  constructor() {
+    super();
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith("rigora.fs.")) {
+          const path = key.slice("rigora.fs.".length);
+          const base64 = localStorage.getItem(key);
+          if (base64) {
+            const binary = Uint8Array.from(atob(base64), (c) =>
+              c.charCodeAt(0),
+            );
+            void super.write(path, binary);
+          }
+        }
+      }
+    } catch {
+      // Ignore storage access issues
+    }
+  }
+
+  override async write(path: string, bytes: Uint8Array): Promise<void> {
+    await super.write(path, bytes);
+    try {
+      let binary = "";
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]!);
+      }
+      localStorage.setItem(`rigora.fs.${path}`, btoa(binary));
+    } catch {
+      // Ignore quota issues
+    }
+  }
+
+  override async remove(path: string): Promise<void> {
+    await super.remove(path);
+    try {
+      localStorage.removeItem(`rigora.fs.${path}`);
+    } catch {
+      // Ignore storage access issues
+    }
+  }
+}
+
+function downloadFile(filename: string, bytes: Uint8Array): void {
+  const blob = new Blob([bytes as BlobPart], {
+    type: "application/octet-stream",
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 function App() {
+  const repo = useMemo(() => new BrowserProjectRepository(), []);
+  const lifecycle = useMemo(() => new ProjectLifecycle(repo), [repo]);
+  const [project, setProject] = useState<HboneProject>(() => {
+    const p = createSampleProject();
+    lifecycle.newProject(p, true);
+    return p;
+  });
+  const [projectName, setProjectName] = useState("hero.hbone");
+  const [recoveryPrompt, setRecoveryPrompt] = useState<HboneProject | null>(
+    null,
+  );
+  const [autosaveStatus, setAutosaveStatus] = useState("Autosaved");
+
+  const projectRef = useRef(project);
+  projectRef.current = project;
+
+  const autosaveManager = useMemo(() => new AutosaveManager(repo), [repo]);
+  const autosaveController = useMemo(
+    () =>
+      new AutosaveController(
+        autosaveManager,
+        projectName,
+        () => projectRef.current,
+        { debounceMs: 1500 },
+      ),
+    [autosaveManager, projectName],
+  );
+
   const services = useMemo(
     () =>
       createEditorServices(
-        { skeletons: [] },
+        project,
         new EditorPreferencesStore(new BrowserPreferences()),
       ),
     [],
   );
+
+  const [canUndo, setCanUndo] = useState(services.commands.canUndo);
+  const [canRedo, setCanRedo] = useState(services.commands.canRedo);
+  const [isDirty, setIsDirty] = useState(services.commands.isDirty);
+
+  useEffect(() => {
+    return services.commands.subscribe(() => {
+      setCanUndo(services.commands.canUndo);
+      setCanRedo(services.commands.canRedo);
+      const dirty = services.commands.isDirty;
+      setIsDirty(dirty);
+      if (dirty) {
+        autosaveController.markDirty();
+        setAutosaveStatus("Unsaved changes *");
+      }
+    });
+  }, [services, autosaveController]);
+
+  // Check for autosave recovery on startup
+  useEffect(() => {
+    void autosaveManager.recoverDetailed(projectName).then((res) => {
+      if (res.ok && res.project) {
+        setRecoveryPrompt(res.project);
+      }
+    });
+  }, [autosaveManager, projectName]);
+
+  // Periodic autosave debounce flush
+  useEffect(() => {
+    if (!isDirty) return;
+    const timer = setTimeout(async () => {
+      try {
+        await autosaveController.flush();
+        const time = new Date().toLocaleTimeString();
+        setAutosaveStatus(`Autosaved at ${time}`);
+      } catch (err) {
+        console.error("Autosave error", err);
+      }
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [isDirty, autosaveController]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleSave = async () => {
+    try {
+      const bytes = serializeProject(projectRef.current);
+      await repo.write(projectName, bytes);
+      services.commands.markClean();
+      await autosaveManager.clear(projectName);
+      const time = new Date().toLocaleTimeString();
+      setAutosaveStatus(`Saved at ${time}`);
+    } catch (err) {
+      console.error("Save error", err);
+    }
+  };
+
+  const handleSaveAs = () => {
+    const bytes = serializeProject(projectRef.current);
+    downloadFile(projectName, bytes);
+    void handleSave();
+  };
+
+  const handleNew = () => {
+    if (
+      isDirty &&
+      !window.confirm("Dự án có thay đổi chưa lưu. Bạn có chắc muốn tạo mới?")
+    ) {
+      return;
+    }
+    const newProj = createSampleProject();
+    lifecycle.newProject(newProj, true);
+    setProject(newProj);
+    setProjectName("untitled.hbone");
+    services.commands.clear();
+    setAutosaveStatus("New project created");
+  };
+
+  const handleOpenClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const buffer = await file.arrayBuffer();
+      const loaded = parseProject(new Uint8Array(buffer), {
+        verifyChecksums: true,
+      });
+      lifecycle.newProject(loaded, true);
+      setProject(loaded);
+      setProjectName(file.name);
+      services.commands.clear();
+      setAutosaveStatus(`Loaded ${file.name}`);
+    } catch (err) {
+      alert(
+        `Không thể nạp file .hbone: ${err instanceof Error ? err.message : String(err)}`,
+      );
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const handleRestoreRecovery = () => {
+    if (!recoveryPrompt) return;
+    lifecycle.newProject(recoveryPrompt, true);
+    setProject(recoveryPrompt);
+    services.commands.clear();
+    setRecoveryPrompt(null);
+    setAutosaveStatus("Restored from autosave");
+  };
+
+  const handleDismissRecovery = async () => {
+    await autosaveManager.clear(projectName);
+    setRecoveryPrompt(null);
+  };
+
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+      const mod = isMac ? e.metaKey : e.ctrlKey;
+      if (mod && (e.key === "z" || e.key === "Z")) {
+        e.preventDefault();
+        if (e.shiftKey) {
+          if (services.commands.canRedo) services.commands.redo();
+        } else {
+          if (services.commands.canUndo) services.commands.undo();
+        }
+      } else if (mod && (e.key === "y" || e.key === "Y")) {
+        e.preventDefault();
+        if (services.commands.canRedo) services.commands.redo();
+      } else if (mod && (e.key === "s" || e.key === "S")) {
+        e.preventDefault();
+        void handleSave();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [services, projectName]);
+
   const [model, setModel] = useState(() => Model.fromJson(layout));
   const factory = (node: TabNode) =>
     node.getComponent() === "stage" ? (
@@ -374,11 +706,62 @@ function App() {
       <div className="app">
         <header className="topbar">
           <strong>RIGORA</strong>
-          <span>Editor Foundation</span>
+          <span className={`project-badge ${isDirty ? "dirty" : ""}`}>
+            {projectName}
+            {isDirty ? " *" : ""}
+          </span>
+          <div className="btn-group">
+            <button onClick={handleNew} title="New project">
+              New
+            </button>
+            <button onClick={handleOpenClick} title="Open project (.hbone)">
+              Open
+            </button>
+            <button onClick={handleSave} title="Save project (Ctrl+S)">
+              Save
+            </button>
+            <button onClick={handleSaveAs} title="Download project (.hbone)">
+              Save As
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".hbone"
+              style={{ display: "none" }}
+              onChange={handleFileSelected}
+            />
+          </div>
+          <div className="btn-group">
+            <button
+              disabled={!canUndo}
+              onClick={() => services.commands.undo()}
+              title="Undo (Ctrl+Z)"
+            >
+              Undo
+            </button>
+            <button
+              disabled={!canRedo}
+              onClick={() => services.commands.redo()}
+              title="Redo (Ctrl+Y)"
+            >
+              Redo
+            </button>
+          </div>
+          <span className="autosave-status">{autosaveStatus}</span>
           <button onClick={() => setModel(Model.fromJson(layout))}>
             Reset layout
           </button>
         </header>
+        {recoveryPrompt && (
+          <div className="recovery-banner">
+            <span>
+              ⚠️ Phát hiện bản lưu tự động (Autosave) chưa lưu từ phiên làm việc
+              trước.
+            </span>
+            <button onClick={handleRestoreRecovery}>Khôi phục</button>
+            <button onClick={handleDismissRecovery}>Bỏ qua</button>
+          </div>
+        )}
         <div className="dock">
           <Layout model={model} factory={factory} onAction={onAction} />
         </div>

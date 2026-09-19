@@ -136,6 +136,12 @@ importers:
       '@rigora/editor-core':
         specifier: workspace:*
         version: link:../../packages/editor-core
+      '@rigora/model':
+        specifier: workspace:*
+        version: link:../../packages/model
+      '@rigora/project':
+        specifier: workspace:*
+        version: link:../../packages/project
       flexlayout-react:
         specifier: ^0.11.0
         version: 0.11.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)

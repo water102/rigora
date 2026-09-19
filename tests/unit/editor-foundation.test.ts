@@ -363,6 +363,35 @@ describe("Batch 15 command history", () => {
     expect(history.history.length).toBe(0);
     expect(history.isDirty).toBe(false);
   });
+
+  it("notifies subscribers on command execution, undo, redo, and clean state changes", () => {
+    const ctx = { val: 0 };
+    const history = new CommandHistory(ctx);
+    let notifications = 0;
+    const unsubscribe = history.subscribe(() => {
+      notifications++;
+    });
+    history.execute({
+      id: "step",
+      label: "Step",
+      execute: (c) => {
+        (c.val as number)++;
+      },
+      undo: (c) => {
+        (c.val as number)--;
+      },
+    });
+    expect(notifications).toBe(1);
+    history.undo();
+    expect(notifications).toBe(2);
+    history.redo();
+    expect(notifications).toBe(3);
+    history.markClean();
+    expect(notifications).toBe(4);
+    unsubscribe();
+    history.undo();
+    expect(notifications).toBe(4);
+  });
 });
 
 describe("Batch 16 project lifecycle", () => {
