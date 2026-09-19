@@ -521,19 +521,20 @@ function Timeline() {
   };
   const addTransformKey = (property: string) => {
     if (!clip) return;
-    const id = `root.${property}`;
-    const channel =
-      store.active?.channels.find((item) => item.id === id) ??
-      store.addChannel({
-        id,
-        kind: "bone",
-        targetId: "root",
-        property,
-      });
-    if (!channel || !clip) return;
-    const value = property.startsWith("scale") ? 1 : 0;
-    store.upsertKey(channel.id, playback.time, value, { type: "linear" });
-    store.syncRows();
+    store.runAtomic(authoringHistory, `Add ${property} key`, () => {
+      const id = `root.${property}`;
+      const channel =
+        store.active?.channels.find((item) => item.id === id) ??
+        store.addChannel({
+          id,
+          kind: "bone",
+          targetId: "root",
+          property,
+        });
+      const value = property.startsWith("scale") ? 1 : 0;
+      store.upsertKey(channel.id, playback.time, value, { type: "linear" });
+      store.syncRows();
+    });
     redraw((value) => value + 1);
   };
   const setSelectedCurve = (curve: "linear" | "stepped") => {
@@ -639,9 +640,11 @@ function Timeline() {
         : channel.kind === "slot" && channel.property !== "drawOrder"
           ? "ffffffff"
           : 0;
-    if (autoKeyMode === "off")
-      store.upsertKey(channel.id, playback.time, value);
-    else store.autoKeyValue(channel.id, playback.time, value);
+    store.runAtomic(authoringHistory, "Add timeline key", () => {
+      if (autoKeyMode === "off")
+        store.upsertKey(channel.id, playback.time, value);
+      else store.autoKeyValue(channel.id, playback.time, value);
+    });
     redraw((value) => value + 1);
   };
   const copySelectedKeys = () => {
