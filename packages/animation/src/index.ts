@@ -487,6 +487,77 @@ export interface AnimationClip {
   fps: number;
   channels: AuthoringChannel[];
 }
+
+export interface CanonicalTimelineSnapshot {
+  id: string;
+  type: string;
+  targetId?: string;
+  keyframes: Array<{ time: number; value: unknown; curve: CurveSpec }>;
+}
+
+export interface CanonicalAnimationSnapshot {
+  id: string;
+  name: string;
+  duration: number;
+  timelines: CanonicalTimelineSnapshot[];
+}
+
+export function toCanonicalAnimation(
+  clip: AnimationClip,
+): CanonicalAnimationSnapshot {
+  return {
+    id: clip.id,
+    name: clip.name,
+    duration: clip.duration,
+    timelines: clip.channels.map((channel) => ({
+      id: channel.id,
+      type: `${channel.kind}.${channel.property}`,
+      ...(channel.targetId === undefined ? {} : { targetId: channel.targetId }),
+      keyframes: channel.keys.map((key) => ({
+        time: key.time,
+        value: cloneAuthoring(key.value),
+        curve: key.curve,
+      })),
+    })),
+  };
+}
+
+export function fromCanonicalAnimation(
+  animation: CanonicalAnimationSnapshot,
+  fps: number,
+): AnimationClip {
+  finiteAuthoring(fps, "fps");
+  if (fps <= 0 || animation.duration < 0)
+    throw new Error("ANIMATION_AUTHORING_INVALID_CLIP");
+  return {
+    id: animation.id,
+    name: animation.name,
+    duration: animation.duration,
+    fps,
+    channels: animation.timelines.map((timeline) => {
+      const separator = timeline.type.indexOf(".");
+      const kind = (
+        separator < 0 ? timeline.type : timeline.type.slice(0, separator)
+      ) as AuthoringChannelKind;
+      const property =
+        separator < 0 ? timeline.type : timeline.type.slice(separator + 1);
+      return {
+        id: timeline.id,
+        kind,
+        ...(timeline.targetId === undefined
+          ? {}
+          : { targetId: timeline.targetId }),
+        property,
+        keys: timeline.keyframes.map((key, index) => ({
+          id: `${timeline.id}:key:${index}`,
+          time: key.time,
+          value: cloneAuthoring(key.value),
+          curve: key.curve,
+        })),
+      };
+    }),
+  };
+}
 export interface TimelineRow {
   id: string;
   label: string;
