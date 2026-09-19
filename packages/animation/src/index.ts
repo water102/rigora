@@ -1126,6 +1126,22 @@ export class AnimationAuthoringStore {
     this.selectKeys(ids);
     return ids;
   }
+
+  setKeyCurve(keyIds: readonly string[], curve: CurveSpec): void {
+    const ids = new Set(keyIds);
+    for (const channel of this.activeMutable().channels)
+      for (const key of channel.keys)
+        if (ids.has(key.id)) key.curve = cloneAuthoring(curve);
+  }
+
+  offsetNumericValues(keyIds: readonly string[], delta: number): void {
+    finiteAuthoring(delta, "delta");
+    const ids = new Set(keyIds);
+    for (const channel of this.activeMutable().channels)
+      for (const key of channel.keys)
+        if (ids.has(key.id) && typeof key.value === "number")
+          key.value += delta;
+  }
   autoKey: AutoKeyMode = "off";
   selectKeys(ids: readonly string[]): void {
     this.view.selectedKeyIds = new Set(ids);
