@@ -626,10 +626,21 @@ function Timeline() {
     } catch {
       return;
     }
+    const normalizedEventName = eventName.trim() || "event";
+    if (
+      !events.definitions.some(
+        (definition) => definition.name === normalizedEventName,
+      )
+    ) {
+      events.addDefinition({
+        id: normalizedEventName.toLowerCase().replace(/\s+/g, "-"),
+        name: normalizedEventName,
+      });
+    }
     events.upsert(
       `event-${events.events.length + 1}`,
       playback.time,
-      eventName.trim() || "event",
+      normalizedEventName,
       payload,
     );
     const eventChannel =
@@ -1246,6 +1257,14 @@ function Timeline() {
                 {event.name} @ {event.time.toFixed(2)}s
               </button>
             ))}
+            {events.definitions.length > 0 && (
+              <small className="muted">
+                Definitions:{" "}
+                {events.definitions
+                  .map((definition) => definition.name)
+                  .join(", ")}
+              </small>
+            )}
           </div>
         </>
       ) : (
