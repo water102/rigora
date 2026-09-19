@@ -35,6 +35,7 @@ import {
   selectMeshByPolygon,
   updateDrag,
   createDeformState,
+  inheritLinkedDeform,
   setDeformMode,
   zeroDeform,
   createEditablePath,
@@ -98,6 +99,11 @@ const deformZero = document.querySelector<HTMLButtonElement>("#deform-zero")!;
 const deformReset = document.querySelector<HTMLButtonElement>("#deform-reset")!;
 const pathClosed = document.querySelector<HTMLInputElement>("#path-closed")!;
 const pathPreview = document.querySelector<HTMLButtonElement>("#path-preview")!;
+const inheritDeform =
+  document.querySelector<HTMLInputElement>("#inherit-deform")!;
+const inheritDeformDemo = document.querySelector<HTMLButtonElement>(
+  "#inherit-deform-demo",
+)!;
 const canvasMode = document.querySelector<HTMLSelectElement>("#canvas-mode")!;
 const brushUndo = document.querySelector<HTMLButtonElement>("#brush-undo")!;
 const brushRedo = document.querySelector<HTMLButtonElement>("#brush-redo")!;
@@ -760,6 +766,19 @@ async function start() {
     const preview = pathConstraintPreview(demoPath, 8);
     const last = preview.at(-1);
     status.textContent = `Path preview · ${preview.length} samples · end tangent (${last?.tangent.x.toFixed(2) ?? "0.00"}, ${last?.tangent.y.toFixed(2) ?? "0.00"}).`;
+  });
+  inheritDeformDemo.addEventListener("click", () => {
+    const linked = new Array(demoDeform.offsets.length).fill(0);
+    demoDeform = {
+      ...demoDeform,
+      offsets: inheritLinkedDeform(
+        demoDeform.offsets,
+        linked,
+        inheritDeform.checked,
+      ),
+    };
+    persistAuthoring();
+    status.textContent = `Linked deform ${inheritDeform.checked ? "inherited" : "kept local"}.`;
   });
 
   function refresh() {
