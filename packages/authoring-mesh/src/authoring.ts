@@ -362,6 +362,7 @@ export interface BrushOptions {
   strength: number;
   falloff?: "linear" | "smoothstep" | "gaussian";
   mode: "add" | "subtract" | "replace" | "erase" | "smooth";
+  locked?: ReadonlySet<string>;
 }
 export function applyBrushAtPoint(
   weights: Record<string, Record<string, number>>,
@@ -398,6 +399,7 @@ export function applyBrushAtPoint(
         boneId,
         options.mode,
         options.strength * falloff,
+        options.locked,
       ),
     );
   }

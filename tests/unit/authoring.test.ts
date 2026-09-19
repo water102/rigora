@@ -175,6 +175,25 @@ describe("Phase 6 authoring core", () => {
     ]);
   });
 
+  it("skips locked bones during radius brush strokes", () => {
+    const weights = { v0: { root: 1 } };
+    const deltas = applyBrushAtPoint(
+      weights,
+      [{ id: "v0", position: { x: 0, y: 0 } }],
+      { x: 0, y: 0 },
+      "root",
+      {
+        radius: 1,
+        strength: 1,
+        mode: "erase",
+        falloff: "linear",
+        locked: new Set(["root"]),
+      },
+    );
+    expect(deltas).toEqual([]);
+    expect(weights.v0.root).toBe(1);
+  });
+
   it("survives repeated topology undo/redo without aliasing or losing IDs", () => {
     const initial = createAuthoringMesh([
       { x: 0, y: 0 },

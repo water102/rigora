@@ -75,6 +75,10 @@ const autoWeightPreview = document.querySelector<HTMLButtonElement>(
 const autoThreshold =
   document.querySelector<HTMLInputElement>("#auto-threshold")!;
 const brushMode = document.querySelector<HTMLSelectElement>("#brush-mode")!;
+const brushBone = document.querySelector<HTMLSelectElement>("#brush-bone")!;
+const brushRadius = document.querySelector<HTMLInputElement>("#brush-radius")!;
+const brushFalloff =
+  document.querySelector<HTMLSelectElement>("#brush-falloff")!;
 const brushStrength =
   document.querySelector<HTMLInputElement>("#brush-strength")!;
 const paintDemo = document.querySelector<HTMLButtonElement>("#paint-demo")!;
@@ -276,6 +280,20 @@ async function start() {
       id: vertex.id,
       position: vertex.position,
     }));
+  const brushOptions = () => ({
+    radius: Number(brushRadius.value),
+    strength: Number(brushStrength.value),
+    falloff: brushFalloff.value as "linear" | "smoothstep" | "gaussian",
+    mode: brushMode.value as
+      | "add"
+      | "subtract"
+      | "replace"
+      | "erase"
+      | "smooth",
+    locked: bindingLocked.checked
+      ? new Set([bindingBone.value])
+      : new Set<string>(),
+  });
   const canvasPoint = (event: PointerEvent) => ({
     x: (event.offsetX - 360) / 8,
     y: (260 - event.offsetY) / 8,
@@ -291,8 +309,8 @@ async function start() {
         demoWeights,
         brushVertices(),
         canvasPoint(event),
-        "bone-2",
-        { radius: 2, strength: 0.25, falloff: "smoothstep", mode: "add" },
+        brushBone.value,
+        brushOptions(),
       );
       brushStrokeCount = activeBrushDeltas.length;
       app.canvas.setPointerCapture(event.pointerId);
@@ -323,8 +341,8 @@ async function start() {
         demoWeights,
         brushVertices(),
         canvasPoint(event),
-        "bone-2",
-        { radius: 2, strength: 0.15, falloff: "smoothstep", mode: "add" },
+        brushBone.value,
+        { ...brushOptions(), strength: Number(brushStrength.value) * 0.6 },
       );
       activeBrushDeltas.push(...moveDeltas);
       brushStrokeCount += moveDeltas.length;
