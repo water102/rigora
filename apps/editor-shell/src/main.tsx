@@ -421,6 +421,7 @@ function Timeline() {
     cx2: 0.75,
     cy2: 0.9,
   });
+  const [fitGraphSelection, setFitGraphSelection] = useState(false);
   const [, redraw] = useState(0);
   const clip = store.active;
   const clips = store.clips;
@@ -461,7 +462,12 @@ function Timeline() {
       (key): key is typeof key & { value: number } =>
         typeof key.value === "number",
     ) ?? [];
-  const graphRange = graphKeys.length ? fitGraphRange(graphKeys) : undefined;
+  const graphRange = graphKeys.length
+    ? fitGraphRange(
+        graphKeys,
+        fitGraphSelection ? [...store.view.selectedKeyIds] : undefined,
+      )
+    : undefined;
   useEffect(() => {
     const skeleton = (services.project as HboneProject).skeletons.main;
     const animation = skeleton?.animations[0];
@@ -1113,7 +1119,18 @@ function Timeline() {
             onChange={(event) => playback.seek(Number(event.target.value))}
           />
           <div className="timeline-graph" aria-label="Graph editor">
-            <strong>Graph</strong>
+            <div className="timeline-graph-header">
+              <strong>Graph</strong>
+              <button onClick={() => setFitGraphSelection(false)}>
+                Fit all
+              </button>
+              <button
+                onClick={() => setFitGraphSelection(true)}
+                disabled={!store.view.selectedKeyIds.size}
+              >
+                Fit selection
+              </button>
+            </div>
             {graphRange && graphChannel ? (
               <svg viewBox="0 0 640 160" role="img">
                 <line x1="0" y1="150" x2="640" y2="150" />

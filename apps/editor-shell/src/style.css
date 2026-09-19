@@ -243,8 +243,15 @@ button:disabled {
   background: #151b26;
 }
 .timeline-graph strong {
-  display: block;
   margin-bottom: 4px;
+}
+.timeline-graph-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.timeline-graph-header strong {
+  margin-right: auto;
 }
 .timeline-graph svg {
   display: block;
