@@ -428,6 +428,8 @@ function Timeline() {
   });
   const [fitGraphSelection, setFitGraphSelection] = useState(false);
   const [snapInterval, setSnapInterval] = useState(1 / 30);
+  const [slotTargetId, setSlotTargetId] = useState("");
+  const [constraintTargetId, setConstraintTargetId] = useState("");
   const nudgeSelectedValues = (delta: number) => {
     if (!store.view.selectedKeyIds.size) return;
     store.runAtomic(
@@ -448,8 +450,8 @@ function Timeline() {
   const skeleton = (services.project as HboneProject).skeletons.main;
   const specialTargetId = (kind: "slot" | "constraint") =>
     kind === "slot"
-      ? (skeleton?.slots[0]?.id ?? "slot")
-      : (skeleton?.constraints[0]?.id ?? "constraint");
+      ? slotTargetId || skeleton?.slots[0]?.id || "slot"
+      : constraintTargetId || skeleton?.constraints[0]?.id || "constraint";
   const selectedBoneId =
     services.selection.current?.kind === "bone"
       ? services.selection.current.id
@@ -1039,6 +1041,22 @@ function Timeline() {
             >
               Redo authoring
             </button>
+            <label>
+              Slot target{" "}
+              <select
+                value={slotTargetId || skeleton?.slots[0]?.id || "slot"}
+                onChange={(event) => setSlotTargetId(event.target.value)}
+              >
+                {(skeleton?.slots.length
+                  ? skeleton.slots
+                  : [{ id: "slot" }]
+                ).map((slot) => (
+                  <option key={slot.id} value={slot.id}>
+                    {slot.id}
+                  </option>
+                ))}
+              </select>
+            </label>
             <button onClick={() => addSpecialChannel("slot", "attachment")}>
               Attachment
             </button>
@@ -1051,6 +1069,26 @@ function Timeline() {
             <button onClick={() => addSpecialChannel("slot", "drawOrder")}>
               Draw order
             </button>
+            <label>
+              Constraint target{" "}
+              <select
+                value={
+                  constraintTargetId ||
+                  skeleton?.constraints[0]?.id ||
+                  "constraint"
+                }
+                onChange={(event) => setConstraintTargetId(event.target.value)}
+              >
+                {(skeleton?.constraints.length
+                  ? skeleton.constraints
+                  : [{ id: "constraint" }]
+                ).map((constraint) => (
+                  <option key={constraint.id} value={constraint.id}>
+                    {constraint.id}
+                  </option>
+                ))}
+              </select>
+            </label>
             <button onClick={() => addSpecialChannel("constraint", "ikMix")}>
               IK mix
             </button>
