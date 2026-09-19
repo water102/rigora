@@ -1,0 +1,312 @@
+import {
+  localToMatrix,
+  multiply,
+  transformPoint,
+  type Mat2D,
+  type Transform2D,
+  type Vec2,
+} from "@rigora/math";
+import type { ConstraintData } from "@rigora/model";
+import type { Diagnostic } from "@rigora/diagnostics";
+
+export interface RuntimeBoneState {
+  id: string;
+  length: number;
+  parentIndex: number;
+  local: Transform2D;
+  world: Mat2D;
+}
+
+/** Helper to wrap an angle into [-PI, PI]. */
+export function wrapAngle(angle: number): number {
+  let a = angle % (2 * Math.PI);
+  if (a > Math.PI) a -= 2 * Math.PI;
+  if (a < -Math.PI) a += 2 * Math.PI;
+  return a;
+}
+
+/** Creates a 2D rotation matrix around origin. */
+export function rotationMatrix(rad: number): Mat2D {
+  const cos = Math.cos(rad);
+  const sin = Math.sin(rad);
+  return { a: cos, b: sin, c: -sin, d: cos, tx: 0, ty: 0 };
+}
+
+/**
+ * Solves One-Bone IK: rotates the bone so its length axis points toward target.
+ */
+export function solveOneBoneIk(
+  bone: RuntimeBoneState,
+  targetPos: Vec2,
+  mix: number,
+): void {
+  if (mix <= 0) return;
+
+  const originX = bone.world.tx;
+  const originY = bone.world.ty;
+  const dx = targetPos.x - originX;
+  const dy = targetPos.y - originY;
+  const dist = Math.hypot(dx, dy);
+  if (dist < 1e-6) return;
+
+  // Desired world angle from bone origin to target
+  const targetWorldAngle = Math.atan2(dy, dx);
+
+  // Current world angle of bone along its primary X-axis
+  const currentWorldAngle = Math.atan2(bone.world.b, bone.world.a);
+
+  const deltaAngle = wrapAngle(targetWorldAngle - currentWorldAngle);
+  const blendedDelta = deltaAngle * mix;
+
+  // Rotate world matrix in-place
+  const rot = rotationMatrix(blendedDelta);
+  const origin = { x: bone.world.tx, y: bone.world.ty };
+  const rotated = multiply(rot, { ...bone.world, tx: 0, ty: 0 });
+  bone.world = { ...rotated, tx: origin.x, ty: origin.y };
+}
+
+/**
+ * Solves Two-Bone Analytic IK via the Law of Cosines.
+ */
+export function solveTwoBoneIk(
+  parentBone: RuntimeBoneState,
+  childBone: RuntimeBoneState,
+  targetPos: Vec2,
+  mix: number,
+  bendDirection: 1 | -1,
+): void {
+  if (mix <= 0) return;
+
+  const p1x = parentBone.world.tx;
+  const p1y = parentBone.world.ty;
+  const p2x = childBone.world.tx;
+  const p2y = childBone.world.ty;
+
+  // Lengths in world units
+  const l1 = Math.max(
+    parentBone.length || Math.hypot(p2x - p1x, p2y - p1y),
+    1e-4,
+  );
+  const l2 = Math.max(childBone.length || 1, 1e-4);
+
+  const dx = targetPos.x - p1x;
+  const dy = targetPos.y - p1y;
+  const targetDist = Math.hypot(dx, dy);
+  if (targetDist < 1e-6) return;
+
+  // Law of cosines: cos(alpha2) = (D^2 - L1^2 - L2^2) / (2 * L1 * L2)
+  let cosAngle2 = (targetDist * targetDist - l1 * l1 - l2 * l2) / (2 * l1 * l2);
+  cosAngle2 = Math.max(-1, Math.min(1, cosAngle2));
+
+  // Child angle relative to parent
+  const angle2 = bendDirection * Math.acos(cosAngle2);
+
+  // Parent angle
+  const angleToTarget = Math.atan2(dy, dx);
+  const parentInternal = Math.atan2(
+    l2 * Math.sin(angle2),
+    l1 + l2 * Math.cos(angle2),
+  );
+  const angle1 = angleToTarget - parentInternal;
+
+  // Current world angles
+  const currentParentAngle = Math.atan2(parentBone.world.b, parentBone.world.a);
+  const currentChildAngle = Math.atan2(childBone.world.b, childBone.world.a);
+
+  const deltaParent = wrapAngle(angle1 - currentParentAngle) * mix;
+  const desiredChildWorldAngle = angle1 + angle2;
+  const deltaChild =
+    wrapAngle(desiredChildWorldAngle - currentChildAngle) * mix;
+
+  // Update parent world
+  const rot1 = rotationMatrix(deltaParent);
+  const parentRotated = multiply(rot1, { ...parentBone.world, tx: 0, ty: 0 });
+  parentBone.world = { ...parentRotated, tx: p1x, ty: p1y };
+
+  // New child origin from updated parent
+  const newChildOrigin = transformPoint(parentBone.world, {
+    x: parentBone.length || l1,
+    y: 0,
+  });
+
+  // Update child world
+  const rot2 = rotationMatrix(deltaChild);
+  const childRotated = multiply(rot2, { ...childBone.world, tx: 0, ty: 0 });
+  childBone.world = {
+    ...childRotated,
+    tx: newChildOrigin.x,
+    ty: newChildOrigin.y,
+  };
+}
+
+/**
+ * Solves Transform Constraint mixing rotation, translation, and scale from target to constrained bones.
+ */
+export function solveTransformConstraint(
+  targetBone: RuntimeBoneState,
+  constrainedBones: RuntimeBoneState[],
+  constraint: Extract<ConstraintData, { type: "transform" }>,
+): void {
+  for (const bone of constrainedBones) {
+    if (constraint.local) {
+      // Local mixing
+      if (constraint.relative) {
+        bone.local.rotation += targetBone.local.rotation * constraint.mixRotate;
+        bone.local.x += targetBone.local.x * constraint.mixTranslateX;
+        bone.local.y += targetBone.local.y * constraint.mixTranslateY;
+        bone.local.scaleX +=
+          (targetBone.local.scaleX - 1) * constraint.mixScaleX;
+        bone.local.scaleY +=
+          (targetBone.local.scaleY - 1) * constraint.mixScaleY;
+      } else {
+        bone.local.rotation =
+          bone.local.rotation * (1 - constraint.mixRotate) +
+          targetBone.local.rotation * constraint.mixRotate;
+        bone.local.x =
+          bone.local.x * (1 - constraint.mixTranslateX) +
+          targetBone.local.x * constraint.mixTranslateX;
+        bone.local.y =
+          bone.local.y * (1 - constraint.mixTranslateY) +
+          targetBone.local.y * constraint.mixTranslateY;
+        bone.local.scaleX =
+          bone.local.scaleX * (1 - constraint.mixScaleX) +
+          targetBone.local.scaleX * constraint.mixScaleX;
+        bone.local.scaleY =
+          bone.local.scaleY * (1 - constraint.mixScaleY) +
+          targetBone.local.scaleY * constraint.mixScaleY;
+      }
+    } else {
+      // World mixing
+      const targetWorldX = targetBone.world.tx;
+      const targetWorldY = targetBone.world.ty;
+      const targetRot = Math.atan2(targetBone.world.b, targetBone.world.a);
+
+      const boneRot = Math.atan2(bone.world.b, bone.world.a);
+      const deltaRot = wrapAngle(targetRot - boneRot) * constraint.mixRotate;
+
+      if (constraint.mixRotate > 0) {
+        const rot = rotationMatrix(deltaRot);
+        const origin = { x: bone.world.tx, y: bone.world.ty };
+        const rotated = multiply(rot, { ...bone.world, tx: 0, ty: 0 });
+        bone.world = { ...rotated, tx: origin.x, ty: origin.y };
+      }
+
+      if (constraint.mixTranslateX > 0 || constraint.mixTranslateY > 0) {
+        if (constraint.relative) {
+          bone.world.tx += targetWorldX * constraint.mixTranslateX;
+          bone.world.ty += targetWorldY * constraint.mixTranslateY;
+        } else {
+          bone.world.tx =
+            bone.world.tx * (1 - constraint.mixTranslateX) +
+            targetWorldX * constraint.mixTranslateX;
+          bone.world.ty =
+            bone.world.ty * (1 - constraint.mixTranslateY) +
+            targetWorldY * constraint.mixTranslateY;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Re-evaluates descendants' world transforms after upstream bone changes.
+ */
+export function refreshDescendants(
+  startIndex: number,
+  bones: RuntimeBoneState[],
+): void {
+  for (let i = startIndex + 1; i < bones.length; i++) {
+    const bone = bones[i]!;
+    if (bone.parentIndex >= startIndex) {
+      const parent = bones[bone.parentIndex]!;
+      bone.world = multiply(parent.world, localToMatrix(bone.local));
+    }
+  }
+}
+
+/**
+ * Executes all skeleton constraints in canonical list order.
+ */
+export function applyConstraints(
+  constraints: ConstraintData[],
+  bones: RuntimeBoneState[],
+  diagnostics: Diagnostic[],
+): void {
+  const boneMap = new Map<string, { bone: RuntimeBoneState; index: number }>();
+  for (let i = 0; i < bones.length; i++) {
+    boneMap.set(bones[i]!.id, { bone: bones[i]!, index: i });
+  }
+
+  for (const c of constraints) {
+    if (c.type === "ik") {
+      const targetEntry = boneMap.get(c.targetBoneId);
+      if (!targetEntry) {
+        diagnostics.push({
+          code: "RUNTIME_CONSTRAINT_TARGET_NOT_FOUND",
+          severity: "warning",
+          message: `IK target bone "${c.targetBoneId}" not found.`,
+          entityId: c.id,
+        });
+        continue;
+      }
+      const targetPos = {
+        x: targetEntry.bone.world.tx,
+        y: targetEntry.bone.world.ty,
+      };
+
+      if (c.boneIds.length === 1) {
+        const boneEntry = boneMap.get(c.boneIds[0]!);
+        if (boneEntry) {
+          solveOneBoneIk(boneEntry.bone, targetPos, c.mix);
+          refreshDescendants(boneEntry.index, bones);
+        }
+      } else if (c.boneIds.length >= 2) {
+        const parentEntry = boneMap.get(c.boneIds[0]!);
+        const childEntry = boneMap.get(c.boneIds[1]!);
+        if (parentEntry && childEntry) {
+          solveTwoBoneIk(
+            parentEntry.bone,
+            childEntry.bone,
+            targetPos,
+            c.mix,
+            c.bendDirection,
+          );
+          refreshDescendants(childEntry.index, bones);
+        }
+      }
+    } else if (c.type === "transform") {
+      const targetEntry = boneMap.get(c.targetBoneId);
+      if (!targetEntry) {
+        diagnostics.push({
+          code: "RUNTIME_CONSTRAINT_TARGET_NOT_FOUND",
+          severity: "warning",
+          message: `Transform target bone "${c.targetBoneId}" not found.`,
+          entityId: c.id,
+        });
+        continue;
+      }
+
+      const affectedBones: RuntimeBoneState[] = [];
+      let minAffectedIndex = bones.length;
+      for (const bId of c.boneIds) {
+        const entry = boneMap.get(bId);
+        if (entry) {
+          affectedBones.push(entry.bone);
+          if (entry.index < minAffectedIndex) minAffectedIndex = entry.index;
+        }
+      }
+
+      if (affectedBones.length > 0) {
+        solveTransformConstraint(targetEntry.bone, affectedBones, c);
+        refreshDescendants(minAffectedIndex, bones);
+      }
+    } else {
+      diagnostics.push({
+        code: "RUNTIME_CONSTRAINTS_UNSUPPORTED",
+        severity: "error",
+        message: `Constraint type "${c.type}" is unsupported in setup runtime.`,
+        entityId: c.id,
+      });
+    }
+  }
+}

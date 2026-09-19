@@ -11,7 +11,25 @@ import {
 import { validateSkeleton, type SkeletonData } from "@rigora/model";
 import type { Diagnostic } from "@rigora/diagnostics";
 import { MeshInstance, MeshRuntimeError, type DeformSpace } from "./mesh.js";
-export { MeshInstance, MeshRuntimeError, type DeformSpace };
+import {
+  applyConstraints,
+  solveOneBoneIk,
+  solveTwoBoneIk,
+  solveTransformConstraint,
+  refreshDescendants,
+  type RuntimeBoneState,
+} from "./constraints.js";
+export {
+  MeshInstance,
+  MeshRuntimeError,
+  type DeformSpace,
+  applyConstraints,
+  solveOneBoneIk,
+  solveTwoBoneIk,
+  solveTransformConstraint,
+  refreshDescendants,
+  type RuntimeBoneState,
+};
 
 export interface RegionSnapshot {
   slotId: string;
@@ -78,12 +96,6 @@ export function createPoseSnapshot(
       message,
       ...(entityId ? { entityId } : {}),
     });
-
-  if (data.constraints.length)
-    error(
-      "RUNTIME_CONSTRAINTS_UNSUPPORTED",
-      "Setup region runtime does not evaluate constraints.",
-    );
 
   const skinId = options?.skinId;
   const selected =
@@ -194,9 +206,20 @@ export function createPoseSnapshot(
       return { ...bone, setup };
     });
 
-    const hierarchy = compileTransformHierarchy(bones);
-    const world = evaluateTransformHierarchy(hierarchy);
     const lengths = new Map(bones.map((bone) => [bone.id, bone.length]));
+    const hierarchy = compileTransformHierarchy(bones);
+    const initialWorld = evaluateTransformHierarchy(hierarchy);
+
+    const runtimeBones: RuntimeBoneState[] = hierarchy.bones.map((bone, i) => ({
+      id: bone.id,
+      length: lengths.get(bone.id) ?? 0,
+      parentIndex: hierarchy.parentIndices[i]!,
+      local: { ...bone.setup },
+      world: { ...initialWorld[i]! },
+    }));
+
+    applyConstraints(data.constraints, runtimeBones, diagnostics);
+    const world = runtimeBones.map((b) => b.world);
     const snapshot: RenderSnapshot = {
       regions: [],
       meshes: [],

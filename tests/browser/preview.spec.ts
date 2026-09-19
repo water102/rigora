@@ -68,5 +68,12 @@ test("canonical weighted mesh and auto-mesh worker render on canvas", async ({
   await page.locator("#play-btn").click();
   await expect(page.locator("#play-btn")).toHaveText("Pause");
 
+  // Select canonical IK & constraints
+  await page.locator("#source").selectOption("ik");
+  await expect(page.locator("#status")).toContainText(
+    "Canonical IK & Constraints",
+  );
+  await expect(page.locator("#status")).toContainText("8 bones");
+
   expect(errors).toEqual([]);
 });
