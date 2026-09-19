@@ -18,13 +18,21 @@ export interface HistoryEntry {
 interface UndoEntry {
   command: EditorCommand<unknown>;
   payload: unknown;
+  beforeState: number;
+  afterState: number;
 }
 
 export class CommandHistory {
   readonly #undo: UndoEntry[] = [];
   readonly #redo: UndoEntry[] = [];
-  #activeTransaction: { label: string; commands: UndoEntry[] } | null = null;
-  #cleanIndex = 0;
+  #activeTransaction: {
+    label: string;
+    commands: UndoEntry[];
+    beforeState: number;
+  } | null = null;
+  #currentState = 0;
+  #cleanState = 0;
+  #nextState = 1;
 
   constructor(
     readonly context: CommandContext,
@@ -37,7 +45,10 @@ export class CommandHistory {
       this.#activeTransaction.commands.push({
         command: command as EditorCommand<unknown>,
         payload,
+        beforeState: this.#currentState,
+        afterState: this.#nextState++,
       });
+      this.#currentState = this.#activeTransaction.commands.at(-1)!.afterState;
       return;
     }
 
@@ -48,6 +59,8 @@ export class CommandHistory {
       last &&
       last.command.merge?.(command as EditorCommand<unknown>, payload)
     ) {
+      last.afterState = this.#nextState++;
+      this.#currentState = last.afterState;
       this.#redo.length = 0;
       return;
     }
@@ -55,13 +68,13 @@ export class CommandHistory {
     this.#undo.push({
       command: command as EditorCommand<unknown>,
       payload,
+      beforeState: this.#currentState,
+      afterState: this.#nextState++,
     });
+    this.#currentState = this.#undo.at(-1)!.afterState;
 
     if (this.#undo.length > this.limit) {
       this.#undo.shift();
-      if (this.#cleanIndex >= 0) {
-        this.#cleanIndex--;
-      }
     }
 
     this.#redo.length = 0;
@@ -71,7 +84,11 @@ export class CommandHistory {
     if (this.#activeTransaction) {
       throw new Error("TRANSACTION_ALREADY_ACTIVE");
     }
-    this.#activeTransaction = { label, commands: [] };
+    this.#activeTransaction = {
+      label,
+      commands: [],
+      beforeState: this.#currentState,
+    };
   }
 
   commitTransaction(): boolean {
@@ -85,10 +102,15 @@ export class CommandHistory {
       const single = tx.commands[0]!;
       const last = this.#undo[this.#undo.length - 1];
       if (last && last.command.merge?.(single.command, single.payload)) {
+        last.afterState = this.#nextState++;
+        this.#currentState = last.afterState;
         this.#redo.length = 0;
         return true;
       }
+      single.beforeState = this.#currentState;
+      single.afterState = this.#nextState++;
       this.#undo.push(single);
+      this.#currentState = single.afterState;
     } else {
       const entries = [...tx.commands];
       const compound: EditorCommand = {
@@ -105,14 +127,17 @@ export class CommandHistory {
           }
         },
       };
-      this.#undo.push({ command: compound, payload: undefined });
+      this.#undo.push({
+        command: compound,
+        payload: undefined,
+        beforeState: this.#currentState,
+        afterState: this.#nextState++,
+      });
+      this.#currentState = this.#undo.at(-1)!.afterState;
     }
 
     if (this.#undo.length > this.limit) {
       this.#undo.shift();
-      if (this.#cleanIndex >= 0) {
-        this.#cleanIndex--;
-      }
     }
 
     this.#redo.length = 0;
@@ -127,6 +152,7 @@ export class CommandHistory {
     for (let i = tx.commands.length - 1; i >= 0; i--) {
       tx.commands[i]!.command.undo(this.context);
     }
+    this.#currentState = tx.beforeState;
     return true;
   }
 
@@ -147,6 +173,7 @@ export class CommandHistory {
     const entry = this.#undo.pop();
     if (!entry) return false;
     entry.command.undo(this.context);
+    this.#currentState = entry.beforeState;
     this.#redo.push(entry);
     return true;
   }
@@ -156,23 +183,25 @@ export class CommandHistory {
     const entry = this.#redo.pop();
     if (!entry) return false;
     entry.command.execute(this.context, entry.payload);
+    this.#currentState = entry.afterState;
     this.#undo.push(entry);
     return true;
   }
 
   markClean(): void {
-    this.#cleanIndex = this.#undo.length;
+    this.#cleanState = this.#currentState;
   }
 
   get isDirty(): boolean {
-    return this.#undo.length !== this.#cleanIndex;
+    return this.#currentState !== this.#cleanState;
   }
 
   clear(): void {
     this.#undo.length = 0;
     this.#redo.length = 0;
     this.#activeTransaction = null;
-    this.#cleanIndex = 0;
+    this.#currentState = 0;
+    this.#cleanState = 0;
   }
 
   get canUndo(): boolean {

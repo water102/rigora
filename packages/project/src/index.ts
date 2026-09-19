@@ -154,7 +154,7 @@ export function serializeProject(project: HboneProject): Uint8Array {
     formatVersion: 1,
     generator: project.manifest.generator || "Rigora",
     createdAt: project.manifest.createdAt || new Date().toISOString(),
-    modifiedAt: new Date().toISOString(),
+    modifiedAt: project.manifest.modifiedAt || project.manifest.createdAt,
     skeletons: skeletonIds,
     assets: assetPaths,
     checksums,

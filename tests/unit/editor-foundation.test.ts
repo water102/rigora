@@ -15,6 +15,7 @@ describe("Batch 14 native project", () => {
   it("round-trips deterministic skeleton projects", () => {
     const p = createProject({ main: ikSkeleton().skeleton });
     const serialized = serializeProject(p);
+    expect(serializeProject(p)).toEqual(serialized);
     const decoded = parseProject(serialized);
     expect(decoded.skeletons.main!.bones.length).toBe(
       p.skeletons.main!.bones.length,
@@ -271,6 +272,24 @@ describe("Batch 15 command history", () => {
 
     // Redo makes it dirty again!
     history.redo();
+    expect(history.isDirty).toBe(true);
+  });
+
+  it("stays dirty when editing from an undone branch", () => {
+    const ctx = { value: 0 };
+    const change = (delta: number): EditorCommand => ({
+      id: `change-${delta}`,
+      label: "Change",
+      execute: (c) => (c.value = (c.value as number) + delta),
+      undo: (c) => (c.value = (c.value as number) - delta),
+    });
+    const history = new CommandHistory(ctx);
+    history.execute(change(1));
+    history.markClean();
+    history.execute(change(2));
+    history.undo();
+    history.execute(change(3));
+    expect(ctx.value).toBe(4);
     expect(history.isDirty).toBe(true);
   });
 
