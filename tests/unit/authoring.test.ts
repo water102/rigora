@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   applyWeightBrush,
   createAttachmentFromLibrary,
+  selectMeshByPolygon,
   applyVertexDrag,
   beginDrag,
   cancelDrag,
@@ -84,6 +85,28 @@ describe("Phase 6 authoring core", () => {
       { x: 1, y: 0 },
       { x: 0, y: 1 },
     ]);
+  });
+
+  it("uses coarse bounds plus exact geometry for prioritized mesh selection", () => {
+    const mesh = createAuthoringMesh(
+      [
+        { x: 0, y: 0 },
+        { x: 2, y: 0 },
+        { x: 0, y: 2 },
+        { x: 10, y: 10 },
+      ],
+      [0, 1, 2],
+    );
+    const polygon = [
+      { x: -1, y: -1 },
+      { x: 3, y: -1 },
+      { x: 3, y: 3 },
+      { x: -1, y: 3 },
+    ];
+    expect(selectMeshByPolygon(mesh, polygon, "vertex")).toEqual([0, 1, 2]);
+    expect(selectMeshByPolygon(mesh, polygon, "edge")).toEqual([0, 1, 2]);
+    expect(selectMeshByPolygon(mesh, polygon, "face")).toEqual([0]);
+    expect(selectMeshByPolygon(mesh, polygon, "boundary")).toEqual([0, 1, 2]);
   });
 
   it("builds deterministic auto-mesh previews from alpha", () => {

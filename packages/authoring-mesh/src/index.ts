@@ -1,4 +1,9 @@
 export {
+  selectMeshByPolygon,
+  type MeshSelectionPriority,
+} from "./selection.js";
+
+export {
   triangulatePolygon,
   generateGridMesh,
   triangulatePoints,
