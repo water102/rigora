@@ -16,6 +16,7 @@ import {
   snapPointToGrid,
   snapToGrid,
   framePoints,
+  HierarchyModel,
   type EditorCommand,
 } from "../../packages/editor-core/src/index.js";
 import { ikSkeleton } from "../fixtures/canonical/ik-skeleton.js";
@@ -651,5 +652,37 @@ describe("Batch 20 stage framing", () => {
     expect(() => framePoints(camera, [{ x: 0, y: 0 }], NaN)).toThrow(
       "STAGE_INVALID_PADDING",
     );
+  });
+});
+
+describe("Batch 21 hierarchy model", () => {
+  it("renames, reparents and removes subtrees safely", () => {
+    const tree = new HierarchyModel([
+      { id: "root", name: "Root" },
+      { id: "arm", name: "Arm", parentId: "root" },
+      { id: "hand", name: "Hand", parentId: "arm" },
+      { id: "leg", name: "Leg", parentId: "root" },
+    ]);
+    tree.rename("arm", "Upper Arm");
+    tree.reparent("hand", "leg");
+    expect(tree.get("arm")?.name).toBe("Upper Arm");
+    expect(tree.descendants("root").map((item) => item.id)).toEqual([
+      "arm",
+      "leg",
+      "hand",
+    ]);
+    expect(tree.remove("leg").map((item) => item.id)).toEqual(["leg", "hand"]);
+    expect(tree.get("hand")).toBeUndefined();
+  });
+  it("rejects invalid parents and cycles", () => {
+    const tree = new HierarchyModel([
+      { id: "root", name: "Root" },
+      { id: "child", name: "Child", parentId: "root" },
+    ]);
+    expect(() => tree.reparent("root", "child")).toThrow("HIERARCHY_CYCLE");
+    expect(() => tree.reparent("child", "missing")).toThrow(
+      "HIERARCHY_PARENT_NOT_FOUND",
+    );
+    expect(() => tree.rename("child", " ")).toThrow("HIERARCHY_INVALID_NAME");
   });
 });

@@ -245,6 +245,80 @@ export function framePoints(
   return bounds;
 }
 
+export interface HierarchyNode {
+  id: string;
+  name: string;
+  parentId?: string;
+}
+
+export class HierarchyModel<T extends HierarchyNode> {
+  #items: T[];
+  constructor(items: readonly T[] = []) {
+    this.#items = items.map((item) => ({ ...item }) as T);
+    this.#validate();
+  }
+  get items(): T[] {
+    return this.#items.map((item) => ({ ...item }) as T);
+  }
+  get(id: string): T | undefined {
+    const item = this.#items.find((candidate) => candidate.id === id);
+    return item ? ({ ...item } as T) : undefined;
+  }
+  rename(id: string, name: string): void {
+    const item = this.#require(id);
+    if (!name.trim()) throw new Error("HIERARCHY_INVALID_NAME");
+    item.name = name;
+  }
+  reparent(id: string, parentId?: string): void {
+    const item = this.#require(id);
+    if (
+      parentId === id ||
+      (parentId && this.descendants(id).some((child) => child.id === parentId))
+    )
+      throw new Error("HIERARCHY_CYCLE");
+    if (parentId && !this.#items.some((candidate) => candidate.id === parentId))
+      throw new Error("HIERARCHY_PARENT_NOT_FOUND");
+    if (parentId === undefined) delete item.parentId;
+    else item.parentId = parentId;
+  }
+  descendants(id: string): T[] {
+    const result: T[] = [];
+    const queue = [id];
+    while (queue.length) {
+      const parent = queue.shift()!;
+      for (const item of this.#items.filter(
+        (candidate) => candidate.parentId === parent,
+      )) {
+        result.push({ ...item } as T);
+        queue.push(item.id);
+      }
+    }
+    return result;
+  }
+  remove(id: string): T[] {
+    this.#require(id);
+    const removed = [this.#require(id), ...this.descendants(id)];
+    const removedIds = new Set(removed.map((item) => item.id));
+    this.#items = this.#items.filter((item) => !removedIds.has(item.id));
+    return removed.map((item) => ({ ...item }) as T);
+  }
+  #require(id: string): T {
+    const item = this.#items.find((candidate) => candidate.id === id);
+    if (!item) throw new Error(`HIERARCHY_NOT_FOUND: ${id}`);
+    return item;
+  }
+  #validate(): void {
+    const ids = new Set<string>();
+    for (const item of this.#items) {
+      if (ids.has(item.id)) throw new Error("HIERARCHY_DUPLICATE_ID");
+      ids.add(item.id);
+    }
+    for (const item of this.#items)
+      if (item.parentId && !ids.has(item.parentId))
+        throw new Error("HIERARCHY_PARENT_NOT_FOUND");
+  }
+}
+
 interface UndoEntry {
   command: EditorCommand<unknown>;
   payload: unknown;
