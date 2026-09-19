@@ -2,5 +2,7 @@ node_modules/
 dist/
 coverage/
 test-results/
+src-tauri/target/
+src-tauri/gen/
 playwright-report/
 *.tsbuildinfo
