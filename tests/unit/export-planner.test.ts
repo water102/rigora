@@ -8,6 +8,8 @@ import {
   planDeterministicAtlas,
 } from "../../packages/format-export/src/index.js";
 import { minimalSkeleton } from "../fixtures/canonical/minimal.js";
+import { importSpine38 } from "../../packages/format-spine-38/src/index.js";
+import { importDragonBones55 } from "../../packages/format-dragonbones/src/index.js";
 
 describe("export planning", () => {
   it("blocks unresolved preserved semantics before bytes are written", () => {
@@ -41,5 +43,45 @@ describe("export planning", () => {
         { name: "a", width: 5, height: 5 },
       ]).map((x) => x.name),
     ).toEqual(["a", "z"]);
+  });
+  it("round-trips a region through both compatibility targets", () => {
+    const skeleton = minimalSkeleton();
+    const attachment = skeleton.skins[0]!.attachments["slot-1"]![0]!;
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "region",
+        id: attachment.id,
+        name: "hero",
+        textureId: "hero.png",
+        transform:
+          attachment.type === "region"
+            ? attachment.transform
+            : {
+                x: 0,
+                y: 0,
+                rotation: 0,
+                scaleX: 1,
+                scaleY: 1,
+                shearX: 0,
+                shearY: 0,
+              },
+        width: 32,
+        height: 16,
+      },
+    ];
+    const spine = importSpine38(serializeSpine38(skeleton), {
+      namespace: "rt-spine",
+      mode: "strict",
+    });
+    expect(spine.success).toBe(true);
+    if (spine.success) expect(spine.skeletons[0]!.bones[0]!.name).toBe("root");
+    const dragon = importDragonBones55(serializeDragonBones55(skeleton), {
+      namespace: "rt-db",
+      mode: "strict",
+      textures: new Map([["hero", { id: "hero.png", width: 32, height: 16 }]]),
+    });
+    expect(dragon.success, JSON.stringify(dragon)).toBe(true);
+    if (dragon.success)
+      expect(dragon.skeletons[0]!.skins[0]!.attachments).toBeTruthy();
   });
 });

@@ -137,9 +137,7 @@ export interface Spine38Ast {
   };
   bones: unknown[];
   slots: unknown[];
-  skins: Record<string, unknown>;
-  animations: Record<string, unknown>;
-  events: Record<string, unknown>;
+  skins: unknown[];
 }
 const round = (n: number) => Number(n.toFixed(6));
 const color = (c: { r: number; g: number; b: number; a: number }) =>
@@ -191,49 +189,41 @@ export function toSpine38Ast(
       color: color(s.color),
       blend: s.blendMode,
     })),
-    skins: Object.fromEntries(
-      skeleton.skins.map((s) => [
-        s.name,
-        Object.fromEntries(
-          Object.entries(s.attachments).map(([slot, as]) => [
-            skeleton.slots.find((x) => x.id === slot)?.name ?? slot,
-            Object.fromEntries(
-              as.map((a) => [
-                a.name,
-                a.type === "region"
+    skins: skeleton.skins.map((s) => ({
+      name: s.name,
+      attachments: Object.fromEntries(
+        Object.entries(s.attachments).map(([slot, as]) => [
+          skeleton.slots.find((x) => x.id === slot)?.name ?? slot,
+          Object.fromEntries(
+            as.map((a) => [
+              a.name,
+              a.type === "region"
+                ? {
+                    name: a.name,
+                    path: a.name,
+                    x: round(a.transform.x),
+                    y: round(a.transform.y),
+                    rotation: round((a.transform.rotation * 180) / Math.PI),
+                    width: round(a.width),
+                    height: round(a.height),
+                  }
+                : a.type === "mesh"
                   ? {
                       name: a.name,
-                      path: a.name,
-                      x: round(a.transform.x),
-                      y: round(a.transform.y),
-                      rotation: round((a.transform.rotation * 180) / Math.PI),
-                      width: round(a.width),
-                      height: round(a.height),
+                      type: "mesh",
+                      uvs: a.uvs.flatMap((v) => [round(v.x), round(v.y)]),
+                      triangles: a.triangles,
+                      vertices: a.vertices.flatMap((v) => [
+                        round(v.x),
+                        round(v.y),
+                      ]),
                     }
-                  : a.type === "mesh"
-                    ? {
-                        name: a.name,
-                        type: "mesh",
-                        uvs: a.uvs.flatMap((v) => [round(v.x), round(v.y)]),
-                        triangles: a.triangles,
-                        vertices: a.vertices.flatMap((v) => [
-                          round(v.x),
-                          round(v.y),
-                        ]),
-                      }
-                    : { name: a.name, type: a.type },
-              ]),
-            ),
-          ]),
-        ),
-      ]),
-    ),
-    animations: Object.fromEntries(
-      skeleton.animations.map((a) => [a.name, {}]),
-    ),
-    events: Object.fromEntries(
-      skeleton.events.map((e) => [e.name, e.defaults ?? {}]),
-    ),
+                  : { name: a.name, type: a.type },
+            ]),
+          ),
+        ]),
+      ),
+    })),
   };
 }
 export function serializeSpine38(
