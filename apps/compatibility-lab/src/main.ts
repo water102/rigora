@@ -35,6 +35,8 @@ import {
   selectMeshByPolygon,
   updateDrag,
   createDeformState,
+  setDeformMode,
+  zeroDeform,
   createEditablePath,
   pathTangents,
   setDeformOffset,
@@ -90,6 +92,9 @@ const heatmapDemo = document.querySelector<HTMLButtonElement>("#heatmap-demo")!;
 const topologyDemo =
   document.querySelector<HTMLButtonElement>("#topology-demo")!;
 const deformDemo = document.querySelector<HTMLButtonElement>("#deform-demo")!;
+const deformMode = document.querySelector<HTMLSelectElement>("#deform-mode")!;
+const deformZero = document.querySelector<HTMLButtonElement>("#deform-zero")!;
+const deformReset = document.querySelector<HTMLButtonElement>("#deform-reset")!;
 const canvasMode = document.querySelector<HTMLSelectElement>("#canvas-mode")!;
 const brushUndo = document.querySelector<HTMLButtonElement>("#brush-undo")!;
 const brushRedo = document.querySelector<HTMLButtonElement>("#brush-redo")!;
@@ -722,6 +727,25 @@ async function start() {
     deform = setDeformOffset(deform, 0, { x: 3, y: 1 });
     deform = keyDeform(deform, 0.5);
     status.textContent = `Deform key preview · t=0.50s · offset (${deform.offsets[0]}, ${deform.offsets[1]})`;
+  });
+  deformMode.addEventListener("change", () => {
+    demoDeform = setDeformMode(
+      demoDeform,
+      deformMode.value as "setup" | "animation",
+    );
+    persistAuthoring();
+    status.textContent = `Deform mode: ${demoDeform.mode}.`;
+  });
+  deformZero.addEventListener("click", () => {
+    demoDeform = zeroDeform(demoDeform);
+    persistAuthoring();
+    status.textContent = "Deform offsets zeroed.";
+  });
+  deformReset.addEventListener("click", () => {
+    demoDeform = createDeformState(demoTopology.vertices.length);
+    deformMode.value = demoDeform.mode;
+    persistAuthoring();
+    status.textContent = "Deform state reset.";
   });
 
   function refresh() {
