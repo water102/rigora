@@ -509,6 +509,60 @@ export function scaleKeyTimes(
   });
 }
 
+export interface KeyClipboard {
+  sourceChannelId: string;
+  origin: number;
+  keys: readonly AuthoredKey[];
+}
+
+export function copyKeys(
+  channel: AuthoringChannel,
+  keyIds: readonly string[],
+): KeyClipboard {
+  const ids = new Set(keyIds);
+  const keys = channel.keys
+    .filter((key) => ids.has(key.id))
+    .map(cloneAuthoring);
+  if (!keys.length) throw new Error("ANIMATION_AUTHORING_NO_SELECTED_KEYS");
+  return {
+    sourceChannelId: channel.id,
+    origin: Math.min(...keys.map((key) => key.time)),
+    keys,
+  };
+}
+
+export function pasteKeys(
+  clipboard: KeyClipboard,
+  channel: AuthoringChannel,
+  at: number,
+  duration: number,
+  idFactory: (prefix: string) => string,
+): AuthoredKey[] {
+  assertTime(at, duration);
+  const pasted = clipboard.keys.map((key) => {
+    const time = at + key.time - clipboard.origin;
+    assertTime(time, duration);
+    return { ...cloneAuthoring(key), id: idFactory("key"), time };
+  });
+  channel.keys.push(...pasted);
+  channel.keys.sort((a, b) => a.time - b.time);
+  return cloneAuthoring(pasted);
+}
+
+export interface EventPreviewEntry<T = unknown> {
+  time: number;
+  name: string;
+  payload?: T;
+}
+
+export function previewEvents<T>(
+  events: readonly EventPreviewEntry<T>[],
+  time: number,
+): EventPreviewEntry<T>[] {
+  finiteAuthoring(time, "time");
+  return events.filter((event) => event.time <= time).map(cloneAuthoring);
+}
+
 function finiteAuthoring(value: number, name: string): void {
   if (!Number.isFinite(value))
     throw new Error(`ANIMATION_AUTHORING_INVALID_${name.toUpperCase()}`);
