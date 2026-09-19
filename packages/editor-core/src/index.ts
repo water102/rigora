@@ -107,7 +107,7 @@ export class CommandHistory {
         this.#redo.length = 0;
         return true;
       }
-      single.beforeState = this.#currentState;
+      single.beforeState = tx.beforeState;
       single.afterState = this.#nextState++;
       this.#undo.push(single);
       this.#currentState = single.afterState;
@@ -130,7 +130,7 @@ export class CommandHistory {
       this.#undo.push({
         command: compound,
         payload: undefined,
-        beforeState: this.#currentState,
+        beforeState: tx.beforeState,
         afterState: this.#nextState++,
       });
       this.#currentState = this.#undo.at(-1)!.afterState;

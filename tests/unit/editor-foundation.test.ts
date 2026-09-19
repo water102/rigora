@@ -293,6 +293,34 @@ describe("Batch 15 command history", () => {
     expect(history.isDirty).toBe(true);
   });
 
+  it("restores clean state when undoing a committed transaction", () => {
+    const ctx = { value: 0 };
+    const change = (delta: number): EditorCommand => ({
+      id: `change-${delta}`,
+      label: "Change",
+      execute: (c) => (c.value = (c.value as number) + delta),
+      undo: (c) => (c.value = (c.value as number) - delta),
+    });
+    const history = new CommandHistory(ctx);
+    history.markClean();
+    expect(history.isDirty).toBe(false);
+
+    history.beginTransaction("Batch Edit");
+    history.execute(change(10));
+    history.execute(change(20));
+    history.commitTransaction();
+    expect(ctx.value).toBe(30);
+    expect(history.isDirty).toBe(true);
+
+    history.undo();
+    expect(ctx.value).toBe(0);
+    expect(history.isDirty).toBe(false);
+
+    history.redo();
+    expect(ctx.value).toBe(30);
+    expect(history.isDirty).toBe(true);
+  });
+
   it("enforces history limit and clear method", () => {
     const ctx = { n: 0 };
     const inc: EditorCommand = {
