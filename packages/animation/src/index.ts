@@ -1130,6 +1130,18 @@ export class AnimationAuthoringStore {
     }
     return created;
   }
+  pasteClipboard(
+    clipboard: KeyClipboard,
+    channelId: string,
+    at: number,
+  ): string[] {
+    const clip = this.activeMutable();
+    const channel = clip.channels.find((item) => item.id === channelId);
+    if (!channel) throw new Error("ANIMATION_AUTHORING_CHANNEL_NOT_FOUND");
+    return pasteKeys(clipboard, channel, at, clip.duration, (prefix) =>
+      this.nextId(prefix),
+    ).map((key) => key.id);
+  }
   setAutoKey(mode: AutoKeyMode): void {
     this.autoKey = mode;
   }

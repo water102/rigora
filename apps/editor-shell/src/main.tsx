@@ -42,6 +42,8 @@ import {
   AnimationAuthoringStore,
   AuthoringPlayback,
   EventAuthoringTrack,
+  copyKeys,
+  type KeyClipboard,
   virtualizeRows,
 } from "@rigora/animation";
 import "flexlayout-react/style/dark.css";
@@ -405,6 +407,7 @@ function Timeline() {
   const [selectionStart, setSelectionStart] = useState(0);
   const [selectionEnd, setSelectionEnd] = useState(1);
   const [rowScrollTop, setRowScrollTop] = useState(0);
+  const [clipboard, setClipboard] = useState<KeyClipboard | null>(null);
   const [, redraw] = useState(0);
   const clip = store.active;
   const rowWindow = virtualizeRows(store.view.rows, rowScrollTop, 220, 24);
@@ -517,6 +520,21 @@ function Timeline() {
     store.upsertKey(channel.id, playback.time, value);
     redraw((value) => value + 1);
   };
+  const copySelectedKeys = () => {
+    const channel = clip?.channels.find((item) =>
+      item.keys.some((key) => store.view.selectedKeyIds.has(key.id)),
+    );
+    if (channel)
+      setClipboard(copyKeys(channel, [...store.view.selectedKeyIds]));
+  };
+  const pasteClipboard = () => {
+    const channel =
+      clip?.channels.find((item) => item.id === clipboard?.sourceChannelId) ??
+      clip?.channels[0];
+    if (!channel || !clipboard || !clip) return;
+    store.pasteClipboard(clipboard, channel.id, playback.time);
+    redraw((value) => value + 1);
+  };
   const selectTimeRange = () => {
     store.selectKeysInBox(selectionStart, selectionEnd);
     redraw((value) => value + 1);
@@ -612,6 +630,15 @@ function Timeline() {
             <button onClick={() => playback.step(1)}>Frame +1</button>
             <button onClick={addRotationKey}>Key rotation</button>
             <button onClick={addEvent}>Add event</button>
+            <button
+              onClick={copySelectedKeys}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              Copy
+            </button>
+            <button onClick={pasteClipboard} disabled={!clipboard}>
+              Paste
+            </button>
             <button onClick={applyToProject}>Apply to project</button>
             <button onClick={() => addSpecialChannel("slot", "attachment")}>
               Attachment
