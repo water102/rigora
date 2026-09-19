@@ -468,6 +468,37 @@ function Timeline() {
         fitGraphSelection ? [...store.view.selectedKeyIds] : undefined,
       )
     : undefined;
+  const graphPath = graphRange
+    ? graphKeys.reduce((path, key, index) => {
+        const x =
+          ((key.time - graphRange.start) /
+            (graphRange.end - graphRange.start)) *
+          640;
+        const y =
+          150 -
+          ((key.value - graphRange.valueMin) /
+            (graphRange.valueMax - graphRange.valueMin)) *
+            150;
+        if (index === 0) return `M ${x} ${y}`;
+        const previous = graphKeys[index - 1]!;
+        const previousX =
+          ((previous.time - graphRange.start) /
+            (graphRange.end - graphRange.start)) *
+          640;
+        const previousY =
+          150 -
+          ((previous.value - graphRange.valueMin) /
+            (graphRange.valueMax - graphRange.valueMin)) *
+            150;
+        if (previous.curve.type === "stepped") return `${path} H ${x} V ${y}`;
+        if (previous.curve.type === "bezier") {
+          const dx = x - previousX;
+          const dy = y - previousY;
+          return `${path} C ${previousX + dx * previous.curve.cx1} ${previousY + dy * previous.curve.cy1} ${x - dx * (1 - previous.curve.cx2)} ${y - dy * (1 - previous.curve.cy2)} ${x} ${y}`;
+        }
+        return `${path} L ${x} ${y}`;
+      }, "")
+    : "";
   useEffect(() => {
     const skeleton = (services.project as HboneProject).skeletons.main;
     const animation = skeleton?.animations[0];
@@ -1170,23 +1201,7 @@ function Timeline() {
               <svg viewBox="0 0 640 160" role="img">
                 <line x1="0" y1="150" x2="640" y2="150" />
                 <line x1="0" y1="0" x2="0" y2="150" />
-                <polyline
-                  fill="none"
-                  points={graphKeys
-                    .map((key) => {
-                      const x =
-                        ((key.time - graphRange.start) /
-                          (graphRange.end - graphRange.start)) *
-                        640;
-                      const y =
-                        150 -
-                        ((key.value - graphRange.valueMin) /
-                          (graphRange.valueMax - graphRange.valueMin)) *
-                          150;
-                      return `${x},${y}`;
-                    })
-                    .join(" ")}
-                />
+                <path fill="none" d={graphPath} />
                 {graphKeys.map((key) => {
                   const x =
                     ((key.time - graphRange.start) /

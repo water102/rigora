@@ -260,7 +260,8 @@ button:disabled {
   background: repeating-linear-gradient(0deg, transparent 0 29px, #273142 30px);
 }
 .timeline-graph line,
-.timeline-graph polyline {
+.timeline-graph polyline,
+.timeline-graph path {
   stroke: #68b3ff;
   stroke-width: 1.5;
 }
