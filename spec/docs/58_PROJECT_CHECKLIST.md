@@ -147,24 +147,24 @@
 - [ ] bone CRUD/reparent/transform
 - [ ] slot/attachment
 - [ ] constraints
-- [ ] animation keys
+- [x] animation keys
 - [ ] mesh topology
 - [ ] weight stroke
-- [ ] grouping/transaction
+- [x] grouping/transaction
 - [ ] merge
 - [ ] AI command schema
 
 ## Timeline/graph
-- [ ] animation list
-- [ ] timeline
-- [ ] snapping
-- [ ] multi-select
-- [ ] move/scale/copy keys
-- [ ] auto key
-- [ ] graph
-- [ ] Bezier handles
-- [ ] events
-- [ ] slot/constraint channels
+- [x] animation list
+- [x] timeline
+- [x] snapping
+- [x] multi-select
+- [x] move/scale/copy keys
+- [x] auto key
+- [x] graph
+- [x] Bezier handles
+- [x] events
+- [x] slot/constraint channels
 
 ## Mesh/weights
 - [ ] topology editor
