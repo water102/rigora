@@ -563,6 +563,72 @@ export function previewEvents<T>(
   return events.filter((event) => event.time <= time).map(cloneAuthoring);
 }
 
+export interface AuthoringCommand {
+  label: string;
+  do(): void;
+  undo(): void;
+}
+
+export class AuthoringHistory {
+  #undo: AuthoringCommand[] = [];
+  #redo: AuthoringCommand[] = [];
+  #transaction: AuthoringCommand[] | null = null;
+
+  get canUndo(): boolean {
+    return this.#undo.length > 0;
+  }
+  get canRedo(): boolean {
+    return this.#redo.length > 0;
+  }
+  execute(command: AuthoringCommand): void {
+    command.do();
+    if (this.#transaction) this.#transaction.push(command);
+    else this.#undo.push(command);
+    this.#redo = [];
+  }
+  begin(label = "Transaction"): void {
+    if (this.#transaction)
+      throw new Error("ANIMATION_AUTHORING_TRANSACTION_NESTED");
+    this.#transaction = [];
+    this.#transaction.push({ label, do() {}, undo() {} });
+  }
+  commit(): void {
+    if (!this.#transaction)
+      throw new Error("ANIMATION_AUTHORING_TRANSACTION_MISSING");
+    const [header, ...commands] = this.#transaction;
+    this.#transaction = null;
+    if (!commands.length) return;
+    this.#undo.push({
+      label: header!.label,
+      do() {
+        commands.forEach((command) => command.do());
+      },
+      undo() {
+        [...commands].reverse().forEach((command) => command.undo());
+      },
+    });
+  }
+  cancel(): void {
+    if (!this.#transaction)
+      throw new Error("ANIMATION_AUTHORING_TRANSACTION_MISSING");
+    const [, ...commands] = this.#transaction;
+    this.#transaction = null;
+    [...commands].reverse().forEach((command) => command.undo());
+  }
+  undo(): void {
+    const command = this.#undo.pop();
+    if (!command) return;
+    command.undo();
+    this.#redo.push(command);
+  }
+  redo(): void {
+    const command = this.#redo.pop();
+    if (!command) return;
+    command.do();
+    this.#undo.push(command);
+  }
+}
+
 function finiteAuthoring(value: number, name: string): void {
   if (!Number.isFinite(value))
     throw new Error(`ANIMATION_AUTHORING_INVALID_${name.toUpperCase()}`);
