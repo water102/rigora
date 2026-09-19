@@ -260,8 +260,11 @@ async function start() {
   }
   let vertexDrag: ReturnType<typeof beginDrag> | null = null;
   let lassoPoints: Array<{ x: number; y: number }> = [];
+  let selectionStart: { x: number; y: number } | null = null;
   const isSelectionMode = () =>
-    canvasMode.value === "lasso" || canvasMode.value.startsWith("select-");
+    canvasMode.value === "lasso" ||
+    canvasMode.value === "marquee" ||
+    canvasMode.value.startsWith("select-");
   const selectionPriority = () =>
     canvasMode.value === "select-edge"
       ? "edge"
@@ -304,7 +307,8 @@ async function start() {
   });
   app.canvas.addEventListener("pointerdown", (event) => {
     if (isSelectionMode()) {
-      lassoPoints = [canvasPoint(event)];
+      selectionStart = canvasPoint(event);
+      lassoPoints = [selectionStart];
       app.canvas.setPointerCapture(event.pointerId);
       return;
     }
@@ -336,7 +340,17 @@ async function start() {
   });
   app.canvas.addEventListener("pointermove", (event) => {
     if (isSelectionMode() && lassoPoints.length) {
-      lassoPoints.push(canvasPoint(event));
+      const point = canvasPoint(event);
+      if (canvasMode.value === "marquee" && selectionStart) {
+        lassoPoints = [
+          selectionStart,
+          { x: point.x, y: selectionStart.y },
+          point,
+          { x: selectionStart.x, y: point.y },
+        ];
+      } else {
+        lassoPoints.push(point);
+      }
       status.textContent = `Lasso preview · ${lassoPoints.length} points`;
       return;
     }
@@ -378,6 +392,7 @@ async function start() {
           ? lassoSelection(demoTopology.vertices, lassoPoints)
           : selectMeshByPolygon(demoTopology, lassoPoints, selectionPriority());
       lassoPoints = [];
+      selectionStart = null;
       app.canvas.releasePointerCapture(event.pointerId);
       status.textContent = `Lasso selection · ${selected.length} ${selectionPriority()} items: ${selected.join(", ") || "none"}`;
       return;
@@ -424,6 +439,7 @@ async function start() {
   app.canvas.addEventListener("pointercancel", () => {
     vertexDrag = null;
     lassoPoints = [];
+    selectionStart = null;
     brushStrokeCount = 0;
     status.textContent = "Canvas gesture cancelled.";
   });
