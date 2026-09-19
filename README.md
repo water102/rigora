@@ -64,6 +64,6 @@ pnpm tauri:dev
 | **Phase 3** | Constraints (IK, Transform, Path Constraints)                                       | ✅ Complete |
 | **Phase 4** | Editor Foundation (Shell, Docking, Stage, Hierarchy, Inspector, Lifecycle, Tauri 2) | ✅ Complete |
 | **Phase 5** | Animation Authoring (Timeline, Dope Sheet, Curves, Keyframes)                       | ✅ Complete |
-| **Phase 6** | Mesh & Weight Authoring UI                                                          |   🚀 Next   |
-| **Phase 7** | Export Compatibility (Spine / DragonBones / Native)                                 |  Scheduled  |
+| **Phase 6** | Mesh & Weight Authoring UI                                                          | ✅ Complete |
+| **Phase 7** | Export Compatibility (Spine / DragonBones / Native)                                 |   🚀 Next   |
 | **Phase 8** | Spine 4.2 & Physics Engine                                                          |  Scheduled  |

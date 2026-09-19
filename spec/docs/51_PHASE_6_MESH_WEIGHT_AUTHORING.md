@@ -110,15 +110,15 @@ RBush for coarse query; exact geometry test afterward.
 - path constraint preview.
 
 ## Exit gate
-- [ ] create mesh from image
-- [ ] manual topology editing robust
-- [ ] auto mesh produces valid polygon/triangles
-- [ ] binding works
-- [ ] weight brush works
-- [ ] smoothing deterministic
-- [ ] auto weight V1 works
-- [ ] undo memory uses sparse deltas
-- [ ] deform authoring works
-- [ ] path editing works
-- [ ] topology undo/redo stress does not corrupt mesh
-- [ ] large-mesh interaction benchmark recorded
+- [x] create mesh from image
+- [x] manual topology editing robust
+- [x] auto mesh produces valid polygon/triangles
+- [x] binding works
+- [x] weight brush works
+- [x] smoothing deterministic
+- [x] auto weight V1 works
+- [x] undo memory uses sparse deltas
+- [x] deform authoring works
+- [x] path editing works
+- [x] topology undo/redo stress does not corrupt mesh
+- [x] large-mesh interaction benchmark recorded

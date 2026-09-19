@@ -148,8 +148,8 @@
 - [ ] slot/attachment
 - [ ] constraints
 - [x] animation keys
-- [ ] mesh topology
-- [ ] weight stroke
+- [x] mesh topology
+- [x] weight stroke
 - [x] grouping/transaction
 - [ ] merge
 - [ ] AI command schema
@@ -167,19 +167,19 @@
 - [x] slot/constraint channels
 
 ## Mesh/weights
-- [ ] topology editor
-- [ ] triangulation
-- [ ] auto contour
-- [ ] simplification
-- [ ] auto mesh
-- [ ] lasso/picking
-- [ ] binding
-- [ ] weight add/subtract/replace/erase
-- [ ] smooth/normalize/lock
-- [ ] heatmap
-- [ ] auto weight
-- [ ] sparse undo
-- [ ] deform authoring
+- [x] topology editor
+- [x] triangulation
+- [x] auto contour
+- [x] simplification
+- [x] auto mesh
+- [x] lasso/picking
+- [x] binding
+- [x] weight add/subtract/replace/erase
+- [x] smooth/normalize/lock
+- [x] heatmap
+- [x] auto weight
+- [x] sparse undo
+- [x] deform authoring
 
 ## Import/export
 - [ ] detector registry
