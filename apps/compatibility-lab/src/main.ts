@@ -74,6 +74,10 @@ const autoWeightPreview = document.querySelector<HTMLButtonElement>(
 )!;
 const autoThreshold =
   document.querySelector<HTMLInputElement>("#auto-threshold")!;
+const autoSimplify =
+  document.querySelector<HTMLInputElement>("#auto-simplify")!;
+const autoPadding = document.querySelector<HTMLInputElement>("#auto-padding")!;
+const autoDensity = document.querySelector<HTMLInputElement>("#auto-density")!;
 const brushMode = document.querySelector<HTMLSelectElement>("#brush-mode")!;
 const brushBone = document.querySelector<HTMLSelectElement>("#brush-bone")!;
 const brushRadius = document.querySelector<HTMLInputElement>("#brush-radius")!;
@@ -661,7 +665,12 @@ async function start() {
       });
     const preview = await getMeshWorker().previewAutoMesh(
       { width: image.width, height: image.height, rgba: pixels },
-      { threshold: Number(autoThreshold.value), simplify: 1 },
+      {
+        threshold: Number(autoThreshold.value),
+        simplify: Number(autoSimplify.value),
+        padding: Number(autoPadding.value),
+        density: Number(autoDensity.value),
+      },
     );
     if (autoPreviewActive) {
       autoMeshPreview = preview;
