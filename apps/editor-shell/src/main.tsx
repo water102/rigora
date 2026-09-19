@@ -423,6 +423,15 @@ function Timeline() {
     cy2: 0.9,
   });
   const [fitGraphSelection, setFitGraphSelection] = useState(false);
+  const nudgeSelectedValues = (delta: number) => {
+    if (!store.view.selectedKeyIds.size) return;
+    store.runAtomic(
+      authoringHistory,
+      `Nudge values ${delta > 0 ? "+1" : "-1"}`,
+      () => store.offsetNumericValues([...store.view.selectedKeyIds], delta),
+    );
+    redraw((value) => value + 1);
+  };
   const [, redraw] = useState(0);
   const clip = store.active;
   const clips = store.clips;
@@ -1104,6 +1113,18 @@ function Timeline() {
                 }}
               />
             </label>
+            <button
+              onClick={() => nudgeSelectedValues(-1)}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              Value −1
+            </button>
+            <button
+              onClick={() => nudgeSelectedValues(1)}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              Value +1
+            </button>
             <button
               onClick={duplicateSelectedKeys}
               disabled={!store.view.selectedKeyIds.size}
