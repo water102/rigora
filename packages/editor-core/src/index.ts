@@ -167,6 +167,55 @@ export class Camera2D {
   }
 }
 
+export interface GridSettings {
+  enabled: boolean;
+  spacing: number;
+  subdivisions: number;
+}
+
+export interface GridLine {
+  axis: "x" | "y";
+  position: number;
+  major: boolean;
+}
+
+export function snapToGrid(value: number, spacing: number): number {
+  if (!(spacing > 0 && Number.isFinite(spacing)))
+    throw new Error("GRID_INVALID_SPACING");
+  if (!Number.isFinite(value)) throw new Error("GRID_INVALID_VALUE");
+  return Math.round(value / spacing) * spacing;
+}
+
+export function snapPointToGrid(point: Point2, spacing: number): Point2 {
+  return { x: snapToGrid(point.x, spacing), y: snapToGrid(point.y, spacing) };
+}
+
+export function buildGridLines(
+  bounds: Bounds2,
+  settings: GridSettings,
+): GridLine[] {
+  if (!(settings.spacing > 0 && Number.isFinite(settings.spacing)))
+    throw new Error("GRID_INVALID_SPACING");
+  if (!Number.isInteger(settings.subdivisions) || settings.subdivisions < 1)
+    throw new Error("GRID_INVALID_SUBDIVISIONS");
+  if (!settings.enabled) return [];
+  const minorSpacing = settings.spacing / settings.subdivisions;
+  const lines: GridLine[] = [];
+  const xStart = Math.ceil(bounds.x / minorSpacing);
+  const xEnd = Math.floor((bounds.x + bounds.width) / minorSpacing);
+  const yStart = Math.ceil(bounds.y / minorSpacing);
+  const yEnd = Math.floor((bounds.y + bounds.height) / minorSpacing);
+  for (let i = xStart; i <= xEnd; i++) {
+    const position = i * minorSpacing;
+    lines.push({ axis: "x", position, major: i % settings.subdivisions === 0 });
+  }
+  for (let i = yStart; i <= yEnd; i++) {
+    const position = i * minorSpacing;
+    lines.push({ axis: "y", position, major: i % settings.subdivisions === 0 });
+  }
+  return lines;
+}
+
 interface UndoEntry {
   command: EditorCommand<unknown>;
   payload: unknown;

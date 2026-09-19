@@ -8,9 +8,12 @@ import {
   serializeProject,
 } from "../../packages/project/src/index.js";
 import {
+  buildGridLines,
   Camera2D,
   CommandHistory,
   SelectionStore,
+  snapPointToGrid,
+  snapToGrid,
   type EditorCommand,
 } from "../../packages/editor-core/src/index.js";
 import { ikSkeleton } from "../fixtures/canonical/ik-skeleton.js";
@@ -580,5 +583,31 @@ describe("Batch 18 stage camera", () => {
     expect(() => camera.panBy(Infinity, 0)).toThrow("CAMERA_INVALID_PAN");
     camera.setZoom(1000);
     expect(camera.zoom).toBe(50);
+  });
+});
+
+describe("Batch 19 stage grid", () => {
+  it("snaps scalar and point coordinates", () => {
+    expect(snapToGrid(12, 5)).toBe(10);
+    expect(snapPointToGrid({ x: 12, y: -8 }, 5)).toEqual({ x: 10, y: -10 });
+  });
+
+  it("builds major and minor visible grid lines", () => {
+    const lines = buildGridLines(
+      { x: -10, y: -10, width: 20, height: 20 },
+      { enabled: true, spacing: 10, subdivisions: 2 },
+    );
+    expect(lines).toHaveLength(10);
+    expect(lines.filter((line) => line.major)).toHaveLength(6);
+    expect(lines.some((line) => line.axis === "x" && line.position === 5)).toBe(
+      true,
+    );
+    expect(
+      buildGridLines(
+        { x: 0, y: 0, width: 10, height: 10 },
+        { enabled: false, spacing: 10, subdivisions: 1 },
+      ),
+    ).toEqual([]);
+    expect(() => snapToGrid(1, 0)).toThrow("GRID_INVALID_SPACING");
   });
 });
