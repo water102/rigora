@@ -8,6 +8,7 @@
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "test:browser": "playwright test",
+    "benchmark:selection": "node tools/benchmark-selection.mjs",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r build && pnpm -r typecheck",
     "test": "vitest run",
