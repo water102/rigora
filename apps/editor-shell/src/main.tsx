@@ -410,6 +410,8 @@ function Timeline() {
   const [rowScrollTop, setRowScrollTop] = useState(0);
   const [clipboard, setClipboard] = useState<KeyClipboard | null>(null);
   const [autoKeyMode, setAutoKeyMode] = useState<AutoKeyMode>("off");
+  const [eventName, setEventName] = useState("event");
+  const [eventPayload, setEventPayload] = useState("{}");
   const [, redraw] = useState(0);
   const clip = store.active;
   const rowWindow = virtualizeRows(store.view.rows, rowScrollTop, 220, 24);
@@ -503,7 +505,21 @@ function Timeline() {
     redraw((value) => value + 1);
   };
   const addEvent = () => {
-    events.upsert(`event-${events.events.length + 1}`, playback.time, "event");
+    let payload: Record<string, unknown> = {};
+    try {
+      const parsed = JSON.parse(eventPayload) as unknown;
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        payload = parsed as Record<string, unknown>;
+      }
+    } catch {
+      return;
+    }
+    events.upsert(
+      `event-${events.events.length + 1}`,
+      playback.time,
+      eventName.trim() || "event",
+      payload,
+    );
     redraw((value) => value + 1);
   };
   const addSpecialChannel = (kind: "slot" | "constraint", property: string) => {
@@ -908,6 +924,21 @@ function Timeline() {
           </div>
           <div className="timeline-events">
             <strong>Events</strong>
+            <label>
+              Name{" "}
+              <input
+                value={eventName}
+                onChange={(event) => setEventName(event.target.value)}
+              />
+            </label>
+            <label>
+              Payload{" "}
+              <input
+                value={eventPayload}
+                onChange={(event) => setEventPayload(event.target.value)}
+              />
+            </label>
+            <button onClick={addEvent}>Add event at playhead</button>
             {events.events.map((event) => (
               <button key={event.id} onClick={() => playback.seek(event.time)}>
                 {event.name} @ {event.time.toFixed(2)}s
