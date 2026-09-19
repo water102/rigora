@@ -629,6 +629,51 @@ export class AuthoringHistory {
   }
 }
 
+export interface AutoKeyRequest<T> {
+  channel: AuthoringChannel<T>;
+  time: number;
+  value: T;
+  mode: AutoKeyMode;
+  propertyChanged: boolean;
+  isFirstFrame: boolean;
+  curve?: CurveSpec;
+  idFactory: (prefix: string) => string;
+}
+
+/** Applies the policy only; the returned key can be sent through the normal history command. */
+export function createAutoKey<T>(
+  request: AutoKeyRequest<T>,
+): AuthoredKey<T> | undefined {
+  const shouldCreate =
+    request.mode === "changed-property"
+      ? request.propertyChanged
+      : request.mode === "first-frame"
+        ? request.isFirstFrame
+        : false;
+  if (!shouldCreate) return undefined;
+  const existing = request.channel.keys.find(
+    (key) => key.time === request.time,
+  );
+  return {
+    id: existing?.id ?? request.idFactory("key"),
+    time: request.time,
+    value: cloneAuthoring(request.value),
+    curve: request.curve ?? existing?.curve ?? { type: "linear" },
+  };
+}
+
+export function applyAutoKey<T>(
+  request: AutoKeyRequest<T>,
+): AuthoredKey<T> | undefined {
+  const key = createAutoKey(request);
+  if (!key) return undefined;
+  const index = request.channel.keys.findIndex((item) => item.id === key.id);
+  if (index >= 0) request.channel.keys[index] = key;
+  else request.channel.keys.push(key);
+  request.channel.keys.sort((a, b) => a.time - b.time);
+  return cloneAuthoring(key);
+}
+
 function finiteAuthoring(value: number, name: string): void {
   if (!Number.isFinite(value))
     throw new Error(`ANIMATION_AUTHORING_INVALID_${name.toUpperCase()}`);
