@@ -17,6 +17,10 @@ import type { MeshWorkerApi } from "./mesh-worker.js";
 import {
   applyWeightBrush,
   createAuthoringMesh,
+  applyVertexDrag,
+  beginDrag,
+  endDrag,
+  updateDrag,
   createDeformState,
   keyDeform,
   resetTopology,
@@ -131,6 +135,28 @@ async function start() {
     Array.from({ length: 6 }, (_, i) => ({ x: i % 3, y: Math.floor(i / 3) })),
     [0, 1, 3, 1, 4, 3, 1, 2, 4, 2, 5, 4],
   );
+  let vertexDrag: ReturnType<typeof beginDrag> | null = null;
+  const canvasPoint = (event: PointerEvent) => ({
+    x: (event.offsetX - 360) / 8,
+    y: (260 - event.offsetY) / 8,
+  });
+  app.canvas.addEventListener("pointerdown", (event) => {
+    vertexDrag = beginDrag("vertex", canvasPoint(event), "v0");
+    app.canvas.setPointerCapture(event.pointerId);
+  });
+  app.canvas.addEventListener("pointermove", (event) => {
+    if (!vertexDrag) return;
+    vertexDrag = updateDrag(vertexDrag, canvasPoint(event));
+    demoTopology = applyVertexDrag(demoTopology, vertexDrag);
+    status.textContent = `Vertex drag preview · v0 = (${vertexDrag.current.x.toFixed(2)}, ${vertexDrag.current.y.toFixed(2)})`;
+  });
+  app.canvas.addEventListener("pointerup", (event) => {
+    if (!vertexDrag) return;
+    vertexDrag = endDrag(vertexDrag);
+    app.canvas.releasePointerCapture(event.pointerId);
+    status.textContent = `Vertex drag committed · v0 = (${vertexDrag.current.x.toFixed(2)}, ${vertexDrag.current.y.toFixed(2)})`;
+    vertexDrag = null;
+  });
 
   let currentImportDiagnostics: any[] = [];
 
