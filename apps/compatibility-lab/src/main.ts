@@ -17,6 +17,7 @@ import type { MeshWorkerApi } from "./mesh-worker.js";
 import { weightedMeshSkeleton } from "../../../tests/fixtures/canonical/weighted-mesh.js";
 import { animatedMeshSkeleton } from "../../../tests/fixtures/canonical/animated-skeleton.js";
 import { ikSkeleton } from "../../../tests/fixtures/canonical/ik-skeleton.js";
+import { pathSkeleton } from "../../../tests/fixtures/canonical/path-skeleton.js";
 import spine from "../../../tests/fixtures/imports/spine38-region.json";
 import dragon from "../../../tests/fixtures/imports/dragonbones55-region.json";
 import "./style.css";
@@ -228,6 +229,13 @@ async function start() {
       evaluateCurrentTime();
     } else if (select.value === "ik") {
       const fixture = ikSkeleton();
+      applySnapshot({
+        success: true,
+        skeletons: [fixture.skeleton],
+        diagnostics: [],
+      });
+    } else if (select.value === "path") {
+      const fixture = pathSkeleton();
       applySnapshot({
         success: true,
         skeletons: [fixture.skeleton],

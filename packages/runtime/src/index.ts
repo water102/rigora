@@ -16,8 +16,10 @@ import {
   solveOneBoneIk,
   solveTwoBoneIk,
   solveTransformConstraint,
+  solvePathConstraint,
   refreshDescendants,
   type RuntimeBoneState,
+  type ConstraintContext,
 } from "./constraints.js";
 export {
   MeshInstance,
@@ -27,9 +29,12 @@ export {
   solveOneBoneIk,
   solveTwoBoneIk,
   solveTransformConstraint,
+  solvePathConstraint,
   refreshDescendants,
   type RuntimeBoneState,
+  type ConstraintContext,
 };
+export * from "./path.js";
 
 export interface RegionSnapshot {
   slotId: string;
@@ -218,7 +223,11 @@ export function createPoseSnapshot(
       world: { ...initialWorld[i]! },
     }));
 
-    applyConstraints(data.constraints, runtimeBones, diagnostics);
+    applyConstraints(data.constraints, runtimeBones, diagnostics, {
+      slots: data.slots,
+      skins: data.skins,
+      selectedSkinId: selected?.id,
+    });
     const world = runtimeBones.map((b) => b.world);
     const snapshot: RenderSnapshot = {
       regions: [],
@@ -394,6 +403,9 @@ export function createPoseSnapshot(
           );
           continue;
         }
+      } else if (attachment.type === "path") {
+        // Path attachments serve as constraint guides; they are evaluated during constraint solving.
+        continue;
       } else {
         error(
           "RUNTIME_ATTACHMENT_UNSUPPORTED",

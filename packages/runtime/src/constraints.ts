@@ -6,8 +6,14 @@ import {
   type Transform2D,
   type Vec2,
 } from "@rigora/math";
-import type { ConstraintData } from "@rigora/model";
+import type { ConstraintData, SlotData, SkinData } from "@rigora/model";
 import type { Diagnostic } from "@rigora/diagnostics";
+import {
+  compilePath,
+  evaluatePathAttachmentWorldPoints,
+  samplePathAtDistance,
+  type PathAttachmentData,
+} from "./path.js";
 
 export interface RuntimeBoneState {
   id: string;
@@ -15,6 +21,12 @@ export interface RuntimeBoneState {
   parentIndex: number;
   local: Transform2D;
   world: Mat2D;
+}
+
+export interface ConstraintContext {
+  slots?: SlotData[] | undefined;
+  skins?: SkinData[] | undefined;
+  selectedSkinId?: string | undefined;
 }
 
 /** Helper to wrap an angle into [-PI, PI]. */
@@ -213,6 +225,131 @@ export function solveTransformConstraint(
 }
 
 /**
+ * Solves Path Constraint: places and aligns a chain of bones along a target path attachment.
+ */
+export function solvePathConstraint(
+  pathAttachment: PathAttachmentData,
+  slotBone: RuntimeBoneState,
+  constrainedBones: RuntimeBoneState[],
+  constraint: Extract<ConstraintData, { type: "path" }>,
+  bonesById: Map<string, RuntimeBoneState>,
+): void {
+  if (constrainedBones.length === 0) return;
+
+  // 1. Evaluate path world points (supports unweighted and LBS skinned)
+  const worldPoints = evaluatePathAttachmentWorldPoints(
+    pathAttachment,
+    slotBone.world,
+    bonesById,
+  );
+  if (worldPoints.length < 2) return;
+
+  // 2. Compile path geometry and arc-length table
+  const compiledPath = compilePath(
+    worldPoints,
+    pathAttachment.closed,
+    pathAttachment.constantSpeed,
+  );
+  const totalLength = compiledPath.totalLength;
+
+  // 3. Compute starting position on path
+  let currentDist =
+    constraint.positionMode === "percent"
+      ? constraint.position * totalLength
+      : constraint.position;
+
+  // 4. Calculate sampling distance for each bone
+  const boneDistances: number[] = [];
+  for (let i = 0; i < constrainedBones.length; i++) {
+    boneDistances.push(currentDist);
+    if (i < constrainedBones.length - 1) {
+      if (constraint.spacingMode === "percent") {
+        currentDist += constraint.spacing * totalLength;
+      } else if (constraint.spacingMode === "fixed") {
+        currentDist += constraint.spacing;
+      } else {
+        // "length": spacing based on bone length + authored spacing offset
+        const bLen = constrainedBones[i]!.length || 1;
+        currentDist += bLen + constraint.spacing;
+      }
+    }
+  }
+
+  // 5. Sample positions and tangents
+  const samples = boneDistances.map((d) =>
+    samplePathAtDistance(compiledPath, d),
+  );
+
+  // 6. Orient and place each bone
+  for (let i = 0; i < constrainedBones.length; i++) {
+    const bone = constrainedBones[i]!;
+    const sample = samples[i]!;
+
+    let targetAngle = sample.tangentAngle;
+    let scaleRatio = 1;
+
+    if (
+      constraint.rotateMode === "chain" ||
+      constraint.rotateMode === "chainScale"
+    ) {
+      if (i < constrainedBones.length - 1) {
+        const nextSample = samples[i + 1]!;
+        const dx = nextSample.x - sample.x;
+        const dy = nextSample.y - sample.y;
+        targetAngle = Math.atan2(dy, dx);
+
+        if (constraint.rotateMode === "chainScale") {
+          const dist = Math.hypot(dx, dy);
+          const bLen = Math.max(bone.length, 1e-4);
+          scaleRatio = dist / bLen;
+        }
+      } else {
+        // For the last bone in a chain, sample ahead by bone length to preserve chain orientation
+        const aheadDist = boneDistances[i]! + Math.max(bone.length, 1);
+        const aheadSample = samplePathAtDistance(compiledPath, aheadDist);
+        const dx = aheadSample.x - sample.x;
+        const dy = aheadSample.y - sample.y;
+        if (Math.hypot(dx, dy) > 1e-6) {
+          targetAngle = Math.atan2(dy, dx);
+        } else {
+          targetAngle = sample.tangentAngle;
+        }
+      }
+    }
+
+    // Blend translation
+    const origX = bone.world.tx;
+    const origY = bone.world.ty;
+    const newX = origX * (1 - constraint.mixX) + sample.x * constraint.mixX;
+    const newY = origY * (1 - constraint.mixY) + sample.y * constraint.mixY;
+
+    // Blend rotation
+    const currentAngle = Math.atan2(bone.world.b, bone.world.a);
+    const deltaAngle =
+      wrapAngle(targetAngle - currentAngle) * constraint.mixRotate;
+
+    const rot = rotationMatrix(deltaAngle);
+    let rotated = multiply(rot, { ...bone.world, tx: 0, ty: 0 });
+
+    // If chainScale, apply scale ratio along the primary length axis
+    if (constraint.rotateMode === "chainScale" && scaleRatio !== 1) {
+      const blendedScale = 1 + (scaleRatio - 1) * constraint.mixRotate;
+      rotated = {
+        ...rotated,
+        a: rotated.a * blendedScale,
+        b: rotated.b * blendedScale,
+      };
+    }
+
+    bone.world = {
+      ...rotated,
+      tx: newX,
+      ty: newY,
+    };
+  }
+}
+
+/**
  * Re-evaluates descendants' world transforms after upstream bone changes.
  */
 export function refreshDescendants(
@@ -235,6 +372,7 @@ export function applyConstraints(
   constraints: ConstraintData[],
   bones: RuntimeBoneState[],
   diagnostics: Diagnostic[],
+  context?: ConstraintContext,
 ): void {
   const boneMap = new Map<string, { bone: RuntimeBoneState; index: number }>();
   for (let i = 0; i < bones.length; i++) {
@@ -303,6 +441,90 @@ export function applyConstraints(
 
       if (affectedBones.length > 0) {
         solveTransformConstraint(targetEntry.bone, affectedBones, c);
+        refreshDescendants(minAffectedIndex, bones);
+      }
+    } else if (c.type === "path") {
+      const slot = context?.slots?.find((s) => s.id === c.targetSlotId);
+      if (!slot) {
+        diagnostics.push({
+          code: "RUNTIME_CONSTRAINT_TARGET_NOT_FOUND",
+          severity: "warning",
+          message: `Path target slot "${c.targetSlotId}" not found.`,
+          entityId: c.id,
+        });
+        continue;
+      }
+
+      const slotBoneEntry = boneMap.get(slot.boneId);
+      if (!slotBoneEntry) {
+        diagnostics.push({
+          code: "RUNTIME_CONSTRAINT_TARGET_NOT_FOUND",
+          severity: "warning",
+          message: `Path target slot bone "${slot.boneId}" not found.`,
+          entityId: c.id,
+        });
+        continue;
+      }
+
+      // Find active path attachment in selected or default skin
+      let pathAttachment: PathAttachmentData | undefined;
+      const targetAttachmentId = slot.setupAttachmentId;
+      const skins = context?.skins ?? [];
+      const selectedSkin =
+        skins.find((s) => s.id === context?.selectedSkinId) ?? skins[0];
+
+      if (selectedSkin) {
+        const slotAttachments = selectedSkin.attachments[slot.id] ?? [];
+        pathAttachment = slotAttachments.find(
+          (a) =>
+            a.type === "path" &&
+            (!targetAttachmentId || a.id === targetAttachmentId),
+        ) as PathAttachmentData | undefined;
+      }
+
+      if (!pathAttachment) {
+        for (const skin of skins) {
+          const slotAttachments = skin.attachments[slot.id] ?? [];
+          pathAttachment = slotAttachments.find(
+            (a) =>
+              a.type === "path" &&
+              (!targetAttachmentId || a.id === targetAttachmentId),
+          ) as PathAttachmentData | undefined;
+          if (pathAttachment) break;
+        }
+      }
+
+      if (!pathAttachment) {
+        diagnostics.push({
+          code: "RUNTIME_PATH_ATTACHMENT_NOT_FOUND",
+          severity: "warning",
+          message: `Path attachment for slot "${c.targetSlotId}" not found.`,
+          entityId: c.id,
+        });
+        continue;
+      }
+
+      const affectedBones: RuntimeBoneState[] = [];
+      let minAffectedIndex = bones.length;
+      for (const bId of c.boneIds) {
+        const entry = boneMap.get(bId);
+        if (entry) {
+          affectedBones.push(entry.bone);
+          if (entry.index < minAffectedIndex) minAffectedIndex = entry.index;
+        }
+      }
+
+      if (affectedBones.length > 0) {
+        const bonesById = new Map<string, RuntimeBoneState>();
+        for (const b of bones) bonesById.set(b.id, b);
+
+        solvePathConstraint(
+          pathAttachment,
+          slotBoneEntry.bone,
+          affectedBones,
+          c,
+          bonesById,
+        );
         refreshDescendants(minAffectedIndex, bones);
       }
     } else {

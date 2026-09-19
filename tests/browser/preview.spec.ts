@@ -75,5 +75,12 @@ test("canonical weighted mesh and auto-mesh worker render on canvas", async ({
   );
   await expect(page.locator("#status")).toContainText("8 bones");
 
+  // Select canonical path constraint
+  await page.locator("#source").selectOption("path");
+  await expect(page.locator("#status")).toContainText(
+    "Canonical Path Constraint",
+  );
+  await expect(page.locator("#status")).toContainText("7 bones");
+
   expect(errors).toEqual([]);
 });
