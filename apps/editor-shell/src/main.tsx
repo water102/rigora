@@ -412,6 +412,10 @@ function Timeline() {
   const [selectionEnd, setSelectionEnd] = useState(1);
   const [rowScrollTop, setRowScrollTop] = useState(0);
   const timelineRef = useRef<HTMLDivElement>(null);
+  const boxSelectionRef = useRef<number | null>(null);
+  const [boxSelection, setBoxSelection] = useState<
+    { start: number; end: number } | undefined
+  >();
   const [clipboard, setClipboard] = useState<KeyClipboard | null>(null);
   const [autoKeyMode, setAutoKeyMode] = useState<AutoKeyMode>("off");
   const [eventName, setEventName] = useState("event");
@@ -769,6 +773,42 @@ function Timeline() {
   };
   const selectTimeRange = () => {
     store.selectKeysInBox(selectionStart, selectionEnd);
+    redraw((value) => value + 1);
+  };
+  const pointerTime = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!clip || !timelineRef.current) return 0;
+    const rect = timelineRef.current.getBoundingClientRect();
+    const width = Math.max(timelineRef.current.scrollWidth - 150, 1);
+    return Math.max(
+      0,
+      Math.min(
+        clip.duration,
+        ((event.clientX - rect.left - 150 + timelineRef.current.scrollLeft) /
+          width) *
+          clip.duration,
+      ),
+    );
+  };
+  const beginBoxSelection = (event: React.PointerEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLElement).closest("button")) return;
+    const time = pointerTime(event);
+    boxSelectionRef.current = time;
+    setBoxSelection({ start: time, end: time });
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const updateBoxSelection = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (boxSelectionRef.current === null) return;
+    setBoxSelection({
+      start: boxSelectionRef.current,
+      end: pointerTime(event),
+    });
+  };
+  const finishBoxSelection = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (boxSelectionRef.current === null) return;
+    const end = pointerTime(event);
+    store.selectKeysInBox(boxSelectionRef.current, end);
+    boxSelectionRef.current = null;
+    setBoxSelection(undefined);
     redraw((value) => value + 1);
   };
   const applyToProject = () => {
@@ -1258,10 +1298,20 @@ function Timeline() {
               </span>
             )}
           </div>
+          {boxSelection && (
+            <small className="muted">
+              Box select:{" "}
+              {Math.min(boxSelection.start, boxSelection.end).toFixed(3)}s–
+              {Math.max(boxSelection.start, boxSelection.end).toFixed(3)}s
+            </small>
+          )}
           <div
             className="timeline-grid timeline-virtual-scroll"
             ref={timelineRef}
             onScroll={(event) => setRowScrollTop(event.currentTarget.scrollTop)}
+            onPointerDown={beginBoxSelection}
+            onPointerMove={updateBoxSelection}
+            onPointerUp={finishBoxSelection}
           >
             <div
               style={{ height: rowWindow.totalHeight, position: "relative" }}
