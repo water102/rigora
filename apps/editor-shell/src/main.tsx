@@ -444,6 +444,11 @@ function Timeline() {
   );
   const clip = store.active;
   const clips = store.clips;
+  const skeleton = (services.project as HboneProject).skeletons.main;
+  const specialTargetId = (kind: "slot" | "constraint") =>
+    kind === "slot"
+      ? (skeleton?.slots[0]?.id ?? "slot")
+      : (skeleton?.constraints[0]?.id ?? "constraint");
   const selectedBoneId =
     services.selection.current?.kind === "bone"
       ? services.selection.current.id
@@ -733,12 +738,13 @@ function Timeline() {
     redraw((value) => value + 1);
   };
   const addSpecialChannel = (kind: "slot" | "constraint", property: string) => {
-    const id = `${kind}.${property}`;
+    const targetId = specialTargetId(kind);
+    const id = `${kind}.${targetId}.${property}`;
     if (!store.active?.channels.some((channel) => channel.id === id)) {
       store.addChannel({
         id,
         kind,
-        targetId: kind === "slot" ? "slot" : "constraint",
+        targetId,
         property,
       });
       store.syncRows();
