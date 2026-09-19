@@ -152,6 +152,8 @@ export class Camera2D {
   frameBounds(bounds: Bounds2, padding = 0.1): void {
     if (!(bounds.width >= 0 && bounds.height >= 0))
       throw new Error("CAMERA_INVALID_BOUNDS");
+    if (!(padding >= 0 && Number.isFinite(padding)))
+      throw new Error("STAGE_INVALID_PADDING");
     this.setCenter({
       x: bounds.x + bounds.width / 2,
       y: bounds.y + bounds.height / 2,

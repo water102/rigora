@@ -645,5 +645,11 @@ describe("Batch 20 stage framing", () => {
     expect(() => boundsFromPoints([{ x: NaN, y: 0 }])).toThrow(
       "STAGE_NON_FINITE_POINT",
     );
+    expect(() =>
+      camera.frameBounds({ x: 0, y: 0, width: 10, height: 10 }, -0.6),
+    ).toThrow("STAGE_INVALID_PADDING");
+    expect(() => framePoints(camera, [{ x: 0, y: 0 }], NaN)).toThrow(
+      "STAGE_INVALID_PADDING",
+    );
   });
 });
