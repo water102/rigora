@@ -1231,7 +1231,18 @@ function Timeline() {
                         key={key.id}
                         className="timeline-key"
                         title={`${key.time}s`}
-                        onClick={() => playback.seek(key.time)}
+                        onClick={(event) => {
+                          playback.seek(key.time);
+                          const selected = new Set(store.view.selectedKeyIds);
+                          if (event.ctrlKey || event.metaKey) {
+                            if (selected.has(key.id)) selected.delete(key.id);
+                            else selected.add(key.id);
+                            store.selectKeys([...selected]);
+                          } else {
+                            store.selectKeys([key.id]);
+                          }
+                          redraw((value) => value + 1);
+                        }}
                         aria-pressed={store.view.selectedKeyIds.has(key.id)}
                         onDoubleClick={() => {
                           store.selectKeys([key.id]);
