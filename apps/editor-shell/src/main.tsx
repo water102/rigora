@@ -38,6 +38,7 @@ import {
   type HboneProject,
 } from "@rigora/project";
 import type { SkeletonData } from "@rigora/model";
+import { AnimationAuthoringStore, AuthoringPlayback } from "@rigora/animation";
 import "flexlayout-react/style/dark.css";
 import "./style.css";
 
@@ -390,6 +391,93 @@ function Inspector() {
   );
 }
 
+function Timeline() {
+  const [store] = useState(() => new AnimationAuthoringStore());
+  const [clipId, setClipId] = useState<string | null>(null);
+  const [playback] = useState(() => new AuthoringPlayback(1, 30));
+  const [, redraw] = useState(0);
+  const clip = store.active;
+  const createClip = () => {
+    const created = store.create("walk", 1, 30);
+    store.addChannel({
+      id: "root.rotate",
+      kind: "bone",
+      targetId: "root",
+      property: "rotate",
+    });
+    store.syncRows();
+    setClipId(created.id);
+    redraw((value) => value + 1);
+  };
+  const togglePlay = () => {
+    playback.playing = !playback.playing;
+    redraw((value) => value + 1);
+  };
+  return (
+    <section className="panel timeline-panel">
+      <header className="timeline-header">
+        <span>Timeline</span>
+        <button onClick={createClip}>
+          {clip ? "Reset clip" : "New animation"}
+        </button>
+      </header>
+      {clip ? (
+        <>
+          <div className="timeline-controls">
+            <button onClick={() => playback.seek(0)}>◀</button>
+            <button onClick={togglePlay}>
+              {playback.playing ? "Pause" : "Play"}
+            </button>
+            <button onClick={() => playback.step(1)}>Frame +1</button>
+            <output>
+              {playback.time.toFixed(3)}s / {clip.duration.toFixed(3)}s
+            </output>
+          </div>
+          <input
+            className="timeline-scrubber"
+            type="range"
+            min={0}
+            max={clip.duration}
+            step={1 / clip.fps}
+            value={playback.time}
+            onChange={(event) => playback.seek(Number(event.target.value))}
+          />
+          <div className="timeline-grid">
+            <div className="timeline-labels">
+              {store.view.rows.map((row) => (
+                <span key={row.id}>{row.label}</span>
+              ))}
+            </div>
+            <div className="timeline-keys">
+              {store.view.rows.map((row) => (
+                <div key={row.id} className="timeline-row">
+                  {(
+                    clip.channels.find(
+                      (channel) => channel.id === row.channelId,
+                    )?.keys ?? []
+                  ).map((key) => (
+                    <button
+                      key={key.id}
+                      className="timeline-key"
+                      title={`${key.time}s`}
+                      style={{ left: `${(key.time / clip.duration) * 100}%` }}
+                    >
+                      ◆
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      ) : (
+        <p className="muted">Create an animation to edit keys.</p>
+      )}
+      {clipId && <small className="muted">Active clip: {clipId}</small>}
+    </section>
+  );
+}
+
 const layout: IJsonModel = {
   global: { tabEnableClose: false, tabSetEnableMaximize: true },
   borders: [],
@@ -414,6 +502,12 @@ const layout: IJsonModel = {
         id: "inspector",
         weight: 22,
         children: [{ type: "tab", name: "Inspector", component: "inspector" }],
+      },
+      {
+        type: "tabset",
+        id: "timeline",
+        weight: 28,
+        children: [{ type: "tab", name: "Timeline", component: "timeline" }],
       },
     ],
   },
@@ -758,6 +852,8 @@ function App() {
       <Stage />
     ) : node.getComponent() === "hierarchy" ? (
       <Hierarchy />
+    ) : node.getComponent() === "timeline" ? (
+      <Timeline />
     ) : (
       <Inspector />
     );

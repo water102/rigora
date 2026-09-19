@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@rigora/animation": "workspace:*",
     "@rigora/editor-core": "workspace:*",
     "@rigora/model": "workspace:*",
     "@rigora/project": "workspace:*",

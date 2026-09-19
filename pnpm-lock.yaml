@@ -139,6 +139,9 @@ importers:
 
   apps/editor-shell:
     dependencies:
+      '@rigora/animation':
+        specifier: workspace:*
+        version: link:../../packages/animation
       '@rigora/editor-core':
         specifier: workspace:*
         version: link:../../packages/editor-core

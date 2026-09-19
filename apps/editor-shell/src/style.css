@@ -184,3 +184,65 @@ button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
+/* Phase 5 timeline authoring */
+.timeline-panel {
+  min-height: 180px;
+}
+.timeline-header,
+.timeline-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.timeline-header {
+  justify-content: space-between;
+}
+.timeline-controls {
+  margin: 8px 0;
+}
+.timeline-controls output {
+  margin-left: auto;
+  color: #9aa4b2;
+}
+.timeline-scrubber {
+  width: 100%;
+}
+.timeline-grid {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.timeline-labels,
+.timeline-keys {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.timeline-labels span,
+.timeline-row {
+  height: 22px;
+  line-height: 22px;
+}
+.timeline-labels span {
+  padding-left: 6px;
+  border-bottom: 1px solid #273142;
+}
+.timeline-row {
+  position: relative;
+  border-bottom: 1px solid #273142;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 39px,
+    #273142 40px
+  );
+}
+.timeline-key {
+  position: absolute;
+  top: 2px;
+  border: 0;
+  padding: 0;
+  color: #f5c451;
+  background: transparent;
+  cursor: pointer;
+}
