@@ -475,6 +475,19 @@ function Timeline() {
     events.upsert(`event-${events.events.length + 1}`, playback.time, "event");
     redraw((value) => value + 1);
   };
+  const addSpecialChannel = (kind: "slot" | "constraint", property: string) => {
+    const id = `${kind}.${property}`;
+    if (!store.active?.channels.some((channel) => channel.id === id)) {
+      store.addChannel({
+        id,
+        kind,
+        targetId: kind === "slot" ? "slot" : "constraint",
+        property,
+      });
+      store.syncRows();
+      redraw((value) => value + 1);
+    }
+  };
   return (
     <section className="panel timeline-panel">
       <header className="timeline-header">
@@ -539,6 +552,18 @@ function Timeline() {
             <button onClick={() => playback.step(1)}>Frame +1</button>
             <button onClick={addRotationKey}>Key rotation</button>
             <button onClick={addEvent}>Add event</button>
+            <button onClick={() => addSpecialChannel("slot", "attachment")}>
+              Attachment
+            </button>
+            <button onClick={() => addSpecialChannel("slot", "color")}>
+              Color
+            </button>
+            <button onClick={() => addSpecialChannel("slot", "drawOrder")}>
+              Draw order
+            </button>
+            <button onClick={() => addSpecialChannel("constraint", "ikMix")}>
+              IK mix
+            </button>
             <button onClick={toggleLoop}>
               {playback.loop ? "Loop on" : "Loop off"}
             </button>
