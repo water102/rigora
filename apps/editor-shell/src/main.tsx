@@ -437,8 +437,16 @@ function Timeline() {
     redraw((value) => value + 1);
   };
   const [, redraw] = useState(0);
+  useEffect(
+    () => services.selection.subscribe(() => redraw((value) => value + 1)),
+    [services],
+  );
   const clip = store.active;
   const clips = store.clips;
+  const selectedBoneId =
+    services.selection.current?.kind === "bone"
+      ? services.selection.current.id
+      : "root";
   const rowWindow = virtualizeRows(store.view.rows, rowScrollTop, 220, 24);
   const selectedNumericValue = clip?.channels
     .flatMap((channel) => channel.keys)
@@ -623,13 +631,13 @@ function Timeline() {
   const addTransformKey = (property: string) => {
     if (!clip) return;
     store.runAtomic(authoringHistory, `Add ${property} key`, () => {
-      const id = `root.${property}`;
+      const id = `${selectedBoneId}.${property}`;
       const channel =
         store.active?.channels.find((item) => item.id === id) ??
         store.addChannel({
           id,
           kind: "bone",
-          targetId: "root",
+          targetId: selectedBoneId,
           property,
         });
       const value = property.startsWith("scale") ? 1 : 0;
@@ -964,7 +972,9 @@ function Timeline() {
             <button onClick={() => playback.step(-1)}>Frame -1</button>
             <button onClick={() => playback.step(1)}>Frame +1</button>
             <button onClick={addMarker}>Add marker</button>
-            <button onClick={addRotationKey}>Key rotation</button>
+            <button onClick={addRotationKey}>
+              Key rotation ({selectedBoneId})
+            </button>
             <button onClick={() => addTransformKey("x")}>Key X</button>
             <button onClick={() => addTransformKey("y")}>Key Y</button>
             <button onClick={() => addTransformKey("scaleX")}>
