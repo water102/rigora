@@ -20,6 +20,7 @@ import {
   applyVertexDrag,
   beginDrag,
   endDrag,
+  lassoSelection,
   updateDrag,
   createDeformState,
   keyDeform,
@@ -57,6 +58,7 @@ const heatmapDemo = document.querySelector<HTMLButtonElement>("#heatmap-demo")!;
 const topologyDemo =
   document.querySelector<HTMLButtonElement>("#topology-demo")!;
 const deformDemo = document.querySelector<HTMLButtonElement>("#deform-demo")!;
+const canvasMode = document.querySelector<HTMLSelectElement>("#canvas-mode")!;
 
 async function start() {
   const app = new Application();
@@ -136,26 +138,49 @@ async function start() {
     [0, 1, 3, 1, 4, 3, 1, 2, 4, 2, 5, 4],
   );
   let vertexDrag: ReturnType<typeof beginDrag> | null = null;
+  let lassoPoints: Array<{ x: number; y: number }> = [];
   const canvasPoint = (event: PointerEvent) => ({
     x: (event.offsetX - 360) / 8,
     y: (260 - event.offsetY) / 8,
   });
   app.canvas.addEventListener("pointerdown", (event) => {
+    if (canvasMode.value === "lasso") {
+      lassoPoints = [canvasPoint(event)];
+      app.canvas.setPointerCapture(event.pointerId);
+      return;
+    }
     vertexDrag = beginDrag("vertex", canvasPoint(event), "v0");
     app.canvas.setPointerCapture(event.pointerId);
   });
   app.canvas.addEventListener("pointermove", (event) => {
+    if (canvasMode.value === "lasso" && lassoPoints.length) {
+      lassoPoints.push(canvasPoint(event));
+      status.textContent = `Lasso preview · ${lassoPoints.length} points`;
+      return;
+    }
     if (!vertexDrag) return;
     vertexDrag = updateDrag(vertexDrag, canvasPoint(event));
     demoTopology = applyVertexDrag(demoTopology, vertexDrag);
     status.textContent = `Vertex drag preview · v0 = (${vertexDrag.current.x.toFixed(2)}, ${vertexDrag.current.y.toFixed(2)})`;
   });
   app.canvas.addEventListener("pointerup", (event) => {
+    if (canvasMode.value === "lasso" && lassoPoints.length) {
+      const selected = lassoSelection(demoTopology.vertices, lassoPoints);
+      lassoPoints = [];
+      app.canvas.releasePointerCapture(event.pointerId);
+      status.textContent = `Lasso selection · ${selected.length} vertices: ${selected.join(", ") || "none"}`;
+      return;
+    }
     if (!vertexDrag) return;
     vertexDrag = endDrag(vertexDrag);
     app.canvas.releasePointerCapture(event.pointerId);
     status.textContent = `Vertex drag committed · v0 = (${vertexDrag.current.x.toFixed(2)}, ${vertexDrag.current.y.toFixed(2)})`;
     vertexDrag = null;
+  });
+  app.canvas.addEventListener("pointercancel", () => {
+    vertexDrag = null;
+    lassoPoints = [];
+    status.textContent = "Canvas gesture cancelled.";
   });
 
   let currentImportDiagnostics: any[] = [];
