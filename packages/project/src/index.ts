@@ -104,6 +104,28 @@ export class ProjectLifecycle {
   }
 }
 
+export class AutosaveManager {
+  constructor(
+    readonly repository: ProjectRepository,
+    readonly suffix = ".autosave",
+  ) {}
+  pathFor(projectPath: string): string {
+    return `${projectPath}${this.suffix}`;
+  }
+  async save(projectPath: string, project: HboneProject): Promise<string> {
+    const path = this.pathFor(projectPath);
+    await this.repository.write(path, serializeProject(project));
+    return path;
+  }
+  async recover(projectPath: string): Promise<HboneProject | undefined> {
+    const bytes = await this.repository.read(this.pathFor(projectPath));
+    return bytes ? parseProject(bytes, { verifyChecksums: true }) : undefined;
+  }
+  async clear(projectPath: string): Promise<void> {
+    await this.repository.remove(this.pathFor(projectPath));
+  }
+}
+
 const CRC_TABLE = (() => {
   const table = new Uint32Array(256);
   for (let i = 0; i < 256; i++) {

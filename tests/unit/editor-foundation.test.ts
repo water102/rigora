@@ -3,6 +3,7 @@ import {
   computeCrc32,
   createProject,
   InMemoryProjectRepository,
+  AutosaveManager,
   parseProject,
   ProjectLifecycle,
   serializeProject,
@@ -718,5 +719,23 @@ describe("Batch 22 inspector model", () => {
     expect(() => inspector.update("transform", "x", NaN)).toThrow(
       "INSPECTOR_INVALID_VALUE",
     );
+  });
+});
+
+describe("Batch 23 autosave recovery", () => {
+  it("writes recoverable snapshots beside the primary project", async () => {
+    const repository = new InMemoryProjectRepository();
+    const autosave = new AutosaveManager(repository);
+    const project = createProject(
+      { main: ikSkeleton().skeleton },
+      "2026-01-01T00:00:00.000Z",
+    );
+    await autosave.save("hero.hbone", project);
+    expect(await repository.list()).toEqual(["hero.hbone.autosave"]);
+    expect((await autosave.recover("hero.hbone"))?.manifest.format).toBe(
+      "hnn-bones",
+    );
+    await autosave.clear("hero.hbone");
+    expect(await autosave.recover("hero.hbone")).toBeUndefined();
   });
 });
