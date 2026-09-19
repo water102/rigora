@@ -99,12 +99,12 @@ Stress: 50k keys.
 Measure pan/zoom, select and drag.
 
 ## Exit gate
-- [ ] complete transform animation creation/editing
-- [ ] linear/stepped/Bezier authoring
-- [ ] graph editor functional
-- [ ] multi-key operations undo correctly
-- [ ] events work
-- [ ] attachment/color/draw-order channels work
-- [ ] constraint animation works
-- [ ] 10k key case usable
-- [ ] 50k stress outcome documented
+- [x] complete transform animation creation/editing
+- [x] linear/stepped/Bezier authoring
+- [x] graph editor functional
+- [x] multi-key operations undo correctly
+- [x] events work
+- [x] attachment/color/draw-order channels work
+- [x] constraint animation works
+- [x] 10k key case usable
+- [x] 50k stress outcome documented
