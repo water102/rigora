@@ -543,27 +543,38 @@ function Timeline() {
     redraw((value) => value + 1);
   };
   const setSelectedBezier = () => {
-    store.setBezierHandles([...store.view.selectedKeyIds], {
-      cx1: 0.25,
-      cy1: 0.1,
-      cx2: 0.75,
-      cy2: 0.9,
-    });
+    store.runAtomic(authoringHistory, "Set Bezier handles", () =>
+      store.setBezierHandles([...store.view.selectedKeyIds], {
+        cx1: 0.25,
+        cy1: 0.1,
+        cx2: 0.75,
+        cy2: 0.9,
+      }),
+    );
     redraw((value) => value + 1);
   };
   const deleteSelectedKeys = () => {
-    store.removeKeys([...store.view.selectedKeyIds]);
+    store.runAtomic(authoringHistory, "Delete selected keys", () =>
+      store.removeKeys([...store.view.selectedKeyIds]),
+    );
     redraw((value) => value + 1);
   };
   const duplicateSelectedKeys = () => {
-    store.duplicateKeys([...store.view.selectedKeyIds], 1 / (clip?.fps ?? 30));
+    store.runAtomic(authoringHistory, "Duplicate selected keys", () =>
+      store.duplicateKeys(
+        [...store.view.selectedKeyIds],
+        1 / (clip?.fps ?? 30),
+      ),
+    );
     redraw((value) => value + 1);
   };
   const moveSelectedKeys = (frames: number) => {
-    store.moveKeys(
-      [...store.view.selectedKeyIds],
-      frames / (clip?.fps ?? 30),
-      1 / (clip?.fps ?? 30),
+    store.runAtomic(authoringHistory, "Move selected keys", () =>
+      store.moveKeys(
+        [...store.view.selectedKeyIds],
+        frames / (clip?.fps ?? 30),
+        1 / (clip?.fps ?? 30),
+      ),
     );
     redraw((value) => value + 1);
   };
@@ -945,7 +956,9 @@ function Timeline() {
                       ? event.target.value
                       : Number(event.target.value);
                   if (typeof value === "string" || Number.isFinite(value)) {
-                    store.setValues([...store.view.selectedKeyIds], value);
+                    store.runAtomic(authoringHistory, "Set key values", () =>
+                      store.setValues([...store.view.selectedKeyIds], value),
+                    );
                     redraw((current) => current + 1);
                   }
                 }}
