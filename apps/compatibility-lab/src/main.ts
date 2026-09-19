@@ -62,6 +62,7 @@ const autoPreviewBtn =
   document.querySelector<HTMLButtonElement>("#auto-preview")!;
 const autoCancelBtn =
   document.querySelector<HTMLButtonElement>("#auto-cancel")!;
+const autoApplyBtn = document.querySelector<HTMLButtonElement>("#auto-apply")!;
 const autoWeightPower =
   document.querySelector<HTMLInputElement>("#auto-weight-power")!;
 const autoWeightMax =
@@ -161,6 +162,9 @@ async function start() {
   let lastFrameTime = performance.now();
   let rafId: number | null = null;
   let autoPreviewActive = false;
+  let autoMeshPreview: Awaited<
+    ReturnType<MeshWorkerApi["previewAutoMesh"]>
+  > | null = null;
   const demoWeights: Record<
     string,
     Record<string, number>
@@ -576,7 +580,21 @@ async function start() {
 
   autoCancelBtn.addEventListener("click", () => {
     autoPreviewActive = false;
+    autoMeshPreview = null;
     status.textContent = "Auto-mesh preview cancelled.";
+  });
+  autoApplyBtn.addEventListener("click", () => {
+    if (!autoMeshPreview || !autoPreviewActive) {
+      status.textContent = "No active auto-mesh preview to apply.";
+      return;
+    }
+    demoTopology = createAuthoringMesh(
+      autoMeshPreview.preview.mesh.vertices,
+      autoMeshPreview.preview.mesh.triangles,
+    );
+    persistAuthoring();
+    autoPreviewActive = false;
+    status.textContent = `Auto-mesh applied · ${demoTopology.vertices.length} vertices · ${demoTopology.triangles.length / 3} triangles.`;
   });
   autoPreviewBtn.addEventListener("click", async () => {
     autoPreviewActive = true;
@@ -592,8 +610,10 @@ async function start() {
       { width: image.width, height: image.height, rgba: pixels },
       { threshold: Number(autoThreshold.value), simplify: 1 },
     );
-    if (autoPreviewActive)
+    if (autoPreviewActive) {
+      autoMeshPreview = preview;
       status.textContent = `Preview ready · ${preview.preview.contour.length} contour points · ${preview.preview.mesh.triangles.length / 3} triangles. Apply through authoring command.`;
+    }
   });
   paintDemo.addEventListener("click", () => {
     const ids = Object.keys(demoWeights).slice(0, 5);
