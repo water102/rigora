@@ -293,6 +293,7 @@ export interface EventKey<T> {
 export interface EventOccurrence<T> {
   absoluteTime: number;
   keyIndex: number;
+  name?: string;
   value: T;
 }
 
@@ -775,6 +776,7 @@ export class EventAuthoringTrack<T = unknown> {
         .map(({ event, keyIndex }) => ({
           absoluteTime: offset + event.time,
           keyIndex,
+          name: event.name,
           value: cloneAuthoring(event.payload as T),
         }));
     if (loop && this.duration > 0 && current >= this.duration)

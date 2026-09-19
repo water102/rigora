@@ -1494,7 +1494,7 @@ function Timeline() {
                 ? previewLog
                     .map(
                       (entry) =>
-                        `${entry.value} @ ${entry.absoluteTime.toFixed(2)}s`,
+                        `${entry.name ?? "event"}: ${JSON.stringify(entry.value)} @ ${entry.absoluteTime.toFixed(2)}s`,
                     )
                     .join(" · ")
                 : "none"}

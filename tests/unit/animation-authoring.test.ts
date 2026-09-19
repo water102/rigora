@@ -157,7 +157,10 @@ it("authors event definitions and previews loop crossings", () => {
   const track = new EventAuthoringTrack<{ damage: number }>(1);
   track.addDefinition({ id: "hit", name: "Hit" });
   track.upsert("e", 0.75, "Hit", { damage: 10 });
-  expect(track.preview(0, 1.9, true)).toHaveLength(2);
+  expect(track.preview(0, 1.9, true)).toMatchObject([
+    { name: "Hit", value: { damage: 10 } },
+    { name: "Hit", value: { damage: 10 } },
+  ]);
   track.remove("e");
   expect(track.events).toHaveLength(0);
 });
