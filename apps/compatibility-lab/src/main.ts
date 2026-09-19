@@ -39,6 +39,7 @@ import {
   zeroDeform,
   createEditablePath,
   pathTangents,
+  pathConstraintPreview,
   setDeformOffset,
   updatePathPoint,
   unbindVertices,
@@ -95,6 +96,8 @@ const deformDemo = document.querySelector<HTMLButtonElement>("#deform-demo")!;
 const deformMode = document.querySelector<HTMLSelectElement>("#deform-mode")!;
 const deformZero = document.querySelector<HTMLButtonElement>("#deform-zero")!;
 const deformReset = document.querySelector<HTMLButtonElement>("#deform-reset")!;
+const pathClosed = document.querySelector<HTMLInputElement>("#path-closed")!;
+const pathPreview = document.querySelector<HTMLButtonElement>("#path-preview")!;
 const canvasMode = document.querySelector<HTMLSelectElement>("#canvas-mode")!;
 const brushUndo = document.querySelector<HTMLButtonElement>("#brush-undo")!;
 const brushRedo = document.querySelector<HTMLButtonElement>("#brush-redo")!;
@@ -263,6 +266,7 @@ async function start() {
       }
     }
   }
+  pathClosed.checked = demoPath.closed;
   let vertexDrag: ReturnType<typeof beginDrag> | null = null;
   let lassoPoints: Array<{ x: number; y: number }> = [];
   let selectionStart: { x: number; y: number } | null = null;
@@ -746,6 +750,16 @@ async function start() {
     deformMode.value = demoDeform.mode;
     persistAuthoring();
     status.textContent = "Deform state reset.";
+  });
+  pathClosed.addEventListener("change", () => {
+    demoPath = createEditablePath(demoPath.points, pathClosed.checked);
+    persistAuthoring();
+    status.textContent = `Path is now ${demoPath.closed ? "closed" : "open"}.`;
+  });
+  pathPreview.addEventListener("click", () => {
+    const preview = pathConstraintPreview(demoPath, 8);
+    const last = preview.at(-1);
+    status.textContent = `Path preview · ${preview.length} samples · end tangent (${last?.tangent.x.toFixed(2) ?? "0.00"}, ${last?.tangent.y.toFixed(2) ?? "0.00"}).`;
   });
 
   function refresh() {
