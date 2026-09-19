@@ -6,6 +6,8 @@ import {
   fromCanonicalAnimation,
   toCanonicalAnimation,
   createAutoKey,
+  AuthoringPlayback,
+  benchmarkAuthoringKeys,
 } from "../../packages/animation/src/index.js";
 
 it("authors clips, keys, selection and canonical round trips", () => {
@@ -97,4 +99,22 @@ it("authors event definitions and previews loop crossings", () => {
   expect(track.preview(0, 1.9, true)).toHaveLength(2);
   track.remove("e");
   expect(track.events).toHaveLength(0);
+});
+
+it("updates clip metadata and playback loop ranges", () => {
+  const store = new AnimationAuthoringStore();
+  const clip = store.create("walk", 2, 30, "walk");
+  store.setMetadata(clip.id, { duration: 3, fps: 60 });
+  expect(store.active?.duration).toBe(3);
+  expect(store.active?.fps).toBe(60);
+  const playback = new AuthoringPlayback(3, 60);
+  playback.setLoopRange(1, 2);
+  playback.playing = true;
+  playback.seek(1.9);
+  expect(playback.advance(0.2)).toBeCloseTo(1.1);
+});
+
+it("reports usable stress probes for normal and stress key counts", () => {
+  expect(benchmarkAuthoringKeys(10_000).usable).toBe(true);
+  expect(benchmarkAuthoringKeys(50_000).usable).toBe(true);
 });
