@@ -476,6 +476,52 @@ function Timeline() {
       </header>
       {clip ? (
         <>
+          <div className="timeline-metadata">
+            <label>
+              Name{" "}
+              <input
+                value={clip.name}
+                onChange={(event) => {
+                  store.rename(clip.id, event.target.value);
+                  redraw((value) => value + 1);
+                }}
+              />
+            </label>
+            <label>
+              Duration{" "}
+              <input
+                type="number"
+                min={0}
+                step={0.1}
+                value={clip.duration}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  if (Number.isFinite(value) && value >= 0) {
+                    store.setMetadata(clip.id, { duration: value });
+                    playback.duration = value;
+                    redraw((current) => current + 1);
+                  }
+                }}
+              />
+            </label>
+            <label>
+              FPS{" "}
+              <input
+                type="number"
+                min={1}
+                step={1}
+                value={clip.fps}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  if (Number.isFinite(value) && value > 0) {
+                    store.setMetadata(clip.id, { fps: value });
+                    playback.fps = value;
+                    redraw((current) => current + 1);
+                  }
+                }}
+              />
+            </label>
+          </div>
           <div className="timeline-controls">
             <button onClick={() => playback.seek(0)}>◀</button>
             <button onClick={togglePlay}>

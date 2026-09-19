@@ -976,6 +976,20 @@ export class AnimationAuthoringStore {
     if (!name.trim()) throw new Error("ANIMATION_AUTHORING_INVALID_NAME");
     clip.name = name;
   }
+  setMetadata(id: string, metadata: { duration?: number; fps?: number }): void {
+    const clip = this.require(id);
+    if (metadata.duration !== undefined) {
+      finiteAuthoring(metadata.duration, "duration");
+      if (metadata.duration < 0)
+        throw new Error("ANIMATION_AUTHORING_INVALID_DURATION");
+      clip.duration = metadata.duration;
+    }
+    if (metadata.fps !== undefined) {
+      finiteAuthoring(metadata.fps, "fps");
+      if (metadata.fps <= 0) throw new Error("ANIMATION_AUTHORING_INVALID_FPS");
+      clip.fps = metadata.fps;
+    }
+  }
   duplicate(id: string, newId = this.nextId("animation")): AnimationClip {
     const copy = cloneAuthoring(this.require(id));
     copy.id = newId;
