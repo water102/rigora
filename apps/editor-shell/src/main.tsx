@@ -427,6 +427,7 @@ function Timeline() {
     cy2: 0.9,
   });
   const [fitGraphSelection, setFitGraphSelection] = useState(false);
+  const [snapInterval, setSnapInterval] = useState(1 / 30);
   const nudgeSelectedValues = (delta: number) => {
     if (!store.view.selectedKeyIds.size) return;
     store.runAtomic(
@@ -678,7 +679,7 @@ function Timeline() {
       store.moveKeys(
         [...store.view.selectedKeyIds],
         frames / (clip?.fps ?? 30),
-        1 / (clip?.fps ?? 30),
+        snapInterval,
       ),
     );
     redraw((value) => value + 1);
@@ -1097,6 +1098,21 @@ function Timeline() {
                     Number(event.target.value),
                   )
                 }
+              />
+            </label>
+            <label>
+              Snap (s){" "}
+              <input
+                className="timeline-loop-input"
+                type="number"
+                min={0}
+                step={1 / clip.fps}
+                value={snapInterval}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  if (Number.isFinite(value) && value >= 0)
+                    setSnapInterval(value);
+                }}
               />
             </label>
             <button
