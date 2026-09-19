@@ -17,6 +17,7 @@ import type { MeshWorkerApi } from "./mesh-worker.js";
 import {
   applyWeightBrush,
   applyBrushAtPoint,
+  createAttachmentFromLibrary,
   bindVertices,
   createWeightDeltaCommand,
   createAuthoringDocument,
@@ -80,6 +81,10 @@ const authoringLoad =
 const bindingBone = document.querySelector<HTMLSelectElement>("#binding-bone")!;
 const bindDemo = document.querySelector<HTMLButtonElement>("#bind-demo")!;
 const unbindDemo = document.querySelector<HTMLButtonElement>("#unbind-demo")!;
+const attachmentKind =
+  document.querySelector<HTMLSelectElement>("#attachment-kind")!;
+const createAttachment =
+  document.querySelector<HTMLButtonElement>("#create-attachment")!;
 
 async function start() {
   const app = new Application();
@@ -159,6 +164,22 @@ async function start() {
     Array.from({ length: 6 }, (_, i) => ({ x: i % 3, y: Math.floor(i / 3) })),
     [0, 1, 3, 1, 4, 3, 1, 2, 4, 2, 5, 4],
   );
+  const libraryAsset = {
+    id: "authoring-demo",
+    name: "Authoring demo",
+    textureId: "demo-texture",
+    width: 3,
+    height: 2,
+    vertices: demoTopology.vertices
+      .slice(0, 3)
+      .map((vertex) => vertex.position),
+    uvs: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 0, y: 1 },
+    ],
+    triangles: [0, 1, 2],
+  };
   const persistAuthoring = () => {
     const document = persistMesh(createAuthoringDocument(), demoTopology);
     document.paths = persistPath(
@@ -374,6 +395,24 @@ async function start() {
     );
     persistAuthoring();
     status.textContent = `Unbound ${deltas.length} vertices from ${bindingBone.value}.`;
+  });
+  createAttachment.addEventListener("click", () => {
+    try {
+      const attachment = createAttachmentFromLibrary(
+        attachmentKind.value as
+          | "region"
+          | "mesh"
+          | "clipping"
+          | "path"
+          | "boundingBox",
+        libraryAsset,
+        { id: `demo-${attachmentKind.value}` },
+      );
+      status.textContent = `Created ${attachment.type} attachment ${attachment.id}.`;
+    } catch (error) {
+      status.textContent =
+        error instanceof Error ? error.message : "Attachment creation failed.";
+    }
   });
 
   let currentImportDiagnostics: any[] = [];
