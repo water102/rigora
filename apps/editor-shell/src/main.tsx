@@ -526,7 +526,17 @@ function Timeline() {
       time: playback.time,
       label: `Marker ${store.view.markers.length + 1}`,
     };
-    store.setMarkers([...store.view.markers, marker]);
+    store.runAtomic(authoringHistory, "Add timeline marker", () => {
+      store.setMarkers([...store.view.markers, marker]);
+    });
+    redraw((value) => value + 1);
+  };
+  const removeMarker = (markerId: string) => {
+    store.runAtomic(authoringHistory, "Remove timeline marker", () => {
+      store.setMarkers(
+        store.view.markers.filter((marker) => marker.id !== markerId),
+      );
+    });
     redraw((value) => value + 1);
   };
   const addRotationKey = () => {
@@ -1061,12 +1071,12 @@ function Timeline() {
           {store.view.markers.length > 0 && (
             <div className="timeline-markers">
               {store.view.markers.map((marker) => (
-                <button
-                  key={marker.id}
-                  onClick={() => playback.seek(marker.time)}
-                >
-                  {marker.label} @ {marker.time.toFixed(2)}s
-                </button>
+                <span key={marker.id}>
+                  <button onClick={() => playback.seek(marker.time)}>
+                    {marker.label} @ {marker.time.toFixed(2)}s
+                  </button>
+                  <button onClick={() => removeMarker(marker.id)}>×</button>
+                </span>
               ))}
             </div>
           )}
