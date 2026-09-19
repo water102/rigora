@@ -38,7 +38,11 @@ import {
   type HboneProject,
 } from "@rigora/project";
 import type { SkeletonData } from "@rigora/model";
-import { AnimationAuthoringStore, AuthoringPlayback } from "@rigora/animation";
+import {
+  AnimationAuthoringStore,
+  AuthoringPlayback,
+  EventAuthoringTrack,
+} from "@rigora/animation";
 import "flexlayout-react/style/dark.css";
 import "./style.css";
 
@@ -395,6 +399,7 @@ function Timeline() {
   const [store] = useState(() => new AnimationAuthoringStore());
   const [clipId, setClipId] = useState<string | null>(null);
   const [playback] = useState(() => new AuthoringPlayback(1, 30));
+  const [events] = useState(() => new EventAuthoringTrack(1));
   const [, redraw] = useState(0);
   const clip = store.active;
   useEffect(() => {
@@ -466,6 +471,10 @@ function Timeline() {
     );
     redraw((value) => value + 1);
   };
+  const addEvent = () => {
+    events.upsert(`event-${events.events.length + 1}`, playback.time, "event");
+    redraw((value) => value + 1);
+  };
   return (
     <section className="panel timeline-panel">
       <header className="timeline-header">
@@ -529,6 +538,7 @@ function Timeline() {
             </button>
             <button onClick={() => playback.step(1)}>Frame +1</button>
             <button onClick={addRotationKey}>Key rotation</button>
+            <button onClick={addEvent}>Add event</button>
             <button onClick={toggleLoop}>
               {playback.loop ? "Loop on" : "Loop off"}
             </button>
@@ -665,6 +675,14 @@ function Timeline() {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="timeline-events">
+            <strong>Events</strong>
+            {events.events.map((event) => (
+              <button key={event.id} onClick={() => playback.seek(event.time)}>
+                {event.name} @ {event.time.toFixed(2)}s
+              </button>
+            ))}
           </div>
         </>
       ) : (

@@ -201,6 +201,16 @@ button:disabled {
 .timeline-metadata input {
   width: 70px;
 }
+.timeline-events {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.timeline-events strong {
+  margin-right: 6px;
+}
 .timeline-header,
 .timeline-controls {
   display: flex;
