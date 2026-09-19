@@ -413,6 +413,15 @@ function Timeline() {
     playback.playing = !playback.playing;
     redraw((value) => value + 1);
   };
+  const addRotationKey = () => {
+    const channel = store.active?.channels.find(
+      (item) => item.id === "root.rotate",
+    );
+    if (!channel || !clip) return;
+    store.upsertKey(channel.id, playback.time, 0, { type: "linear" });
+    store.syncRows();
+    redraw((value) => value + 1);
+  };
   return (
     <section className="panel timeline-panel">
       <header className="timeline-header">
@@ -429,6 +438,7 @@ function Timeline() {
               {playback.playing ? "Pause" : "Play"}
             </button>
             <button onClick={() => playback.step(1)}>Frame +1</button>
+            <button onClick={addRotationKey}>Key rotation</button>
             <output>
               {playback.time.toFixed(3)}s / {clip.duration.toFixed(3)}s
             </output>
@@ -460,6 +470,7 @@ function Timeline() {
                       key={key.id}
                       className="timeline-key"
                       title={`${key.time}s`}
+                      onClick={() => playback.seek(key.time)}
                       style={{ left: `${(key.time / clip.duration) * 100}%` }}
                     >
                       ◆
