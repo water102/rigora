@@ -29,9 +29,9 @@ import {
   lassoSelection,
   updateDrag,
   createDeformState,
+  setDeformOffset,
   keyDeform,
   resetTopology,
-  setDeformOffset,
   weightHeatmap,
 } from "@rigora/authoring-mesh";
 import { weightedMeshSkeleton } from "../../../tests/fixtures/canonical/weighted-mesh.js";
@@ -151,7 +151,7 @@ async function start() {
   );
   const persistAuthoring = () => {
     const document = persistMesh(createAuthoringDocument(), demoTopology);
-    document.deformOffsets["demo-mesh"] = [0, 0, 0, 0, 0, 0];
+    document.deformOffsets["demo-mesh"] = [...demoDeform.offsets];
     localStorage.setItem(
       "rigora.authoring.preview",
       serializeAuthoringDocument(document),
@@ -169,6 +169,7 @@ async function start() {
     }
   };
   restoreAuthoring();
+  let demoDeform = createDeformState(1);
   let vertexDrag: ReturnType<typeof beginDrag> | null = null;
   let lassoPoints: Array<{ x: number; y: number }> = [];
   let brushStrokeCount = 0;
@@ -208,6 +209,11 @@ async function start() {
       status.textContent = `Brush preview · ${brushStrokeCount} sparse deltas`;
       return;
     }
+    if (canvasMode.value === "deform") {
+      vertexDrag = beginDrag("vertex", canvasPoint(event), "v0");
+      app.canvas.setPointerCapture(event.pointerId);
+      return;
+    }
     vertexDrag = beginDrag("vertex", canvasPoint(event), "v0");
     app.canvas.setPointerCapture(event.pointerId);
   });
@@ -228,6 +234,12 @@ async function start() {
       activeBrushDeltas.push(...moveDeltas);
       brushStrokeCount += moveDeltas.length;
       status.textContent = `Brush preview · ${brushStrokeCount} sparse deltas`;
+      return;
+    }
+    if (canvasMode.value === "deform" && vertexDrag) {
+      vertexDrag = updateDrag(vertexDrag, canvasPoint(event));
+      demoDeform = setDeformOffset(demoDeform, 0, vertexDrag.current);
+      status.textContent = `Deform preview · offset (${vertexDrag.current.x.toFixed(2)}, ${vertexDrag.current.y.toFixed(2)})`;
       return;
     }
     if (!vertexDrag) return;
@@ -257,6 +269,14 @@ async function start() {
       status.textContent = `Brush stroke committed · ${brushStrokeCount} sparse deltas`;
       brushStrokeCount = 0;
       activeBrushDeltas = [];
+      return;
+    }
+    if (canvasMode.value === "deform" && vertexDrag) {
+      vertexDrag = endDrag(vertexDrag);
+      persistAuthoring();
+      app.canvas.releasePointerCapture(event.pointerId);
+      status.textContent = `Deform committed · offset (${vertexDrag.current.x.toFixed(2)}, ${vertexDrag.current.y.toFixed(2)})`;
+      vertexDrag = null;
       return;
     }
     if (!vertexDrag) return;
