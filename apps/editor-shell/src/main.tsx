@@ -106,8 +106,12 @@ function Stage() {
   const services = useServices();
   const selection = services.selection.current;
   const hostRef = useRef<HTMLDivElement>(null);
+  const cameraRef = useRef<Camera2D | null>(null);
+  const drawRef = useRef<(() => void) | null>(null);
+  const [viewInfo, setViewInfo] = useState({ zoom: 100, gridStep: "50px" });
   const selectionRef = useRef(selection);
   selectionRef.current = selection;
+
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
@@ -115,6 +119,7 @@ function Stage() {
     const app = new Application();
     const camera = new Camera2D(1, 1);
     camera.setCenter({ x: 25, y: 75 });
+    cameraRef.current = camera;
     const grid = new Graphics();
     const skeleton = new Graphics();
     const fallbackBones = [
@@ -164,8 +169,15 @@ function Stage() {
       const power = Math.pow(10, Math.floor(Math.log10(targetWorldStep)));
       const ratio = targetWorldStep / power;
       const step = ratio < 2 ? 1 : ratio < 5 ? 2 : 5;
-      const spacing = Math.max(1, step * power);
+      const spacing = Math.max(0.01, step * power);
       const subdivisions = step === 2 ? 4 : 5;
+
+      const stepText =
+        spacing >= 1 ? `${Math.round(spacing)}px` : `${spacing.toFixed(1)}px`;
+      setViewInfo({
+        zoom: Math.round(camera.zoom * 100),
+        gridStep: stepText,
+      });
 
       const lines = buildGridLines(bounds, {
         enabled: true,
@@ -226,6 +238,8 @@ function Stage() {
       }
       app.renderer.render(app.stage);
     };
+
+    drawRef.current = draw;
 
     void app
       .init({
@@ -346,6 +360,8 @@ function Stage() {
     const unsubscribe = services.selection.subscribe(draw);
     return () => {
       disposed = true;
+      cameraRef.current = null;
+      drawRef.current = null;
       resizeObserver.disconnect();
       unsubscribe();
       host.removeEventListener("wheel", onWheel);
@@ -360,13 +376,59 @@ function Stage() {
   return (
     <section className="stage-panel">
       <div className="stage-toolbar">
-        Stage{" "}
-        <span>
-          {selection
-            ? `${selection.kind}: ${selection.id}`
-            : "Nothing selected"}{" "}
-          · wheel zoom · middle/right drag pan
-        </span>
+        <div className="stage-toolbar-left">
+          <strong>Stage</strong>
+          <span
+            className="stage-info-badge"
+            title="Mức phóng to và khoảng cách ô lưới caro hiện tại"
+          >
+            🔍 Zoom: {viewInfo.zoom}% · 📏 Lưới: {viewInfo.gridStep}
+          </span>
+          <span className="stage-selection">
+            {selection
+              ? `${selection.kind}: ${selection.id}`
+              : "Nothing selected"}
+          </span>
+        </div>
+        <div className="stage-toolbar-right">
+          <button
+            className="stage-btn"
+            title="Thu nhỏ (-)"
+            onClick={() => {
+              if (cameraRef.current && drawRef.current) {
+                cameraRef.current.setZoom(cameraRef.current.zoom * 0.8);
+                drawRef.current();
+              }
+            }}
+          >
+            −
+          </button>
+          <button
+            className="stage-btn"
+            title="Phóng to (+)"
+            onClick={() => {
+              if (cameraRef.current && drawRef.current) {
+                cameraRef.current.setZoom(cameraRef.current.zoom * 1.25);
+                drawRef.current();
+              }
+            }}
+          >
+            +
+          </button>
+          <button
+            className="stage-btn"
+            title="Khôi phục góc nhìn mặc định 100%"
+            onClick={() => {
+              if (cameraRef.current && drawRef.current) {
+                cameraRef.current.setZoom(1);
+                cameraRef.current.setCenter({ x: 25, y: 75 });
+                drawRef.current();
+              }
+            }}
+          >
+            100% (Reset)
+          </button>
+        </div>
       </div>
       <div ref={hostRef} className="pixi-stage" />
     </section>
