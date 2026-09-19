@@ -415,6 +415,12 @@ function Timeline() {
   const [autoKeyMode, setAutoKeyMode] = useState<AutoKeyMode>("off");
   const [eventName, setEventName] = useState("event");
   const [eventPayload, setEventPayload] = useState("{}");
+  const [bezierHandles, setBezierHandles] = useState({
+    cx1: 0.25,
+    cy1: 0.1,
+    cx2: 0.75,
+    cy2: 0.9,
+  });
   const [, redraw] = useState(0);
   const clip = store.active;
   const clips = store.clips;
@@ -568,12 +574,7 @@ function Timeline() {
   };
   const setSelectedBezier = () => {
     store.runAtomic(authoringHistory, "Set Bezier handles", () =>
-      store.setBezierHandles([...store.view.selectedKeyIds], {
-        cx1: 0.25,
-        cy1: 0.1,
-        cx2: 0.75,
-        cy2: 0.9,
-      }),
+      store.setBezierHandles([...store.view.selectedKeyIds], bezierHandles),
     );
     redraw((value) => value + 1);
   };
@@ -971,6 +972,27 @@ function Timeline() {
             >
               Bezier
             </button>
+            {(["cx1", "cy1", "cx2", "cy2"] as const).map((handle) => (
+              <label key={handle}>
+                {handle}{" "}
+                <input
+                  className="timeline-loop-input"
+                  type="number"
+                  min={handle.startsWith("cx") ? 0 : -2}
+                  max={handle.startsWith("cx") ? 1 : 2}
+                  step={0.05}
+                  value={bezierHandles[handle]}
+                  onChange={(event) => {
+                    const value = Number(event.target.value);
+                    if (Number.isFinite(value))
+                      setBezierHandles((current) => ({
+                        ...current,
+                        [handle]: value,
+                      }));
+                  }}
+                />
+              </label>
+            ))}
             <label>
               Value{" "}
               <input
