@@ -35,12 +35,22 @@ export class SelectionStore {
   readonly #listeners = new Set<SelectionListener>();
 
   get current(): Selection | null {
-    return this.#selection;
+    return this.#selection ? { ...this.#selection } : null;
   }
 
   select(selection: Selection): void {
+    if (this.isSelected(selection.kind, selection.id)) return;
     this.#selection = { ...selection };
     this.#emit();
+  }
+
+  toggle(selection: Selection): void {
+    if (this.isSelected(selection.kind, selection.id)) this.clear();
+    else this.select(selection);
+  }
+
+  deselect(kind: SelectionKind, id: string): void {
+    if (this.isSelected(kind, id)) this.clear();
   }
 
   clear(): void {

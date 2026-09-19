@@ -376,6 +376,36 @@ describe("Batch 17 selection model", () => {
     store.select({ kind: "constraint", id: "ik-arm" });
     expect(updates).toHaveLength(3);
   });
+
+  it("deduplicates repeated selection and protects current from mutation", () => {
+    const store = new SelectionStore();
+    let emissions = 0;
+    store.subscribe(() => emissions++);
+    store.select({ kind: "bone", id: "root" });
+    store.select({ kind: "bone", id: "root" });
+    expect(emissions).toBe(1);
+    const current = store.current!;
+    current.id = "changed-outside-store";
+    expect(store.current).toEqual({ kind: "bone", id: "root" });
+    expect(emissions).toBe(1);
+  });
+
+  it("supports toggle and targeted deselect helpers", () => {
+    const store = new SelectionStore();
+    let emissions = 0;
+    store.subscribe(() => emissions++);
+    const bone = { kind: "bone" as const, id: "root" };
+    store.toggle(bone);
+    expect(store.current).toEqual(bone);
+    store.toggle(bone);
+    expect(store.current).toBeNull();
+    store.select({ kind: "slot", id: "body" });
+    store.deselect("bone", "root");
+    expect(store.current).toEqual({ kind: "slot", id: "body" });
+    store.deselect("slot", "body");
+    expect(store.current).toBeNull();
+    expect(emissions).toBe(4);
+  });
 });
 
 describe("Batch 16 project lifecycle", () => {
