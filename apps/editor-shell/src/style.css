@@ -274,10 +274,6 @@ body,
   width: 100% !important;
   height: 100% !important;
 }
-\.axis {
-  position: absolute;
-  background: #4a6a8f;
-}
 .axis.x {
   left: 0;
   right: 0;
