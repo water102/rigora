@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
+  applyWeightBrush,
+  applyWeightDeltas,
+  createAuthoringMesh,
+  createEditablePath,
+  deleteVertex,
+  meshEdges,
+  moveVertex,
+  selectPolygon,
+  updatePathPoint,
   triangulatePolygon,
   generateGridMesh,
   triangulatePoints,
@@ -7,6 +16,50 @@ import {
   computeAutoWeights,
   smoothWeightsLaplacian,
 } from "../../packages/authoring-mesh/src/index.js";
+
+describe("Phase 6 authoring core", () => {
+  it("preserves stable topology operations and adjacency", () => {
+    const original = createAuthoringMesh(
+      [
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+        { x: 0, y: 1 },
+      ],
+      [0, 1, 2],
+    );
+    const moved = moveVertex(original, "v1", { x: 2, y: 0 });
+    expect(moved.vertices[1]!.id).toBe("v1");
+    expect(meshEdges(moved)).toHaveLength(3);
+    expect(deleteVertex(moved, "v0").triangles).toEqual([]);
+  });
+
+  it("returns sparse reversible brush deltas and supports polygon/path editing", () => {
+    const weights = { v0: { boneA: 1 } };
+    const deltas = applyWeightBrush(weights, ["v0"], "boneB", "add", 0.5);
+    expect(weights.v0.boneB).toBeCloseTo(1 / 3);
+    applyWeightDeltas(weights, deltas, "undo");
+    expect(weights.v0.boneB).toBe(0);
+    expect(
+      selectPolygon(
+        [
+          { x: 0.5, y: 0.5 },
+          { x: 2, y: 2 },
+        ],
+        [
+          { x: 0, y: 0 },
+          { x: 1, y: 0 },
+          { x: 1, y: 1 },
+          { x: 0, y: 1 },
+        ],
+      ),
+    ).toEqual([0]);
+    const path = updatePathPoint(createEditablePath([{ x: 0, y: 0 }]), 0, {
+      x: 2,
+      y: 3,
+    });
+    expect(path.points[0]).toEqual({ x: 2, y: 3 });
+  });
+});
 
 describe("Triangulation Engine", () => {
   it("triangulates simple rectangle polygon into 2 triangles with [0, 1] UVs", () => {
