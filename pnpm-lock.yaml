@@ -163,6 +163,8 @@ importers:
 
   packages/diagnostics: {}
 
+  packages/editor-core: {}
+
   packages/format-common:
     dependencies:
       '@rigora/diagnostics':
@@ -202,6 +204,15 @@ importers:
       zod:
         specifier: 3.25.76
         version: 3.25.76
+
+  packages/project:
+    dependencies:
+      '@rigora/model':
+        specifier: workspace:*
+        version: link:../model
+      fflate:
+        specifier: ^0.8.3
+        version: 0.8.3
 
   packages/renderer-pixi:
     dependencies:
