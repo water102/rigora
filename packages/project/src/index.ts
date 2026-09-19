@@ -1,4 +1,4 @@
-import { strToU8, unzipSync, zipSync } from "fflate";
+import { strFromU8, strToU8, unzipSync, zipSync } from "fflate";
 import {
   parseSkeletonSnapshot,
   serializeSkeletonSnapshot,
@@ -14,64 +14,243 @@ export interface HboneManifest {
   skeletons: string[];
   assets: string[];
   checksums: Record<string, string>;
+  provenance?: Record<string, string>;
+  extensions?: Record<string, unknown>;
 }
+
 export interface HboneProject {
   manifest: HboneManifest;
   skeletons: Record<string, SkeletonData>;
+  assets?: Record<string, Uint8Array>;
   editorState?: unknown;
+  provenance?: Record<string, string>;
+  extensions?: Record<string, unknown>;
+}
+
+const CRC_TABLE = (() => {
+  const table = new Uint32Array(256);
+  for (let i = 0; i < 256; i++) {
+    let c = i;
+    for (let k = 0; k < 8; k++) {
+      c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+    }
+    table[i] = c >>> 0;
+  }
+  return table;
+})();
+
+export function computeCrc32(bytes: Uint8Array): string {
+  let crc = 0xffffffff;
+  for (let i = 0; i < bytes.length; i++) {
+    crc = (crc >>> 8) ^ CRC_TABLE[(crc ^ bytes[i]!) & 0xff]!;
+  }
+  return ((crc ^ 0xffffffff) >>> 0).toString(16).padStart(8, "0");
+}
+
+function sortKeys(value: unknown): unknown {
+  if (value === null || typeof value !== "object") return value;
+  if (Array.isArray(value)) return value.map(sortKeys);
+  const sorted: Record<string, unknown> = {};
+  for (const key of Object.keys(value as Record<string, unknown>).sort()) {
+    sorted[key] = sortKeys((value as Record<string, unknown>)[key]);
+  }
+  return sorted;
 }
 
 const text = (value: unknown) =>
-  JSON.stringify(value, Object.keys(value as object).sort(), 2) + "\n";
+  JSON.stringify(sortKeys(value), null, 2) + "\n";
+
 export function createProject(
   skeletons: Record<string, SkeletonData>,
-  now = new Date().toISOString(),
+  optionsOrNow?:
+    | string
+    | {
+        assets?: Record<string, Uint8Array>;
+        editorState?: unknown;
+        provenance?: Record<string, string>;
+        extensions?: Record<string, unknown>;
+        now?: string;
+        generator?: string;
+      },
 ): HboneProject {
-  const ids = Object.keys(skeletons).sort();
+  const options =
+    typeof optionsOrNow === "string"
+      ? { now: optionsOrNow }
+      : (optionsOrNow ?? {});
+  const now = options.now ?? new Date().toISOString();
+  const skeletonIds = Object.keys(skeletons).sort();
+  const assetPaths = Object.keys(options.assets ?? {}).sort();
+
   return {
     manifest: {
       format: "hnn-bones",
       formatVersion: 1,
-      generator: "Rigora",
+      generator: options.generator ?? "Rigora",
       createdAt: now,
       modifiedAt: now,
-      skeletons: ids,
-      assets: [],
+      skeletons: skeletonIds,
+      assets: assetPaths,
       checksums: {},
+      ...(options.provenance ? { provenance: options.provenance } : {}),
+      ...(options.extensions ? { extensions: options.extensions } : {}),
     },
-    skeletons: Object.fromEntries(ids.map((id) => [id, skeletons[id]!])),
+    skeletons: Object.fromEntries(
+      skeletonIds.map((id) => [id, skeletons[id]!]),
+    ),
+    ...(options.assets ? { assets: { ...options.assets } } : {}),
+    ...(options.editorState !== undefined
+      ? { editorState: options.editorState }
+      : {}),
+    ...(options.provenance ? { provenance: { ...options.provenance } } : {}),
+    ...(options.extensions ? { extensions: { ...options.extensions } } : {}),
   };
 }
+
 export function serializeProject(project: HboneProject): Uint8Array {
-  const files: Record<string, Uint8Array> = {
-    "manifest.json": strToU8(text(project.manifest)),
+  const files: Record<string, Uint8Array> = {};
+  const checksums: Record<string, string> = {};
+
+  // 1. Skeletons
+  const skeletonIds = Object.keys(project.skeletons).sort();
+  for (const id of skeletonIds) {
+    const path = `skeletons/${id}.json`;
+    const bytes = strToU8(serializeSkeletonSnapshot(project.skeletons[id]!));
+    files[path] = bytes;
+    checksums[path] = computeCrc32(bytes);
+  }
+
+  // 2. Assets
+  const assetPaths = Object.keys(project.assets ?? {}).sort();
+  for (const assetPath of assetPaths) {
+    const fullPath = `assets/${assetPath}`;
+    const bytes = project.assets![assetPath]!;
+    files[fullPath] = bytes;
+    checksums[fullPath] = computeCrc32(bytes);
+  }
+
+  // 3. Editor State
+  if (project.editorState !== undefined) {
+    const path = "editor/state.json";
+    const bytes = strToU8(text(project.editorState));
+    files[path] = bytes;
+    checksums[path] = computeCrc32(bytes);
+  }
+
+  // 4. Provenance
+  if (project.provenance) {
+    const provKeys = Object.keys(project.provenance).sort();
+    for (const key of provKeys) {
+      const path = `provenance/${key}`;
+      const bytes = strToU8(project.provenance[key]!);
+      files[path] = bytes;
+      checksums[path] = computeCrc32(bytes);
+    }
+  }
+
+  // 5. Manifest
+  const manifest: HboneManifest = {
+    ...project.manifest,
+    format: "hnn-bones",
+    formatVersion: 1,
+    generator: project.manifest.generator || "Rigora",
+    createdAt: project.manifest.createdAt || new Date().toISOString(),
+    modifiedAt: new Date().toISOString(),
+    skeletons: skeletonIds,
+    assets: assetPaths,
+    checksums,
+    ...(project.provenance ? { provenance: project.provenance } : {}),
+    ...(project.extensions ? { extensions: project.extensions } : {}),
   };
-  for (const id of project.manifest.skeletons)
-    files[`skeletons/${id}.json`] = strToU8(
-      serializeSkeletonSnapshot(project.skeletons[id]),
-    );
-  if (project.editorState !== undefined)
-    files["editor/state.json"] = strToU8(text(project.editorState));
+
+  files["manifest.json"] = strToU8(text(manifest));
+
   return zipSync(files, { level: 6 });
 }
-export function parseProject(bytes: Uint8Array): HboneProject {
-  const files = unzipSync(bytes);
-  const manifest = JSON.parse(
-    new TextDecoder().decode(files["manifest.json"]!),
-  ) as HboneManifest;
-  if (manifest.format !== "hnn-bones" || manifest.formatVersion !== 1)
+
+export function parseProject(
+  bytes: Uint8Array,
+  options?: { verifyChecksums?: boolean },
+): HboneProject {
+  let files: Record<string, Uint8Array>;
+  try {
+    files = unzipSync(bytes);
+  } catch {
+    throw new Error("NATIVE_CORRUPT_ARCHIVE");
+  }
+
+  const manifestFile = files["manifest.json"];
+  if (!manifestFile) {
+    throw new Error("NATIVE_MISSING_MANIFEST");
+  }
+
+  let manifest: HboneManifest;
+  try {
+    manifest = JSON.parse(strFromU8(manifestFile)) as HboneManifest;
+  } catch {
+    throw new Error("NATIVE_INVALID_MANIFEST");
+  }
+
+  if (manifest.format !== "hnn-bones" || manifest.formatVersion !== 1) {
     throw new Error("NATIVE_INVALID_PROJECT");
+  }
+
   const skeletons: Record<string, SkeletonData> = {};
-  for (const id of manifest.skeletons)
-    skeletons[id] = parseSkeletonSnapshot(
-      new TextDecoder().decode(files[`skeletons/${id}.json`]!),
-    );
-  const editor = files["editor/state.json"];
+  for (const id of manifest.skeletons) {
+    const file = files[`skeletons/${id}.json`];
+    if (!file) {
+      throw new Error(`NATIVE_MISSING_SKELETON: ${id}`);
+    }
+    skeletons[id] = parseSkeletonSnapshot(strFromU8(file));
+  }
+
+  const assets: Record<string, Uint8Array> = {};
+  for (const [filePath, content] of Object.entries(files)) {
+    if (filePath.startsWith("assets/")) {
+      const assetKey = filePath.slice("assets/".length);
+      assets[assetKey] = content;
+    }
+  }
+
+  const editorFile = files["editor/state.json"];
+  let editorState: unknown;
+  if (editorFile) {
+    try {
+      editorState = JSON.parse(strFromU8(editorFile));
+    } catch {
+      editorState = undefined;
+    }
+  }
+
+  const provenance: Record<string, string> = {};
+  if (manifest.provenance) {
+    Object.assign(provenance, manifest.provenance);
+  }
+  for (const [filePath, content] of Object.entries(files)) {
+    if (filePath.startsWith("provenance/")) {
+      const provKey = filePath.slice("provenance/".length);
+      provenance[provKey] = strFromU8(content);
+    }
+  }
+
+  if (options?.verifyChecksums && manifest.checksums) {
+    for (const [filePath, expectedCrc] of Object.entries(manifest.checksums)) {
+      const file = files[filePath];
+      if (!file) {
+        throw new Error(`NATIVE_CHECKSUM_FILE_MISSING: ${filePath}`);
+      }
+      const actualCrc = computeCrc32(file);
+      if (actualCrc !== expectedCrc) {
+        throw new Error(`NATIVE_CHECKSUM_MISMATCH: ${filePath}`);
+      }
+    }
+  }
+
   return {
     manifest,
     skeletons,
-    ...(editor
-      ? { editorState: JSON.parse(new TextDecoder().decode(editor)) }
-      : {}),
+    ...(Object.keys(assets).length > 0 ? { assets } : {}),
+    ...(editorState !== undefined ? { editorState } : {}),
+    ...(Object.keys(provenance).length > 0 ? { provenance } : {}),
+    ...(manifest.extensions ? { extensions: manifest.extensions } : {}),
   };
 }
