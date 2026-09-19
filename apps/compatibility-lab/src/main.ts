@@ -30,6 +30,7 @@ import {
   beginDrag,
   endDrag,
   lassoSelection,
+  selectMeshByPolygon,
   updateDrag,
   createDeformState,
   createEditablePath,
@@ -238,6 +239,16 @@ async function start() {
   }
   let vertexDrag: ReturnType<typeof beginDrag> | null = null;
   let lassoPoints: Array<{ x: number; y: number }> = [];
+  const isSelectionMode = () =>
+    canvasMode.value === "lasso" || canvasMode.value.startsWith("select-");
+  const selectionPriority = () =>
+    canvasMode.value === "select-edge"
+      ? "edge"
+      : canvasMode.value === "select-face"
+        ? "face"
+        : canvasMode.value === "select-boundary"
+          ? "boundary"
+          : "vertex";
   let brushStrokeCount = 0;
   let activeBrushDeltas: Array<{
     vertexId: string;
@@ -257,7 +268,7 @@ async function start() {
     y: (260 - event.offsetY) / 8,
   });
   app.canvas.addEventListener("pointerdown", (event) => {
-    if (canvasMode.value === "lasso") {
+    if (isSelectionMode()) {
       lassoPoints = [canvasPoint(event)];
       app.canvas.setPointerCapture(event.pointerId);
       return;
@@ -289,7 +300,7 @@ async function start() {
     app.canvas.setPointerCapture(event.pointerId);
   });
   app.canvas.addEventListener("pointermove", (event) => {
-    if (canvasMode.value === "lasso" && lassoPoints.length) {
+    if (isSelectionMode() && lassoPoints.length) {
       lassoPoints.push(canvasPoint(event));
       status.textContent = `Lasso preview · ${lassoPoints.length} points`;
       return;
@@ -326,11 +337,14 @@ async function start() {
     status.textContent = `Vertex drag preview · v0 = (${vertexDrag.current.x.toFixed(2)}, ${vertexDrag.current.y.toFixed(2)})`;
   });
   app.canvas.addEventListener("pointerup", (event) => {
-    if (canvasMode.value === "lasso" && lassoPoints.length) {
-      const selected = lassoSelection(demoTopology.vertices, lassoPoints);
+    if (isSelectionMode() && lassoPoints.length) {
+      const selected =
+        canvasMode.value === "lasso"
+          ? lassoSelection(demoTopology.vertices, lassoPoints)
+          : selectMeshByPolygon(demoTopology, lassoPoints, selectionPriority());
       lassoPoints = [];
       app.canvas.releasePointerCapture(event.pointerId);
-      status.textContent = `Lasso selection · ${selected.length} vertices: ${selected.join(", ") || "none"}`;
+      status.textContent = `Lasso selection · ${selected.length} ${selectionPriority()} items: ${selected.join(", ") || "none"}`;
       return;
     }
     if (canvasMode.value === "brush") {
