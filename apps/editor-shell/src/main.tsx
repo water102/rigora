@@ -1285,7 +1285,21 @@ function Timeline() {
               </button>
             </div>
             {graphRange && graphChannel ? (
-              <svg viewBox="0 0 640 160" role="img">
+              <svg
+                viewBox="0 0 640 160"
+                role="img"
+                aria-label="Animation curve graph"
+              >
+                {Array.from({ length: 9 }, (_, index) => {
+                  const x = (index / 8) * 640;
+                  const y = 150 - (index / 8) * 150;
+                  return (
+                    <g key={`grid-${index}`} className="timeline-graph-grid">
+                      <line x1={x} y1="0" x2={x} y2="150" />
+                      <line x1="0" y1={y} x2="640" y2={y} />
+                    </g>
+                  );
+                })}
                 <line x1="0" y1="150" x2="640" y2="150" />
                 <line x1="0" y1="0" x2="0" y2="150" />
                 <path fill="none" d={graphPath} />
