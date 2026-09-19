@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   applyWeightBrush,
   applyWeightDeltas,
+  buildAutoMeshPreview,
   createAuthoringMesh,
   createEditablePath,
   deleteVertex,
@@ -18,6 +19,16 @@ import {
 } from "../../packages/authoring-mesh/src/index.js";
 
 describe("Phase 6 authoring core", () => {
+  it("builds deterministic auto-mesh previews from alpha", () => {
+    const rgba = new Uint8Array(16 * 4);
+    for (const i of [5, 6, 9, 10]) rgba[i * 4 + 3] = 255;
+    const preview = buildAutoMeshPreview(
+      { width: 4, height: 4, rgba },
+      { threshold: 128, simplify: 0 },
+    );
+    expect(preview.originalContour.length).toBeGreaterThanOrEqual(3);
+    expect(preview.mesh.triangles.length).toBeGreaterThan(0);
+  });
   it("preserves stable topology operations and adjacency", () => {
     const original = createAuthoringMesh(
       [

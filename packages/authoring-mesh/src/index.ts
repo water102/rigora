@@ -34,3 +34,15 @@ export {
   type MeshMode,
   type WeightDelta,
 } from "./authoring.js";
+
+export {
+  buildAutoMeshPreview,
+  extractAlphaContour,
+  runAutoMeshJob,
+  simplifyContour,
+  type AlphaImage,
+  type AutoMeshJob,
+  type AutoMeshOptions,
+  type AutoMeshPreview,
+  type AutoMeshResult,
+} from "./auto-mesh.js";
