@@ -3,6 +3,7 @@ import {
   applyWeightBrush,
   applyBrushAtPoint,
   applyWeightDeltas,
+  createWeightDeltaCommand,
   addEdge,
   buildAutoMeshPreview,
   createDeformState,
@@ -97,6 +98,11 @@ describe("Phase 6 authoring core", () => {
     );
     expect(deltas.length).toBe(2);
     expect(weights.v0!.boneB).toBeGreaterThan(weights.v1!.boneB!);
+    const command = createWeightDeltaCommand(weights, deltas);
+    command.undo();
+    expect(weights.v0!.boneB).toBe(0);
+    command.execute();
+    expect(weights.v0!.boneB).toBeGreaterThan(0);
   });
 
   it("computes path tangent previews", () => {

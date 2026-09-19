@@ -117,6 +117,24 @@ export interface WeightDelta {
   before: number;
   after: number;
 }
+export interface SparseDeltaCommand {
+  id: string;
+  label: string;
+  execute(): void;
+  undo(): void;
+}
+export function createWeightDeltaCommand(
+  weights: Record<string, Record<string, number>>,
+  deltas: readonly WeightDelta[],
+  label = "Weight stroke",
+): SparseDeltaCommand {
+  return {
+    id: `weight-delta-${deltas.length}-${label}`,
+    label,
+    execute: () => applyWeightDeltas(weights, deltas, "redo"),
+    undo: () => applyWeightDeltas(weights, deltas, "undo"),
+  };
+}
 
 export function bindVertices(
   weights: Record<string, Record<string, number>>,

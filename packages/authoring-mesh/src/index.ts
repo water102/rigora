@@ -17,6 +17,7 @@ export {
   applyWeightBrush,
   applyBrushAtPoint,
   applyWeightDeltas,
+  createWeightDeltaCommand,
   addEdge,
   bindVertices,
   connectedSelection,
@@ -39,6 +40,7 @@ export {
   type EditablePath,
   type MeshMode,
   type WeightDelta,
+  type SparseDeltaCommand,
 } from "./authoring.js";
 
 export {
