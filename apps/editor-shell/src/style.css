@@ -91,7 +91,8 @@ body,
   color: #8ea0b9;
   font-weight: 400;
 }
-.stage-grid {
+.stage-grid,
+.pixi-stage {
   position: relative;
   height: calc(100% - 42px);
   overflow: hidden;

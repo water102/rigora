@@ -6,9 +6,11 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { createRoot } from "react-dom/client";
+import { Application, Graphics } from "pixi.js";
 import {
   Layout,
   Model,
@@ -22,6 +24,8 @@ import {
   EditorPreferencesStore,
   HierarchyModel,
   type HierarchyNode,
+  Camera2D,
+  buildGridLines,
 } from "@rigora/editor-core";
 import "flexlayout-react/style/dark.css";
 import "./style.css";
@@ -69,6 +73,157 @@ const nodes: HierarchyNode[] = [
 function Stage() {
   const services = useServices();
   const selection = services.selection.current;
+  const hostRef = useRef<HTMLDivElement>(null);
+  const selectionRef = useRef(selection);
+  selectionRef.current = selection;
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    let disposed = false;
+    const app = new Application();
+    const camera = new Camera2D(1, 1);
+    const grid = new Graphics();
+    const skeleton = new Graphics();
+    const bones = [
+      { id: "root", x: 0, y: 0, tx: 0, ty: 80 },
+      { id: "body", x: 0, y: 80, tx: 55, ty: 135 },
+      { id: "hand", x: 55, y: 135, tx: 105, ty: 120 },
+      { id: "head", x: 0, y: 80, tx: -5, ty: 150 },
+    ];
+    const draw = () => {
+      const width = host.clientWidth || 640;
+      const height = host.clientHeight || 420;
+      camera.setViewport(width, height);
+      grid.clear();
+      const topLeft = camera.screenToWorld({ x: 0, y: 0 });
+      const bottomRight = camera.screenToWorld({ x: width, y: height });
+      const bounds = {
+        x: topLeft.x,
+        y: -bottomRight.y,
+        width: bottomRight.x - topLeft.x,
+        height: topLeft.y - bottomRight.y,
+      };
+      for (const line of buildGridLines(bounds, {
+        enabled: true,
+        spacing: 40,
+        subdivisions: 4,
+      })) {
+        const a =
+          line.axis === "x"
+            ? camera.worldToScreen({ x: line.position, y: -bounds.y })
+            : camera.worldToScreen({ x: bounds.x, y: -line.position });
+        const b =
+          line.axis === "x"
+            ? camera.worldToScreen({
+                x: line.position,
+                y: -(bounds.y + bounds.height),
+              })
+            : camera.worldToScreen({
+                x: bounds.x + bounds.width,
+                y: -line.position,
+              });
+        grid
+          .moveTo(a.x, a.y)
+          .lineTo(b.x, b.y)
+          .stroke({
+            color: line.major ? 0x38516d : 0x203247,
+            width: line.major ? 1 : 0.5,
+          });
+      }
+      skeleton.clear();
+      for (const bone of bones) {
+        const a = camera.worldToScreen({ x: bone.x, y: -bone.y });
+        const b = camera.worldToScreen({ x: bone.tx, y: -bone.ty });
+        const selected =
+          selectionRef.current?.kind === "bone" &&
+          selectionRef.current.id === bone.id;
+        skeleton
+          .moveTo(a.x, a.y)
+          .lineTo(b.x, b.y)
+          .stroke({
+            color: selected ? 0xffc857 : 0x65dccb,
+            width: selected ? 5 : 3,
+          });
+        skeleton
+          .circle(a.x, a.y, selected ? 7 : 5)
+          .fill(selected ? 0xffc857 : 0x9deee2);
+      }
+      app.renderer.render(app.stage);
+    };
+    void app
+      .init({
+        background: 0x111b2c,
+        antialias: true,
+        autoStart: false,
+        resizeTo: host,
+      })
+      .then(() => {
+        if (disposed) {
+          app.destroy(true);
+          return;
+        }
+        host.appendChild(app.canvas);
+        app.stage.addChild(grid, skeleton);
+        draw();
+      });
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const rect = host.getBoundingClientRect();
+      camera.zoomAt(event.deltaY < 0 ? 1.1 : 0.9, {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+      });
+      draw();
+    };
+    let dragging = false;
+    let last = { x: 0, y: 0 };
+    const onDown = (event: PointerEvent) => {
+      if (event.button === 1 || event.button === 2) {
+        dragging = true;
+        last = { x: event.clientX, y: event.clientY };
+        host.setPointerCapture(event.pointerId);
+      }
+    };
+    const onMove = (event: PointerEvent) => {
+      if (dragging) {
+        camera.panBy(event.clientX - last.x, event.clientY - last.y);
+        last = { x: event.clientX, y: event.clientY };
+        draw();
+      }
+    };
+    const onUp = () => {
+      dragging = false;
+    };
+    const onClick = (event: MouseEvent) => {
+      if (event.button !== 0) return;
+      const rect = host.getBoundingClientRect();
+      const point = camera.screenToWorld({
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+      });
+      const hit = bones.find(
+        (bone) => Math.hypot(point.x - bone.x, point.y + bone.y) < 12,
+      );
+      if (hit) services.selection.select({ kind: "bone", id: hit.id });
+    };
+    host.addEventListener("wheel", onWheel, { passive: false });
+    host.addEventListener("pointerdown", onDown);
+    host.addEventListener("pointermove", onMove);
+    host.addEventListener("pointerup", onUp);
+    host.addEventListener("contextmenu", (event) => event.preventDefault());
+    host.addEventListener("click", onClick);
+    const unsubscribe = services.selection.subscribe(draw);
+    return () => {
+      disposed = true;
+      unsubscribe();
+      host.removeEventListener("wheel", onWheel);
+      host.removeEventListener("pointerdown", onDown);
+      host.removeEventListener("pointermove", onMove);
+      host.removeEventListener("pointerup", onUp);
+      host.removeEventListener("click", onClick);
+      app.destroy(true);
+    };
+  }, [services]);
   return (
     <section className="stage-panel">
       <div className="stage-toolbar">
@@ -76,18 +231,11 @@ function Stage() {
         <span>
           {selection
             ? `${selection.kind}: ${selection.id}`
-            : "Nothing selected"}
+            : "Nothing selected"}{" "}
+          · wheel zoom · middle/right drag pan
         </span>
       </div>
-      <div className="stage-grid">
-        <div className="axis x" />
-        <div className="axis y" />
-        <div className="stage-card">
-          Camera2D
-          <br />
-          <small>Grid · renderer · selection</small>
-        </div>
-      </div>
+      <div ref={hostRef} className="pixi-stage" />
     </section>
   );
 }
