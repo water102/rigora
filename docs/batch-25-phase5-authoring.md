@@ -18,11 +18,12 @@ machine after a clean build:
 
 These timings are indicative rather than CI thresholds; they measure the core
 selection and move loops and exclude DOM rendering. The probe reports both cases
-as usable. Virtualized row rendering remains an editor-shell follow-up when
-large real-world skeletons are profiled.
+as usable. The editor shell now uses a virtualized row window, horizontal
+playhead auto-scroll, and a graph view so large timelines do not require all
+rows to be mounted at once.
 
 ## Verification
 
 - `pnpm check`
-- 16 test files, 164 tests passing
+- 16 test files, 171 tests passing
 - Typecheck, formatting/boundary lint and workspace builds passing
