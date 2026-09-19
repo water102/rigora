@@ -66,7 +66,8 @@ export class ProjectLifecycle {
   get isDirty(): boolean {
     return this.#dirty;
   }
-  newProject(project: HboneProject): void {
+  newProject(project: HboneProject, discard = false): void {
+    if (this.#dirty && !discard) throw new Error("PROJECT_UNSAVED_CHANGES");
     this.#project = project;
     this.#path = null;
     this.#dirty = true;
@@ -74,7 +75,8 @@ export class ProjectLifecycle {
   markDirty(): void {
     if (this.#project) this.#dirty = true;
   }
-  async open(path: string): Promise<HboneProject> {
+  async open(path: string, discard = false): Promise<HboneProject> {
+    if (this.#dirty && !discard) throw new Error("PROJECT_UNSAVED_CHANGES");
     const bytes = await this.repository.read(path);
     if (!bytes) throw new Error(`PROJECT_NOT_FOUND: ${path}`);
     const project = parseProject(bytes, { verifyChecksums: true });
@@ -84,8 +86,8 @@ export class ProjectLifecycle {
     return project;
   }
   async save(): Promise<void> {
-    if (!this.#project || !this.#path)
-      throw new Error("PROJECT_SAVE_PATH_REQUIRED");
+    if (!this.#project) throw new Error("PROJECT_NOT_OPEN");
+    if (!this.#path) throw new Error("PROJECT_SAVE_PATH_REQUIRED");
     await this.repository.write(this.#path, serializeProject(this.#project));
     this.#dirty = false;
   }

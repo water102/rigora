@@ -14,25 +14,6 @@ import {
 import { ikSkeleton } from "../fixtures/canonical/ik-skeleton.js";
 
 describe("Batch 14 native project", () => {
-  it("supports repository-backed new, save, open, save-as and close lifecycle", async () => {
-    const repository = new InMemoryProjectRepository();
-    const lifecycle = new ProjectLifecycle(repository);
-    const project = createProject(
-      { main: ikSkeleton().skeleton },
-      "2026-01-01T00:00:00.000Z",
-    );
-    lifecycle.newProject(project);
-    expect(lifecycle.isDirty).toBe(true);
-    await lifecycle.saveAs("hero.hbone");
-    expect(lifecycle.path).toBe("hero.hbone");
-    expect(lifecycle.isDirty).toBe(false);
-    lifecycle.markDirty();
-    expect(() => lifecycle.close()).toThrow("PROJECT_UNSAVED_CHANGES");
-    lifecycle.close(true);
-    await lifecycle.open("hero.hbone");
-    expect(lifecycle.isDirty).toBe(false);
-    expect(lifecycle.project?.manifest.format).toBe("hnn-bones");
-  });
   it("round-trips deterministic skeleton projects", () => {
     const p = createProject({ main: ikSkeleton().skeleton });
     const serialized = serializeProject(p);
@@ -370,5 +351,136 @@ describe("Batch 15 command history", () => {
     history.clear();
     expect(history.history.length).toBe(0);
     expect(history.isDirty).toBe(false);
+  });
+});
+
+describe("Batch 16 project lifecycle", () => {
+  it("InMemoryProjectRepository performs defensive read, write, remove, and sorted list", async () => {
+    const repo = new InMemoryProjectRepository();
+    const data = new Uint8Array([1, 2, 3]);
+    await repo.write("b.hbone", data);
+    await repo.write("a.hbone", data);
+
+    // Defensive copy on write
+    data[0] = 99;
+    const readB = await repo.read("b.hbone");
+    expect(readB).toEqual(new Uint8Array([1, 2, 3]));
+
+    // Defensive copy on read
+    if (readB) readB[0] = 88;
+    const readB2 = await repo.read("b.hbone");
+    expect(readB2).toEqual(new Uint8Array([1, 2, 3]));
+
+    // Sorted listing
+    expect(await repo.list()).toEqual(["a.hbone", "b.hbone"]);
+
+    // Read non-existent
+    expect(await repo.read("c.hbone")).toBeUndefined();
+
+    // Remove
+    await repo.remove("a.hbone");
+    expect(await repo.list()).toEqual(["b.hbone"]);
+  });
+
+  it("manages lifecycle operations: new, save, saveAs, markDirty, and open", async () => {
+    const repo = new InMemoryProjectRepository();
+    const lifecycle = new ProjectLifecycle(repo);
+
+    expect(lifecycle.project).toBeNull();
+    expect(lifecycle.path).toBeNull();
+    expect(lifecycle.isDirty).toBe(false);
+
+    // Cannot save or saveAs when no project is open
+    await expect(() => lifecycle.save()).rejects.toThrow("PROJECT_NOT_OPEN");
+    await expect(() => lifecycle.saveAs("p.hbone")).rejects.toThrow(
+      "PROJECT_NOT_OPEN",
+    );
+
+    const project = createProject(
+      { main: ikSkeleton().skeleton },
+      "2026-01-01T00:00:00.000Z",
+    );
+    lifecycle.newProject(project);
+    expect(lifecycle.isDirty).toBe(true);
+    expect(lifecycle.path).toBeNull();
+
+    // Cannot save without a path
+    await expect(() => lifecycle.save()).rejects.toThrow(
+      "PROJECT_SAVE_PATH_REQUIRED",
+    );
+
+    // saveAs sets path and saves
+    await lifecycle.saveAs("hero.hbone");
+    expect(lifecycle.path).toBe("hero.hbone");
+    expect(lifecycle.isDirty).toBe(false);
+
+    // markDirty and then save() uses existing path
+    lifecycle.markDirty();
+    expect(lifecycle.isDirty).toBe(true);
+    await lifecycle.save();
+    expect(lifecycle.isDirty).toBe(false);
+
+    // Close and reopen
+    lifecycle.close();
+    expect(lifecycle.project).toBeNull();
+    expect(lifecycle.path).toBeNull();
+
+    const loaded = await lifecycle.open("hero.hbone");
+    expect(lifecycle.project).toBe(loaded);
+    expect(lifecycle.path).toBe("hero.hbone");
+    expect(lifecycle.isDirty).toBe(false);
+    expect(loaded.manifest.format).toBe("hnn-bones");
+
+    // Open non-existent file
+    await expect(() => lifecycle.open("missing.hbone")).rejects.toThrow(
+      "PROJECT_NOT_FOUND: missing.hbone",
+    );
+  });
+
+  it("guards against unsaved changes on close, newProject, and open", async () => {
+    const repo = new InMemoryProjectRepository();
+    const lifecycle = new ProjectLifecycle(repo);
+
+    const p1 = createProject(
+      { main: ikSkeleton().skeleton },
+      "2026-01-01T00:00:00.000Z",
+    );
+    lifecycle.newProject(p1);
+    await lifecycle.saveAs("p1.hbone");
+
+    const p2 = createProject(
+      { main: ikSkeleton().skeleton },
+      "2026-01-02T00:00:00.000Z",
+    );
+
+    // Mark dirty
+    lifecycle.markDirty();
+
+    // Guard close
+    expect(() => lifecycle.close()).toThrow("PROJECT_UNSAVED_CHANGES");
+    // Guard newProject
+    expect(() => lifecycle.newProject(p2)).toThrow("PROJECT_UNSAVED_CHANGES");
+    // Guard open
+    await expect(() => lifecycle.open("p1.hbone")).rejects.toThrow(
+      "PROJECT_UNSAVED_CHANGES",
+    );
+
+    // Allowed when discard=true
+    lifecycle.newProject(p2, true);
+    expect(lifecycle.project).toBe(p2);
+    expect(lifecycle.path).toBeNull();
+    expect(lifecycle.isDirty).toBe(true);
+
+    await lifecycle.saveAs("p2.hbone");
+    lifecycle.markDirty();
+
+    await lifecycle.open("p1.hbone", true);
+    expect(lifecycle.path).toBe("p1.hbone");
+    expect(lifecycle.isDirty).toBe(false);
+
+    lifecycle.markDirty();
+    lifecycle.close(true);
+    expect(lifecycle.project).toBeNull();
+    expect(lifecycle.isDirty).toBe(false);
   });
 });
