@@ -73,6 +73,87 @@ export class SelectionStore {
   }
 }
 
+export interface Point2 {
+  x: number;
+  y: number;
+}
+export interface Bounds2 {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/** Stage camera in canonical world units; rendering backends apply the result. */
+export class Camera2D {
+  #center: Point2 = { x: 0, y: 0 };
+  #zoom = 1;
+  constructor(
+    public viewportWidth = 1,
+    public viewportHeight = 1,
+  ) {}
+  get center(): Point2 {
+    return { ...this.#center };
+  }
+  get zoom(): number {
+    return this.#zoom;
+  }
+  setViewport(width: number, height: number): void {
+    if (!(width > 0 && height > 0)) throw new Error("CAMERA_INVALID_VIEWPORT");
+    this.viewportWidth = width;
+    this.viewportHeight = height;
+  }
+  panBy(dx: number, dy: number): void {
+    this.#center.x += dx / this.#zoom;
+    this.#center.y += dy / this.#zoom;
+  }
+  setCenter(center: Point2): void {
+    this.#center = { ...center };
+  }
+  setZoom(zoom: number): void {
+    if (!(zoom > 0 && Number.isFinite(zoom)))
+      throw new Error("CAMERA_INVALID_ZOOM");
+    this.#zoom = zoom;
+  }
+  zoomAt(factor: number, screen: Point2): void {
+    if (!(factor > 0 && Number.isFinite(factor)))
+      throw new Error("CAMERA_INVALID_ZOOM_FACTOR");
+    const before = this.screenToWorld(screen);
+    this.setZoom(this.#zoom * factor);
+    const after = this.screenToWorld(screen);
+    this.#center.x += before.x - after.x;
+    this.#center.y += before.y - after.y;
+  }
+  worldToScreen(world: Point2): Point2 {
+    return {
+      x: (world.x - this.#center.x) * this.#zoom + this.viewportWidth / 2,
+      y: (world.y - this.#center.y) * this.#zoom + this.viewportHeight / 2,
+    };
+  }
+  screenToWorld(screen: Point2): Point2 {
+    return {
+      x: (screen.x - this.viewportWidth / 2) / this.#zoom + this.#center.x,
+      y: (screen.y - this.viewportHeight / 2) / this.#zoom + this.#center.y,
+    };
+  }
+  frameBounds(bounds: Bounds2, padding = 0.1): void {
+    if (!(bounds.width >= 0 && bounds.height >= 0))
+      throw new Error("CAMERA_INVALID_BOUNDS");
+    this.setCenter({
+      x: bounds.x + bounds.width / 2,
+      y: bounds.y + bounds.height / 2,
+    });
+    const paddedWidth = Math.max(bounds.width * (1 + padding * 2), 1e-6);
+    const paddedHeight = Math.max(bounds.height * (1 + padding * 2), 1e-6);
+    this.setZoom(
+      Math.min(
+        this.viewportWidth / paddedWidth,
+        this.viewportHeight / paddedHeight,
+      ),
+    );
+  }
+}
+
 interface UndoEntry {
   command: EditorCommand<unknown>;
   payload: unknown;

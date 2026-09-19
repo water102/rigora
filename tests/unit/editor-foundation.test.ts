@@ -8,6 +8,7 @@ import {
   serializeProject,
 } from "../../packages/project/src/index.js";
 import {
+  Camera2D,
   CommandHistory,
   SelectionStore,
   type EditorCommand,
@@ -536,5 +537,38 @@ describe("Batch 17 selection model", () => {
     store.deselect("slot", "body");
     expect(store.current).toBeNull();
     expect(emissions).toBe(4);
+  });
+});
+
+describe("Batch 18 stage camera", () => {
+  it("round-trips world and screen coordinates", () => {
+    const camera = new Camera2D(800, 600);
+    camera.setCenter({ x: 100, y: 50 });
+    camera.setZoom(2);
+    const world = { x: 130, y: 70 };
+    expect(camera.screenToWorld(camera.worldToScreen(world))).toEqual(world);
+  });
+
+  it("pans and zooms around a stable screen anchor", () => {
+    const camera = new Camera2D(800, 600);
+    const anchor = { x: 200, y: 150 };
+    const before = camera.screenToWorld(anchor);
+    camera.zoomAt(2, anchor);
+    expect(camera.screenToWorld(anchor)).toEqual(before);
+    const centerBeforePan = camera.center;
+    camera.panBy(20, -10);
+    expect(camera.center).toEqual({
+      x: centerBeforePan.x + 10,
+      y: centerBeforePan.y - 5,
+    });
+  });
+
+  it("frames bounds with padding and rejects invalid inputs", () => {
+    const camera = new Camera2D(800, 600);
+    camera.frameBounds({ x: 100, y: 50, width: 200, height: 100 }, 0.1);
+    expect(camera.center).toEqual({ x: 200, y: 100 });
+    expect(camera.worldToScreen({ x: 100, y: 50 }).x).toBeCloseTo(66.67, 1);
+    expect(() => camera.setZoom(0)).toThrow("CAMERA_INVALID_ZOOM");
+    expect(() => camera.setViewport(0, 600)).toThrow("CAMERA_INVALID_VIEWPORT");
   });
 });
