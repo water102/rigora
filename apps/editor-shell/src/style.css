@@ -213,12 +213,61 @@ body,
 .stage-btn:active {
   background: #172435;
 }
-.stage-grid,
-.pixi-stage {
+.stage-viewport {
   position: relative;
-  height: calc(100% - 42px);
+  flex: 1;
+  width: 100%;
   overflow: hidden;
-  background-color: #111b2c;
+  background: #1e1e23;
+}
+.stage-corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 20px;
+  background: #202025;
+  border-right: 1px solid #141417;
+  border-bottom: 1px solid #141417;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: #6c6c78;
+  font-family: monospace;
+  user-select: none;
+}
+.stage-ruler-h {
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 0;
+  height: 20px;
+  background: #202025;
+  border-bottom: 1px solid #141417;
+  z-index: 9;
+  pointer-events: none;
+}
+.stage-ruler-v {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 24px;
+  bottom: 0;
+  background: #202025;
+  border-right: 1px solid #141417;
+  z-index: 9;
+  pointer-events: none;
+}
+.pixi-stage {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background-color: #35353c;
 }
 \.axis {
   position: absolute;

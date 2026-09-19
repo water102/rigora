@@ -25,7 +25,6 @@ import {
   HierarchyModel,
   type HierarchyNode,
   Camera2D,
-  buildGridLines,
 } from "@rigora/editor-core";
 import {
   createAuthoringDocument,
@@ -102,13 +101,164 @@ const nodes: HierarchyNode[] = [
   { id: "head", name: "Head", parentId: "root" },
 ];
 
+function renderRulers(
+  hCanvas: HTMLCanvasElement | null,
+  vCanvas: HTMLCanvasElement | null,
+  camera: Camera2D,
+  width: number,
+  height: number,
+  step: number,
+) {
+  if (!hCanvas || !vCanvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const RULER_H_HEIGHT = 20;
+  const RULER_V_WIDTH = 24;
+
+  const targetHW = Math.max(1, Math.round(width * dpr));
+  const targetHH = Math.max(1, Math.round(RULER_H_HEIGHT * dpr));
+  if (hCanvas.width !== targetHW || hCanvas.height !== targetHH) {
+    hCanvas.width = targetHW;
+    hCanvas.height = targetHH;
+  }
+
+  const targetVW = Math.max(1, Math.round(RULER_V_WIDTH * dpr));
+  const targetVH = Math.max(1, Math.round(height * dpr));
+  if (vCanvas.width !== targetVW || vCanvas.height !== targetVH) {
+    vCanvas.width = targetVW;
+    vCanvas.height = targetVH;
+  }
+
+  const hCtx = hCanvas.getContext("2d");
+  const vCtx = vCanvas.getContext("2d");
+  if (!hCtx || !vCtx) return;
+
+  // --- Horizontal Ruler ---
+  hCtx.save();
+  hCtx.scale(dpr, dpr);
+  hCtx.fillStyle = "#202025";
+  hCtx.fillRect(0, 0, width, RULER_H_HEIGHT);
+  hCtx.strokeStyle = "#141417";
+  hCtx.lineWidth = 1;
+  hCtx.beginPath();
+  hCtx.moveTo(0, RULER_H_HEIGHT - 0.5);
+  hCtx.lineTo(width, RULER_H_HEIGHT - 0.5);
+  hCtx.stroke();
+
+  const minWorldX = (0 - width / 2) / camera.zoom + camera.center.x;
+  const maxWorldX = (width - width / 2) / camera.zoom + camera.center.x;
+
+  const minorStep = step / 10;
+  const startMinorX = Math.floor(minWorldX / minorStep) * minorStep;
+  const endMinorX = Math.ceil(maxWorldX / minorStep) * minorStep;
+
+  hCtx.font =
+    "9px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+  hCtx.textAlign = "center";
+  hCtx.textBaseline = "top";
+
+  for (let wx = startMinorX; wx <= endMinorX; wx += minorStep) {
+    const sx =
+      Math.floor((wx - camera.center.x) * camera.zoom + width / 2) + 0.5;
+    if (sx < -20 || sx > width + 20) continue;
+
+    const isMajor =
+      Math.abs(Math.round(wx / step) * step - wx) < minorStep * 0.1;
+    const isMedium =
+      Math.abs(Math.round(wx / (step / 2)) * (step / 2) - wx) < minorStep * 0.1;
+
+    hCtx.beginPath();
+    if (isMajor) {
+      hCtx.strokeStyle = "#82828e";
+      hCtx.moveTo(sx, RULER_H_HEIGHT - 7);
+      hCtx.lineTo(sx, RULER_H_HEIGHT);
+      hCtx.stroke();
+
+      hCtx.fillStyle = "#a8a8b5";
+      hCtx.fillText(String(Math.round(wx)), sx, 2);
+    } else if (isMedium) {
+      hCtx.strokeStyle = "#52525c";
+      hCtx.moveTo(sx, RULER_H_HEIGHT - 5);
+      hCtx.lineTo(sx, RULER_H_HEIGHT);
+      hCtx.stroke();
+    } else {
+      hCtx.strokeStyle = "#383842";
+      hCtx.moveTo(sx, RULER_H_HEIGHT - 3);
+      hCtx.lineTo(sx, RULER_H_HEIGHT);
+      hCtx.stroke();
+    }
+  }
+  hCtx.restore();
+
+  // --- Vertical Ruler ---
+  vCtx.save();
+  vCtx.scale(dpr, dpr);
+  vCtx.fillStyle = "#202025";
+  vCtx.fillRect(0, 0, RULER_V_WIDTH, height);
+  vCtx.strokeStyle = "#141417";
+  vCtx.lineWidth = 1;
+  vCtx.beginPath();
+  vCtx.moveTo(RULER_V_WIDTH - 0.5, 0);
+  vCtx.lineTo(RULER_V_WIDTH - 0.5, height);
+  vCtx.stroke();
+
+  const minWorldY = -((height - height / 2) / camera.zoom) + camera.center.y;
+  const maxWorldY = -((0 - height / 2) / camera.zoom) + camera.center.y;
+
+  const startMinorY = Math.floor(minWorldY / minorStep) * minorStep;
+  const endMinorY = Math.ceil(maxWorldY / minorStep) * minorStep;
+
+  vCtx.font =
+    "9px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+  vCtx.textAlign = "center";
+  vCtx.textBaseline = "middle";
+
+  for (let wy = startMinorY; wy <= endMinorY; wy += minorStep) {
+    const sy =
+      Math.floor(-(wy - camera.center.y) * camera.zoom + height / 2) + 0.5;
+    if (sy < -20 || sy > height + 20) continue;
+
+    const isMajor =
+      Math.abs(Math.round(wy / step) * step - wy) < minorStep * 0.1;
+    const isMedium =
+      Math.abs(Math.round(wy / (step / 2)) * (step / 2) - wy) < minorStep * 0.1;
+
+    vCtx.beginPath();
+    if (isMajor) {
+      vCtx.strokeStyle = "#82828e";
+      vCtx.moveTo(RULER_V_WIDTH - 7, sy);
+      vCtx.lineTo(RULER_V_WIDTH, sy);
+      vCtx.stroke();
+
+      vCtx.save();
+      vCtx.translate(8, sy);
+      vCtx.rotate(-Math.PI / 2);
+      vCtx.fillStyle = "#a8a8b5";
+      vCtx.fillText(String(Math.round(wy)), 0, 0);
+      vCtx.restore();
+    } else if (isMedium) {
+      vCtx.strokeStyle = "#52525c";
+      vCtx.moveTo(RULER_V_WIDTH - 5, sy);
+      vCtx.lineTo(RULER_V_WIDTH, sy);
+      vCtx.stroke();
+    } else {
+      vCtx.strokeStyle = "#383842";
+      vCtx.moveTo(RULER_V_WIDTH - 3, sy);
+      vCtx.lineTo(RULER_V_WIDTH, sy);
+      vCtx.stroke();
+    }
+  }
+  vCtx.restore();
+}
+
 function Stage() {
   const services = useServices();
   const selection = services.selection.current;
   const hostRef = useRef<HTMLDivElement>(null);
+  const hRulerRef = useRef<HTMLCanvasElement>(null);
+  const vRulerRef = useRef<HTMLCanvasElement>(null);
   const cameraRef = useRef<Camera2D | null>(null);
   const drawRef = useRef<(() => void) | null>(null);
-  const [viewInfo, setViewInfo] = useState({ zoom: 100, gridStep: "50px" });
+  const [viewInfo, setViewInfo] = useState({ zoom: 100, gridStep: "100px" });
   const selectionRef = useRef(selection);
   selectionRef.current = selection;
 
@@ -165,12 +315,11 @@ function Stage() {
       };
 
       // Adaptive grid spacing according to zoom level
-      const targetWorldStep = 60 / camera.zoom;
+      const targetWorldStep = 100 / camera.zoom;
       const power = Math.pow(10, Math.floor(Math.log10(targetWorldStep)));
       const ratio = targetWorldStep / power;
       const step = ratio < 2 ? 1 : ratio < 5 ? 2 : 5;
       const spacing = Math.max(0.01, step * power);
-      const subdivisions = step === 2 ? 4 : 5;
 
       const stepText =
         spacing >= 1 ? `${Math.round(spacing)}px` : `${spacing.toFixed(1)}px`;
@@ -179,35 +328,90 @@ function Stage() {
         gridStep: stepText,
       });
 
-      const lines = buildGridLines(bounds, {
-        enabled: true,
-        spacing,
-        subdivisions,
-      });
+      // 1. Draw Alternating Checkerboard Tiles (Mẫu xám xen kẽ chuẩn LoongApp / Spine)
+      const tileStartX = Math.floor(bounds.x / spacing);
+      const tileEndX = Math.ceil((bounds.x + bounds.width) / spacing);
+      const tileStartY = Math.floor(bounds.y / spacing);
+      const tileEndY = Math.ceil((bounds.y + bounds.height) / spacing);
 
-      for (const line of lines) {
-        const isOrigin = Math.abs(line.position) < 1e-5;
-        if (line.axis === "x") {
-          const sx = worldToScreen({ x: line.position, y: 0 }, width, height).x;
-          grid.moveTo(sx, 0).lineTo(sx, height);
-        } else {
-          const sy = worldToScreen({ x: 0, y: line.position }, width, height).y;
-          grid.moveTo(0, sy).lineTo(width, sy);
-        }
+      const colorA = 0x3e3e46;
+      const colorB = 0x35353c;
 
-        if (isOrigin) {
-          grid.stroke({
-            color: 0x4a7eb3,
-            width: 1.5,
-          });
-        } else {
-          grid.stroke({
-            color: line.major ? 0x2e4259 : 0x1a2636,
-            width: line.major ? 1 : 0.5,
-          });
+      for (let ix = tileStartX; ix < tileEndX; ix++) {
+        for (let iy = tileStartY; iy < tileEndY; iy++) {
+          const isA = (((ix + iy) % 2) + 2) % 2 === 0;
+          const sTopLeft = worldToScreen(
+            { x: ix * spacing, y: (iy + 1) * spacing },
+            width,
+            height,
+          );
+          const sBottomRight = worldToScreen(
+            { x: (ix + 1) * spacing, y: iy * spacing },
+            width,
+            height,
+          );
+
+          const rw = Math.ceil(sBottomRight.x - sTopLeft.x) + 1;
+          const rh = Math.ceil(sBottomRight.y - sTopLeft.y) + 1;
+
+          grid
+            .rect(Math.floor(sTopLeft.x), Math.floor(sTopLeft.y), rw, rh)
+            .fill(isA ? colorA : colorB);
         }
       }
 
+      // 2. Subtle grid lines on tile boundaries
+      for (let ix = tileStartX; ix <= tileEndX; ix++) {
+        const sx = worldToScreen({ x: ix * spacing, y: 0 }, width, height).x;
+        grid
+          .moveTo(Math.floor(sx) + 0.5, 0)
+          .lineTo(Math.floor(sx) + 0.5, height)
+          .stroke({ color: 0x2e2e34, width: 0.5 });
+      }
+      for (let iy = tileStartY; iy <= tileEndY; iy++) {
+        const sy = worldToScreen({ x: 0, y: iy * spacing }, width, height).y;
+        grid
+          .moveTo(0, Math.floor(sy) + 0.5)
+          .lineTo(width, Math.floor(sy) + 0.5)
+          .stroke({ color: 0x2e2e34, width: 0.5 });
+      }
+
+      // 3. Origin axes (X = 0 và Y = 0)
+      const originScreen = worldToScreen({ x: 0, y: 0 }, width, height);
+      grid
+        .moveTo(Math.floor(originScreen.x) + 0.5, 0)
+        .lineTo(Math.floor(originScreen.x) + 0.5, height)
+        .stroke({ color: 0x141418, width: 1.5 });
+      grid
+        .moveTo(0, Math.floor(originScreen.y) + 0.5)
+        .lineTo(width, Math.floor(originScreen.y) + 0.5)
+        .stroke({ color: 0x141418, width: 1.5 });
+
+      // 4. Origin Gizmo (tâm toạ độ như mẫu LoongApp)
+      const ox = originScreen.x;
+      const oy = originScreen.y;
+      grid.circle(ox, oy, 16).stroke({ color: 0x6e7681, width: 1 });
+      grid.circle(ox, oy, 3.5).fill(0xffffff);
+      grid
+        .moveTo(ox, oy)
+        .lineTo(ox + 22, oy)
+        .stroke({ color: 0xf43f5e, width: 3 });
+      grid.circle(ox + 22, oy, 3.5).fill(0xf43f5e);
+      grid
+        .moveTo(ox, oy)
+        .lineTo(ox, oy - 22)
+        .stroke({ color: 0x22c55e, width: 3 });
+      grid.circle(ox, oy - 22, 3.5).fill(0x22c55e);
+      grid
+        .moveTo(ox, oy)
+        .lineTo(ox - 14, oy)
+        .stroke({ color: 0xec4899, width: 2.5 });
+      grid
+        .moveTo(ox, oy)
+        .lineTo(ox, oy + 14)
+        .stroke({ color: 0x10b981, width: 2.5 });
+
+      // 5. Draw Skeleton Bones
       skeleton.clear();
       const projectBones = (
         (services.project as HboneProject).skeletons.main?.bones ?? []
@@ -237,13 +441,23 @@ function Stage() {
           .fill(selected ? 0xffc857 : 0x9deee2);
       }
       app.renderer.render(app.stage);
+
+      // 6. Synchronize Canvas Rulers (Thước đo ngang và dọc)
+      renderRulers(
+        hRulerRef.current,
+        vRulerRef.current,
+        camera,
+        width,
+        height,
+        spacing,
+      );
     };
 
     drawRef.current = draw;
 
     void app
       .init({
-        background: 0x111b2c,
+        background: 0x35353c,
         antialias: true,
         autoStart: false,
         resizeTo: host,
@@ -430,7 +644,14 @@ function Stage() {
           </button>
         </div>
       </div>
-      <div ref={hostRef} className="pixi-stage" />
+      <div className="stage-viewport">
+        <div className="stage-corner" title="Đơn vị: pixel">
+          px
+        </div>
+        <canvas ref={hRulerRef} className="stage-ruler-h" />
+        <canvas ref={vRulerRef} className="stage-ruler-v" />
+        <div ref={hostRef} className="pixi-stage" />
+      </div>
     </section>
   );
 }
