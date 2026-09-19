@@ -396,6 +396,7 @@ function Inspector() {
 }
 
 function Timeline() {
+  const services = useServices();
   const [store] = useState(() => new AnimationAuthoringStore());
   const [clipId, setClipId] = useState<string | null>(null);
   const [playback] = useState(() => new AuthoringPlayback(1, 30));
@@ -508,6 +509,33 @@ function Timeline() {
     store.selectKeysInBox(selectionStart, selectionEnd);
     redraw((value) => value + 1);
   };
+  const applyToProject = () => {
+    if (!clip) return;
+    const nextAnimation = store.exportActive();
+    services.commands.execute({
+      id: `apply-animation-${nextAnimation.id}`,
+      label: `Apply animation ${nextAnimation.name}`,
+      execute: (context) => {
+        const project = context.project as HboneProject;
+        const skeleton = project.skeletons.main;
+        if (!skeleton) return;
+        skeleton.animations = [
+          ...skeleton.animations.filter(
+            (animation) => animation.id !== nextAnimation.id,
+          ),
+          nextAnimation as HboneProject["skeletons"][string]["animations"][number],
+        ];
+      },
+      undo: (context) => {
+        const project = context.project as HboneProject;
+        const skeleton = project.skeletons.main;
+        if (skeleton)
+          skeleton.animations = skeleton.animations.filter(
+            (animation) => animation.id !== nextAnimation.id,
+          );
+      },
+    });
+  };
   return (
     <section className="panel timeline-panel">
       <header className="timeline-header">
@@ -572,6 +600,7 @@ function Timeline() {
             <button onClick={() => playback.step(1)}>Frame +1</button>
             <button onClick={addRotationKey}>Key rotation</button>
             <button onClick={addEvent}>Add event</button>
+            <button onClick={applyToProject}>Apply to project</button>
             <button onClick={() => addSpecialChannel("slot", "attachment")}>
               Attachment
             </button>
