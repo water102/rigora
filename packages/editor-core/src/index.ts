@@ -15,6 +15,54 @@ export interface HistoryEntry {
   label: string;
 }
 
+export type SelectionKind =
+  | "bone"
+  | "slot"
+  | "attachment"
+  | "constraint"
+  | "animation";
+
+export interface Selection {
+  kind: SelectionKind;
+  id: string;
+}
+
+export type SelectionListener = (selection: Selection | null) => void;
+
+/** UI selection state; deliberately excluded from authored command history. */
+export class SelectionStore {
+  #selection: Selection | null = null;
+  readonly #listeners = new Set<SelectionListener>();
+
+  get current(): Selection | null {
+    return this.#selection;
+  }
+
+  select(selection: Selection): void {
+    this.#selection = { ...selection };
+    this.#emit();
+  }
+
+  clear(): void {
+    if (!this.#selection) return;
+    this.#selection = null;
+    this.#emit();
+  }
+
+  subscribe(listener: SelectionListener): () => void {
+    this.#listeners.add(listener);
+    return () => this.#listeners.delete(listener);
+  }
+
+  isSelected(kind: SelectionKind, id: string): boolean {
+    return this.#selection?.kind === kind && this.#selection.id === id;
+  }
+
+  #emit(): void {
+    for (const listener of this.#listeners) listener(this.current);
+  }
+}
+
 interface UndoEntry {
   command: EditorCommand<unknown>;
   payload: unknown;

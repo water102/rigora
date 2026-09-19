@@ -9,6 +9,7 @@ import {
 } from "../../packages/project/src/index.js";
 import {
   CommandHistory,
+  SelectionStore,
   type EditorCommand,
 } from "../../packages/editor-core/src/index.js";
 import { ikSkeleton } from "../fixtures/canonical/ik-skeleton.js";
@@ -351,6 +352,29 @@ describe("Batch 15 command history", () => {
     history.clear();
     expect(history.history.length).toBe(0);
     expect(history.isDirty).toBe(false);
+  });
+});
+
+describe("Batch 17 selection model", () => {
+  it("tracks typed selection without entering command history", () => {
+    const store = new SelectionStore();
+    const updates: Array<string | null> = [];
+    const unsubscribe = store.subscribe((selection) =>
+      updates.push(selection ? `${selection.kind}:${selection.id}` : null),
+    );
+
+    store.select({ kind: "bone", id: "root" });
+    expect(store.isSelected("bone", "root")).toBe(true);
+    expect(store.isSelected("slot", "root")).toBe(false);
+    store.select({ kind: "animation", id: "walk" });
+    expect(store.current).toEqual({ kind: "animation", id: "walk" });
+    store.clear();
+    expect(store.current).toBeNull();
+    expect(updates).toEqual(["bone:root", "animation:walk", null]);
+
+    unsubscribe();
+    store.select({ kind: "constraint", id: "ik-arm" });
+    expect(updates).toHaveLength(3);
   });
 });
 
