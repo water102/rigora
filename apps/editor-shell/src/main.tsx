@@ -441,6 +441,14 @@ function Timeline() {
     store.setKeyCurve([...store.view.selectedKeyIds], { type: curve });
     redraw((value) => value + 1);
   };
+  const deleteSelectedKeys = () => {
+    store.removeKeys([...store.view.selectedKeyIds]);
+    redraw((value) => value + 1);
+  };
+  const duplicateSelectedKeys = () => {
+    store.duplicateKeys([...store.view.selectedKeyIds], 1 / (clip?.fps ?? 30));
+    redraw((value) => value + 1);
+  };
   return (
     <section className="panel timeline-panel">
       <header className="timeline-header">
@@ -472,6 +480,18 @@ function Timeline() {
               disabled={!store.view.selectedKeyIds.size}
             >
               Stepped
+            </button>
+            <button
+              onClick={duplicateSelectedKeys}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              Duplicate
+            </button>
+            <button
+              onClick={deleteSelectedKeys}
+              disabled={!store.view.selectedKeyIds.size}
+            >
+              Delete
             </button>
             <label>
               Speed{" "}
