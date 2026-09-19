@@ -355,59 +355,6 @@ describe("Batch 15 command history", () => {
   });
 });
 
-describe("Batch 17 selection model", () => {
-  it("tracks typed selection without entering command history", () => {
-    const store = new SelectionStore();
-    const updates: Array<string | null> = [];
-    const unsubscribe = store.subscribe((selection) =>
-      updates.push(selection ? `${selection.kind}:${selection.id}` : null),
-    );
-
-    store.select({ kind: "bone", id: "root" });
-    expect(store.isSelected("bone", "root")).toBe(true);
-    expect(store.isSelected("slot", "root")).toBe(false);
-    store.select({ kind: "animation", id: "walk" });
-    expect(store.current).toEqual({ kind: "animation", id: "walk" });
-    store.clear();
-    expect(store.current).toBeNull();
-    expect(updates).toEqual(["bone:root", "animation:walk", null]);
-
-    unsubscribe();
-    store.select({ kind: "constraint", id: "ik-arm" });
-    expect(updates).toHaveLength(3);
-  });
-
-  it("deduplicates repeated selection and protects current from mutation", () => {
-    const store = new SelectionStore();
-    let emissions = 0;
-    store.subscribe(() => emissions++);
-    store.select({ kind: "bone", id: "root" });
-    store.select({ kind: "bone", id: "root" });
-    expect(emissions).toBe(1);
-    const current = store.current!;
-    current.id = "changed-outside-store";
-    expect(store.current).toEqual({ kind: "bone", id: "root" });
-    expect(emissions).toBe(1);
-  });
-
-  it("supports toggle and targeted deselect helpers", () => {
-    const store = new SelectionStore();
-    let emissions = 0;
-    store.subscribe(() => emissions++);
-    const bone = { kind: "bone" as const, id: "root" };
-    store.toggle(bone);
-    expect(store.current).toEqual(bone);
-    store.toggle(bone);
-    expect(store.current).toBeNull();
-    store.select({ kind: "slot", id: "body" });
-    store.deselect("bone", "root");
-    expect(store.current).toEqual({ kind: "slot", id: "body" });
-    store.deselect("slot", "body");
-    expect(store.current).toBeNull();
-    expect(emissions).toBe(4);
-  });
-});
-
 describe("Batch 16 project lifecycle", () => {
   it("InMemoryProjectRepository performs defensive read, write, remove, and sorted list", async () => {
     const repo = new InMemoryProjectRepository();
@@ -536,5 +483,58 @@ describe("Batch 16 project lifecycle", () => {
     lifecycle.close(true);
     expect(lifecycle.project).toBeNull();
     expect(lifecycle.isDirty).toBe(false);
+  });
+});
+
+describe("Batch 17 selection model", () => {
+  it("tracks typed selection without entering command history", () => {
+    const store = new SelectionStore();
+    const updates: Array<string | null> = [];
+    const unsubscribe = store.subscribe((selection) =>
+      updates.push(selection ? `${selection.kind}:${selection.id}` : null),
+    );
+
+    store.select({ kind: "bone", id: "root" });
+    expect(store.isSelected("bone", "root")).toBe(true);
+    expect(store.isSelected("slot", "root")).toBe(false);
+    store.select({ kind: "animation", id: "walk" });
+    expect(store.current).toEqual({ kind: "animation", id: "walk" });
+    store.clear();
+    expect(store.current).toBeNull();
+    expect(updates).toEqual(["bone:root", "animation:walk", null]);
+
+    unsubscribe();
+    store.select({ kind: "constraint", id: "ik-arm" });
+    expect(updates).toHaveLength(3);
+  });
+
+  it("deduplicates repeated selection and protects current from mutation", () => {
+    const store = new SelectionStore();
+    let emissions = 0;
+    store.subscribe(() => emissions++);
+    store.select({ kind: "bone", id: "root" });
+    store.select({ kind: "bone", id: "root" });
+    expect(emissions).toBe(1);
+    const current = store.current!;
+    current.id = "changed-outside-store";
+    expect(store.current).toEqual({ kind: "bone", id: "root" });
+    expect(emissions).toBe(1);
+  });
+
+  it("supports toggle and targeted deselect helpers", () => {
+    const store = new SelectionStore();
+    let emissions = 0;
+    store.subscribe(() => emissions++);
+    const bone = { kind: "bone" as const, id: "root" };
+    store.toggle(bone);
+    expect(store.current).toEqual(bone);
+    store.toggle(bone);
+    expect(store.current).toBeNull();
+    store.select({ kind: "slot", id: "body" });
+    store.deselect("bone", "root");
+    expect(store.current).toEqual({ kind: "slot", id: "body" });
+    store.deselect("slot", "body");
+    expect(store.current).toBeNull();
+    expect(emissions).toBe(4);
   });
 });
