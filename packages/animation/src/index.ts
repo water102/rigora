@@ -1225,6 +1225,13 @@ export class AnimationAuthoringStore {
         if (ids.has(key.id) && typeof key.value === "number")
           key.value += delta;
   }
+  setNumericValues(keyIds: readonly string[], value: number): void {
+    finiteAuthoring(value, "value");
+    const ids = new Set(keyIds);
+    for (const channel of this.activeMutable().channels)
+      for (const key of channel.keys)
+        if (ids.has(key.id) && typeof key.value === "number") key.value = value;
+  }
   autoKey: AutoKeyMode = "off";
   selectKeys(ids: readonly string[]): void {
     this.view.selectedKeyIds = new Set(ids);

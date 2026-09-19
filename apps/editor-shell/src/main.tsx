@@ -408,6 +408,12 @@ function Timeline() {
   const [, redraw] = useState(0);
   const clip = store.active;
   const rowWindow = virtualizeRows(store.view.rows, rowScrollTop, 220, 24);
+  const selectedNumericValue = clip?.channels
+    .flatMap((channel) => channel.keys)
+    .find(
+      (key) =>
+        store.view.selectedKeyIds.has(key.id) && typeof key.value === "number",
+    )?.value as number | undefined;
   useEffect(() => {
     if (!playback.playing) return;
     let previous = performance.now();
@@ -669,6 +675,25 @@ function Timeline() {
             >
               Bezier
             </button>
+            <label>
+              Value{" "}
+              <input
+                className="timeline-loop-input"
+                type="number"
+                disabled={selectedNumericValue === undefined}
+                value={selectedNumericValue ?? 0}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  if (Number.isFinite(value)) {
+                    store.setNumericValues(
+                      [...store.view.selectedKeyIds],
+                      value,
+                    );
+                    redraw((current) => current + 1);
+                  }
+                }}
+              />
+            </label>
             <button
               onClick={duplicateSelectedKeys}
               disabled={!store.view.selectedKeyIds.size}
