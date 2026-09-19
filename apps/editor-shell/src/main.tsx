@@ -824,11 +824,32 @@ function Timeline() {
             <button onClick={() => addSpecialChannel("slot", "color")}>
               Color
             </button>
+            <button onClick={() => addSpecialChannel("slot", "twoColor")}>
+              Two-color
+            </button>
             <button onClick={() => addSpecialChannel("slot", "drawOrder")}>
               Draw order
             </button>
             <button onClick={() => addSpecialChannel("constraint", "ikMix")}>
               IK mix
+            </button>
+            <button
+              onClick={() => addSpecialChannel("constraint", "transformMix")}
+            >
+              Transform mix
+            </button>
+            <button
+              onClick={() => addSpecialChannel("constraint", "pathPosition")}
+            >
+              Path position
+            </button>
+            <button
+              onClick={() => addSpecialChannel("constraint", "pathSpacing")}
+            >
+              Path spacing
+            </button>
+            <button onClick={() => addSpecialChannel("constraint", "physics")}>
+              Physics
             </button>
             <button onClick={toggleLoop}>
               {playback.loop ? "Loop on" : "Loop off"}
