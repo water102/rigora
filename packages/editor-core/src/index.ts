@@ -570,3 +570,111 @@ export class CommandHistory {
     }));
   }
 }
+
+export interface EditorServices {
+  project: unknown;
+  commands: CommandHistory;
+  selection: SelectionStore;
+  preferences: EditorPreferencesStore;
+}
+
+export function createEditorServices(
+  project: unknown,
+  preferences = new EditorPreferencesStore(),
+): EditorServices {
+  return {
+    project,
+    commands: new CommandHistory({ project }),
+    selection: new SelectionStore(),
+    preferences,
+  };
+}
+
+export interface DockPanel {
+  id: string;
+  title: string;
+  component: string;
+  initiallyVisible?: boolean;
+}
+
+export interface DockLayout {
+  version: 1;
+  orientation: "horizontal" | "vertical";
+  panels: Array<{ id: string; size: number; visible: boolean }>;
+}
+
+export const DEFAULT_DOCK_LAYOUT: DockLayout = {
+  version: 1,
+  orientation: "horizontal",
+  panels: [
+    { id: "hierarchy", size: 240, visible: true },
+    { id: "stage", size: 1, visible: true },
+    { id: "inspector", size: 280, visible: true },
+    { id: "timeline", size: 220, visible: false },
+    { id: "diagnostics", size: 220, visible: false },
+    { id: "history", size: 220, visible: false },
+  ],
+};
+
+export interface PreferencesRepository {
+  read(key: string): string | undefined;
+  write(key: string, value: string): void;
+}
+
+export class MemoryPreferencesRepository implements PreferencesRepository {
+  readonly #values = new Map<string, string>();
+  read(key: string): string | undefined {
+    return this.#values.get(key);
+  }
+  write(key: string, value: string): void {
+    this.#values.set(key, value);
+  }
+}
+
+export class EditorPreferencesStore {
+  static readonly layoutKey = "rigora.editor.dock-layout";
+  constructor(
+    readonly repository: PreferencesRepository = new MemoryPreferencesRepository(),
+  ) {}
+  loadLayout(): DockLayout {
+    const raw = this.repository.read(EditorPreferencesStore.layoutKey);
+    if (!raw) return cloneLayout(DEFAULT_DOCK_LAYOUT);
+    try {
+      const value = JSON.parse(raw) as DockLayout;
+      if (value.version !== 1 || !Array.isArray(value.panels))
+        throw new Error();
+      return normalizeLayout(value);
+    } catch {
+      return cloneLayout(DEFAULT_DOCK_LAYOUT);
+    }
+  }
+  saveLayout(layout: DockLayout): void {
+    this.repository.write(
+      EditorPreferencesStore.layoutKey,
+      JSON.stringify(normalizeLayout(layout)),
+    );
+  }
+  resetLayout(): DockLayout {
+    const layout = cloneLayout(DEFAULT_DOCK_LAYOUT);
+    this.saveLayout(layout);
+    return layout;
+  }
+}
+
+function cloneLayout(layout: DockLayout): DockLayout {
+  return { ...layout, panels: layout.panels.map((panel) => ({ ...panel })) };
+}
+
+function normalizeLayout(layout: DockLayout): DockLayout {
+  if (layout.orientation !== "horizontal" && layout.orientation !== "vertical")
+    throw new Error("DOCK_INVALID_ORIENTATION");
+  return {
+    version: 1,
+    orientation: layout.orientation,
+    panels: layout.panels.map((panel) => ({
+      id: String(panel.id),
+      size: Number.isFinite(panel.size) && panel.size > 0 ? panel.size : 1,
+      visible: panel.visible !== false,
+    })),
+  };
+}
