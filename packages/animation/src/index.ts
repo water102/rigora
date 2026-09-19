@@ -942,6 +942,19 @@ export class AnimationAuthoringStore {
     const clip = this.#clips.find((item) => item.id === this.#activeId);
     return clip && cloneAuthoring(clip);
   }
+  importClip(snapshot: CanonicalAnimationSnapshot, fps: number): AnimationClip {
+    const clip = fromCanonicalAnimation(snapshot, fps);
+    const existing = this.#clips.findIndex((item) => item.id === clip.id);
+    if (existing >= 0) this.#clips[existing] = clip;
+    else this.#clips.push(clip);
+    this.#activeId = clip.id;
+    this.syncRows();
+    this.setRange(0, clip.duration || 1);
+    return cloneAuthoring(clip);
+  }
+  exportActive(): CanonicalAnimationSnapshot {
+    return toCanonicalAnimation(this.activeMutable());
+  }
   create(
     name: string,
     duration = 1,
