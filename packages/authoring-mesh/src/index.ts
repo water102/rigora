@@ -33,6 +33,7 @@ export {
   applyWeightDeltas,
   createWeightDeltaCommand,
   addEdge,
+  addVertex,
   bindVertices,
   connectedSelection,
   createAuthoringMesh,

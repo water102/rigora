@@ -16,6 +16,7 @@ import {
 import type { MeshWorkerApi } from "./mesh-worker.js";
 import {
   applyWeightBrush,
+  addVertex,
   applyBrushAtPoint,
   createAttachmentFromLibrary,
   bindVertices,
@@ -93,6 +94,9 @@ const paintDemo = document.querySelector<HTMLButtonElement>("#paint-demo")!;
 const heatmapDemo = document.querySelector<HTMLButtonElement>("#heatmap-demo")!;
 const topologyDemo =
   document.querySelector<HTMLButtonElement>("#topology-demo")!;
+const topologyAddVertex = document.querySelector<HTMLButtonElement>(
+  "#topology-add-vertex",
+)!;
 const deformDemo = document.querySelector<HTMLButtonElement>("#deform-demo")!;
 const deformMode = document.querySelector<HTMLSelectElement>("#deform-mode")!;
 const deformZero = document.querySelector<HTMLButtonElement>("#deform-zero")!;
@@ -731,6 +735,14 @@ async function start() {
     demoTopology = resetTopology(demoTopology);
     persistAuthoring();
     status.textContent = `Topology reset · ${demoTopology.vertices.length} stable vertices retained · 0 triangles`;
+  });
+  topologyAddVertex.addEventListener("click", () => {
+    demoTopology = addVertex(demoTopology, {
+      x: demoTopology.vertices.length % 3,
+      y: Math.floor(demoTopology.vertices.length / 3),
+    });
+    persistAuthoring();
+    status.textContent = `Added vertex ${demoTopology.vertices.at(-1)!.id}.`;
   });
   deformDemo.addEventListener("click", () => {
     let deform = createDeformState(1);

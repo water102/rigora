@@ -49,6 +49,25 @@ export function moveVertex(
     edges: mesh.edges.map(([a, b]) => [a, b]),
   };
 }
+export function addVertex(
+  mesh: AuthoringMesh,
+  position: Vec2,
+  id = `v${mesh.vertices.length}`,
+): AuthoringMesh {
+  if (mesh.vertices.some((vertex) => vertex.id === id))
+    throw new Error("MESH_VERTEX_ID_EXISTS");
+  return {
+    vertices: [
+      ...mesh.vertices.map((vertex) => ({
+        ...vertex,
+        position: { ...vertex.position },
+      })),
+      { id, position: { ...position } },
+    ],
+    triangles: [...mesh.triangles],
+    edges: mesh.edges.map(([a, b]) => [a, b]),
+  };
+}
 export function deleteVertex(mesh: AuthoringMesh, id: string): AuthoringMesh {
   const index = mesh.vertices.findIndex((v) => v.id === id);
   if (index < 0) throw new Error("MESH_VERTEX_NOT_FOUND");

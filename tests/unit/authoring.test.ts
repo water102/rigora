@@ -17,6 +17,7 @@ import {
   createWeightDeltaCommand,
   endDrag,
   addEdge,
+  addVertex,
   buildAutoMeshPreview,
   createDeformState,
   inheritLinkedDeform,
@@ -263,6 +264,19 @@ describe("Phase 6 authoring core", () => {
     ]);
     expect(() => retriangulate(mesh, [0, 1])).toThrow(
       "MESH_RETRIANGULATION_INVALID_RING",
+    );
+  });
+
+  it("adds vertices with stable unique IDs without changing topology", () => {
+    const mesh = createAuthoringMesh([{ x: 0, y: 0 }]);
+    const next = addVertex(mesh, { x: 2, y: 3 });
+    expect(next.vertices.at(-1)).toMatchObject({
+      id: "v1",
+      position: { x: 2, y: 3 },
+    });
+    expect(next.triangles).toEqual([]);
+    expect(() => addVertex(next, { x: 4, y: 5 }, "v1")).toThrow(
+      "MESH_VERTEX_ID_EXISTS",
     );
   });
 
