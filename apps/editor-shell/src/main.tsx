@@ -1115,6 +1115,8 @@ function Timeline() {
               </select>
             </label>
             <output>
+              F{Math.round(playback.time * clip.fps)} / F
+              {Math.round(clip.duration * clip.fps)} ·{" "}
               {playback.time.toFixed(3)}s / {clip.duration.toFixed(3)}s
             </output>
           </div>
