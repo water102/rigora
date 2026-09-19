@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import {
   computeCrc32,
   createProject,
+  InMemoryProjectRepository,
   parseProject,
+  ProjectLifecycle,
   serializeProject,
 } from "../../packages/project/src/index.js";
 import {
@@ -12,6 +14,25 @@ import {
 import { ikSkeleton } from "../fixtures/canonical/ik-skeleton.js";
 
 describe("Batch 14 native project", () => {
+  it("supports repository-backed new, save, open, save-as and close lifecycle", async () => {
+    const repository = new InMemoryProjectRepository();
+    const lifecycle = new ProjectLifecycle(repository);
+    const project = createProject(
+      { main: ikSkeleton().skeleton },
+      "2026-01-01T00:00:00.000Z",
+    );
+    lifecycle.newProject(project);
+    expect(lifecycle.isDirty).toBe(true);
+    await lifecycle.saveAs("hero.hbone");
+    expect(lifecycle.path).toBe("hero.hbone");
+    expect(lifecycle.isDirty).toBe(false);
+    lifecycle.markDirty();
+    expect(() => lifecycle.close()).toThrow("PROJECT_UNSAVED_CHANGES");
+    lifecycle.close(true);
+    await lifecycle.open("hero.hbone");
+    expect(lifecycle.isDirty).toBe(false);
+    expect(lifecycle.project?.manifest.format).toBe("hnn-bones");
+  });
   it("round-trips deterministic skeleton projects", () => {
     const p = createProject({ main: ikSkeleton().skeleton });
     const serialized = serializeProject(p);

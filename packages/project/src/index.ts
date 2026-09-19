@@ -27,6 +27,81 @@ export interface HboneProject {
   extensions?: Record<string, unknown>;
 }
 
+export interface ProjectRepository {
+  read(path: string): Promise<Uint8Array | undefined>;
+  write(path: string, bytes: Uint8Array): Promise<void>;
+  remove(path: string): Promise<void>;
+  list(): Promise<string[]>;
+}
+
+/** Deterministic repository used by browser adapters and tests. */
+export class InMemoryProjectRepository implements ProjectRepository {
+  readonly #files = new Map<string, Uint8Array>();
+  async read(path: string): Promise<Uint8Array | undefined> {
+    const bytes = this.#files.get(path);
+    return bytes ? bytes.slice() : undefined;
+  }
+  async write(path: string, bytes: Uint8Array): Promise<void> {
+    this.#files.set(path, bytes.slice());
+  }
+  async remove(path: string): Promise<void> {
+    this.#files.delete(path);
+  }
+  async list(): Promise<string[]> {
+    return [...this.#files.keys()].sort();
+  }
+}
+
+export class ProjectLifecycle {
+  #project: HboneProject | null = null;
+  #path: string | null = null;
+  #dirty = false;
+  constructor(readonly repository: ProjectRepository) {}
+  get project(): HboneProject | null {
+    return this.#project;
+  }
+  get path(): string | null {
+    return this.#path;
+  }
+  get isDirty(): boolean {
+    return this.#dirty;
+  }
+  newProject(project: HboneProject): void {
+    this.#project = project;
+    this.#path = null;
+    this.#dirty = true;
+  }
+  markDirty(): void {
+    if (this.#project) this.#dirty = true;
+  }
+  async open(path: string): Promise<HboneProject> {
+    const bytes = await this.repository.read(path);
+    if (!bytes) throw new Error(`PROJECT_NOT_FOUND: ${path}`);
+    const project = parseProject(bytes, { verifyChecksums: true });
+    this.#project = project;
+    this.#path = path;
+    this.#dirty = false;
+    return project;
+  }
+  async save(): Promise<void> {
+    if (!this.#project || !this.#path)
+      throw new Error("PROJECT_SAVE_PATH_REQUIRED");
+    await this.repository.write(this.#path, serializeProject(this.#project));
+    this.#dirty = false;
+  }
+  async saveAs(path: string): Promise<void> {
+    if (!this.#project) throw new Error("PROJECT_NOT_OPEN");
+    this.#path = path;
+    await this.save();
+  }
+  close(discard = false): void {
+    if (this.#dirty && !discard) throw new Error("PROJECT_UNSAVED_CHANGES");
+    this.#project = null;
+    this.#path = null;
+    this.#dirty = false;
+  }
+}
+
 const CRC_TABLE = (() => {
   const table = new Uint32Array(256);
   for (let i = 0; i < 256; i++) {
