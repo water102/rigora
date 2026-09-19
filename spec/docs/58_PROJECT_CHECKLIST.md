@@ -131,17 +131,17 @@
 - [ ] deterministic tests
 
 ## Editor
-- [ ] web shell
-- [ ] Tauri shell
-- [ ] docking
-- [ ] hierarchy
-- [ ] stage
-- [ ] inspector
-- [ ] diagnostics
-- [ ] history
-- [ ] lifecycle
-- [ ] native project
-- [ ] autosave/recovery
+- [x] web shell
+- [x] Tauri shell
+- [x] docking
+- [x] hierarchy
+- [x] stage
+- [x] inspector
+- [x] diagnostics
+- [x] history
+- [x] lifecycle
+- [x] native project
+- [x] autosave/recovery
 
 ## Commands
 - [ ] bone CRUD/reparent/transform

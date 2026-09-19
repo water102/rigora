@@ -108,16 +108,16 @@ Validation precedes command commit.
 - never overwrite imported source file.
 
 ## Exit gate
-- [ ] web app starts
-- [ ] desktop app starts
-- [ ] native new/open/save/save-as works
-- [ ] native round-trip lossless
-- [ ] hierarchy edits undo/redo
-- [ ] stage select/pan/zoom works
-- [ ] inspector edits canonical model
-- [ ] autosave/recovery baseline works
-- [ ] no Pixi/Tauri objects persisted
-- [ ] React store is not canonical source of truth
+- [x] web app starts
+- [x] desktop app starts
+- [x] native new/open/save/save-as works
+- [x] native round-trip lossless
+- [x] hierarchy edits undo/redo
+- [x] stage select/pan/zoom works
+- [x] inspector edits canonical model
+- [x] autosave/recovery baseline works
+- [x] no Pixi/Tauri objects persisted
+- [x] React store is not canonical source of truth
 
 ## Freeze F4
 Command and persistence interfaces become change-controlled.
