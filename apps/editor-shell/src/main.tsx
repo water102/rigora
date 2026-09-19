@@ -825,6 +825,7 @@ function Timeline() {
             <button onClick={togglePlay}>
               {playback.playing ? "Pause" : "Play"}
             </button>
+            <button onClick={() => playback.step(-1)}>Frame -1</button>
             <button onClick={() => playback.step(1)}>Frame +1</button>
             <button onClick={addMarker}>Add marker</button>
             <button onClick={addRotationKey}>Key rotation</button>
