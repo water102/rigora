@@ -538,16 +538,22 @@ function Timeline() {
       time: playback.time,
       label: `Marker ${store.view.markers.length + 1}`,
     };
-    store.runAtomic(authoringHistory, "Add timeline marker", () => {
-      store.setMarkers([...store.view.markers, marker]);
+    const before = [...store.view.markers];
+    const after = [...before, marker];
+    authoringHistory.execute({
+      label: "Add timeline marker",
+      do: () => store.setMarkers(after),
+      undo: () => store.setMarkers(before),
     });
     redraw((value) => value + 1);
   };
   const removeMarker = (markerId: string) => {
-    store.runAtomic(authoringHistory, "Remove timeline marker", () => {
-      store.setMarkers(
-        store.view.markers.filter((marker) => marker.id !== markerId),
-      );
+    const before = [...store.view.markers];
+    const after = before.filter((marker) => marker.id !== markerId);
+    authoringHistory.execute({
+      label: "Remove timeline marker",
+      do: () => store.setMarkers(after),
+      undo: () => store.setMarkers(before),
     });
     redraw((value) => value + 1);
   };
