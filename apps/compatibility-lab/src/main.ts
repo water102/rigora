@@ -14,6 +14,7 @@ import {
   PixiMeshRenderer,
 } from "@rigora/renderer-pixi";
 import type { MeshWorkerApi } from "./mesh-worker.js";
+import { applyWeightBrush, weightHeatmap } from "@rigora/authoring-mesh";
 import { weightedMeshSkeleton } from "../../../tests/fixtures/canonical/weighted-mesh.js";
 import { animatedMeshSkeleton } from "../../../tests/fixtures/canonical/animated-skeleton.js";
 import { ikSkeleton } from "../../../tests/fixtures/canonical/ik-skeleton.js";
@@ -36,6 +37,11 @@ const autoCancelBtn =
   document.querySelector<HTMLButtonElement>("#auto-cancel")!;
 const autoThreshold =
   document.querySelector<HTMLInputElement>("#auto-threshold")!;
+const brushMode = document.querySelector<HTMLSelectElement>("#brush-mode")!;
+const brushStrength =
+  document.querySelector<HTMLInputElement>("#brush-strength")!;
+const paintDemo = document.querySelector<HTMLButtonElement>("#paint-demo")!;
+const heatmapDemo = document.querySelector<HTMLButtonElement>("#heatmap-demo")!;
 
 async function start() {
   const app = new Application();
@@ -104,6 +110,12 @@ async function start() {
   let lastFrameTime = performance.now();
   let rafId: number | null = null;
   let autoPreviewActive = false;
+  const demoWeights: Record<
+    string,
+    Record<string, number>
+  > = Object.fromEntries(
+    Array.from({ length: 15 }, (_, i) => [`v${i}`, { "bone-1": 1 }]),
+  );
 
   let currentImportDiagnostics: any[] = [];
 
@@ -221,6 +233,25 @@ async function start() {
     );
     if (autoPreviewActive)
       status.textContent = `Preview ready · ${preview.preview.contour.length} contour points · ${preview.preview.mesh.triangles.length / 3} triangles. Apply through authoring command.`;
+  });
+  paintDemo.addEventListener("click", () => {
+    const ids = Object.keys(demoWeights).slice(0, 5);
+    const deltas = applyWeightBrush(
+      demoWeights,
+      ids,
+      "bone-2",
+      brushMode.value as "add" | "subtract" | "smooth" | "erase",
+      Number(brushStrength.value),
+    );
+    status.textContent = `Weight brush applied · ${deltas.length} sparse deltas · mode ${brushMode.value}`;
+  });
+  heatmapDemo.addEventListener("click", () => {
+    const values = weightHeatmap(
+      demoWeights,
+      Object.keys(demoWeights),
+      "bone-2",
+    );
+    status.textContent = `Heatmap preview · bone-2 contribution range ${Math.min(...values).toFixed(2)}–${Math.max(...values).toFixed(2)}`;
   });
 
   function refresh() {
