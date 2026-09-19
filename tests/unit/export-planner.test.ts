@@ -31,9 +31,27 @@ describe("export planning", () => {
   });
   it("serializes a deterministic Spine profile", () => {
     const skeleton = minimalSkeleton();
+    skeleton.animations = [
+      {
+        id: "walk-id",
+        name: "walk",
+        duration: 1,
+        timelines: [
+          {
+            id: "rotate",
+            type: "bone.rotate",
+            targetId: "bone-1",
+            keyframes: [{ time: 0, value: 0, curve: { type: "linear" } }],
+          },
+        ],
+      },
+    ];
     const first = serializeSpine38(skeleton, "3.8.75");
     expect(first).toBe(serializeSpine38(skeleton, "3.8.75"));
     expect(JSON.parse(first).skeleton.spine).toBe("3.8.75");
+    expect(JSON.parse(first).animations.walk["bone.rotate"].keys[0].time).toBe(
+      0,
+    );
   });
   it("serializes DragonBones 5.5 and sorts atlas input", () => {
     const skeleton = minimalSkeleton();

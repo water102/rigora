@@ -138,6 +138,8 @@ export interface Spine38Ast {
   bones: unknown[];
   slots: unknown[];
   skins: unknown[];
+  animations?: Record<string, unknown>;
+  events?: Record<string, unknown>;
 }
 const round = (n: number) => Number(n.toFixed(6));
 const color = (c: { r: number; g: number; b: number; a: number }) =>
@@ -224,6 +226,35 @@ export function toSpine38Ast(
         ]),
       ),
     })),
+    ...(skeleton.animations.length
+      ? {
+          animations: Object.fromEntries(
+            skeleton.animations.map((animation) => [
+              animation.name,
+              Object.fromEntries(
+                animation.timelines.map((timeline) => [
+                  timeline.type,
+                  {
+                    target: timeline.targetId,
+                    keys: timeline.keyframes.map((key) => ({
+                      time: round(key.time),
+                      value: key.value,
+                      curve: key.curve,
+                    })),
+                  },
+                ]),
+              ),
+            ]),
+          ),
+        }
+      : {}),
+    ...(skeleton.events.length
+      ? {
+          events: Object.fromEntries(
+            skeleton.events.map((event) => [event.name, event.defaults ?? {}]),
+          ),
+        }
+      : {}),
   };
 }
 export function serializeSpine38(
