@@ -298,6 +298,7 @@ function Stage() {
     });
 
     const draw = () => {
+      if (disposed || !app.renderer) return;
       const width = host.clientWidth || 640;
       const height = host.clientHeight || 420;
       camera.setViewport(width, height);
@@ -440,7 +441,7 @@ function Stage() {
           .circle(a.x, a.y, selected ? 7 : 5)
           .fill(selected ? 0xffc857 : 0x9deee2);
       }
-      app.renderer.render(app.stage);
+      app.renderer?.render(app.stage);
 
       // 6. Synchronize Canvas Rulers (Thước đo ngang và dọc)
       renderRulers(
