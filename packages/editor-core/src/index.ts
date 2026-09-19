@@ -319,6 +319,49 @@ export class HierarchyModel<T extends HierarchyNode> {
   }
 }
 
+export interface InspectorField<T = unknown> {
+  id: string;
+  label: string;
+  value: T;
+  editable?: boolean;
+  validate?: (value: T) => string | undefined;
+}
+export interface InspectorSection {
+  id: string;
+  label: string;
+  fields: InspectorField[];
+}
+
+export class InspectorModel {
+  #sections: InspectorSection[] = [];
+  setSections(sections: readonly InspectorSection[]): void {
+    this.#sections = sections.map((section) => ({
+      ...section,
+      fields: section.fields.map((field) => ({ ...field })),
+    }));
+  }
+  get sections(): InspectorSection[] {
+    return this.#sections.map((section) => ({
+      ...section,
+      fields: section.fields.map((field) => ({ ...field })),
+    }));
+  }
+  update<T>(sectionId: string, fieldId: string, value: T): void {
+    const section = this.#sections.find(
+      (candidate) => candidate.id === sectionId,
+    );
+    if (!section) throw new Error("INSPECTOR_SECTION_NOT_FOUND");
+    const field = section.fields.find(
+      (candidate) => candidate.id === fieldId,
+    ) as InspectorField<T> | undefined;
+    if (!field) throw new Error("INSPECTOR_FIELD_NOT_FOUND");
+    if (field.editable === false) throw new Error("INSPECTOR_FIELD_READ_ONLY");
+    const error = field.validate?.(value);
+    if (error) throw new Error(`INSPECTOR_INVALID_VALUE: ${error}`);
+    field.value = value;
+  }
+}
+
 interface UndoEntry {
   command: EditorCommand<unknown>;
   payload: unknown;

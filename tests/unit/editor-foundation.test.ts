@@ -17,6 +17,7 @@ import {
   snapToGrid,
   framePoints,
   HierarchyModel,
+  InspectorModel,
   type EditorCommand,
 } from "../../packages/editor-core/src/index.js";
 import { ikSkeleton } from "../fixtures/canonical/ik-skeleton.js";
@@ -684,5 +685,38 @@ describe("Batch 21 hierarchy model", () => {
       "HIERARCHY_PARENT_NOT_FOUND",
     );
     expect(() => tree.rename("child", " ")).toThrow("HIERARCHY_INVALID_NAME");
+  });
+});
+
+describe("Batch 22 inspector model", () => {
+  it("updates validated editable fields and protects snapshots", () => {
+    const inspector = new InspectorModel();
+    inspector.setSections([
+      {
+        id: "transform",
+        label: "Transform",
+        fields: [
+          {
+            id: "x",
+            label: "X",
+            value: 0,
+            validate: (value: number) =>
+              Number.isFinite(value) ? undefined : "finite",
+          },
+          { id: "id", label: "ID", value: "root", editable: false },
+        ],
+      },
+    ]);
+    inspector.update("transform", "x", 12);
+    expect(inspector.sections[0]!.fields[0]!.value).toBe(12);
+    const snapshot = inspector.sections;
+    snapshot[0]!.fields[0]!.value = 99;
+    expect(inspector.sections[0]!.fields[0]!.value).toBe(12);
+    expect(() => inspector.update("transform", "id", "other")).toThrow(
+      "INSPECTOR_FIELD_READ_ONLY",
+    );
+    expect(() => inspector.update("transform", "x", NaN)).toThrow(
+      "INSPECTOR_INVALID_VALUE",
+    );
   });
 });
