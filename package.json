@@ -3,7 +3,8 @@
   "private": true,
   "packageManager": "pnpm@10.16.1",
   "scripts": {
-    "dev": "pnpm --filter @rigora/compatibility-lab dev",
+    "dev": "pnpm --filter @rigora/editor-shell dev",
+    "dev:lab": "pnpm --filter @rigora/compatibility-lab dev",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",

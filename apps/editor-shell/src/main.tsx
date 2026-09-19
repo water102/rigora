@@ -114,6 +114,7 @@ function Stage() {
     let disposed = false;
     const app = new Application();
     const camera = new Camera2D(1, 1);
+    camera.setCenter({ x: 25, y: 75 });
     const grid = new Graphics();
     const skeleton = new Graphics();
     const fallbackBones = [
@@ -122,46 +123,79 @@ function Stage() {
       { id: "hand", x: 55, y: 135, tx: 105, ty: 120 },
       { id: "head", x: 0, y: 80, tx: -5, ty: 150 },
     ];
+
+    const worldToScreen = (
+      p: { x: number; y: number },
+      width: number,
+      height: number,
+    ) => ({
+      x: (p.x - camera.center.x) * camera.zoom + width / 2,
+      y: -(p.y - camera.center.y) * camera.zoom + height / 2,
+    });
+
+    const screenToWorld = (
+      p: { x: number; y: number },
+      width: number,
+      height: number,
+    ) => ({
+      x: (p.x - width / 2) / camera.zoom + camera.center.x,
+      y: -(p.y - height / 2) / camera.zoom + camera.center.y,
+    });
+
     const draw = () => {
       const width = host.clientWidth || 640;
       const height = host.clientHeight || 420;
       camera.setViewport(width, height);
       grid.clear();
-      const topLeft = camera.screenToWorld({ x: 0, y: 0 });
-      const bottomRight = camera.screenToWorld({ x: width, y: height });
+
+      // Calculate visible world bounds (World: +X right, +Y up; Screen: +X right, +Y down)
+      const topLeft = screenToWorld({ x: 0, y: 0 }, width, height);
+      const bottomRight = screenToWorld({ x: width, y: height }, width, height);
+
       const bounds = {
         x: topLeft.x,
-        y: -bottomRight.y,
-        width: bottomRight.x - topLeft.x,
-        height: topLeft.y - bottomRight.y,
+        y: bottomRight.y,
+        width: Math.max(bottomRight.x - topLeft.x, 1),
+        height: Math.max(topLeft.y - bottomRight.y, 1),
       };
-      for (const line of buildGridLines(bounds, {
+
+      // Adaptive grid spacing according to zoom level
+      const targetWorldStep = 60 / camera.zoom;
+      const power = Math.pow(10, Math.floor(Math.log10(targetWorldStep)));
+      const ratio = targetWorldStep / power;
+      const step = ratio < 2 ? 1 : ratio < 5 ? 2 : 5;
+      const spacing = Math.max(1, step * power);
+      const subdivisions = step === 2 ? 4 : 5;
+
+      const lines = buildGridLines(bounds, {
         enabled: true,
-        spacing: 40,
-        subdivisions: 4,
-      })) {
-        const a =
-          line.axis === "x"
-            ? camera.worldToScreen({ x: line.position, y: -bounds.y })
-            : camera.worldToScreen({ x: bounds.x, y: -line.position });
-        const b =
-          line.axis === "x"
-            ? camera.worldToScreen({
-                x: line.position,
-                y: -(bounds.y + bounds.height),
-              })
-            : camera.worldToScreen({
-                x: bounds.x + bounds.width,
-                y: -line.position,
-              });
-        grid
-          .moveTo(a.x, a.y)
-          .lineTo(b.x, b.y)
-          .stroke({
-            color: line.major ? 0x38516d : 0x203247,
+        spacing,
+        subdivisions,
+      });
+
+      for (const line of lines) {
+        const isOrigin = Math.abs(line.position) < 1e-5;
+        if (line.axis === "x") {
+          const sx = worldToScreen({ x: line.position, y: 0 }, width, height).x;
+          grid.moveTo(sx, 0).lineTo(sx, height);
+        } else {
+          const sy = worldToScreen({ x: 0, y: line.position }, width, height).y;
+          grid.moveTo(0, sy).lineTo(width, sy);
+        }
+
+        if (isOrigin) {
+          grid.stroke({
+            color: 0x4a7eb3,
+            width: 1.5,
+          });
+        } else {
+          grid.stroke({
+            color: line.major ? 0x2e4259 : 0x1a2636,
             width: line.major ? 1 : 0.5,
           });
+        }
       }
+
       skeleton.clear();
       const projectBones = (
         (services.project as HboneProject).skeletons.main?.bones ?? []
@@ -174,8 +208,8 @@ function Stage() {
       }));
       const bones = projectBones.length ? projectBones : fallbackBones;
       for (const bone of bones) {
-        const a = camera.worldToScreen({ x: bone.x, y: -bone.y });
-        const b = camera.worldToScreen({ x: bone.tx, y: -bone.ty });
+        const a = worldToScreen({ x: bone.x, y: bone.y }, width, height);
+        const b = worldToScreen({ x: bone.tx, y: bone.ty }, width, height);
         const selected =
           selectionRef.current?.kind === "bone" &&
           selectionRef.current.id === bone.id;
@@ -192,6 +226,7 @@ function Stage() {
       }
       app.renderer.render(app.stage);
     };
+
     void app
       .init({
         background: 0x111b2c,
@@ -211,15 +246,27 @@ function Stage() {
       .catch((error: unknown) => {
         if (!disposed) console.error("Pixi initialization failed", error);
       });
+
     const onWheel = (event: WheelEvent) => {
       event.preventDefault();
+      const width = host.clientWidth || 640;
+      const height = host.clientHeight || 420;
       const rect = host.getBoundingClientRect();
-      camera.zoomAt(event.deltaY < 0 ? 1.1 : 0.9, {
+      const mouse = {
         x: event.clientX - rect.left,
         y: event.clientY - rect.top,
+      };
+      const factor = event.deltaY < 0 ? 1.15 : 0.87;
+      const beforeWorld = screenToWorld(mouse, width, height);
+      camera.setZoom(camera.zoom * factor);
+      const afterWorld = screenToWorld(mouse, width, height);
+      camera.setCenter({
+        x: camera.center.x + (beforeWorld.x - afterWorld.x),
+        y: camera.center.y + (beforeWorld.y - afterWorld.y),
       });
       draw();
     };
+
     let dragging = false;
     let last = { x: 0, y: 0 };
     const onDown = (event: PointerEvent) => {
@@ -231,7 +278,12 @@ function Stage() {
     };
     const onMove = (event: PointerEvent) => {
       if (dragging) {
-        camera.panBy(event.clientX - last.x, event.clientY - last.y);
+        const dx = event.clientX - last.x;
+        const dy = event.clientY - last.y;
+        camera.setCenter({
+          x: camera.center.x - dx / camera.zoom,
+          y: camera.center.y + dy / camera.zoom,
+        });
         last = { x: event.clientX, y: event.clientY };
         draw();
       }
@@ -239,13 +291,17 @@ function Stage() {
     const onUp = () => {
       dragging = false;
     };
+
     const onClick = (event: MouseEvent) => {
       if (event.button !== 0) return;
+      const width = host.clientWidth || 640;
+      const height = host.clientHeight || 420;
       const rect = host.getBoundingClientRect();
-      const point = camera.screenToWorld({
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top,
-      });
+      const point = screenToWorld(
+        { x: event.clientX - rect.left, y: event.clientY - rect.top },
+        width,
+        height,
+      );
       const projectBones = (
         (services.project as HboneProject).skeletons.main?.bones ?? []
       ).map((bone) => ({
@@ -274,6 +330,12 @@ function Stage() {
       });
       if (hit) services.selection.select({ kind: "bone", id: hit.id });
     };
+
+    const resizeObserver = new ResizeObserver(() => {
+      draw();
+    });
+    resizeObserver.observe(host);
+
     host.addEventListener("wheel", onWheel, { passive: false });
     host.addEventListener("pointerdown", onDown);
     host.addEventListener("pointermove", onMove);
@@ -284,6 +346,7 @@ function Stage() {
     const unsubscribe = services.selection.subscribe(draw);
     return () => {
       disposed = true;
+      resizeObserver.disconnect();
       unsubscribe();
       host.removeEventListener("wheel", onWheel);
       host.removeEventListener("pointerdown", onDown);
