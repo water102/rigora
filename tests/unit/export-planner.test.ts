@@ -3,6 +3,7 @@ import {
   createExportPlan,
   createExportReport,
   assertExportable,
+  serializeSpine38,
 } from "../../packages/format-export/src/index.js";
 import { minimalSkeleton } from "../fixtures/canonical/minimal.js";
 
@@ -22,5 +23,11 @@ describe("export planning", () => {
     expect(
       createExportReport(skeleton, plan, new Set(["unknown"])).checksum,
     ).toMatch(/^[0-9a-f]{8}$/);
+  });
+  it("serializes a deterministic Spine profile", () => {
+    const skeleton = minimalSkeleton();
+    const first = serializeSpine38(skeleton, "3.8.75");
+    expect(first).toBe(serializeSpine38(skeleton, "3.8.75"));
+    expect(JSON.parse(first).skeleton.spine).toBe("3.8.75");
   });
 });

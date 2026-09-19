@@ -124,3 +124,121 @@ export function validateForExport(skeleton: SkeletonData): void {
   const result = validateSkeleton(skeleton);
   if (!result.success) throw new Error("EXPORT_INVALID_CANONICAL_MODEL");
 }
+
+export interface Spine38Ast {
+  skeleton: {
+    hash: string;
+    spine: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    fps: number;
+  };
+  bones: unknown[];
+  slots: unknown[];
+  skins: Record<string, unknown>;
+  animations: Record<string, unknown>;
+  events: Record<string, unknown>;
+}
+const round = (n: number) => Number(n.toFixed(6));
+const color = (c: { r: number; g: number; b: number; a: number }) =>
+  [c.r, c.g, c.b, c.a]
+    .map((v) =>
+      Math.round(v * 255)
+        .toString(16)
+        .padStart(2, "0"),
+    )
+    .join("");
+export function toSpine38Ast(
+  skeleton: SkeletonData,
+  profile: "3.8" | "3.8.75" = "3.8",
+): Spine38Ast {
+  validateForExport(skeleton);
+  const plan = createExportPlan(
+    skeleton,
+    profile === "3.8.75" ? "spine-3.8.75" : "spine-3.8",
+  );
+  if (plan.blockers.length) throw new Error("EXPORT_PLAN_BLOCKED");
+  return {
+    skeleton: {
+      hash: skeleton.id,
+      spine: profile,
+      x: round(skeleton.bounds?.x ?? 0),
+      y: round(skeleton.bounds?.y ?? 0),
+      width: round(skeleton.bounds?.width ?? 0),
+      height: round(skeleton.bounds?.height ?? 0),
+      fps: round(skeleton.fps),
+    },
+    bones: skeleton.bones.map((b) => ({
+      name: b.name,
+      ...(b.parentId
+        ? { parent: skeleton.bones.find((p) => p.id === b.parentId)?.name }
+        : {}),
+      x: round(b.setup.x),
+      y: round(b.setup.y),
+      rotation: round((b.setup.rotation * 180) / Math.PI),
+      scaleX: round(b.setup.scaleX),
+      scaleY: round(b.setup.scaleY),
+      length: round(b.length),
+    })),
+    slots: skeleton.slots.map((s) => ({
+      name: s.name,
+      bone: skeleton.bones.find((b) => b.id === s.boneId)?.name,
+      attachment: skeleton.skins[0]?.attachments[s.id]?.find(
+        (a) => a.id === s.setupAttachmentId,
+      )?.name,
+      color: color(s.color),
+      blend: s.blendMode,
+    })),
+    skins: Object.fromEntries(
+      skeleton.skins.map((s) => [
+        s.name,
+        Object.fromEntries(
+          Object.entries(s.attachments).map(([slot, as]) => [
+            skeleton.slots.find((x) => x.id === slot)?.name ?? slot,
+            Object.fromEntries(
+              as.map((a) => [
+                a.name,
+                a.type === "region"
+                  ? {
+                      name: a.name,
+                      path: a.name,
+                      x: round(a.transform.x),
+                      y: round(a.transform.y),
+                      rotation: round((a.transform.rotation * 180) / Math.PI),
+                      width: round(a.width),
+                      height: round(a.height),
+                    }
+                  : a.type === "mesh"
+                    ? {
+                        name: a.name,
+                        type: "mesh",
+                        uvs: a.uvs.flatMap((v) => [round(v.x), round(v.y)]),
+                        triangles: a.triangles,
+                        vertices: a.vertices.flatMap((v) => [
+                          round(v.x),
+                          round(v.y),
+                        ]),
+                      }
+                    : { name: a.name, type: a.type },
+              ]),
+            ),
+          ]),
+        ),
+      ]),
+    ),
+    animations: Object.fromEntries(
+      skeleton.animations.map((a) => [a.name, {}]),
+    ),
+    events: Object.fromEntries(
+      skeleton.events.map((e) => [e.name, e.defaults ?? {}]),
+    ),
+  };
+}
+export function serializeSpine38(
+  skeleton: SkeletonData,
+  profile: "3.8" | "3.8.75" = "3.8",
+): string {
+  return JSON.stringify(toSpine38Ast(skeleton, profile));
+}
