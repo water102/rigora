@@ -42,6 +42,7 @@ export {
   moveVertex,
   removeEdge,
   resetTopology,
+  retriangulate,
   invertSelection,
   lassoSelection,
   pointInPolygon,

@@ -38,6 +38,7 @@ import {
   lassoSelection,
   removeEdge,
   resetTopology,
+  retriangulate,
   selectPolygon,
   updatePathPoint,
   triangulatePolygon,
@@ -208,6 +209,27 @@ describe("Phase 6 authoring core", () => {
     expect(
       removeEdge(addEdge(resetTopology(moved), 0, 1), 0, 1).triangles,
     ).toEqual([]);
+  });
+
+  it("retriangulates a selected ring while preserving vertex IDs", () => {
+    const mesh = createAuthoringMesh([
+      { x: 0, y: 0 },
+      { x: 2, y: 0 },
+      { x: 2, y: 2 },
+      { x: 0, y: 2 },
+    ]);
+    const next = retriangulate(mesh, [0, 1, 2, 3]);
+    expect(next.triangles).toHaveLength(6);
+    expect(next.edges).toHaveLength(5);
+    expect(next.vertices.map((vertex) => vertex.id)).toEqual([
+      "v0",
+      "v1",
+      "v2",
+      "v3",
+    ]);
+    expect(() => retriangulate(mesh, [0, 1])).toThrow(
+      "MESH_RETRIANGULATION_INVALID_RING",
+    );
   });
 
   it("supports setup/animation deform authoring and linked inheritance", () => {

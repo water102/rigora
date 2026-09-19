@@ -1,4 +1,5 @@
 import type { Vec2 } from "@rigora/math";
+import { triangulatePolygon } from "./triangulation.js";
 
 export interface AuthoringMesh {
   vertices: Array<{ id: string; position: Vec2 }>;
@@ -114,6 +115,39 @@ export function resetTopology(mesh: AuthoringMesh): AuthoringMesh {
     vertices: mesh.vertices.map((v) => ({ ...v, position: { ...v.position } })),
     triangles: [],
     edges: [],
+  };
+}
+export function retriangulate(
+  mesh: AuthoringMesh,
+  ring: readonly number[] = mesh.vertices.map((_, index) => index),
+): AuthoringMesh {
+  if (
+    ring.length < 3 ||
+    ring.some((index) => index < 0 || index >= mesh.vertices.length)
+  )
+    throw new Error("MESH_RETRIANGULATION_INVALID_RING");
+  const triangulated = triangulatePolygon(
+    ring.map((index) => mesh.vertices[index]!.position),
+  );
+  const triangles = triangulated.triangles.map((index) => ring[index]!);
+  const edgeMap = new Map<string, [number, number]>();
+  for (let i = 0; i < triangles.length; i += 3) {
+    for (const [a, b] of [
+      [triangles[i]!, triangles[i + 1]!],
+      [triangles[i + 1]!, triangles[i + 2]!],
+      [triangles[i + 2]!, triangles[i]!],
+    ] as Array<[number, number]>) {
+      const key = a < b ? `${a}:${b}` : `${b}:${a}`;
+      edgeMap.set(key, a < b ? [a, b] : [b, a]);
+    }
+  }
+  return {
+    vertices: mesh.vertices.map((vertex) => ({
+      ...vertex,
+      position: { ...vertex.position },
+    })),
+    triangles,
+    edges: [...edgeMap.values()],
   };
 }
 
