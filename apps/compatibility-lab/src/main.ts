@@ -16,6 +16,7 @@ import {
 import type { MeshWorkerApi } from "./mesh-worker.js";
 import {
   applyWeightBrush,
+  applyBrushAtPoint,
   createAuthoringMesh,
   applyVertexDrag,
   beginDrag,
@@ -139,6 +140,12 @@ async function start() {
   );
   let vertexDrag: ReturnType<typeof beginDrag> | null = null;
   let lassoPoints: Array<{ x: number; y: number }> = [];
+  let brushStrokeCount = 0;
+  const brushVertices = () =>
+    demoTopology.vertices.map((vertex) => ({
+      id: vertex.id,
+      position: vertex.position,
+    }));
   const canvasPoint = (event: PointerEvent) => ({
     x: (event.offsetX - 360) / 8,
     y: (260 - event.offsetY) / 8,
@@ -149,6 +156,18 @@ async function start() {
       app.canvas.setPointerCapture(event.pointerId);
       return;
     }
+    if (canvasMode.value === "brush") {
+      brushStrokeCount = applyBrushAtPoint(
+        demoWeights,
+        brushVertices(),
+        canvasPoint(event),
+        "bone-2",
+        { radius: 2, strength: 0.25, falloff: "smoothstep", mode: "add" },
+      ).length;
+      app.canvas.setPointerCapture(event.pointerId);
+      status.textContent = `Brush preview · ${brushStrokeCount} sparse deltas`;
+      return;
+    }
     vertexDrag = beginDrag("vertex", canvasPoint(event), "v0");
     app.canvas.setPointerCapture(event.pointerId);
   });
@@ -156,6 +175,17 @@ async function start() {
     if (canvasMode.value === "lasso" && lassoPoints.length) {
       lassoPoints.push(canvasPoint(event));
       status.textContent = `Lasso preview · ${lassoPoints.length} points`;
+      return;
+    }
+    if (canvasMode.value === "brush" && event.buttons) {
+      brushStrokeCount += applyBrushAtPoint(
+        demoWeights,
+        brushVertices(),
+        canvasPoint(event),
+        "bone-2",
+        { radius: 2, strength: 0.15, falloff: "smoothstep", mode: "add" },
+      ).length;
+      status.textContent = `Brush preview · ${brushStrokeCount} sparse deltas`;
       return;
     }
     if (!vertexDrag) return;
@@ -171,6 +201,12 @@ async function start() {
       status.textContent = `Lasso selection · ${selected.length} vertices: ${selected.join(", ") || "none"}`;
       return;
     }
+    if (canvasMode.value === "brush") {
+      app.canvas.releasePointerCapture(event.pointerId);
+      status.textContent = `Brush stroke committed · ${brushStrokeCount} sparse deltas`;
+      brushStrokeCount = 0;
+      return;
+    }
     if (!vertexDrag) return;
     vertexDrag = endDrag(vertexDrag);
     app.canvas.releasePointerCapture(event.pointerId);
@@ -180,6 +216,7 @@ async function start() {
   app.canvas.addEventListener("pointercancel", () => {
     vertexDrag = null;
     lassoPoints = [];
+    brushStrokeCount = 0;
     status.textContent = "Canvas gesture cancelled.";
   });
 
