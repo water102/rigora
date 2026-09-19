@@ -19,6 +19,8 @@ import {
   applyBrushAtPoint,
   createAttachmentFromLibrary,
   bindVertices,
+  listInfluences,
+  limitInfluences,
   createWeightDeltaCommand,
   createAuthoringDocument,
   parseAuthoringDocument,
@@ -90,6 +92,13 @@ const authoringLoad =
 const bindingBone = document.querySelector<HTMLSelectElement>("#binding-bone")!;
 const bindDemo = document.querySelector<HTMLButtonElement>("#bind-demo")!;
 const unbindDemo = document.querySelector<HTMLButtonElement>("#unbind-demo")!;
+const bindingLocked =
+  document.querySelector<HTMLInputElement>("#binding-locked")!;
+const bindingMax = document.querySelector<HTMLInputElement>("#binding-max")!;
+const limitInfluencesBtn =
+  document.querySelector<HTMLButtonElement>("#limit-influences")!;
+const listInfluencesBtn =
+  document.querySelector<HTMLButtonElement>("#list-influences")!;
 const attachmentKind =
   document.querySelector<HTMLSelectElement>("#attachment-kind")!;
 const createAttachment =
@@ -438,6 +447,32 @@ async function start() {
     );
     persistAuthoring();
     status.textContent = `Unbound ${deltas.length} vertices from ${bindingBone.value}.`;
+  });
+  limitInfluencesBtn.addEventListener("click", () => {
+    const locked = bindingLocked.checked
+      ? new Set([bindingBone.value])
+      : new Set<string>();
+    try {
+      limitInfluences(
+        demoWeights,
+        Object.keys(demoWeights),
+        Number(bindingMax.value),
+        locked,
+      );
+      persistAuthoring();
+      status.textContent = `Influence limit applied: max ${bindingMax.value}${bindingLocked.checked ? `, locked ${bindingBone.value}` : ""}.`;
+    } catch (error) {
+      status.textContent =
+        error instanceof Error ? error.message : "Influence limit failed.";
+    }
+  });
+  listInfluencesBtn.addEventListener("click", () => {
+    const entries = listInfluences(
+      demoWeights,
+      Object.keys(demoWeights)[0]!,
+      bindingLocked.checked ? new Set([bindingBone.value]) : new Set<string>(),
+    );
+    status.textContent = `v0 influences: ${entries.map((entry) => `${entry.boneId}=${entry.weight.toFixed(3)}${entry.locked ? " (locked)" : ""}`).join(", ") || "none"}`;
   });
   autoWeightPreview.addEventListener("click", async () => {
     const power = Number(autoWeightPower.value);
