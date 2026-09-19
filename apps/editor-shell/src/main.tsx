@@ -421,6 +421,17 @@ function Timeline() {
     .flatMap((channel) => channel.keys)
     .find((key) => store.view.selectedKeyIds.has(key.id))?.value;
   useEffect(() => {
+    const skeleton = (services.project as HboneProject).skeletons.main;
+    const animation = skeleton?.animations[0];
+    if (!store.active && animation) {
+      store.importClip(
+        animation as Parameters<typeof store.importClip>[0],
+        skeleton.fps,
+      );
+      redraw((value) => value + 1);
+    }
+  }, [services, store]);
+  useEffect(() => {
     if (!playback.playing) return;
     let previous = performance.now();
     const timer = window.setInterval(() => {
