@@ -418,6 +418,13 @@ export type AuthoringChannelKind =
   | "constraint"
   | "deform"
   | "event";
+export type SlotProperty = "attachment" | "color" | "twoColor" | "drawOrder";
+export type ConstraintProperty =
+  | "ikMix"
+  | "transformMix"
+  | "pathPosition"
+  | "pathSpacing"
+  | "physics";
 export type AutoKeyMode = "off" | "changed-property" | "first-frame";
 
 export interface AuthoredKey<T = unknown> {
@@ -432,6 +439,46 @@ export interface AuthoringChannel<T = unknown> {
   targetId?: string;
   property: string;
   keys: AuthoredKey<T>[];
+}
+
+export function createSlotChannel<T>(
+  id: string,
+  slotId: string,
+  property: SlotProperty,
+): AuthoringChannel<T> {
+  if (!id || !slotId) throw new Error("ANIMATION_AUTHORING_INVALID_CHANNEL");
+  return { id, kind: "slot", targetId: slotId, property, keys: [] };
+}
+
+export function createConstraintChannel<T>(
+  id: string,
+  constraintId: string,
+  property: ConstraintProperty,
+): AuthoringChannel<T> {
+  if (!id || !constraintId)
+    throw new Error("ANIMATION_AUTHORING_INVALID_CHANNEL");
+  return { id, kind: "constraint", targetId: constraintId, property, keys: [] };
+}
+
+export function validateChannelValue(
+  channel: Pick<AuthoringChannel, "kind" | "property">,
+  value: unknown,
+): void {
+  if (channel.kind === "slot" && channel.property === "drawOrder") {
+    if (!Number.isSafeInteger(value))
+      throw new Error("ANIMATION_AUTHORING_INVALID_DRAW_ORDER");
+  } else if (channel.kind === "slot" && channel.property === "attachment") {
+    if (typeof value !== "string")
+      throw new Error("ANIMATION_AUTHORING_INVALID_ATTACHMENT");
+  } else if (
+    channel.kind === "slot" &&
+    (channel.property === "color" || channel.property === "twoColor")
+  ) {
+    if (typeof value !== "string" || !/^[0-9a-fA-F]{6,8}$/.test(value))
+      throw new Error("ANIMATION_AUTHORING_INVALID_COLOR");
+  } else if (channel.kind === "constraint" && typeof value !== "number") {
+    throw new Error("ANIMATION_AUTHORING_INVALID_CONSTRAINT_VALUE");
+  }
 }
 export interface AnimationClip {
   id: string;
