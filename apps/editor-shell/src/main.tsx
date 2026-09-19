@@ -719,6 +719,9 @@ function Timeline() {
     if (!clip) return;
     const nextAnimation = store.exportActive();
     const skeletonBefore = (services.project as HboneProject).skeletons.main;
+    const previousAnimation = skeletonBefore?.animations.find(
+      (animation) => animation.id === nextAnimation.id,
+    );
     const previousEvents = skeletonBefore?.events
       ? [...skeletonBefore.events]
       : [];
@@ -745,9 +748,12 @@ function Timeline() {
         const project = context.project as HboneProject;
         const skeleton = project.skeletons.main;
         if (skeleton)
-          skeleton.animations = skeleton.animations.filter(
-            (animation) => animation.id !== nextAnimation.id,
-          );
+          skeleton.animations = [
+            ...skeleton.animations.filter(
+              (animation) => animation.id !== nextAnimation.id,
+            ),
+            ...(previousAnimation ? [previousAnimation] : []),
+          ];
         if (skeleton) skeleton.events = previousEvents;
       },
     });
