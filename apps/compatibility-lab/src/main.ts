@@ -14,7 +14,15 @@ import {
   PixiMeshRenderer,
 } from "@rigora/renderer-pixi";
 import type { MeshWorkerApi } from "./mesh-worker.js";
-import { applyWeightBrush, weightHeatmap } from "@rigora/authoring-mesh";
+import {
+  applyWeightBrush,
+  createAuthoringMesh,
+  createDeformState,
+  keyDeform,
+  resetTopology,
+  setDeformOffset,
+  weightHeatmap,
+} from "@rigora/authoring-mesh";
 import { weightedMeshSkeleton } from "../../../tests/fixtures/canonical/weighted-mesh.js";
 import { animatedMeshSkeleton } from "../../../tests/fixtures/canonical/animated-skeleton.js";
 import { ikSkeleton } from "../../../tests/fixtures/canonical/ik-skeleton.js";
@@ -42,6 +50,9 @@ const brushStrength =
   document.querySelector<HTMLInputElement>("#brush-strength")!;
 const paintDemo = document.querySelector<HTMLButtonElement>("#paint-demo")!;
 const heatmapDemo = document.querySelector<HTMLButtonElement>("#heatmap-demo")!;
+const topologyDemo =
+  document.querySelector<HTMLButtonElement>("#topology-demo")!;
+const deformDemo = document.querySelector<HTMLButtonElement>("#deform-demo")!;
 
 async function start() {
   const app = new Application();
@@ -115,6 +126,10 @@ async function start() {
     Record<string, number>
   > = Object.fromEntries(
     Array.from({ length: 15 }, (_, i) => [`v${i}`, { "bone-1": 1 }]),
+  );
+  let demoTopology = createAuthoringMesh(
+    Array.from({ length: 6 }, (_, i) => ({ x: i % 3, y: Math.floor(i / 3) })),
+    [0, 1, 3, 1, 4, 3, 1, 2, 4, 2, 5, 4],
   );
 
   let currentImportDiagnostics: any[] = [];
@@ -252,6 +267,16 @@ async function start() {
       "bone-2",
     );
     status.textContent = `Heatmap preview · bone-2 contribution range ${Math.min(...values).toFixed(2)}–${Math.max(...values).toFixed(2)}`;
+  });
+  topologyDemo.addEventListener("click", () => {
+    demoTopology = resetTopology(demoTopology);
+    status.textContent = `Topology reset · ${demoTopology.vertices.length} stable vertices retained · 0 triangles`;
+  });
+  deformDemo.addEventListener("click", () => {
+    let deform = createDeformState(1);
+    deform = setDeformOffset(deform, 0, { x: 3, y: 1 });
+    deform = keyDeform(deform, 0.5);
+    status.textContent = `Deform key preview · t=0.50s · offset (${deform.offsets[0]}, ${deform.offsets[1]})`;
   });
 
   function refresh() {
