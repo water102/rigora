@@ -287,6 +287,9 @@ button:disabled {
   flex-direction: column;
   gap: 2px;
 }
+.timeline-keys {
+  min-width: max(100%, 900px);
+}
 .timeline-labels span,
 .timeline-row {
   height: 22px;

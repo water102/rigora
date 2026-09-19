@@ -411,6 +411,7 @@ function Timeline() {
   const [selectionStart, setSelectionStart] = useState(0);
   const [selectionEnd, setSelectionEnd] = useState(1);
   const [rowScrollTop, setRowScrollTop] = useState(0);
+  const timelineRef = useRef<HTMLDivElement>(null);
   const [clipboard, setClipboard] = useState<KeyClipboard | null>(null);
   const [autoKeyMode, setAutoKeyMode] = useState<AutoKeyMode>("off");
   const [eventName, setEventName] = useState("event");
@@ -524,6 +525,21 @@ function Timeline() {
     }, 16);
     return () => window.clearInterval(timer);
   }, [playback, playback.playing]);
+  useEffect(() => {
+    const viewport = timelineRef.current;
+    if (!viewport || !clip || clip.duration <= 0) return;
+    const contentWidth = Math.max(viewport.scrollWidth, viewport.clientWidth);
+    const timelineWidth = Math.max(contentWidth - 150, 1);
+    const playheadX = 150 + (playback.time / clip.duration) * timelineWidth;
+    const leftBound = viewport.scrollLeft + 170;
+    const rightBound = viewport.scrollLeft + viewport.clientWidth - 30;
+    if (playheadX < leftBound || playheadX > rightBound) {
+      viewport.scrollLeft = Math.max(
+        0,
+        playheadX - viewport.clientWidth * 0.65,
+      );
+    }
+  }, [clip?.duration, clip?.id, playback.playing, playback.time]);
   const createClip = () => {
     const created = store.create("walk", 1, 30);
     store.addChannel({
@@ -1223,6 +1239,7 @@ function Timeline() {
           </div>
           <div
             className="timeline-grid timeline-virtual-scroll"
+            ref={timelineRef}
             onScroll={(event) => setRowScrollTop(event.currentTarget.scrollTop)}
           >
             <div
