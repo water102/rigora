@@ -127,3 +127,26 @@ it("windows timeline rows with overscan and stable geometry", () => {
   expect(window.offsetTop).toBe(180);
   expect(window.totalHeight).toBe(2000);
 });
+
+it("rejects invalid slot and constraint key values", () => {
+  const store = new AnimationAuthoringStore();
+  store.create("channels", 1, 30, "channels");
+  const color = store.addChannel({
+    id: "slot.color",
+    kind: "slot",
+    targetId: "slot",
+    property: "color",
+  });
+  const mix = store.addChannel({
+    id: "constraint.ikMix",
+    kind: "constraint",
+    targetId: "ik",
+    property: "ikMix",
+  });
+  expect(() => store.upsertKey(color.id, 0, "not-a-color")).toThrow(
+    "INVALID_COLOR",
+  );
+  expect(() => store.upsertKey(mix.id, 0, "1")).toThrow(
+    "INVALID_CONSTRAINT_VALUE",
+  );
+});

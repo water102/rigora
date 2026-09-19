@@ -1073,6 +1073,7 @@ export class AnimationAuthoringStore {
     assertTime(time, clip.duration);
     const channel = clip.channels.find((item) => item.id === channelId);
     if (!channel) throw new Error("ANIMATION_AUTHORING_CHANNEL_NOT_FOUND");
+    validateChannelValue(channel, value);
     const existing = channel.keys.find((key) => key.time === time);
     const key = existing ?? {
       id,
