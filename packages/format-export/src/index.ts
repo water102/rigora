@@ -242,3 +242,99 @@ export function serializeSpine38(
 ): string {
   return JSON.stringify(toSpine38Ast(skeleton, profile));
 }
+
+export interface DragonBones55Ast {
+  version: "5.5";
+  name: string;
+  frameRate: number;
+  armature: unknown[];
+}
+export function toDragonBones55Ast(skeleton: SkeletonData): DragonBones55Ast {
+  validateForExport(skeleton);
+  const plan = createExportPlan(skeleton, "dragonbones-5.5");
+  if (plan.blockers.length) throw new Error("EXPORT_PLAN_BLOCKED");
+  return {
+    version: "5.5",
+    name: skeleton.name,
+    frameRate: round(skeleton.fps),
+    armature: [
+      {
+        name: skeleton.name,
+        type: "Armature",
+        frameRate: round(skeleton.fps),
+        bone: skeleton.bones.map((b) => ({
+          name: b.name,
+          ...(b.parentId
+            ? { parent: skeleton.bones.find((p) => p.id === b.parentId)?.name }
+            : {}),
+          length: round(b.length),
+          transform: {
+            x: round(b.setup.x),
+            y: round(-b.setup.y),
+            skX: round((-b.setup.shearY * 180) / Math.PI),
+            skY: round((-b.setup.shearX * 180) / Math.PI),
+            scX: round(b.setup.scaleX),
+            scY: round(b.setup.scaleY),
+          },
+        })),
+        slot: skeleton.slots.map((s) => ({
+          name: s.name,
+          parent: skeleton.bones.find((b) => b.id === s.boneId)?.name,
+          displayIndex: s.setupAttachmentId ? 0 : -1,
+          blendMode: s.blendMode === "additive" ? "add" : s.blendMode,
+        })),
+        skin: skeleton.skins.map((skin) => ({
+          name: skin.name,
+          slot: Object.entries(skin.attachments).map(([slotId, as]) => ({
+            name: skeleton.slots.find((s) => s.id === slotId)?.name,
+            display: as.map((a) => ({
+              name: a.name,
+              path: a.name,
+              type: a.type === "region" ? "image" : a.type,
+            })),
+          })),
+        })),
+      },
+    ],
+  };
+}
+export function serializeDragonBones55(skeleton: SkeletonData): string {
+  return JSON.stringify(toDragonBones55Ast(skeleton));
+}
+
+export interface AtlasRegionPlan {
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  rotate: boolean;
+}
+export function planDeterministicAtlas(
+  regions: readonly { name: string; width: number; height: number }[],
+  pageWidth = 2048,
+): AtlasRegionPlan[] {
+  let x = 0,
+    y = 0,
+    row = 0;
+  return [...regions]
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((r) => {
+      if (x + r.width > pageWidth) {
+        x = 0;
+        y += row;
+        row = 0;
+      }
+      const result = {
+        name: r.name,
+        x,
+        y,
+        width: r.width,
+        height: r.height,
+        rotate: false,
+      };
+      x += r.width;
+      row = Math.max(row, r.height);
+      return result;
+    });
+}
