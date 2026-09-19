@@ -415,6 +415,7 @@ function Timeline() {
   const [eventPayload, setEventPayload] = useState("{}");
   const [, redraw] = useState(0);
   const clip = store.active;
+  const clips = store.clips;
   const rowWindow = virtualizeRows(store.view.rows, rowScrollTop, 220, 24);
   const selectedNumericValue = clip?.channels
     .flatMap((channel) => channel.keys)
@@ -484,6 +485,25 @@ function Timeline() {
     });
     store.syncRows();
     setClipId(created.id);
+    redraw((value) => value + 1);
+  };
+  const duplicateClip = () => {
+    if (!clip) return;
+    const copy = store.duplicate(clip.id);
+    store.select(copy.id);
+    setClipId(copy.id);
+    playback.duration = copy.duration;
+    playback.fps = copy.fps;
+    redraw((value) => value + 1);
+  };
+  const deleteClip = () => {
+    if (!clip) return;
+    store.delete(clip.id);
+    const next = store.active;
+    setClipId(next?.id ?? null);
+    playback.duration = next?.duration ?? 1;
+    playback.fps = next?.fps ?? 30;
+    playback.seek(0);
     redraw((value) => value + 1);
   };
   const togglePlay = () => {
@@ -665,12 +685,39 @@ function Timeline() {
     >
       <header className="timeline-header">
         <span>Timeline</span>
-        <button onClick={createClip}>
-          {clip ? "Reset clip" : "New animation"}
-        </button>
+        <div>
+          <button onClick={createClip}>New animation</button>
+          <button onClick={duplicateClip} disabled={!clip}>
+            Duplicate
+          </button>
+          <button onClick={deleteClip} disabled={!clip}>
+            Delete
+          </button>
+        </div>
       </header>
       {clip ? (
         <>
+          <label>
+            Animation{" "}
+            <select
+              value={clip.id}
+              onChange={(event) => {
+                store.select(event.target.value);
+                const next = store.active;
+                setClipId(next?.id ?? null);
+                playback.duration = next?.duration ?? 1;
+                playback.fps = next?.fps ?? 30;
+                playback.seek(0);
+                redraw((value) => value + 1);
+              }}
+            >
+              {clips.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </label>
           <div className="timeline-metadata">
             <label>
               Name{" "}
