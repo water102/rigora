@@ -567,7 +567,26 @@ function Timeline() {
     });
   };
   return (
-    <section className="panel timeline-panel">
+    <section
+      className="panel timeline-panel"
+      tabIndex={0}
+      onKeyDown={(event) => {
+        const mod = event.ctrlKey || event.metaKey;
+        if (event.key === "Delete") {
+          event.preventDefault();
+          deleteSelectedKeys();
+        } else if (mod && event.key.toLowerCase() === "d") {
+          event.preventDefault();
+          duplicateSelectedKeys();
+        } else if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          moveSelectedKeys(-1);
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          moveSelectedKeys(1);
+        }
+      }}
+    >
       <header className="timeline-header">
         <span>Timeline</span>
         <button onClick={createClip}>
