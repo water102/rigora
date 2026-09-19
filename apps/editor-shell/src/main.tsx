@@ -28,8 +28,11 @@ import {
   buildGridLines,
 } from "@rigora/editor-core";
 import {
+  createAuthoringDocument,
   createWeightDeltaCommand,
   applyWeightBrush,
+  parseAuthoringDocument,
+  serializeAuthoringDocument,
 } from "@rigora/authoring-mesh";
 import {
   createProject,
@@ -1703,6 +1706,18 @@ function App() {
     null,
   );
   const [autosaveStatus, setAutosaveStatus] = useState("Autosaved");
+  const authoringDocumentRef = useRef(createAuthoringDocument());
+  useEffect(() => {
+    if (typeof project.editorState === "string") {
+      try {
+        authoringDocumentRef.current = parseAuthoringDocument(
+          project.editorState,
+        );
+      } catch {
+        authoringDocumentRef.current = createAuthoringDocument();
+      }
+    }
+  }, [project.editorState]);
 
   const projectRef = useRef(project);
   projectRef.current = project;
@@ -1748,6 +1763,10 @@ function App() {
       execute: () => sparse.execute(),
       undo: () => sparse.undo(),
     });
+    setProject((current) => ({
+      ...current,
+      editorState: serializeAuthoringDocument(authoringDocumentRef.current),
+    }));
   };
 
   useEffect(() => {
