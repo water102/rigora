@@ -8,6 +8,7 @@ import {
   createAutoKey,
   AuthoringPlayback,
   benchmarkAuthoringKeys,
+  virtualizeRows,
 } from "../../packages/animation/src/index.js";
 
 it("authors clips, keys, selection and canonical round trips", () => {
@@ -117,4 +118,12 @@ it("updates clip metadata and playback loop ranges", () => {
 it("reports usable stress probes for normal and stress key counts", () => {
   expect(benchmarkAuthoringKeys(10_000).usable).toBe(true);
   expect(benchmarkAuthoringKeys(50_000).usable).toBe(true);
+});
+
+it("windows timeline rows with overscan and stable geometry", () => {
+  const rows = Array.from({ length: 100 }, (_, index) => index);
+  const window = virtualizeRows(rows, 200, 100, 20, 1);
+  expect(window.items).toEqual([9, 10, 11, 12, 13, 14, 15]);
+  expect(window.offsetTop).toBe(180);
+  expect(window.totalHeight).toBe(2000);
 });

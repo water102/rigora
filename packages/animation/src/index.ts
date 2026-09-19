@@ -564,6 +564,45 @@ export interface TimelineRow {
   channelId?: string;
   children?: TimelineRow[];
 }
+
+export interface VirtualRowWindow<T> {
+  items: readonly T[];
+  start: number;
+  end: number;
+  offsetTop: number;
+  totalHeight: number;
+}
+
+export function virtualizeRows<T>(
+  rows: readonly T[],
+  scrollTop: number,
+  viewportHeight: number,
+  rowHeight: number,
+  overscan = 4,
+): VirtualRowWindow<T> {
+  if (
+    ![scrollTop, viewportHeight, rowHeight, overscan].every(Number.isFinite) ||
+    viewportHeight < 0 ||
+    rowHeight <= 0 ||
+    overscan < 0
+  )
+    throw new Error("ANIMATION_AUTHORING_INVALID_VIRTUAL_WINDOW");
+  const first = Math.max(
+    0,
+    Math.floor(scrollTop / rowHeight) - Math.floor(overscan),
+  );
+  const last = Math.min(
+    rows.length,
+    Math.ceil((scrollTop + viewportHeight) / rowHeight) + Math.ceil(overscan),
+  );
+  return {
+    items: rows.slice(first, last),
+    start: first,
+    end: last,
+    offsetTop: first * rowHeight,
+    totalHeight: rows.length * rowHeight,
+  };
+}
 export interface TimelineViewModel {
   rows: TimelineRow[];
   selectedKeyIds: ReadonlySet<string>;
