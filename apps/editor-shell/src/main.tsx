@@ -520,6 +520,18 @@ function Timeline() {
       eventName.trim() || "event",
       payload,
     );
+    const eventChannel =
+      store.active?.channels.find((channel) => channel.kind === "event") ??
+      store.addChannel({
+        id: "events",
+        kind: "event",
+        property: "event",
+      });
+    store.upsertKey(eventChannel.id, playback.time, {
+      name: eventName.trim() || "event",
+      payload,
+    });
+    store.syncRows();
     redraw((value) => value + 1);
   };
   const addSpecialChannel = (kind: "slot" | "constraint", property: string) => {
