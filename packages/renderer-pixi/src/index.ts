@@ -2,14 +2,22 @@ import {
   Container,
   Graphics,
   Matrix,
+  Mesh,
+  MeshGeometry,
   Rectangle,
   Sprite,
   Texture,
   type TextureSource,
 } from "pixi.js";
-import type { RenderSnapshot, RegionSnapshot } from "@rigora/runtime";
+import type {
+  RenderSnapshot,
+  RegionSnapshot,
+  MeshSnapshot,
+} from "@rigora/runtime";
 import type { Diagnostic } from "@rigora/diagnostics";
-import type { Mat2D } from "@rigora/math";
+import type { Mat2D, Rgba } from "@rigora/math";
+
+export type { MeshSnapshot };
 
 export interface AtlasRegion {
   frame: { x: number; y: number; width: number; height: number };
@@ -171,6 +179,193 @@ export class PixiRegionRenderer {
     if (!this.#destroyed) {
       this.view.destroy({ children: true });
       this.#sprites.clear();
+      this.#destroyed = true;
+    }
+  }
+}
+
+export interface MeshRenderItem {
+  slotId: string;
+  attachmentId: string;
+  textureId: string;
+  worldXY: Float32Array;
+  uvs: Float32Array;
+  triangles: Uint32Array;
+  color?: Rgba;
+  blendMode?: "normal" | "additive" | "multiply" | "screen";
+}
+
+interface MeshRecord {
+  mesh: Mesh;
+  geometry: MeshGeometry;
+  positions: Float32Array;
+  vertexCount: number;
+  attachmentId: string;
+}
+
+/** Owns mesh display objects only. Texture sources remain owned by the caller. */
+export class PixiMeshRenderer {
+  readonly view = new Container();
+  readonly #meshes = new Container();
+  readonly #debug = new Graphics();
+  readonly #instances = new Map<string, MeshRecord>();
+  #destroyed = false;
+
+  constructor(readonly textures: ReadonlyMap<string, Texture>) {
+    this.view.addChild(this.#meshes, this.#debug);
+  }
+
+  render(
+    input: readonly MeshRenderItem[] | RenderSnapshot,
+    debug = false,
+  ): Diagnostic[] {
+    if (this.#destroyed) throw new Error("RENDERER_DESTROYED");
+    const items: readonly MeshRenderItem[] =
+      "meshes" in input ? input.meshes : input;
+    const diagnostics: Diagnostic[] = [];
+    const seen = new Set<string>();
+
+    for (const item of items) {
+      if (seen.has(item.slotId)) {
+        diagnostics.push({
+          code: "RUNTIME_DUPLICATE_SLOT",
+          severity: "error",
+          message: "Snapshot contains duplicate mesh slots.",
+          entityId: item.slotId,
+        });
+      }
+      seen.add(item.slotId);
+      const texture = this.textures.get(item.textureId);
+      if (!texture || texture.destroyed) {
+        diagnostics.push({
+          code: "ASSET_TEXTURE_NOT_FOUND",
+          severity: "error",
+          message: `Texture unavailable: ${item.textureId}`,
+          entityId: item.attachmentId,
+        });
+      }
+      if (!item.worldXY.every(Number.isFinite)) {
+        diagnostics.push({
+          code: "RUNTIME_NON_FINITE_GEOMETRY",
+          severity: "error",
+          message: "Mesh vertices contain non-finite numbers.",
+          entityId: item.attachmentId,
+        });
+      }
+    }
+    if (diagnostics.length) return diagnostics;
+
+    // Prune removed slots
+    for (const [id, record] of this.#instances) {
+      if (!seen.has(id)) {
+        record.mesh.destroy();
+        this.#instances.delete(id);
+      }
+    }
+
+    if (debug) {
+      this.#debug.clear();
+      this.#debug.visible = true;
+    } else {
+      this.#debug.clear();
+      this.#debug.visible = false;
+    }
+
+    items.forEach((item, index) => {
+      const texture = this.textures.get(item.textureId)!;
+      const vertexCount = item.worldXY.length / 2;
+      let record = this.#instances.get(item.slotId);
+
+      // Recreate if geometry vertex count changed or attachment changed
+      if (
+        !record ||
+        record.vertexCount !== vertexCount ||
+        record.attachmentId !== item.attachmentId
+      ) {
+        if (record) record.mesh.destroy();
+
+        const positions = new Float32Array(item.worldXY.length);
+        for (let i = 0; i < item.worldXY.length; i += 2) {
+          positions[i] = item.worldXY[i]!;
+          positions[i + 1] = -item.worldXY[i + 1]!;
+        }
+
+        const geometry = new MeshGeometry({
+          positions,
+          uvs: item.uvs,
+          indices: item.triangles,
+        });
+        const mesh = new Mesh({ geometry, texture });
+        record = {
+          mesh,
+          geometry,
+          positions,
+          vertexCount,
+          attachmentId: item.attachmentId,
+        };
+        this.#instances.set(item.slotId, record);
+        this.#meshes.addChild(mesh);
+      } else {
+        // Reuse dynamic vertex buffer
+        record.mesh.texture = texture;
+        const positions = record.positions;
+        for (let i = 0; i < item.worldXY.length; i += 2) {
+          positions[i] = item.worldXY[i]!;
+          positions[i + 1] = -item.worldXY[i + 1]!;
+        }
+        record.geometry.getBuffer("aPosition").update();
+      }
+
+      if (item.color) {
+        record.mesh.tint =
+          (Math.round(item.color.r * 255) << 16) |
+          (Math.round(item.color.g * 255) << 8) |
+          Math.round(item.color.b * 255);
+        record.mesh.alpha = item.color.a;
+      }
+      if (item.blendMode) {
+        record.mesh.blendMode =
+          item.blendMode === "additive" ? "add" : item.blendMode;
+      }
+      this.#meshes.setChildIndex(record.mesh, index);
+
+      if (debug) {
+        const p = record.positions;
+        const tris = item.triangles;
+        for (let t = 0; t < tris.length; t += 3) {
+          const i0 = tris[t]! * 2;
+          const i1 = tris[t + 1]! * 2;
+          const i2 = tris[t + 2]! * 2;
+          this.#debug
+            .moveTo(p[i0]!, p[i0 + 1]!)
+            .lineTo(p[i1]!, p[i1 + 1]!)
+            .lineTo(p[i2]!, p[i2 + 1]!)
+            .closePath()
+            .stroke({ color: 0xffa500, width: 1, alpha: 0.8 });
+        }
+        for (let v = 0; v < p.length; v += 2) {
+          this.#debug.circle(p[v]!, p[v + 1]!, 2).fill(0xffffff);
+        }
+      }
+    });
+
+    if (debug && "bones" in input) {
+      for (const bone of input.bones) {
+        this.#debug
+          .moveTo(bone.origin.x, -bone.origin.y)
+          .lineTo(bone.tip.x, -bone.tip.y)
+          .stroke({ color: 0x66e3ff, width: 1 });
+        this.#debug.circle(bone.origin.x, -bone.origin.y, 1.5).fill(0xffffff);
+      }
+    }
+
+    return diagnostics;
+  }
+
+  destroy(): void {
+    if (!this.#destroyed) {
+      this.view.destroy({ children: true });
+      this.#instances.clear();
       this.#destroyed = true;
     }
   }

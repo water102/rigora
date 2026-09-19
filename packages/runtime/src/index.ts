@@ -10,8 +10,8 @@ import {
 } from "@rigora/math";
 import { validateSkeleton, type SkeletonData } from "@rigora/model";
 import type { Diagnostic } from "@rigora/diagnostics";
-export { MeshInstance, MeshRuntimeError } from "./mesh.js";
-export type { DeformSpace } from "./mesh.js";
+import { MeshInstance, MeshRuntimeError, type DeformSpace } from "./mesh.js";
+export { MeshInstance, MeshRuntimeError, type DeformSpace };
 
 export interface RegionSnapshot {
   slotId: string;
@@ -23,14 +23,25 @@ export interface RegionSnapshot {
   color: Rgba;
   blendMode: "normal" | "additive" | "multiply" | "screen";
 }
+export interface MeshSnapshot {
+  slotId: string;
+  attachmentId: string;
+  textureId: string;
+  worldXY: Float32Array;
+  uvs: Float32Array;
+  triangles: Uint32Array;
+  color: Rgba;
+  blendMode: "normal" | "additive" | "multiply" | "screen";
+}
 export interface DebugBone {
   id: string;
   origin: Vec2;
   tip: Vec2;
 }
-/** Region order is authoritative. Renderer must not inspect authored source data. */
+/** Region and mesh order are authoritative. Renderer must not inspect authored source data. */
 export interface RenderSnapshot {
   regions: RegionSnapshot[];
+  meshes: MeshSnapshot[];
   bones: DebugBone[];
 }
 export type SnapshotResult =
@@ -78,6 +89,7 @@ export function createSetupSnapshot(
     const lengths = new Map(data.bones.map((bone) => [bone.id, bone.length]));
     const snapshot: RenderSnapshot = {
       regions: [],
+      meshes: [],
       bones: hierarchy.bones.map((bone, i) => ({
         id: bone.id,
         origin: transformPoint(world[i]!, { x: 0, y: 0 }),
@@ -100,7 +112,78 @@ export function createSetupSnapshot(
         );
         continue;
       }
-      if (attachment.type !== "region") {
+      if (attachment.type === "region") {
+        if (slot.darkColor) {
+          error(
+            "RUNTIME_TWO_COLOR_UNSUPPORTED",
+            "Two-color tinting is not implemented.",
+            slot.id,
+          );
+          continue;
+        }
+        if (attachment.pivot !== undefined) {
+          error(
+            "RUNTIME_PIVOT_UNSUPPORTED",
+            "Region pivots must be normalized into centered transforms.",
+            attachment.id,
+          );
+          continue;
+        }
+        snapshot.regions.push({
+          slotId: slot.id,
+          attachmentId: attachment.id,
+          textureId: attachment.textureId,
+          world: multiply(
+            world[hierarchy.indexById.get(slot.boneId)!]!,
+            localToMatrix(attachment.transform),
+          ),
+          width: attachment.width,
+          height: attachment.height,
+          color: { ...slot.color },
+          blendMode: slot.blendMode,
+        });
+      } else if (attachment.type === "mesh") {
+        if (slot.darkColor) {
+          error(
+            "RUNTIME_TWO_COLOR_UNSUPPORTED",
+            "Two-color tinting is not implemented.",
+            slot.id,
+          );
+          continue;
+        }
+        const textureId = attachment.textureId;
+        if (!textureId) {
+          error(
+            "RUNTIME_ATTACHMENT_NO_TEXTURE",
+            "Mesh attachment has no texture ID.",
+            attachment.id,
+          );
+          continue;
+        }
+        try {
+          const meshInstance = new MeshInstance(data, attachment.id);
+          const worldXY = meshInstance.evaluate(world);
+          snapshot.meshes.push({
+            slotId: slot.id,
+            attachmentId: attachment.id,
+            textureId,
+            worldXY: new Float32Array(worldXY),
+            uvs: new Float32Array(meshInstance.uvs),
+            triangles: new Uint32Array(meshInstance.triangles),
+            color: { ...slot.color },
+            blendMode: slot.blendMode,
+          });
+        } catch (meshErr) {
+          error(
+            "RUNTIME_MESH_EVAL_FAILED",
+            meshErr instanceof Error
+              ? meshErr.message
+              : "Mesh evaluation failed.",
+            attachment.id,
+          );
+          continue;
+        }
+      } else {
         error(
           "RUNTIME_ATTACHMENT_UNSUPPORTED",
           `Cannot render ${attachment.type} attachment.`,
@@ -108,35 +191,6 @@ export function createSetupSnapshot(
         );
         continue;
       }
-      if (slot.darkColor) {
-        error(
-          "RUNTIME_TWO_COLOR_UNSUPPORTED",
-          "Two-color tinting is not implemented.",
-          slot.id,
-        );
-        continue;
-      }
-      if (attachment.pivot !== undefined) {
-        error(
-          "RUNTIME_PIVOT_UNSUPPORTED",
-          "Region pivots must be normalized into centered transforms.",
-          attachment.id,
-        );
-        continue;
-      }
-      snapshot.regions.push({
-        slotId: slot.id,
-        attachmentId: attachment.id,
-        textureId: attachment.textureId,
-        world: multiply(
-          world[hierarchy.indexById.get(slot.boneId)!]!,
-          localToMatrix(attachment.transform),
-        ),
-        width: attachment.width,
-        height: attachment.height,
-        color: { ...slot.color },
-        blendMode: slot.blendMode,
-      });
     }
     return diagnostics.some((item) => item.severity === "error")
       ? { success: false, diagnostics }
