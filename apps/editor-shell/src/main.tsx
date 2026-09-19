@@ -444,6 +444,7 @@ function Timeline() {
   );
   const clip = store.active;
   const clips = store.clips;
+  const previewLog = events.preview(0, playback.time, playback.loop);
   const skeleton = (services.project as HboneProject).skeletons.main;
   const specialTargetId = (kind: "slot" | "constraint") =>
     kind === "slot"
@@ -1449,6 +1450,17 @@ function Timeline() {
                   .join(", ")}
               </small>
             )}
+            <small className="muted">
+              Preview log:{" "}
+              {previewLog.length
+                ? previewLog
+                    .map(
+                      (entry) =>
+                        `${entry.value} @ ${entry.absoluteTime.toFixed(2)}s`,
+                    )
+                    .join(" · ")
+                : "none"}
+            </small>
           </div>
         </>
       ) : (
