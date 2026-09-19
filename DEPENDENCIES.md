@@ -35,6 +35,7 @@ Runtime dependency: Zod 3.25.76, MIT, https://github.com/colinhacks/zod — cano
 | Docking Layout           | `flexlayout-react`   | ^0.11.0 | MIT        | https://github.com/caplin/FlexLayout               | IDE-style multi-panel docking shell                                     |
 | Hierarchy Tree           | `react-arborist`     | ^3.16.0 | MIT        | https://github.com/brimdata/react-arborist         | Virtualized scene graph & bone hierarchy tree                           |
 | Property Forms           | `react-hook-form`    | ^7.88.0 | MIT        | https://github.com/react-hook-form/react-hook-form | Inspector form binding with Zod validation                              |
+| Client-Side Routing      | `react-router`       | ^8.4.0  | MIT        | https://github.com/remix-run/react-router          | Application routing and URL navigation shell                            |
 
 Batch 5 adds only workspace dependencies: format-common uses model/diagnostics; the Spine adapter uses format-common, format-spine-common and model; the DragonBones adapter uses format-common and model. No source runtime dependency was added.
 
