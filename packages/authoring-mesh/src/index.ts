@@ -28,6 +28,7 @@ export {
   resetTopology,
   invertSelection,
   pointInPolygon,
+  pathTangents,
   selectPolygon,
   unbindVertices,
   updatePathPoint,
@@ -49,3 +50,15 @@ export {
   type AutoMeshPreview,
   type AutoMeshResult,
 } from "./auto-mesh.js";
+
+export {
+  createDeformState,
+  inheritLinkedDeform,
+  keyDeform,
+  sampleDeform,
+  setDeformMode,
+  setDeformOffset,
+  zeroDeform,
+  type DeformAuthoringMode,
+  type DeformState,
+} from "./deform.js";

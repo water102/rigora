@@ -278,3 +278,14 @@ export function updatePathPoint(
     ),
   };
 }
+export function pathTangents(path: EditablePath): Vec2[] {
+  return path.points.map((p, i) => {
+    const prev =
+      path.points[(i - 1 + path.points.length) % path.points.length] ?? p;
+    const next = path.points[(i + 1) % path.points.length] ?? p;
+    if (!path.closed && i === 0) return { x: next.x - p.x, y: next.y - p.y };
+    if (!path.closed && i === path.points.length - 1)
+      return { x: p.x - prev.x, y: p.y - prev.y };
+    return { x: (next.x - prev.x) / 2, y: (next.y - prev.y) / 2 };
+  });
+}

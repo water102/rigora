@@ -4,6 +4,13 @@ import {
   applyWeightDeltas,
   addEdge,
   buildAutoMeshPreview,
+  createDeformState,
+  inheritLinkedDeform,
+  keyDeform,
+  pathTangents,
+  sampleDeform,
+  setDeformOffset,
+  zeroDeform,
   createAuthoringMesh,
   createEditablePath,
   deleteVertex,
@@ -49,6 +56,28 @@ describe("Phase 6 authoring core", () => {
     expect(
       removeEdge(addEdge(resetTopology(moved), 0, 1), 0, 1).triangles,
     ).toEqual([]);
+  });
+
+  it("supports setup/animation deform authoring and linked inheritance", () => {
+    let state = createDeformState(1);
+    state = setDeformOffset(state, 0, { x: 2, y: 0 });
+    state = keyDeform(state, 0);
+    state = setDeformOffset(state, 0, { x: 4, y: 0 });
+    state = keyDeform(state, 1);
+    expect(sampleDeform(state, 0.5)[0]).toBe(3);
+    expect(zeroDeform(state).offsets).toEqual([0, 0]);
+    expect(inheritLinkedDeform([1, 2], [3, 4], true)).toEqual([1, 2]);
+  });
+
+  it("computes path tangent previews", () => {
+    expect(
+      pathTangents(
+        createEditablePath([
+          { x: 0, y: 0 },
+          { x: 2, y: 0 },
+        ]),
+      )[0],
+    ).toEqual({ x: 2, y: 0 });
   });
 
   it("returns sparse reversible brush deltas and supports polygon/path editing", () => {
