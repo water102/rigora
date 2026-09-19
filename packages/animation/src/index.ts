@@ -610,6 +610,51 @@ export function previewEvents<T>(
   return events.filter((event) => event.time <= time).map(cloneAuthoring);
 }
 
+export interface AuthoringBenchmarkResult {
+  keyCount: number;
+  selectMs: number;
+  moveMs: number;
+  selectedCount: number;
+  usable: boolean;
+}
+
+/** Lightweight deterministic stress probe for the timeline hot paths. */
+export function benchmarkAuthoringKeys(
+  keyCount: number,
+): AuthoringBenchmarkResult {
+  if (!Number.isSafeInteger(keyCount) || keyCount < 0)
+    throw new Error("ANIMATION_AUTHORING_INVALID_BENCHMARK_SIZE");
+  const channel: AuthoringChannel<number> = {
+    id: "benchmark",
+    kind: "bone",
+    property: "rotate",
+    keys: [],
+  };
+  for (let index = 0; index < keyCount; index++) {
+    channel.keys.push({
+      id: `key-${index}`,
+      time: index / 60,
+      value: index,
+      curve: { type: "linear" },
+    });
+  }
+  const startSelect = performance.now();
+  const selected = channel.keys.filter(
+    (key) => key.time >= 0 && key.time <= keyCount / 120,
+  );
+  const selectMs = performance.now() - startSelect;
+  const startMove = performance.now();
+  for (const key of selected) key.time += 1 / 60;
+  const moveMs = performance.now() - startMove;
+  return {
+    keyCount,
+    selectMs,
+    moveMs,
+    selectedCount: selected.length,
+    usable: selected.length > 0 && Number.isFinite(selectMs + moveMs),
+  };
+}
+
 export interface AuthoringCommand {
   label: string;
   do(): void;
