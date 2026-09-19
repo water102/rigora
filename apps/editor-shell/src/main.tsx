@@ -40,6 +40,7 @@ import {
 import type { SkeletonData } from "@rigora/model";
 import {
   AnimationAuthoringStore,
+  AuthoringHistory,
   AuthoringPlayback,
   EventAuthoringTrack,
   type AutoKeyMode,
@@ -406,6 +407,7 @@ function Timeline() {
   const [clipId, setClipId] = useState<string | null>(null);
   const [playback] = useState(() => new AuthoringPlayback(1, 30));
   const [events] = useState(() => new EventAuthoringTrack(1));
+  const [authoringHistory] = useState(() => new AuthoringHistory());
   const [selectionStart, setSelectionStart] = useState(0);
   const [selectionEnd, setSelectionEnd] = useState(1);
   const [rowScrollTop, setRowScrollTop] = useState(0);
@@ -535,7 +537,9 @@ function Timeline() {
     redraw((value) => value + 1);
   };
   const setSelectedCurve = (curve: "linear" | "stepped") => {
-    store.setKeyCurve([...store.view.selectedKeyIds], { type: curve });
+    store.runAtomic(authoringHistory, `Set ${curve} curve`, () =>
+      store.setKeyCurve([...store.view.selectedKeyIds], { type: curve }),
+    );
     redraw((value) => value + 1);
   };
   const setSelectedBezier = () => {
@@ -565,7 +569,9 @@ function Timeline() {
   };
   const scaleSelectedKeys = () => {
     if (!clip || !store.view.selectedKeyIds.size) return;
-    store.scaleKeys([...store.view.selectedKeyIds], playback.time, 0.5);
+    store.runAtomic(authoringHistory, "Scale selected keys", () =>
+      store.scaleKeys([...store.view.selectedKeyIds], playback.time, 0.5),
+    );
     redraw((value) => value + 1);
   };
   const addEvent = () => {
@@ -818,6 +824,24 @@ function Timeline() {
               Paste
             </button>
             <button onClick={applyToProject}>Apply to project</button>
+            <button
+              onClick={() => {
+                authoringHistory.undo();
+                redraw((value) => value + 1);
+              }}
+              disabled={!authoringHistory.canUndo}
+            >
+              Undo authoring
+            </button>
+            <button
+              onClick={() => {
+                authoringHistory.redo();
+                redraw((value) => value + 1);
+              }}
+              disabled={!authoringHistory.canRedo}
+            >
+              Redo authoring
+            </button>
             <button onClick={() => addSpecialChannel("slot", "attachment")}>
               Attachment
             </button>

@@ -994,6 +994,27 @@ export class AnimationAuthoringStore {
   exportActive(): CanonicalAnimationSnapshot {
     return toCanonicalAnimation(this.activeMutable());
   }
+  runAtomic(
+    history: AuthoringHistory,
+    label: string,
+    action: () => void,
+  ): void {
+    const before = cloneAuthoring(this.activeMutable());
+    let after: AnimationClip | undefined;
+    history.execute({
+      label,
+      do: () => {
+        if (after) this.replaceActive(after);
+        else {
+          action();
+          after = cloneAuthoring(this.activeMutable());
+        }
+      },
+      undo: () => {
+        this.replaceActive(before);
+      },
+    });
+  }
   create(
     name: string,
     duration = 1,
@@ -1317,6 +1338,13 @@ export class AnimationAuthoringStore {
   private activeMutable(): AnimationClip {
     if (!this.#activeId) throw new Error("ANIMATION_AUTHORING_NO_ACTIVE_CLIP");
     return this.require(this.#activeId);
+  }
+  private replaceActive(clip: AnimationClip): void {
+    const index = this.#clips.findIndex((item) => item.id === clip.id);
+    if (index < 0) throw new Error("ANIMATION_AUTHORING_NOT_FOUND");
+    this.#clips[index] = cloneAuthoring(clip);
+    this.#activeId = clip.id;
+    this.syncRows();
   }
 }
 

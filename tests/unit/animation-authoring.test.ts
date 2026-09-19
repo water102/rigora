@@ -107,6 +107,27 @@ it("applies auto-key through the authoring store", () => {
   expect(store.active?.channels[0]?.keys).toHaveLength(1);
 });
 
+it("restores authored snapshots through atomic history", () => {
+  const store = new AnimationAuthoringStore();
+  store.create("walk", 1, 30, "walk");
+  const channel = store.addChannel({
+    id: "root.rotate",
+    kind: "bone",
+    targetId: "root",
+    property: "rotate",
+  });
+  store.upsertKey(channel.id, 0, 10);
+  const history = new AuthoringHistory();
+  store.runAtomic(history, "change value", () => {
+    store.setNumericValues(["key-1"], 30);
+  });
+  expect(store.active?.channels[0]?.keys[0]?.value).toBe(30);
+  history.undo();
+  expect(store.active?.channels[0]?.keys[0]?.value).toBe(10);
+  history.redo();
+  expect(store.active?.channels[0]?.keys[0]?.value).toBe(30);
+});
+
 it("authors event definitions and previews loop crossings", () => {
   const track = new EventAuthoringTrack<{ damage: number }>(1);
   track.addDefinition({ id: "hit", name: "Hit" });
