@@ -191,6 +191,52 @@ export function applyWeightBrush(
   }
   return deltas;
 }
+export interface BrushOptions {
+  radius: number;
+  strength: number;
+  falloff?: "linear" | "smoothstep" | "gaussian";
+  mode: "add" | "subtract" | "replace" | "erase" | "smooth";
+}
+export function applyBrushAtPoint(
+  weights: Record<string, Record<string, number>>,
+  vertices: readonly { id: string; position: Vec2 }[],
+  center: Vec2,
+  boneId: string,
+  options: BrushOptions,
+): WeightDelta[] {
+  if (!(options.radius > 0)) throw new Error("BRUSH_INVALID_RADIUS");
+  const selected = vertices
+    .filter(
+      (v) =>
+        Math.hypot(v.position.x - center.x, v.position.y - center.y) <=
+        options.radius,
+    )
+    .map((v) => v.id);
+  const scaled: WeightDelta[] = [];
+  for (const id of selected) {
+    const p = vertices.find((v) => v.id === id)!.position;
+    const u = Math.min(
+      1,
+      Math.hypot(p.x - center.x, p.y - center.y) / options.radius,
+    );
+    const falloff =
+      options.falloff === "gaussian"
+        ? Math.exp(-4 * u * u)
+        : options.falloff === "smoothstep" || !options.falloff
+          ? 1 - u * u * (3 - 2 * u)
+          : 1 - u;
+    scaled.push(
+      ...applyWeightBrush(
+        weights,
+        [id],
+        boneId,
+        options.mode,
+        options.strength * falloff,
+      ),
+    );
+  }
+  return scaled;
+}
 export function applyWeightDeltas(
   weights: Record<string, Record<string, number>>,
   deltas: readonly WeightDelta[],
@@ -252,6 +298,14 @@ export function pointInPolygon(point: Vec2, polygon: readonly Vec2[]): boolean {
       inside = !inside;
   }
   return inside;
+}
+export function lassoSelection(
+  vertices: readonly { id: string; position: Vec2 }[],
+  polygon: readonly Vec2[],
+): string[] {
+  return vertices
+    .filter((v) => pointInPolygon(v.position, polygon))
+    .map((v) => v.id);
 }
 
 export interface EditablePath {

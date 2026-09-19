@@ -15,6 +15,7 @@ export {
 
 export {
   applyWeightBrush,
+  applyBrushAtPoint,
   applyWeightDeltas,
   addEdge,
   bindVertices,
@@ -27,6 +28,7 @@ export {
   removeEdge,
   resetTopology,
   invertSelection,
+  lassoSelection,
   pointInPolygon,
   pathTangents,
   selectPolygon,

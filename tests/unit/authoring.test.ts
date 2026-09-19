@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyWeightBrush,
+  applyBrushAtPoint,
   applyWeightDeltas,
   addEdge,
   buildAutoMeshPreview,
@@ -16,6 +17,7 @@ import {
   deleteVertex,
   meshEdges,
   moveVertex,
+  lassoSelection,
   removeEdge,
   resetTopology,
   selectPolygon,
@@ -67,6 +69,34 @@ describe("Phase 6 authoring core", () => {
     expect(sampleDeform(state, 0.5)[0]).toBe(3);
     expect(zeroDeform(state).offsets).toEqual([0, 0]);
     expect(inheritLinkedDeform([1, 2], [3, 4], true)).toEqual([1, 2]);
+  });
+
+  it("supports lasso selection and distance falloff brush strokes", () => {
+    const vertices = [
+      { id: "v0", position: { x: 0, y: 0 } },
+      { id: "v1", position: { x: 2, y: 0 } },
+      { id: "v2", position: { x: 5, y: 0 } },
+    ];
+    expect(
+      lassoSelection(vertices, [
+        { x: -1, y: -1 },
+        { x: 3, y: -1 },
+        { x: 3, y: 1 },
+        { x: -1, y: 1 },
+      ]),
+    ).toEqual(["v0", "v1"]);
+    const weights = Object.fromEntries(
+      vertices.map((v) => [v.id, { boneA: 1 }]),
+    );
+    const deltas = applyBrushAtPoint(
+      weights,
+      vertices,
+      { x: 0, y: 0 },
+      "boneB",
+      { radius: 3, strength: 1, mode: "add", falloff: "linear" },
+    );
+    expect(deltas.length).toBe(2);
+    expect(weights.v0!.boneB).toBeGreaterThan(weights.v1!.boneB!);
   });
 
   it("computes path tangent previews", () => {
