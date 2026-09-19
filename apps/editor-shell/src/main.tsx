@@ -95,7 +95,7 @@ function Stage() {
     const camera = new Camera2D(1, 1);
     const grid = new Graphics();
     const skeleton = new Graphics();
-    const bones = [
+    const fallbackBones = [
       { id: "root", x: 0, y: 0, tx: 0, ty: 80 },
       { id: "body", x: 0, y: 80, tx: 55, ty: 135 },
       { id: "hand", x: 55, y: 135, tx: 105, ty: 120 },
@@ -142,6 +142,16 @@ function Stage() {
           });
       }
       skeleton.clear();
+      const projectBones = (
+        (services.project as HboneProject).skeletons.main?.bones ?? []
+      ).map((bone) => ({
+        id: bone.id,
+        x: bone.setup.x,
+        y: bone.setup.y,
+        tx: bone.setup.x,
+        ty: bone.setup.y + bone.length,
+      }));
+      const bones = projectBones.length ? projectBones : fallbackBones;
       for (const bone of bones) {
         const a = camera.worldToScreen({ x: bone.x, y: -bone.y });
         const b = camera.worldToScreen({ x: bone.tx, y: -bone.ty });
@@ -176,6 +186,9 @@ function Stage() {
         host.appendChild(app.canvas);
         app.stage.addChild(grid, skeleton);
         draw();
+      })
+      .catch((error: unknown) => {
+        if (!disposed) console.error("Pixi initialization failed", error);
       });
     const onWheel = (event: WheelEvent) => {
       event.preventDefault();
@@ -212,16 +225,40 @@ function Stage() {
         x: event.clientX - rect.left,
         y: event.clientY - rect.top,
       });
-      const hit = bones.find(
-        (bone) => Math.hypot(point.x - bone.x, point.y + bone.y) < 12,
-      );
+      const projectBones = (
+        (services.project as HboneProject).skeletons.main?.bones ?? []
+      ).map((bone) => ({
+        id: bone.id,
+        x: bone.setup.x,
+        y: bone.setup.y,
+        tx: bone.setup.x,
+        ty: bone.setup.y + bone.length,
+      }));
+      const bones = projectBones.length ? projectBones : fallbackBones;
+      const hit = bones.find((bone) => {
+        const px = point.x,
+          py = point.y;
+        const ax = bone.x,
+          ay = bone.y,
+          bx = bone.tx,
+          by = bone.ty;
+        const dx = bx - ax,
+          dy = by - ay,
+          length = Math.hypot(dx, dy) || 1;
+        const t = Math.max(
+          0,
+          Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (length * length)),
+        );
+        return Math.hypot(px - (ax + t * dx), py - (ay + t * dy)) < 12;
+      });
       if (hit) services.selection.select({ kind: "bone", id: hit.id });
     };
     host.addEventListener("wheel", onWheel, { passive: false });
     host.addEventListener("pointerdown", onDown);
     host.addEventListener("pointermove", onMove);
     host.addEventListener("pointerup", onUp);
-    host.addEventListener("contextmenu", (event) => event.preventDefault());
+    const onContextMenu = (event: MouseEvent) => event.preventDefault();
+    host.addEventListener("contextmenu", onContextMenu);
     host.addEventListener("click", onClick);
     const unsubscribe = services.selection.subscribe(draw);
     return () => {
@@ -232,6 +269,7 @@ function Stage() {
       host.removeEventListener("pointermove", onMove);
       host.removeEventListener("pointerup", onUp);
       host.removeEventListener("click", onClick);
+      host.removeEventListener("contextmenu", onContextMenu);
       app.destroy(true);
     };
   }, [services]);
@@ -253,12 +291,23 @@ function Stage() {
 
 function Hierarchy() {
   const services = useServices();
-  const tree = useMemo(() => new HierarchyModel(nodes), []);
   const [, redraw] = useState(0);
-  useEffect(
-    () => services.selection.subscribe(() => redraw((n) => n + 1)),
-    [services],
-  );
+  useEffect(() => {
+    const a = services.selection.subscribe(() => redraw((n) => n + 1));
+    const b = services.commands.subscribe(() => redraw((n) => n + 1));
+    return () => {
+      a();
+      b();
+    };
+  }, [services]);
+  const skeleton = (services.project as HboneProject).skeletons.main;
+  const treeItems =
+    skeleton?.bones.map((bone) =>
+      bone.parentId
+        ? { id: bone.id, name: bone.name, parentId: bone.parentId }
+        : { id: bone.id, name: bone.name },
+    ) ?? nodes;
+  const tree = new HierarchyModel(treeItems);
   return (
     <section className="panel">
       <header>Hierarchy</header>
@@ -311,10 +360,20 @@ function Inspector() {
                 const command = {
                   id: `rename-${prev}`,
                   label: `Rename ${prev} to ${val}`,
-                  execute: () => {
-                    services.selection.select({ kind, id: val });
+                  execute: (ctx: Record<string, unknown>) => {
+                    const project = ctx.project as HboneProject;
+                    const bone = project.skeletons.main?.bones.find(
+                      (item) => item.id === prev,
+                    );
+                    if (bone) bone.name = val;
+                    services.selection.select({ kind, id: prev });
                   },
-                  undo: () => {
+                  undo: (ctx: Record<string, unknown>) => {
+                    const project = ctx.project as HboneProject;
+                    const bone = project.skeletons.main?.bones.find(
+                      (item) => item.id === prev,
+                    );
+                    if (bone) bone.name = prev;
                     services.selection.select({ kind, id: prev });
                   },
                 };
@@ -597,9 +656,18 @@ function App() {
   };
 
   const handleSaveAs = () => {
+    const nextName = window.prompt("Tên file .hbone", projectName);
+    if (!nextName?.trim()) return;
+    const normalizedName = nextName.endsWith(".hbone")
+      ? nextName
+      : `${nextName}.hbone`;
     const bytes = serializeProject(projectRef.current);
-    downloadFile(projectName, bytes);
-    void handleSave();
+    downloadFile(normalizedName, bytes);
+    void repo.write(normalizedName, bytes).then(() => {
+      setProjectName(normalizedName);
+      services.commands.markClean();
+      setAutosaveStatus(`Saved as ${normalizedName}`);
+    });
   };
 
   const handleNew = () => {
@@ -611,6 +679,7 @@ function App() {
     }
     const newProj = createSampleProject();
     lifecycle.newProject(newProj, true);
+    services.setProject(newProj);
     setProject(newProj);
     setProjectName("untitled.hbone");
     services.commands.clear();
@@ -630,6 +699,7 @@ function App() {
         verifyChecksums: true,
       });
       lifecycle.newProject(loaded, true);
+      services.setProject(loaded);
       setProject(loaded);
       setProjectName(file.name);
       services.commands.clear();
@@ -646,6 +716,7 @@ function App() {
   const handleRestoreRecovery = () => {
     if (!recoveryPrompt) return;
     lifecycle.newProject(recoveryPrompt, true);
+    services.setProject(recoveryPrompt);
     setProject(recoveryPrompt);
     services.commands.clear();
     setRecoveryPrompt(null);

@@ -408,6 +408,7 @@ export class CommandHistory {
         afterState: this.#nextState++,
       });
       this.#currentState = this.#activeTransaction.commands.at(-1)!.afterState;
+      this.#emit();
       return;
     }
 
@@ -466,6 +467,7 @@ export class CommandHistory {
         last.afterState = this.#nextState++;
         this.#currentState = last.afterState;
         this.#redo.length = 0;
+        this.#emit();
         return true;
       }
       single.beforeState = tx.beforeState;
@@ -596,18 +598,25 @@ export interface EditorServices {
   commands: CommandHistory;
   selection: SelectionStore;
   preferences: EditorPreferencesStore;
+  setProject(project: unknown): void;
 }
 
 export function createEditorServices(
   project: unknown,
   preferences = new EditorPreferencesStore(),
 ): EditorServices {
-  return {
+  const context: CommandContext = { project };
+  const services: EditorServices = {
     project,
-    commands: new CommandHistory({ project }),
+    commands: new CommandHistory(context),
     selection: new SelectionStore(),
     preferences,
+    setProject(nextProject) {
+      services.project = nextProject;
+      context.project = nextProject;
+    },
   };
+  return services;
 }
 
 export interface DockPanel {
