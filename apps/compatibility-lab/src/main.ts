@@ -21,6 +21,7 @@ import {
   createAuthoringDocument,
   parseAuthoringDocument,
   persistMesh,
+  persistPath,
   serializeAuthoringDocument,
   createAuthoringMesh,
   applyVertexDrag,
@@ -29,7 +30,10 @@ import {
   lassoSelection,
   updateDrag,
   createDeformState,
+  createEditablePath,
+  pathTangents,
   setDeformOffset,
+  updatePathPoint,
   keyDeform,
   resetTopology,
   weightHeatmap,
@@ -151,6 +155,11 @@ async function start() {
   );
   const persistAuthoring = () => {
     const document = persistMesh(createAuthoringDocument(), demoTopology);
+    document.paths = persistPath(
+      createAuthoringDocument(),
+      demoPath.points,
+      demoPath.closed,
+    ).paths;
     document.deformOffsets["demo-mesh"] = [...demoDeform.offsets];
     localStorage.setItem(
       "rigora.authoring.preview",
@@ -170,6 +179,11 @@ async function start() {
   };
   restoreAuthoring();
   let demoDeform = createDeformState(1);
+  let demoPath = createEditablePath([
+    { x: -2, y: 0 },
+    { x: 0, y: 2 },
+    { x: 2, y: 0 },
+  ]);
   let vertexDrag: ReturnType<typeof beginDrag> | null = null;
   let lassoPoints: Array<{ x: number; y: number }> = [];
   let brushStrokeCount = 0;
@@ -214,6 +228,11 @@ async function start() {
       app.canvas.setPointerCapture(event.pointerId);
       return;
     }
+    if (canvasMode.value === "path") {
+      vertexDrag = beginDrag("vertex", canvasPoint(event), "path-0");
+      app.canvas.setPointerCapture(event.pointerId);
+      return;
+    }
     vertexDrag = beginDrag("vertex", canvasPoint(event), "v0");
     app.canvas.setPointerCapture(event.pointerId);
   });
@@ -240,6 +259,13 @@ async function start() {
       vertexDrag = updateDrag(vertexDrag, canvasPoint(event));
       demoDeform = setDeformOffset(demoDeform, 0, vertexDrag.current);
       status.textContent = `Deform preview · offset (${vertexDrag.current.x.toFixed(2)}, ${vertexDrag.current.y.toFixed(2)})`;
+      return;
+    }
+    if (canvasMode.value === "path" && vertexDrag) {
+      vertexDrag = updateDrag(vertexDrag, canvasPoint(event));
+      demoPath = updatePathPoint(demoPath, 0, vertexDrag.current);
+      const tangent = pathTangents(demoPath)[0]!;
+      status.textContent = `Path preview · tangent (${tangent.x.toFixed(2)}, ${tangent.y.toFixed(2)})`;
       return;
     }
     if (!vertexDrag) return;
@@ -276,6 +302,14 @@ async function start() {
       persistAuthoring();
       app.canvas.releasePointerCapture(event.pointerId);
       status.textContent = `Deform committed · offset (${vertexDrag.current.x.toFixed(2)}, ${vertexDrag.current.y.toFixed(2)})`;
+      vertexDrag = null;
+      return;
+    }
+    if (canvasMode.value === "path" && vertexDrag) {
+      vertexDrag = endDrag(vertexDrag);
+      persistAuthoring();
+      app.canvas.releasePointerCapture(event.pointerId);
+      status.textContent = "Path control point committed.";
       vertexDrag = null;
       return;
     }
