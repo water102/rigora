@@ -96,7 +96,7 @@ export function importDragonBones55(text: string, options: ImportOptions) {
       );
     fields(
       source,
-      "name version compatibleVersion frameRate armature userData isGlobal",
+      "name version compatibleVersion frameRate armature userData isGlobal textureAtlas",
       "",
     );
     if (source["isGlobal"] !== undefined)
@@ -194,7 +194,11 @@ export function importDragonBones55(text: string, options: ImportOptions) {
       });
       data.slots = slots.map((slot, i): SlotData => {
         const path = `${root}/slot/${i}`;
-        fields(slot, "name parent displayIndex blendMode color userData", path);
+        fields(
+          slot,
+          "name parent displayIndex blendMode color userData z",
+          path,
+        );
         const blend =
           slot["blendMode"] === null
             ? "normal"
@@ -252,7 +256,7 @@ export function importDragonBones55(text: string, options: ImportOptions) {
                 item = object(value, loc);
               fields(
                 item,
-                "name path type transform pivot width height vertices uvs triangles edges userEdges",
+                "name path type transform pivot width height vertices uvs triangles weights slotPose bonePose edges userEdges subType",
                 loc,
               );
               if (item["type"] === "armature") {
@@ -321,6 +325,75 @@ export function importDragonBones55(text: string, options: ImportOptions) {
                         : [...result, { x: value, y: values[index + 1] ?? 0 }],
                     [],
                   );
+                const weightedVertices =
+                  item["weights"] === undefined
+                    ? undefined
+                    : (() => {
+                        const packed = list(
+                          item["weights"],
+                          loc + "/weights",
+                        ).map((value, index) =>
+                          number(value, `${loc}/weights/${index}`),
+                        );
+                        let cursor = 0;
+                        const result = [];
+                        for (
+                          let vertexIndex = 0;
+                          vertexIndex < vertices.length / 2;
+                          vertexIndex++
+                        ) {
+                          const count = Math.trunc(
+                            number(packed[cursor], `${loc}/weights/${cursor}`),
+                          );
+                          cursor += 1;
+                          const influences = [];
+                          for (
+                            let influenceIndex = 0;
+                            influenceIndex < count;
+                            influenceIndex++
+                          ) {
+                            const boneIndex = Math.trunc(
+                              number(
+                                packed[cursor],
+                                `${loc}/weights/${cursor}`,
+                              ),
+                            );
+                            const weight = number(
+                              packed[cursor + 1],
+                              `${loc}/weights/${cursor + 1}`,
+                            );
+                            cursor += 2;
+                            influences.push({
+                              boneId:
+                                [...boneIds.values()][boneIndex] ??
+                                `bone-${boneIndex}`,
+                              weight: Math.max(0, weight),
+                            });
+                          }
+                          const sum = influences.reduce(
+                            (total, influence) => total + influence.weight,
+                            0,
+                          );
+                          if (sum > 0 && sum !== 1)
+                            influences.forEach(
+                              (influence) => (influence.weight /= sum),
+                            );
+                          result.push({
+                            bindPosition: {
+                              x: vertices[vertexIndex * 2] ?? 0,
+                              y: vertices[vertexIndex * 2 + 1] ?? 0,
+                            },
+                            influences,
+                          });
+                        }
+                        if (cursor !== packed.length)
+                          fail(
+                            "CORE_SOURCE_SCHEMA",
+                            "DragonBones packed weights contain trailing data.",
+                            loc + "/weights",
+                          );
+                        return result;
+                      })();
                 return {
                   type: "mesh" as const,
                   id: `${namespace}:attachment:${i}:${j}:${k}`,
@@ -332,6 +405,7 @@ export function importDragonBones55(text: string, options: ImportOptions) {
                     (value, index) =>
                       Math.trunc(number(value, `${loc}/triangles/${index}`)),
                   ),
+                  ...(weightedVertices ? { weightedVertices } : {}),
                 };
               }
               // Convert source normalized pivot to a centered canonical region by shifting its local origin.

@@ -117,6 +117,13 @@ for (const file of jsonFiles(root)) {
       success: result.success,
       diagnostics: result.diagnostics.length,
       diagnosticCodes: result.diagnostics.map((diagnostic) => diagnostic.code),
+      diagnosticDetails: result.diagnostics.map(
+        ({ code, message, jsonPointer }) => ({
+          code,
+          message,
+          ...(jsonPointer ? { jsonPointer } : {}),
+        }),
+      ),
     });
   } catch (error) {
     results.push({

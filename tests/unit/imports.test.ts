@@ -367,6 +367,19 @@ it("accepts DragonBones armature AABB preview metadata", () => {
   const result = importDragonBones55(JSON.stringify(fixture), options);
   expect(result.success).toBe(true);
 });
+it("accepts DragonBones pose and export metadata fields", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.textureAtlas = "atlas";
+  fixture.armature[0]!.slot[0]!.z = 1;
+  const display = fixture.armature[0]!.skin[0]!.slot[0]!.display[0]!;
+  Object.assign(display, {
+    subType: "image",
+    slotPose: [1, 0, 0, 1, 0, 0],
+    bonePose: [1, 0, 0, 1, 0, 0],
+  });
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+});
 it("accepts DragonBones 5.6 exports with the 5.5-compatible schema", () => {
   const fixture = structuredClone(dragonFixture);
   fixture.version = "5.6";
@@ -390,6 +403,28 @@ it("accepts DragonBones mesh edge metadata", () => {
       (diagnostic) => diagnostic.code === "CORE_UNSUPPORTED_SOURCE_FIELD",
     ),
   ).toBe(false);
+});
+it("decodes packed DragonBones mesh weights", () => {
+  const fixture = structuredClone(dragonFixture);
+  const display = fixture.armature[0]!.skin[0]!.slot[0]!.display[0]!;
+  Object.assign(display, {
+    type: "mesh",
+    vertices: [0, 0, 10, 0, 10, 10],
+    uvs: [0, 0, 1, 0, 1, 1],
+    triangles: [0, 1, 2],
+    weights: [1, 0, 1, 1, 0, 1, 1, 0, 1],
+    width: 20,
+    height: 10,
+  });
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success) {
+    const mesh = Object.values(
+      result.skeletons[0]!.skins[0]!.attachments,
+    )[0]![0]!;
+    expect(mesh.type).toBe("mesh");
+    if (mesh.type === "mesh") expect(mesh.weightedVertices).toHaveLength(3);
+  }
 });
 it("preserves DragonBones animation payloads as raw timelines", () => {
   const fixture = structuredClone(dragonFixture);

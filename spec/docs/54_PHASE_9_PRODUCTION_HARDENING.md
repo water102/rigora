@@ -372,6 +372,18 @@ This phase is executed in independently verified batches. Every batch must pass
   Spine 3.8.75 gate because the downloaded branch does not contain that exact
   official export corpus.
 
+### Batch 42 — DragonBones weighted mesh and metadata qualification — partial
+
+- The corpus report now records diagnostic code, message, and JSON pointer per
+  file, making vendor failures actionable instead of aggregate-only.
+- DragonBones packed mesh `weights` are decoded into canonical
+  `weightedVertices`, with influence normalization and rounding tolerance.
+  `slotPose`, `bonePose`, `slot.z`, display `subType`, and top-level
+  `textureAtlas` metadata are accepted as compatible export fields.
+- DragonBones corpus success improved from 39/172 to 128/172. The remaining
+  44 failures are now concentrated in explicit schema, unsupported display,
+  unsupported armature, and preserved-behavior cases.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
