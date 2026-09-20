@@ -42,6 +42,14 @@ docs/
 │   ├── import-contract.md
 │   └── renderer-contract.md
 │
+├── execution/                    # ROADMAP & GIAO VIỆC CHO AI AGENT
+│   ├── 00_INDEX.md               # Điểm vào và thứ tự đọc
+│   ├── 01_MASTER_EXECUTION_ROADMAP.md
+│   ├── 08_LIBRARY_ADOPTION_MATRIX.md
+│   ├── steps/                    # STEP-00..15
+│   ├── templates/                # Task/plan/report/handoff/ADR
+│   └── schemas/                  # Task và parity-ledger schemas
+│
 ├── spec/                         # BỘ ĐẶC TẢ KIẾN TRÚC GỐC (HNN Bones Spec Pack)
 │   ├── README.md                 # Thứ tự đọc và chỉ dẫn 64 file kiến trúc
 │   ├── docs/                     # 64 file đặc tả lý thuyết chuẩn, thuật toán, ADRs
@@ -66,6 +74,10 @@ docs/
 - **Đã hoàn thành ([`plans/completed/`](plans/completed/))**:
   - [LoongBones Engineering Addendum](plans/completed/loongbones-spec-addendum.md): Tích hợp CDT meshing (`earcut`/`delaunator`), BBW Laplacian weights và nhận diện DragonBones 6.0.
   - [Spine 4.2 Physics Plan](plans/completed/phase-8-spine42-physics.md): Tích hợp mô phỏng vật lý lò xo semi-implicit Euler và bộ bake keyframes.
+
+Roadmap triển khai hiện hành cho AI agent nằm tại
+[`execution/00_INDEX.md`](execution/00_INDEX.md). Các phase/batch cũ là evidence
+tham khảo; không được dùng để giảm scope của parity plan hiện hành.
 
 ---
 

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rigora.local/schemas/task.schema.json",
+  "title": "Rigora AI Task",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "step",
+    "subplan",
+    "requirements",
+    "owner",
+    "reviewer",
+    "status",
+    "priority",
+    "estimate",
+    "dependencies",
+    "ownedPaths",
+    "requiredDocs",
+    "acceptance",
+    "tests",
+    "forbiddenChanges"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^S(0[0-9]|1[0-5])-P[0-9]{2}-T[0-9]{2}$"
+    },
+    "title": { "type": "string", "minLength": 3 },
+    "step": { "type": "integer", "minimum": 0, "maximum": 15 },
+    "subplan": { "type": "string", "pattern": "^P[0-9]{2}$" },
+    "requirements": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "owner": { "type": "string", "minLength": 1 },
+    "reviewer": { "type": "string", "minLength": 1 },
+    "status": {
+      "enum": [
+        "backlog",
+        "needs_planning",
+        "ready",
+        "in_progress",
+        "in_review",
+        "changes_requested",
+        "blocked",
+        "verified",
+        "done"
+      ]
+    },
+    "priority": { "enum": ["critical", "high", "normal", "nice_to_have"] },
+    "estimate": { "enum": [1, 2, 3, 5, 8] },
+    "dependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "ownedPaths": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "readOnlyPaths": { "type": "array", "items": { "type": "string" } },
+    "highRiskFiles": { "type": "array", "items": { "type": "string" } },
+    "requiredDocs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "fixtures": { "type": "array", "items": { "type": "string" } },
+    "oracles": { "type": "array", "items": { "type": "string" } },
+    "acceptance": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "tests": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "performanceBudget": { "type": ["string", "null"] },
+    "forbiddenChanges": { "type": "array", "items": { "type": "string" } },
+    "allowedDependencies": { "type": "array", "items": { "type": "string" } },
+    "branch": { "type": ["string", "null"] },
+    "commits": { "type": "array", "items": { "type": "string" } },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "blockedBy": { "type": "array", "items": { "type": "string" } },
+    "knownDeviations": { "type": "array", "items": { "type": "string" } },
+    "followUps": { "type": "array", "items": { "type": "string" } }
+  }
+}

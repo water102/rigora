@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "source": "../plans/active/SPINE_PARITY_PLAN.md",
+  "featureRequirements": 209,
+  "target43Deltas": 28,
+  "parityRequirements": 237,
+  "verticalSlices": 7,
+  "allIdsIncludingVerticalSlices": 244,
+  "prefixCounts": {
+    "ANIM": 13,
+    "ASSET": 6,
+    "ATT": 13,
+    "CLI": 6,
+    "CON": 12,
+    "D43": 28,
+    "DOPE": 8,
+    "EVT": 5,
+    "EXP": 10,
+    "GRAPH": 10,
+    "IMP": 8,
+    "PACK": 12,
+    "RIG": 11,
+    "SET": 6,
+    "SKIN": 8,
+    "TOOL": 14,
+    "TREE": 10,
+    "UI": 15,
+    "VIEW": 14,
+    "VS": 7,
+    "WGT": 13,
+    "WP": 15
+  }
+}

@@ -1,0 +1,467 @@
+{
+  "schemaVersion": 1,
+  "researchedAt": "2026-09-20",
+  "policy": {
+    "allowedStatuses": [
+      "KEEP",
+      "ADOPT",
+      "POC",
+      "DEV_ONLY",
+      "REFERENCE",
+      "BUILD",
+      "AVOID"
+    ],
+    "installRule": "Do not install until an active task has a call site, an adapter boundary, tests, license review, and reviewer approval.",
+    "versionRule": "Resolve and pin the exact compatible release during the owning task; verify license at that tag."
+  },
+  "decisions": [
+    {
+      "capability": "2d-renderer",
+      "package": "pixi.js",
+      "status": "KEEP",
+      "license": "MIT",
+      "ownerSteps": ["STEP-04", "STEP-10", "STEP-11", "STEP-13"],
+      "requirements": ["RIG", "TOOL", "GRAPH", "VIEW", "EXP"],
+      "adapter": "RendererAdapter"
+    },
+    {
+      "capability": "viewport-camera",
+      "package": "pixi-viewport",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-04"],
+      "requirements": ["RIG", "TOOL"],
+      "adapter": "ViewportAdapter"
+    },
+    {
+      "capability": "worker-rpc",
+      "package": "comlink",
+      "status": "KEEP",
+      "license": "Apache-2.0",
+      "ownerSteps": ["STEP-00", "STEP-12", "STEP-13"],
+      "requirements": ["IMP", "EXP", "PACK"],
+      "adapter": "WorkerRpcAdapter"
+    },
+    {
+      "capability": "zip",
+      "package": "fflate",
+      "status": "KEEP",
+      "license": "MIT",
+      "ownerSteps": ["STEP-02", "STEP-12", "STEP-14"],
+      "requirements": ["WP", "IMP", "CLI"],
+      "adapter": "ArchiveAdapter"
+    },
+    {
+      "capability": "schema-validation",
+      "package": "zod",
+      "status": "KEEP",
+      "license": "MIT",
+      "ownerSteps": ["STEP-02", "STEP-14"],
+      "requirements": ["WP", "IMP", "EXP", "CLI", "SET"],
+      "adapter": "ContractSchemaFacade"
+    },
+    {
+      "capability": "docking",
+      "package": "flexlayout-react",
+      "status": "KEEP",
+      "license": "MIT",
+      "ownerSteps": ["STEP-03"],
+      "requirements": ["WP", "UI"],
+      "adapter": "WorkspaceLayoutAdapter"
+    },
+    {
+      "capability": "ui-primitives",
+      "package": "@radix-ui/*",
+      "status": "KEEP",
+      "license": "MIT",
+      "ownerSteps": ["STEP-03", "STEP-14"],
+      "requirements": ["UI", "TREE", "SET"],
+      "adapter": "DesignSystem"
+    },
+    {
+      "capability": "icons",
+      "package": "lucide-react",
+      "status": "KEEP",
+      "license": "ISC",
+      "ownerSteps": ["STEP-03"],
+      "requirements": ["UI"],
+      "adapter": "DesignSystem"
+    },
+    {
+      "capability": "virtualization",
+      "package": "@tanstack/virtual",
+      "status": "ADOPT",
+      "license": "MIT",
+      "ownerSteps": ["STEP-03", "STEP-09", "STEP-10"],
+      "requirements": ["TREE", "ANIM", "DOPE", "GRAPH"],
+      "adapter": "VirtualListFacade"
+    },
+    {
+      "capability": "tree-widget",
+      "package": "react-arborist",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-03"],
+      "requirements": ["TREE"],
+      "adapter": "TreeViewAdapter"
+    },
+    {
+      "capability": "keybinding-parser",
+      "package": "tinykeys",
+      "status": "ADOPT",
+      "license": "MIT",
+      "ownerSteps": ["STEP-04", "STEP-14"],
+      "requirements": ["TOOL", "SET"],
+      "adapter": "KeyChordParser"
+    },
+    {
+      "capability": "localization",
+      "package": "i18next",
+      "status": "ADOPT",
+      "license": "MIT",
+      "ownerSteps": ["STEP-14"],
+      "requirements": ["UI", "SET", "CLI"],
+      "adapter": "I18nService"
+    },
+    {
+      "capability": "expression-parser",
+      "package": "jsep",
+      "status": "ADOPT",
+      "license": "MIT",
+      "ownerSteps": ["STEP-04", "STEP-14"],
+      "requirements": ["TOOL", "CLI"],
+      "adapter": "ExpressionParser"
+    },
+    {
+      "capability": "cli-parser",
+      "package": "commander",
+      "status": "ADOPT",
+      "license": "MIT",
+      "ownerSteps": ["STEP-14"],
+      "requirements": ["CLI"],
+      "adapter": "CliSurface"
+    },
+    {
+      "capability": "state-machine",
+      "package": "xstate",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-12", "STEP-13"],
+      "requirements": ["IMP", "EXP"],
+      "adapter": "WorkflowAdapter",
+      "constraint": "Never use for canonical document or undo history."
+    },
+    {
+      "capability": "matrix-vector-math",
+      "package": "gl-matrix",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-04", "STEP-08"],
+      "requirements": ["RIG", "CON"],
+      "adapter": "MathPrimitiveFacade",
+      "constraint": "Use only if benchmarks beat the small typed domain math layer without obscuring transform semantics."
+    },
+    {
+      "capability": "triangulation",
+      "package": "earcut",
+      "status": "KEEP",
+      "license": "ISC",
+      "ownerSteps": ["STEP-05", "STEP-07"],
+      "requirements": ["ATT", "WGT"],
+      "adapter": "TriangulationAdapter"
+    },
+    {
+      "capability": "delaunay",
+      "package": "delaunator",
+      "status": "KEEP",
+      "license": "ISC",
+      "ownerSteps": ["STEP-05", "STEP-07"],
+      "requirements": ["ATT", "WGT"],
+      "adapter": "DelaunayAdapter"
+    },
+    {
+      "capability": "spatial-index",
+      "package": "rbush",
+      "status": "KEEP",
+      "license": "MIT",
+      "ownerSteps": ["STEP-04", "STEP-07", "STEP-09"],
+      "requirements": ["TOOL", "WGT", "DOPE"],
+      "adapter": "SpatialIndexAdapter"
+    },
+    {
+      "capability": "polygon-boolean",
+      "package": "polygon-clipping",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-05", "STEP-07", "STEP-13"],
+      "requirements": ["ATT", "WGT", "PACK"],
+      "adapter": "PolygonBooleanAdapter"
+    },
+    {
+      "capability": "bezier-geometry",
+      "package": "bezier-js",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-05", "STEP-10"],
+      "requirements": ["ATT", "GRAPH"],
+      "adapter": "BezierGeometryAdapter",
+      "constraint": "Never replace the canonical animation evaluator."
+    },
+    {
+      "capability": "alpha-contour",
+      "package": "d3-contour",
+      "status": "POC",
+      "license": "ISC",
+      "ownerSteps": ["STEP-07"],
+      "requirements": ["WGT"],
+      "adapter": "ContourAdapter"
+    },
+    {
+      "capability": "polyline-simplification",
+      "package": "simplify-js",
+      "status": "POC",
+      "license": "BSD-2-Clause",
+      "ownerSteps": ["STEP-07"],
+      "requirements": ["WGT"],
+      "adapter": "PolylineSimplifier"
+    },
+    {
+      "capability": "atlas-placement",
+      "package": "maxrects-packer",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-13"],
+      "requirements": ["PACK"],
+      "adapter": "AtlasPackerAdapter"
+    },
+    {
+      "capability": "psd-read-write",
+      "package": "ag-psd",
+      "status": "ADOPT",
+      "license": "MIT",
+      "ownerSteps": ["STEP-12", "STEP-13"],
+      "requirements": ["IMP", "EXP"],
+      "adapter": "PsdAdapter"
+    },
+    {
+      "capability": "browser-resize",
+      "package": "pica",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-13"],
+      "requirements": ["EXP", "PACK"],
+      "adapter": "ImageResamplerAdapter"
+    },
+    {
+      "capability": "node-image-processing",
+      "package": "sharp",
+      "status": "REFERENCE",
+      "license": "Apache-2.0",
+      "ownerSteps": ["STEP-13", "STEP-14"],
+      "requirements": ["EXP", "PACK", "CLI"],
+      "adapter": "HeadlessImageAdapter"
+    },
+    {
+      "capability": "webcodecs-media",
+      "package": "mediabunny",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-13"],
+      "requirements": ["EXP"],
+      "adapter": "MediaEncoderAdapter"
+    },
+    {
+      "capability": "gif-encode",
+      "package": "gifenc",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-13"],
+      "requirements": ["EXP"],
+      "adapter": "GifEncoderAdapter"
+    },
+    {
+      "capability": "ffmpeg-wasm",
+      "package": "@ffmpeg/ffmpeg",
+      "status": "POC",
+      "license": "MIT-wrapper",
+      "ownerSteps": ["STEP-13"],
+      "requirements": ["EXP"],
+      "adapter": "MediaEncoderAdapter",
+      "constraint": "Review the shipped FFmpeg build and codec licenses separately."
+    },
+    {
+      "capability": "waveform",
+      "package": "waveform-data",
+      "status": "REFERENCE",
+      "license": "Apache-2.0",
+      "ownerSteps": ["STEP-09", "STEP-11"],
+      "requirements": ["DOPE", "VIEW", "EVT"],
+      "adapter": "WaveformAdapter",
+      "constraint": "Prefer a small custom min/max mip pyramid unless advanced features justify adoption."
+    },
+    {
+      "capability": "job-concurrency",
+      "package": "p-queue",
+      "status": "POC",
+      "license": "MIT",
+      "ownerSteps": ["STEP-12", "STEP-13", "STEP-14"],
+      "requirements": ["IMP", "EXP", "CLI"],
+      "adapter": "JobSchedulerAdapter"
+    },
+    {
+      "capability": "indexeddb",
+      "package": "dexie",
+      "status": "POC",
+      "license": "Apache-2.0",
+      "ownerSteps": ["STEP-14"],
+      "requirements": ["WP", "SET"],
+      "adapter": "DraftCacheAdapter",
+      "constraint": "Web autosave/cache only; never the desktop canonical project store."
+    },
+    {
+      "capability": "desktop-filesystem",
+      "package": "@tauri-apps/plugin-fs",
+      "status": "ADOPT",
+      "license": "Apache-2.0-or-MIT",
+      "ownerSteps": ["STEP-03", "STEP-05", "STEP-12", "STEP-14"],
+      "requirements": ["WP", "ASSET", "IMP", "SET"],
+      "adapter": "DesktopPlatformAdapter"
+    },
+    {
+      "capability": "unit-test",
+      "package": "vitest",
+      "status": "DEV_ONLY",
+      "license": "MIT",
+      "ownerSteps": ["STEP-00"],
+      "requirements": ["ALL"],
+      "adapter": "TestHarness"
+    },
+    {
+      "capability": "e2e-test",
+      "package": "playwright",
+      "status": "DEV_ONLY",
+      "license": "Apache-2.0",
+      "ownerSteps": ["STEP-00", "STEP-15"],
+      "requirements": ["ALL"],
+      "adapter": "E2EHarness"
+    },
+    {
+      "capability": "property-test",
+      "package": "fast-check",
+      "status": "DEV_ONLY",
+      "license": "MIT",
+      "ownerSteps": ["STEP-02", "STEP-08", "STEP-12", "STEP-15"],
+      "requirements": ["RIG", "CON", "ANIM", "IMP", "EXP"],
+      "adapter": "PropertyTestHarness"
+    },
+    {
+      "capability": "visual-diff",
+      "package": "pixelmatch",
+      "status": "DEV_ONLY",
+      "license": "ISC",
+      "ownerSteps": ["STEP-11", "STEP-13", "STEP-15"],
+      "requirements": ["VIEW", "EXP", "UI"],
+      "adapter": "VisualDiffHarness"
+    },
+    {
+      "capability": "accessibility-test",
+      "package": "@axe-core/playwright",
+      "status": "DEV_ONLY",
+      "license": "MPL-2.0",
+      "ownerSteps": ["STEP-03", "STEP-15"],
+      "requirements": ["UI", "TREE", "SET"],
+      "adapter": "AccessibilityHarness"
+    },
+    {
+      "capability": "benchmark",
+      "package": "tinybench",
+      "status": "DEV_ONLY",
+      "license": "MIT",
+      "ownerSteps": ["STEP-00", "STEP-07", "STEP-15"],
+      "requirements": ["ALL"],
+      "adapter": "BenchmarkHarness"
+    },
+    {
+      "capability": "sbom",
+      "package": "@cyclonedx/cyclonedx-npm",
+      "status": "DEV_ONLY",
+      "license": "Apache-2.0",
+      "ownerSteps": ["STEP-00", "STEP-15"],
+      "requirements": ["ALL"],
+      "adapter": "ReleaseTooling"
+    },
+    {
+      "capability": "domain-document",
+      "package": null,
+      "status": "BUILD",
+      "license": null,
+      "ownerSteps": ["STEP-02"],
+      "requirements": ["ALL"],
+      "adapter": "CanonicalDocument"
+    },
+    {
+      "capability": "command-history",
+      "package": null,
+      "status": "BUILD",
+      "license": null,
+      "ownerSteps": ["STEP-02"],
+      "requirements": ["ALL"],
+      "adapter": "CommandBus"
+    },
+    {
+      "capability": "runtime-semantics",
+      "package": null,
+      "status": "BUILD",
+      "license": null,
+      "ownerSteps": [
+        "STEP-04",
+        "STEP-07",
+        "STEP-08",
+        "STEP-09",
+        "STEP-10",
+        "STEP-11"
+      ],
+      "requirements": ["RIG", "WGT", "CON", "ANIM", "GRAPH", "VIEW"],
+      "adapter": "RuntimeEvaluator"
+    },
+    {
+      "capability": "compatibility-policy",
+      "package": null,
+      "status": "BUILD",
+      "license": null,
+      "ownerSteps": ["STEP-12", "STEP-13", "STEP-14"],
+      "requirements": ["IMP", "EXP", "PACK", "CLI"],
+      "adapter": "CompatibilityPlanner"
+    },
+    {
+      "capability": "duplicate-zip",
+      "package": "pako|jszip",
+      "status": "AVOID",
+      "license": "various",
+      "ownerSteps": [],
+      "requirements": [],
+      "adapter": null,
+      "constraint": "fflate already covers this capability."
+    },
+    {
+      "capability": "generic-physics",
+      "package": "matter-js|planck-js|rapier",
+      "status": "AVOID",
+      "license": "various",
+      "ownerSteps": ["STEP-08"],
+      "requirements": ["CON"],
+      "adapter": null,
+      "constraint": "Target constraint and physics semantics are domain-specific."
+    },
+    {
+      "capability": "snapshot-undo",
+      "package": "zundo",
+      "status": "AVOID",
+      "license": "MIT",
+      "ownerSteps": ["STEP-02"],
+      "requirements": ["ALL"],
+      "adapter": null,
+      "constraint": "Does not replace transactional command history."
+    }
+  ]
+}
