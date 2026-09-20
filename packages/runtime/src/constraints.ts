@@ -14,6 +14,7 @@ import {
   samplePathAtDistance,
   type PathAttachmentData,
 } from "./path.js";
+import type { PhysicsWorld } from "./physics.js";
 
 export interface RuntimeBoneState {
   id: string;
@@ -27,6 +28,9 @@ export interface ConstraintContext {
   slots?: SlotData[] | undefined;
   skins?: SkinData[] | undefined;
   selectedSkinId?: string | undefined;
+  physicsWorld?: PhysicsWorld | undefined;
+  physicsElapsed?: number | undefined;
+  physicsWind?: number | undefined;
 }
 
 /** Helper to wrap an angle into [-PI, PI]. */
@@ -526,6 +530,31 @@ export function applyConstraints(
           bonesById,
         );
         refreshDescendants(minAffectedIndex, bones);
+      }
+    } else if (c.type === "physics") {
+      if (context?.physicsWorld) {
+        context.physicsWorld.step(
+          context.physicsElapsed ?? 0,
+          [c],
+          context.physicsWind ?? 0,
+        );
+        const state = context.physicsWorld.get(c.boneId);
+        const entry = boneMap.get(c.boneId);
+        if (state && entry) {
+          entry.bone.world = {
+            ...entry.bone.world,
+            tx: entry.bone.world.tx + state.x,
+            ty: entry.bone.world.ty + state.y,
+          };
+          refreshDescendants(entry.index, bones);
+        }
+      } else {
+        diagnostics.push({
+          code: "RUNTIME_PHYSICS_WORLD_REQUIRED",
+          severity: "warning",
+          message: `Physics constraint "${c.id}" was skipped because no physics world was provided.`,
+          entityId: c.id,
+        });
       }
     } else {
       diagnostics.push({

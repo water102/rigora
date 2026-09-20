@@ -6,8 +6,50 @@ import {
 } from "../../packages/runtime/src/index.js";
 import { ikSkeleton } from "../fixtures/canonical/ik-skeleton.js";
 import type { SkeletonData } from "../../packages/model/src/index.js";
+import {
+  applyConstraints,
+  type RuntimeBoneState,
+} from "../../packages/runtime/src/constraints.js";
+import { PhysicsWorld } from "../../packages/runtime/src/physics.js";
 
 describe("Constraint Runtime — Batch 12", () => {
+  it("executes physics constraints through the supplied deterministic world", () => {
+    const bones: RuntimeBoneState[] = [
+      {
+        id: "b",
+        length: 1,
+        parentIndex: -1,
+        local: {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        world: { a: 1, b: 0, c: 0, d: 1, tx: 0, ty: 0 },
+      },
+    ];
+    const world = new PhysicsWorld({ fixedDt: 0.1 });
+    world.register("b", { x: 0, y: 0, velocityX: 0, velocityY: 0 });
+    applyConstraints(
+      [
+        {
+          id: "p",
+          name: "p",
+          type: "physics",
+          order: 0,
+          boneId: "b",
+          gravity: 10,
+        },
+      ],
+      bones,
+      [],
+      { physicsWorld: world, physicsElapsed: 0.1 },
+    );
+    expect(bones[0]!.world.ty).toBeCloseTo(0.1);
+  });
   it("solves 1-bone IK aiming accurately at target", () => {
     const { skeleton } = ikSkeleton();
     const result = createSetupSnapshot(skeleton);
