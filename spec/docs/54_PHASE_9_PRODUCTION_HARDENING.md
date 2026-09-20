@@ -563,3 +563,14 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
   DragonBones `172/172`, Spine 4.2 `136/136`, and Spine 3.8 `94/116`.
 - Spine 3.8’s remaining failures are explicitly unsupported beta versions
   (`3.8.26-beta`/`3.8.33-beta`), so the official 3.8.75 gate remains open.
+
+## Batch 46 — official Spine corpus provenance audit
+
+- Added `docs/release/SPINE_CORPUS_PROVENANCE.json` with repository, branch,
+  immutable commit, local ignored path, and observed JSON version counts.
+- The Spine 3.8 checkout is official (`EsotericSoftware/spine-runtimes`, ref
+  `3.8`), but it contains no exact `3.8.75` export. Version substitution is
+  explicitly disallowed, so the 3.8.75 gate remains honestly blocked pending
+  an official exact-version export.
+- Spine 4.2 provenance is likewise recorded and its supported corpus remains
+  green at `136/136`.
