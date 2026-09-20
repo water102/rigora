@@ -67,6 +67,13 @@ This phase is executed in independently verified batches. Every batch must pass
   remain covered by `pnpm check`; MSI/NSIS qualification cannot be claimed
   until Cargo/Rust is installed in the build environment.
 
+### Batch 7 — Browser/E2E qualification — complete
+
+- Ran `pnpm test:browser` successfully: 3/3 Playwright tests passed.
+- Covered WebGL preview pixels, weighted mesh/auto-mesh worker rendering and
+  guarded export planner output.
+- Published `docs/release/E2E_QUALIFICATION.md`.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
@@ -201,6 +208,7 @@ Run:
 - [x] crash recovery baseline green (autosave corruption is handled safely)
 - [x] performance report published (selection follow-up remains)
 - [ ] package qualified (blocked: Cargo/Rust toolchain unavailable)
+- [x] browser E2E smoke suite green (native package tests remain separate)
 - [x] SBOM/notices generated (legal review and bundled license texts remain)
 - [ ] user/developer docs complete
 
