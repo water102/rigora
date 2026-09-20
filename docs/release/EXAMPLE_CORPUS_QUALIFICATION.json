@@ -29,8 +29,8 @@
     "spine-4.2": {
       "files": 136,
       "noThrow": 136,
-      "success": 8,
-      "failed": 128,
+      "success": 13,
+      "failed": 123,
       "versions": {
         "4.2.22": 134,
         "4.2.37": 1,
@@ -43,10 +43,10 @@
         "CORE_INVALID_REFERENCE": 3,
         "CORE_SOURCE_SCHEMA": 13,
         "CORE_UNSUPPORTED_BEHAVIOR": 7,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 104,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 99,
         "SP38_PATH_ATTACHMENT_PRESERVED": 5,
         "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 2,
-        "SP42_CORE_SUBSET_ADAPTER": 8,
+        "SP42_CORE_SUBSET_ADAPTER": 13,
         "SP42_PHYSICS_PRESERVED": 24
       }
     },
@@ -63,12 +63,11 @@
       "diagnosticCodes": {
         "CORE_SOURCE_SCHEMA": 8,
         "CORE_UNSUPPORTED_BEHAVIOR": 22,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 114,
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA": 161,
-        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA": 7,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 122,
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA": 169,
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA": 15,
         "DB55_NESTED_ARMATURE_PRESERVED": 25,
-        "DB55_UNSUPPORTED_ARMATURE": 3,
-        "DB55_UNSUPPORTED_VERSION": 8
+        "DB55_UNSUPPORTED_ARMATURE": 3
       }
     }
   },
@@ -1037,8 +1036,12 @@
       "version": "5.0",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Hilo\\Demos\\resource\\assets\\core_element\\mecha_1502b_ske.json",
@@ -1046,8 +1049,14 @@
       "version": "5.0",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Hilo\\Demos\\resource\\assets\\core_element\\mecha_2903_ske.json",
@@ -1055,8 +1064,12 @@
       "version": "5.0",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Hilo\\Demos\\resource\\assets\\core_element\\skin_1502b_ske.json",
@@ -1064,8 +1077,12 @@
       "version": "5.0",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Hilo\\Demos\\resource\\assets\\core_element\\weapon_1000_ske.json",
@@ -1073,8 +1090,12 @@
       "version": "5.0",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Hilo\\Demos\\resource\\assets\\dragon_boy_ske.json",
@@ -1082,8 +1103,12 @@
       "version": "5.0",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Hilo\\Demos\\resource\\assets\\effect_ske.json",
@@ -1103,8 +1128,12 @@
       "version": "5.0",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Hilo\\Demos\\resource\\assets\\replace_slot_display\\replace_ske.json",
@@ -1112,8 +1141,12 @@
       "version": "5.0",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Phaser\\Demos\\resource\\bounding_box_tester\\bounding_box_tester_ske.json",
@@ -4046,9 +4079,9 @@
       "format": "spine-4.2",
       "version": "4.2.22",
       "threw": false,
-      "success": false,
+      "success": true,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP42_CORE_SUBSET_ADAPTER"]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\goblins\\export\\goblins-ess.json",
@@ -4380,9 +4413,9 @@
       "format": "spine-4.2",
       "version": "4.2.22",
       "threw": false,
-      "success": false,
+      "success": true,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP42_CORE_SUBSET_ADAPTER"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\goblins-pro.json",
@@ -4774,9 +4807,9 @@
       "format": "spine-4.2",
       "version": "4.2.22",
       "threw": false,
-      "success": false,
+      "success": true,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP42_CORE_SUBSET_ADAPTER"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\goblins-pro.json",
@@ -4927,9 +4960,9 @@
       "format": "spine-4.2",
       "version": "4.2.22",
       "threw": false,
-      "success": false,
+      "success": true,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP42_CORE_SUBSET_ADAPTER"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\goblins-pro.json",
@@ -5251,9 +5284,9 @@
       "format": "spine-4.2",
       "version": "4.2.22",
       "threw": false,
-      "success": false,
+      "success": true,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP42_CORE_SUBSET_ADAPTER"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\Eyes\\eyes.json",

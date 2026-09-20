@@ -252,6 +252,15 @@ This phase is executed in independently verified batches. Every batch must pass
   diagnostics. Existing 5.0 files still have independent schema/feature
   failures, so successful imports remain 39/172 and the release gate stays open.
 
+### Batch 29 — Spine 4.2 sequence metadata acceptance — partial
+
+- Spine attachments with 4.2 `sequence` metadata are now accepted by the
+  isolated 4.2 adapter path; the metadata is tolerated while canonical frame
+  sequence evaluation remains outside the current runtime contract.
+- Added a 4.2 regression test. After rebuilding the adapter, the local corpus
+  improved from 8/136 to 13/136 successful imports and reduced
+  `CORE_UNSUPPORTED_SOURCE_FIELD` diagnostics from 104 to 99.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

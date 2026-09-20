@@ -2,6 +2,7 @@ import { expect, it } from "vitest";
 import spineFixture from "../fixtures/imports/spine38-region.json";
 import dragonFixture from "../fixtures/imports/dragonbones55-region.json";
 import { importSpine38 } from "../../packages/format-spine-38/src/index.js";
+import { importSpine42 } from "../../packages/format-spine-42/src/index.js";
 import { importDragonBones55 } from "../../packages/format-dragonbones/src/index.js";
 import { detectSpineVersion } from "../../packages/format-spine-common/src/index.js";
 import {
@@ -59,6 +60,19 @@ it("accepts Spine mesh edge metadata without changing canonical geometry", () =>
   attachment.edges = [0, 1, 2, 3];
   const result = importSpine38(JSON.stringify(fixture), options);
   expect(result.success).toBe(true);
+});
+it("accepts Spine 4.2 sequence attachment metadata", () => {
+  const fixture = structuredClone(spineFixture);
+  fixture.skeleton.spine = "4.2.22";
+  const attachment = fixture.skins[0]!.attachments.body!.logical!;
+  attachment.sequence = { count: 2, start: 0, digits: 1, setup: 0 };
+  const result = importSpine42(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "CORE_UNSUPPORTED_SOURCE_FIELD",
+    ),
+  ).toBe(false);
 });
 it("imports Spine clipping attachments with an end slot", () => {
   const fixture = structuredClone(spineFixture);
