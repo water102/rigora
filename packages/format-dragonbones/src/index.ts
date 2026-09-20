@@ -200,11 +200,19 @@ export function importDragonBones55(text: string, options: ImportOptions) {
             (value, k) => {
               const loc = `${at}/display/${k}`,
                 item = object(value, loc);
-              fields(item, "name path type transform pivot", loc);
-              if (item["type"] !== undefined && item["type"] !== "image")
+              fields(
+                item,
+                "name path type transform pivot vertices uvs triangles",
+                loc,
+              );
+              if (
+                item["type"] !== undefined &&
+                item["type"] !== "image" &&
+                item["type"] !== "mesh"
+              )
                 fail(
                   "DB55_UNSUPPORTED_DISPLAY",
-                  "Only image displays are supported.",
+                  "Only image and mesh displays are supported.",
                   loc + "/type",
                 );
               const name = string(item["name"], loc + "/name");
@@ -228,6 +236,34 @@ export function importDragonBones55(text: string, options: ImportOptions) {
               const px = number(pivot["x"], loc + "/pivot/x", 0.5),
                 py = number(pivot["y"], loc + "/pivot/y", 0.5);
               const local = transform(item["transform"], loc + "/transform");
+              if (item["type"] === "mesh") {
+                const vertices = list(item["vertices"], loc + "/vertices").map(
+                  (value, index) => number(value, `${loc}/vertices/${index}`),
+                );
+                const uvs = list(item["uvs"], loc + "/uvs").map(
+                  (value, index) => number(value, `${loc}/uvs/${index}`),
+                );
+                const pair = (values: number[]) =>
+                  values.reduce<{ x: number; y: number }[]>(
+                    (result, value, index) =>
+                      index % 2
+                        ? result
+                        : [...result, { x: value, y: values[index + 1] ?? 0 }],
+                    [],
+                  );
+                return {
+                  type: "mesh" as const,
+                  id: `${namespace}:attachment:${i}:${j}:${k}`,
+                  name,
+                  textureId: region.textureId,
+                  vertices: pair(vertices),
+                  uvs: pair(uvs),
+                  triangles: list(item["triangles"], loc + "/triangles").map(
+                    (value, index) =>
+                      Math.trunc(number(value, `${loc}/triangles/${index}`)),
+                  ),
+                };
+              }
               // Convert source normalized pivot to a centered canonical region by shifting its local origin.
               const dx = (0.5 - px) * region.width,
                 dy = (py - 0.5) * region.height;

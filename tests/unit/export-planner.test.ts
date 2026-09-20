@@ -572,4 +572,39 @@ describe("export planning", () => {
         compareRoundTripSemantics(skeleton, dragon.skeletons[0]!),
       ).toHaveLength(0);
   });
+  it("round-trips DragonBones mesh geometry", () => {
+    const skeleton = minimalSkeleton();
+    skeleton.slots[0]!.setupAttachmentId = "mesh-1";
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "mesh",
+        id: "mesh-1",
+        name: "mesh",
+        textureId: "hero.png",
+        vertices: [
+          { x: 0, y: 0 },
+          { x: 10, y: 0 },
+          { x: 0, y: 10 },
+        ],
+        uvs: [
+          { x: 0, y: 0 },
+          { x: 1, y: 0 },
+          { x: 0, y: 1 },
+        ],
+        triangles: [0, 1, 2],
+      },
+    ];
+    const result = importDragonBones55(serializeDragonBones55(skeleton), {
+      namespace: "db-mesh-rt",
+      mode: "strict",
+      textures: new Map([["mesh", { id: "hero.png", width: 32, height: 32 }]]),
+    });
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    if (result.success) {
+      const attachments = Object.values(
+        result.skeletons[0]!.skins[0]!.attachments,
+      ).flat();
+      expect((attachments[0] as any).triangles).toEqual([0, 1, 2]);
+    }
+  });
 });

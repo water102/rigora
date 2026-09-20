@@ -442,6 +442,16 @@ export function toDragonBones55Ast(skeleton: SkeletonData): DragonBones55Ast {
               name: a.name,
               path: a.name,
               type: a.type === "region" ? "image" : a.type,
+              ...(a.type === "mesh"
+                ? {
+                    vertices: a.vertices.flatMap((v) => [
+                      round(v.x),
+                      round(-v.y),
+                    ]),
+                    uvs: a.uvs.flatMap((v) => [round(v.x), round(v.y)]),
+                    triangles: a.triangles,
+                  }
+                : {}),
             })),
           })),
         })),
