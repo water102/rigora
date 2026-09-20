@@ -6,6 +6,7 @@ import {
   serializeSpine38,
   serializeDragonBones55,
   planDeterministicAtlas,
+  preserveOrRepackAtlas,
   createCrossFormatReport,
   exportSkeleton,
   ExportPlannerSession,
@@ -674,6 +675,26 @@ describe("export planning", () => {
     )[0]!;
     expect(rotated.rotate).toBe(true);
     expect([rotated.width, rotated.height]).toEqual([3, 8]);
+    const preserved = preserveOrRepackAtlas(
+      [{ name: "wide", width: 8, height: 3 }],
+      [{ name: "wide", x: 7, y: 2, width: 8, height: 3, rotate: false }],
+      16,
+    );
+    expect(preserved[0]).toEqual({
+      name: "wide",
+      x: 7,
+      y: 2,
+      width: 8,
+      height: 3,
+      rotate: false,
+    });
+    expect(
+      preserveOrRepackAtlas(
+        [{ name: "wide", width: 8, height: 3 }],
+        [{ name: "wide", x: 20, y: 0, width: 8, height: 3, rotate: false }],
+        16,
+      )[0]!.x,
+    ).toBe(0);
     const report = createCrossFormatReport(
       skeleton,
       "spine-3.8",

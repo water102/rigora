@@ -520,6 +520,33 @@ export interface AtlasRegionPlan {
   height: number;
   rotate: boolean;
 }
+export function preserveOrRepackAtlas(
+  regions: readonly { name: string; width: number; height: number }[],
+  existing: readonly AtlasRegionPlan[] | undefined,
+  pageWidth = 2048,
+  allowRotation = true,
+): AtlasRegionPlan[] {
+  if (existing && existing.length === regions.length) {
+    const expected = new Map(regions.map((region) => [region.name, region]));
+    const seen = new Set<string>();
+    const valid = existing.every((region) => {
+      const source = expected.get(region.name);
+      if (!source || seen.has(region.name) || region.x < 0 || region.y < 0)
+        return false;
+      seen.add(region.name);
+      const width = region.rotate ? source.height : source.width;
+      const height = region.rotate ? source.width : source.height;
+      return (
+        region.width === width &&
+        region.height === height &&
+        region.x + width <= pageWidth
+      );
+    });
+    if (valid && seen.size === expected.size)
+      return existing.map((region) => ({ ...region }));
+  }
+  return planDeterministicAtlas(regions, pageWidth, allowRotation);
+}
 export function planDeterministicAtlas(
   regions: readonly { name: string; width: number; height: number }[],
   pageWidth = 2048,
