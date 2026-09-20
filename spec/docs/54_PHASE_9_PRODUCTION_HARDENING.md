@@ -362,6 +362,16 @@ This phase is executed in independently verified batches. Every batch must pass
   concentrated in explicit version, path/constraint, reference, and texture
   qualification cases.
 
+### Batch 41 — Spine 3.8 version coverage classification — partial
+
+- Re-audited the 22 remaining failed files in the downloaded Spine 3.8 branch:
+  every one is an explicitly unsupported `3.8.26-beta` or `3.8.33-beta` export,
+  not a parser failure in the supported 3.8 path.
+- The probe therefore keeps strict version rejection and records 94/116
+  successful imports. This corpus still cannot serve as the mandatory exact
+  Spine 3.8.75 gate because the downloaded branch does not contain that exact
+  official export corpus.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
