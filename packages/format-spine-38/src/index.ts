@@ -144,9 +144,39 @@ export function importSpine38(text: string, options: ImportOptions) {
               item = object(value, loc);
             fields(
               item,
-              "name path type x y rotation scaleX scaleY width height",
+              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull",
               loc,
             );
+            const id = `${options.namespace}:attachment:${i}:${slotId}:${j}`;
+            if (skin["name"] === "default") setup.set(`${slotId}\0${key}`, id);
+            if (item["type"] === "mesh") {
+              const vertices = list(item["vertices"], loc + "/vertices").map(
+                (value, index) => number(value, `${loc}/vertices/${index}`),
+              );
+              const uvs = list(item["uvs"], loc + "/uvs").map((value, index) =>
+                number(value, `${loc}/uvs/${index}`),
+              );
+              const pair = (values: number[]) =>
+                values.reduce<{ x: number; y: number }[]>(
+                  (result, value, index) =>
+                    index % 2
+                      ? result
+                      : [...result, { x: value, y: values[index + 1] ?? 0 }],
+                  [],
+                );
+              return {
+                type: "mesh",
+                id,
+                name: string(item["name"], loc + "/name", key),
+                vertices: pair(vertices),
+                uvs: pair(uvs),
+                triangles: list(item["triangles"], loc + "/triangles")
+                  .map((value, index) =>
+                    number(value, `${loc}/triangles/${index}`),
+                  )
+                  .map(Math.trunc),
+              };
+            }
             if (item["type"] !== undefined && item["type"] !== "region")
               fail(
                 "SP38_UNSUPPORTED_ATTACHMENT",
@@ -155,8 +185,6 @@ export function importSpine38(text: string, options: ImportOptions) {
               );
             const name = string(item["name"], loc + "/name", key),
               image = string(item["path"], loc + "/path", name);
-            const id = `${options.namespace}:attachment:${i}:${slotId}:${j}`;
-            if (skin["name"] === "default") setup.set(`${slotId}\0${key}`, id);
             return {
               type: "region",
               id,

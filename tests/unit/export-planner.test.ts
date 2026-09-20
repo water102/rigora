@@ -125,6 +125,41 @@ describe("export planning", () => {
         result.skeletons[0]!.animations[0]!.timelines[0]!.keyframes[0]!.time,
       ).toBe(0.5);
   });
+  it("round-trips exported Spine mesh geometry", () => {
+    const skeleton = minimalSkeleton();
+    skeleton.slots[0]!.setupAttachmentId = "mesh-1";
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "mesh",
+        id: "mesh-1",
+        name: "mesh",
+        vertices: [
+          { x: 0, y: 0 },
+          { x: 10, y: 0 },
+          { x: 0, y: 10 },
+        ],
+        uvs: [
+          { x: 0, y: 0 },
+          { x: 1, y: 0 },
+          { x: 0, y: 1 },
+        ],
+        triangles: [0, 1, 2],
+      },
+    ];
+    const result = importSpine38(serializeSpine38(skeleton), {
+      namespace: "mesh-rt",
+      mode: "strict",
+    });
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    if (result.success)
+      expect(
+        (
+          result.skeletons[0]!.skins[0]!.attachments[
+            "mesh-rt:slot:0"
+          ]![0] as any
+        ).triangles,
+      ).toEqual([0, 1, 2]);
+  });
   it("exports supported constraints and blocks physics without approval", () => {
     const skeleton = minimalSkeleton();
     skeleton.constraints = [
