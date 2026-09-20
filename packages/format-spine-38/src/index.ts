@@ -79,7 +79,7 @@ export function importSpine38(text: string, options: ImportOptions) {
     }
     fields(
       source,
-      "skeleton bones slots skins animations events constraints ik path",
+      "skeleton bones slots skins animations events constraints ik path transform",
       "",
     );
     const meta = object(source["skeleton"], "/skeleton");
@@ -540,6 +540,28 @@ export function importSpine38(text: string, options: ImportOptions) {
           );
         },
       );
+    }
+    if (Array.isArray(source["transform"])) {
+      diagnostics.push({
+        code: "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        severity: "warning",
+        message:
+          "Spine transform constraints are preserved but not executed by the canonical runtime.",
+        jsonPointer: "/transform",
+      });
+      data.constraints = [
+        ...(data.constraints ?? []),
+        ...source["transform"].map((raw, index) => ({
+          id: `${options.namespace}:constraint:transform:${index}`,
+          name: String(
+            (raw as Record<string, unknown>)["name"] ?? `transform-${index}`,
+          ),
+          type: "unknownPreserved" as const,
+          order: Number((raw as Record<string, unknown>)["order"] ?? index),
+          sourceFormat: "spine-3.8-transform",
+          payload: raw as unknown as JsonValue,
+        })),
+      ] as any;
     }
     return [data];
   });

@@ -124,6 +124,22 @@ it("imports Spine bounding-box attachments", () => {
       type: "boundingBox",
     });
 });
+it("preserves Spine transform constraints when runtime mapping is incomplete", () => {
+  const fixture = structuredClone(spineFixture);
+  fixture.transform = [{ name: "aim", bones: ["tip"], target: "root", x: 5 }];
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+    ),
+  ).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.constraints[0]).toMatchObject({
+      type: "unknownPreserved",
+      sourceFormat: "spine-3.8-transform",
+    });
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(
