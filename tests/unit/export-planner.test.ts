@@ -10,6 +10,7 @@ import {
   exportSkeleton,
   ExportPlannerSession,
   compareRoundTripSemantics,
+  scanExportCapabilities,
 } from "../../packages/format-export/src/index.js";
 import { minimalSkeleton } from "../fixtures/canonical/minimal.js";
 import { importSpine38 } from "../../packages/format-spine-38/src/index.js";
@@ -118,6 +119,18 @@ describe("export planning", () => {
       expect(first.report.checksum).toBe(second.report.checksum);
       expect(first.bytes).toEqual(second.bytes);
     }
+  });
+  it("scans every canonical capability category", () => {
+    const skeleton = minimalSkeleton();
+    skeleton.animations = [
+      { id: "anim", name: "walk", duration: 1, timelines: [] },
+    ];
+    skeleton.events = [{ id: "event", name: "hit" }];
+    const capabilities = scanExportCapabilities(skeleton, "spine-3.8");
+    expect(capabilities.map((entry) => entry.feature)).toEqual(
+      expect.arrayContaining(["point", "animation", "event"]),
+    );
+    expect(capabilities.every((entry) => entry.action)).toBe(true);
   });
   it("serializes DragonBones 5.5 and sorts atlas input", () => {
     const skeleton = minimalSkeleton();

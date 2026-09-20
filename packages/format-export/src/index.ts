@@ -17,6 +17,58 @@ export interface ExportPlan {
   issues: ExportIssue[];
   blockers: ExportIssue[];
 }
+export interface CapabilityEntry {
+  entityId: string;
+  feature: string;
+  action: ExportAction;
+}
+export function scanExportCapabilities(
+  skeleton: SkeletonData,
+  target: ExportPlan["target"],
+): CapabilityEntry[] {
+  const entries: CapabilityEntry[] = [];
+  for (const skin of skeleton.skins)
+    for (const list of Object.values(skin.attachments))
+      for (const attachment of list) {
+        const action: ExportAction =
+          attachment.type === "unknownPreserved" ||
+          attachment.type === "nestedSkeleton"
+            ? "block"
+            : target.startsWith("dragonbones") &&
+                ["clipping", "boundingBox", "path"].includes(attachment.type)
+              ? "bake"
+              : attachment.type === "point" && target.startsWith("spine")
+                ? "convert"
+                : "native";
+        entries.push({
+          entityId: attachment.id,
+          feature: attachment.type,
+          action,
+        });
+      }
+  for (const constraint of skeleton.constraints)
+    entries.push({
+      entityId: constraint.id,
+      feature: constraint.type,
+      action:
+        constraint.type === "physics"
+          ? target.startsWith("spine")
+            ? "bake"
+            : "drop"
+          : constraint.type === "unknownPreserved"
+            ? "block"
+            : "native",
+    });
+  for (const animation of skeleton.animations)
+    entries.push({
+      entityId: animation.id,
+      feature: "animation",
+      action: "native",
+    });
+  for (const event of skeleton.events)
+    entries.push({ entityId: event.id, feature: "event", action: "native" });
+  return entries;
+}
 export interface ExportReport {
   target: ExportPlan["target"];
   conversions: string[];
