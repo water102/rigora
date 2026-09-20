@@ -160,6 +160,41 @@ describe("export planning", () => {
         ).triangles,
       ).toEqual([0, 1, 2]);
   });
+  it("preserves weighted mesh influence payloads", () => {
+    const skeleton = minimalSkeleton();
+    skeleton.slots[0]!.setupAttachmentId = "mesh-1";
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "mesh",
+        id: "mesh-1",
+        name: "mesh",
+        vertices: [{ x: 0, y: 0 }],
+        uvs: [{ x: 0, y: 0 }],
+        triangles: [],
+        weightedVertices: [
+          {
+            bindPosition: { x: 0, y: 0 },
+            influences: [
+              { boneId: "bone-1", weight: 1, localPosition: { x: 0, y: 0 } },
+            ],
+          },
+        ],
+      },
+    ];
+    const result = importSpine38(serializeSpine38(skeleton), {
+      namespace: "weighted-rt",
+      mode: "strict",
+    });
+    expect(result.success).toBe(true);
+    if (result.success)
+      expect(
+        (
+          result.skeletons[0]!.skins[0]!.attachments[
+            "weighted-rt:slot:0"
+          ]![0] as any
+        ).weightedVertices[0].influences[0].weight,
+      ).toBe(1);
+  });
   it("exports supported constraints and blocks physics without approval", () => {
     const skeleton = minimalSkeleton();
     skeleton.constraints = [

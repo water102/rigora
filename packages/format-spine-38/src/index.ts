@@ -144,7 +144,7 @@ export function importSpine38(text: string, options: ImportOptions) {
               item = object(value, loc);
             fields(
               item,
-              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull",
+              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights",
               loc,
             );
             const id = `${options.namespace}:attachment:${i}:${slotId}:${j}`;
@@ -164,6 +164,13 @@ export function importSpine38(text: string, options: ImportOptions) {
                       : [...result, { x: value, y: values[index + 1] ?? 0 }],
                   [],
                 );
+              const weights =
+                item["weights"] === undefined
+                  ? undefined
+                  : list(item["weights"], loc + "/weights").map(
+                      (value, index) =>
+                        object(value, `${loc}/weights/${index}`),
+                    );
               return {
                 type: "mesh",
                 id,
@@ -175,6 +182,38 @@ export function importSpine38(text: string, options: ImportOptions) {
                     number(value, `${loc}/triangles/${index}`),
                   )
                   .map(Math.trunc),
+                ...(weights
+                  ? {
+                      weightedVertices: weights.map((weight, index) => ({
+                        bindPosition: {
+                          x: vertices[index * 2] ?? 0,
+                          y: vertices[index * 2 + 1] ?? 0,
+                        },
+                        influences: list(
+                          weight["influences"],
+                          `${loc}/weights/${index}/influences`,
+                        ).map((raw) => {
+                          const influence = object(
+                            raw,
+                            `${loc}/weights/${index}/influences`,
+                          );
+                          const boneName = string(influence["boneId"], "");
+                          return {
+                            boneId: boneIds.get(boneName) ?? boneName,
+                            weight: number(influence["weight"], ""),
+                            ...(influence["localPosition"]
+                              ? {
+                                  localPosition: object(
+                                    influence["localPosition"],
+                                    "",
+                                  ) as { x: number; y: number },
+                                }
+                              : {}),
+                          };
+                        }),
+                      })),
+                    }
+                  : {}),
               };
             }
             if (item["type"] !== undefined && item["type"] !== "region")

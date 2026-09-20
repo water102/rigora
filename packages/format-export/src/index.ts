@@ -278,6 +278,22 @@ export function toSpine38Ast(
                         round(v.x),
                         round(v.y),
                       ]),
+                      ...(a.weightedVertices
+                        ? {
+                            weights: a.weightedVertices.map((vertex) => ({
+                              bindPosition: vertex.bindPosition,
+                              influences: vertex.influences.map(
+                                (influence) => ({
+                                  ...influence,
+                                  boneId:
+                                    skeleton.bones.find(
+                                      (bone) => bone.id === influence.boneId,
+                                    )?.name ?? influence.boneId,
+                                }),
+                              ),
+                            })),
+                          }
+                        : {}),
                     }
                   : { name: a.name, type: a.type },
             ]),
