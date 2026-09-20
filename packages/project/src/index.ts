@@ -34,6 +34,20 @@ export interface ProjectRepository {
   list(): Promise<string[]>;
 }
 
+export interface ProjectParseLimits {
+  maxArchiveBytes?: number;
+  maxFiles?: number;
+  maxAssetBytes?: number;
+  maxTotalAssetBytes?: number;
+}
+
+const DEFAULT_PARSE_LIMITS: Required<ProjectParseLimits> = {
+  maxArchiveBytes: 256 * 1024 * 1024,
+  maxFiles: 10_000,
+  maxAssetBytes: 64 * 1024 * 1024,
+  maxTotalAssetBytes: 192 * 1024 * 1024,
+};
+
 /** Deterministic repository used by browser adapters and tests. */
 export class InMemoryProjectRepository implements ProjectRepository {
   readonly #files = new Map<string, Uint8Array>();
@@ -88,7 +102,16 @@ export class ProjectLifecycle {
   async save(): Promise<void> {
     if (!this.#project) throw new Error("PROJECT_NOT_OPEN");
     if (!this.#path) throw new Error("PROJECT_SAVE_PATH_REQUIRED");
-    await this.repository.write(this.#path, serializeProject(this.#project));
+    const bytes = serializeProject(this.#project);
+    // Validate the exact bytes before making them visible to readers.
+    parseProject(bytes, { verifyChecksums: true });
+    const temporaryPath = `${this.#path}.tmp`;
+    await this.repository.write(temporaryPath, bytes);
+    const persisted = await this.repository.read(temporaryPath);
+    if (!persisted) throw new Error("PROJECT_TEMPORARY_WRITE_FAILED");
+    parseProject(persisted, { verifyChecksums: true });
+    await this.repository.write(this.#path, persisted);
+    await this.repository.remove(temporaryPath);
     this.#dirty = false;
   }
   async saveAs(path: string): Promise<void> {
@@ -336,13 +359,29 @@ export function serializeProject(project: HboneProject): Uint8Array {
 
 export function parseProject(
   bytes: Uint8Array,
-  options?: { verifyChecksums?: boolean },
+  options?: { verifyChecksums?: boolean; limits?: ProjectParseLimits },
 ): HboneProject {
+  const limits = { ...DEFAULT_PARSE_LIMITS, ...(options?.limits ?? {}) };
+  if (bytes.byteLength > limits.maxArchiveBytes) {
+    throw new Error("NATIVE_ARCHIVE_TOO_LARGE");
+  }
   let files: Record<string, Uint8Array>;
   try {
     files = unzipSync(bytes);
   } catch {
     throw new Error("NATIVE_CORRUPT_ARCHIVE");
+  }
+  const fileEntries = Object.entries(files);
+  if (fileEntries.length > limits.maxFiles)
+    throw new Error("NATIVE_TOO_MANY_FILES");
+  for (const [filePath] of fileEntries) {
+    if (
+      filePath.startsWith("/") ||
+      filePath.includes("\\") ||
+      filePath.split("/").some((part) => part === ".." || part === ".")
+    ) {
+      throw new Error(`NATIVE_UNSAFE_PATH: ${filePath}`);
+    }
   }
 
   const manifestFile = files["manifest.json"];
@@ -371,9 +410,17 @@ export function parseProject(
   }
 
   const assets: Record<string, Uint8Array> = {};
-  for (const [filePath, content] of Object.entries(files)) {
+  let totalAssetBytes = 0;
+  for (const [filePath, content] of fileEntries) {
     if (filePath.startsWith("assets/")) {
       const assetKey = filePath.slice("assets/".length);
+      if (!assetKey || content.byteLength > limits.maxAssetBytes) {
+        throw new Error(`NATIVE_ASSET_TOO_LARGE: ${assetKey}`);
+      }
+      totalAssetBytes += content.byteLength;
+      if (totalAssetBytes > limits.maxTotalAssetBytes) {
+        throw new Error("NATIVE_ASSETS_TOO_LARGE");
+      }
       assets[assetKey] = content;
     }
   }

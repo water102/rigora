@@ -793,3 +793,57 @@ describe("Batch 23 autosave recovery", () => {
     controller.stop();
   });
 });
+
+describe("Phase 9 native project hardening", () => {
+  it("rejects unsafe archive paths and oversized assets", async () => {
+    const { strToU8, zipSync } = await import("fflate");
+    const manifest = {
+      format: "hnn-bones",
+      formatVersion: 1,
+      generator: "test",
+      createdAt: "2026-01-01T00:00:00.000Z",
+      modifiedAt: "2026-01-01T00:00:00.000Z",
+      skeletons: [],
+      assets: [],
+      checksums: {},
+    };
+    expect(() =>
+      parseProject(
+        zipSync({
+          "manifest.json": strToU8(JSON.stringify(manifest)),
+          "../escape.txt": strToU8("nope"),
+        }),
+      ),
+    ).toThrow("NATIVE_UNSAFE_PATH");
+    expect(() =>
+      parseProject(
+        zipSync({
+          "manifest.json": strToU8(JSON.stringify(manifest)),
+          "assets/huge.bin": new Uint8Array(8),
+        }),
+        { limits: { maxAssetBytes: 4 } },
+      ),
+    ).toThrow("NATIVE_ASSET_TOO_LARGE");
+  });
+
+  it("leaves the original project intact when temporary validation fails", async () => {
+    const repository = new InMemoryProjectRepository();
+    const project = createProject({}, "2026-01-01T00:00:00.000Z");
+    const lifecycle = new ProjectLifecycle(repository);
+    lifecycle.newProject(project, true);
+    await lifecycle.saveAs("scene.hbone");
+    const original = await repository.read("scene.hbone");
+    const failingRepository = new (class extends InMemoryProjectRepository {
+      override async write(path: string, bytes: Uint8Array): Promise<void> {
+        if (path.endsWith(".tmp")) throw new Error("DISK_FULL");
+        return super.write(path, bytes);
+      }
+    })();
+    const failing = new ProjectLifecycle(failingRepository);
+    await failingRepository.write("scene.hbone", original!);
+    await failing.open("scene.hbone");
+    failing.markDirty();
+    await expect(failing.save()).rejects.toThrow("DISK_FULL");
+    expect(await failingRepository.read("scene.hbone")).toEqual(original);
+  });
+});
