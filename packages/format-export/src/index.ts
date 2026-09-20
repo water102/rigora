@@ -140,6 +140,7 @@ export interface Spine38Ast {
   skins: unknown[];
   animations?: Record<string, unknown>;
   events?: Record<string, unknown>;
+  constraints?: unknown[];
 }
 const round = (n: number) => Number(n.toFixed(6));
 const color = (c: { r: number; g: number; b: number; a: number }) =>
@@ -154,12 +155,13 @@ export function toSpine38Ast(
   skeleton: SkeletonData,
   profile: "3.8" | "3.8.75" = "3.8",
 ): Spine38Ast {
-  validateForExport(skeleton);
   const plan = createExportPlan(
     skeleton,
     profile === "3.8.75" ? "spine-3.8.75" : "spine-3.8",
   );
   if (plan.blockers.length) throw new Error("EXPORT_PLAN_BLOCKED");
+  assertExportable(plan);
+  validateForExport(skeleton);
   return {
     skeleton: {
       hash: skeleton.id,
@@ -253,6 +255,29 @@ export function toSpine38Ast(
           events: Object.fromEntries(
             skeleton.events.map((event) => [event.name, event.defaults ?? {}]),
           ),
+        }
+      : {}),
+    ...(skeleton.constraints.length
+      ? {
+          constraints: skeleton.constraints
+            .filter((constraint) => constraint.type !== "physics")
+            .map((constraint) => ({
+              name: constraint.name,
+              type: constraint.type,
+              order: constraint.order,
+              ...(constraint.type === "ik"
+                ? {
+                    target: skeleton.bones.find(
+                      (b) => b.id === constraint.targetBoneId,
+                    )?.name,
+                    bones: constraint.boneIds.map(
+                      (id) => skeleton.bones.find((b) => b.id === id)?.name,
+                    ),
+                    mix: constraint.mix,
+                    bendPositive: constraint.bendDirection === 1,
+                  }
+                : {}),
+            })),
         }
       : {}),
   };

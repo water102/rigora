@@ -53,6 +53,31 @@ describe("export planning", () => {
       0,
     );
   });
+  it("exports supported constraints and blocks physics without approval", () => {
+    const skeleton = minimalSkeleton();
+    skeleton.constraints = [
+      {
+        id: "ik-1",
+        name: "aim",
+        type: "ik",
+        order: 0,
+        targetBoneId: "bone-1",
+        boneIds: ["bone-1"],
+        mix: 1,
+        bendDirection: 1,
+      },
+    ];
+    expect(JSON.parse(serializeSpine38(skeleton)).constraints[0].type).toBe(
+      "ik",
+    );
+    skeleton.constraints.push({
+      id: "physics-1",
+      name: "physics",
+      type: "physics",
+      order: 1,
+    });
+    expect(() => serializeSpine38(skeleton)).toThrow("EXPORT_PLAN_UNRESOLVED");
+  });
   it("serializes DragonBones 5.5 and sorts atlas input", () => {
     const skeleton = minimalSkeleton();
     expect(JSON.parse(serializeDragonBones55(skeleton)).version).toBe("5.5");
