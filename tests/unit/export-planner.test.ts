@@ -12,12 +12,33 @@ import {
   ExportPlannerSession,
   compareRoundTripSemantics,
   scanExportCapabilities,
+  downgradePhysicsToSpine38,
 } from "../../packages/format-export/src/index.js";
 import { minimalSkeleton } from "../fixtures/canonical/minimal.js";
 import { importSpine38 } from "../../packages/format-spine-38/src/index.js";
 import { importDragonBones55 } from "../../packages/format-dragonbones/src/index.js";
 
 describe("export planning", () => {
+  it("requires an explicit physics downgrade policy", () => {
+    const skeleton = minimalSkeleton();
+    const physics = {
+      id: "p",
+      name: "p",
+      type: "physics" as const,
+      order: 0,
+      boneId: skeleton.bones[0]!.id,
+    };
+    const withPhysics = { ...skeleton, constraints: [physics] };
+    expect(downgradePhysicsToSpine38(withPhysics, "block").blocked).toEqual([
+      "p",
+    ]);
+    expect(
+      downgradePhysicsToSpine38(withPhysics, "remove").skeleton.constraints,
+    ).toEqual([]);
+    expect(
+      downgradePhysicsToSpine38(withPhysics, "bake", new Set(["p"])).baked,
+    ).toEqual(["p"]);
+  });
   it("blocks unresolved preserved semantics before bytes are written", () => {
     const skeleton = minimalSkeleton();
     const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;

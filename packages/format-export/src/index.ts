@@ -17,6 +17,62 @@ export interface ExportPlan {
   issues: ExportIssue[];
   blockers: ExportIssue[];
 }
+export type PhysicsDowngradeStrategy = "bake" | "remove" | "block";
+export interface PhysicsDowngradeResult {
+  skeleton: SkeletonData;
+  baked: string[];
+  removed: string[];
+  blocked: string[];
+}
+
+/** Projects canonical physics constraints to a Spine 3.8-compatible model. */
+export function downgradePhysicsToSpine38(
+  skeleton: SkeletonData,
+  strategy: PhysicsDowngradeStrategy,
+  bakedConstraintIds: ReadonlySet<string> = new Set(),
+): PhysicsDowngradeResult {
+  const physics = skeleton.constraints.filter(
+    (constraint) => constraint.type === "physics",
+  );
+  const blocked =
+    strategy === "block" ? physics.map((constraint) => constraint.id) : [];
+  const baked =
+    strategy === "bake"
+      ? physics
+          .filter((constraint) => bakedConstraintIds.has(constraint.id))
+          .map((constraint) => constraint.id)
+      : [];
+  const removed =
+    strategy === "remove"
+      ? physics.map((constraint) => constraint.id)
+      : strategy === "bake"
+        ? physics
+            .filter((constraint) => !bakedConstraintIds.has(constraint.id))
+            .map((constraint) => constraint.id)
+        : [];
+  if (blocked.length || (strategy === "bake" && removed.length))
+    return {
+      skeleton,
+      baked,
+      removed,
+      blocked: blocked.length ? blocked : removed,
+    };
+  return {
+    skeleton: {
+      ...skeleton,
+      constraints: skeleton.constraints.filter(
+        (constraint) => constraint.type !== "physics",
+      ),
+      metadata: {
+        ...(skeleton.metadata ?? {}),
+        spine38PhysicsDowngrade: strategy,
+      },
+    },
+    baked,
+    removed,
+    blocked: [],
+  };
+}
 export interface CapabilityEntry {
   entityId: string;
   feature: string;
