@@ -41,6 +41,14 @@ This phase is executed in independently verified batches. Every batch must pass
 - The generated notices are a release input; final distribution must include
   the full license texts and a separate review of application assets/fonts.
 
+### Batch 4 — Performance evidence — complete
+
+- Published `docs/release/PERFORMANCE_REPORT.md` from the existing selection
+  and skinning benchmarks.
+- Skinning passes the stated runtime smoke budget at 0.223 ms/frame.
+- Selection is 8.833 ms/sample against the <8 ms typical target and remains an
+  optimization candidate; this does not block correctness qualification.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
@@ -173,7 +181,7 @@ Run:
 - [ ] DragonBones corpus green (fixture/package evidence required)
 - [ ] native migration green (migration implementation required)
 - [x] crash recovery baseline green (autosave corruption is handled safely)
-- [ ] performance report published
+- [x] performance report published (selection follow-up remains)
 - [ ] package qualified
 - [x] SBOM/notices generated (legal review and bundled license texts remain)
 - [ ] user/developer docs complete
