@@ -23,6 +23,9 @@
       },
       "exactVersionPresent": false,
       "familyCompatibilityGreen": true,
+      "historyInspected": true,
+      "historyCommitCount": 5896,
+      "exactVersionSearchResult": "no 3.8.75 export found in official branch history",
       "gateStatus": "blocked-pending-official-3.8.75-export"
     },
     {

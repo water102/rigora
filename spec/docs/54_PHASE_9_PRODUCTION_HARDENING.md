@@ -602,3 +602,13 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
   native security (20/20), and MSI/NSIS artifact verification all passed.
 - The report explicitly limits the claim to deterministic local evidence; it
   does not close the exact Spine 3.8.75 or clean-machine compatibility gates.
+
+## Batch 50 — official Spine 3.8 history audit
+
+- Expanded the ignored official 3.8 checkout from a shallow clone and inspected
+  all 5,896 commits reachable from the `3.8` branch.
+- No exact `3.8.75` export was found in the official branch history; the result
+  is recorded in `SPINE_CORPUS_PROVENANCE.json`.
+- This closes the repository-history search path without weakening the exact
+  version gate. A licensed/exported exact 3.8.75 fixture is still required to
+  close that gate.
