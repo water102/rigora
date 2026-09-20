@@ -1,6 +1,6 @@
 # Batch 9 — Pixi Mesh Renderer
 
-This batch implements the GPU mesh rendering stage defined in [the LoongBones addendum](../plans/loongbones-spec-addendum.md) and [Renderer Contract](../contracts/renderer-contract.md).
+This batch implements the GPU mesh rendering stage defined in [the LoongBones addendum](../../plans/completed/loongbones-spec-addendum.md) and [Renderer Contract](../../contracts/renderer-contract.md).
 
 ## Implemented
 

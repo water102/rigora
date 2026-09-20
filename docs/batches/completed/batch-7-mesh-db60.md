@@ -1,6 +1,6 @@
 # Batch 7 — Mesh foundation and DB6 recognition
 
-This batch follows the priorities in [the approved LoongBones addendum](../plans/loongbones-spec-addendum.md), informed by `research/loongapp/analysis.md`. The supplied research and original spec are not edited. The archived DragonBones version string was inspected as supporting inventory evidence; no archived implementation code or media is copied into production packages.
+This batch follows the priorities in [the approved LoongBones addendum](../../plans/completed/loongbones-spec-addendum.md), informed by `research/loongapp/analysis.md`. The supplied research and original spec are not edited. The archived DragonBones version string was inspected as supporting inventory evidence; no archived implementation code or media is copied into production packages.
 
 ## Implemented
 

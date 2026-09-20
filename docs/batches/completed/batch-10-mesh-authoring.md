@@ -1,6 +1,6 @@
 # Batch 10 — Studio Authoring Lab: Automated Mesh and Weights
 
-This batch implements automated mesh generation and weight computation defined in [the LoongBones addendum](../plans/loongbones-spec-addendum.md) and [Spec 28 Mesh Geometry & Weight Algorithms](../spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md).
+This batch implements automated mesh generation and weight computation defined in [the LoongBones addendum](../../plans/completed/loongbones-spec-addendum.md) and [Spec 28 Mesh Geometry & Weight Algorithms](../../spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md).
 
 ## Implemented
 
@@ -35,5 +35,5 @@ This batch implements automated mesh generation and weight computation defined i
 
 ## Verification
 
-- Unit test suite: [`tests/unit/authoring.test.ts`](../../tests/unit/authoring.test.ts) covering triangulation, point-to-segment math, auto-weights, and Laplacian smoothing.
-- Browser test suite: [`tests/browser/preview.spec.ts`](../../tests/browser/preview.spec.ts) covering canvas rendering of weighted meshes and worker-generated meshes.
+- Unit test suite: [`tests/unit/authoring.test.ts`](../../../tests/unit/authoring.test.ts) covering triangulation, point-to-segment math, auto-weights, and Laplacian smoothing.
+- Browser test suite: [`tests/browser/preview.spec.ts`](../../../tests/browser/preview.spec.ts) covering canvas rendering of weighted meshes and worker-generated meshes.

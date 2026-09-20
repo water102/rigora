@@ -38,18 +38,18 @@ Batch 12 implements deterministic Inverse Kinematics (One-Bone and Two-Bone Anal
 
 ### 3. Canonical Fixture & Test Suite
 
-- **Fixture**: [`tests/fixtures/canonical/ik-skeleton.ts`](../../tests/fixtures/canonical/ik-skeleton.ts):
+- **Fixture**: [`tests/fixtures/canonical/ik-skeleton.ts`](../../../tests/fixtures/canonical/ik-skeleton.ts):
   - 1-bone IK setup (`bone-look` aiming at `target-look`).
   - 2-bone IK setup (`bone-thigh` + `bone-shin` reaching `target-foot`).
   - Transform constraint setup (`bone-follower` tracking `bone-source`).
-- **Unit Tests**: [`tests/unit/constraints.test.ts`](../../tests/unit/constraints.test.ts) (7 tests):
+- **Unit Tests**: [`tests/unit/constraints.test.ts`](../../../tests/unit/constraints.test.ts) (7 tests):
   - 1-bone IK target alignment and `mix` interpolation.
   - 2-bone IK target contact ($D < L_1 + L_2$).
   - 2-bone IK elbow direction flipping with `bendDirection = -1`.
   - 2-bone IK full extension under unreachable targets.
   - Transform constraint rotation copy.
   - Skinned mesh vertex displacement driven by constrained bones.
-- **Browser E2E Tests**: [`tests/browser/preview.spec.ts`](../../tests/browser/preview.spec.ts):
+- **Browser E2E Tests**: [`tests/browser/preview.spec.ts`](../../../tests/browser/preview.spec.ts):
   - Validates `Canonical IK & Constraints` live canvas rendering.
 
 ## Verification

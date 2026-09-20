@@ -372,8 +372,8 @@ workflow.
 - [Spine Graph view](https://us.esotericsoftware.com/spine-graph)
 - [Spine Skins](https://us.esotericsoftware.com/spine-skins)
 - [Spine Physics Constraints](https://us.esotericsoftware.com/spine-physics-constraints)
-- `spec/docs/01_PRODUCT_SCOPE.md`
-- `spec/docs/05_FEATURE_MATRIX.md`
-- `spec/docs/11_EDITOR_ARCHITECTURE.md`
-- `spec/docs/20_ROADMAP.md`
-- `spec/docs/44_MASTER_EXECUTION_PLAN.md`
+- [Spec 01: Product Scope](../../spec/docs/01_PRODUCT_SCOPE.md)
+- [Spec 05: Feature Matrix](../../spec/docs/05_FEATURE_MATRIX.md)
+- [Spec 11: Editor Architecture](../../spec/docs/11_EDITOR_ARCHITECTURE.md)
+- [Spec 20: Roadmap](../../spec/docs/20_ROADMAP.md)
+- [Spec 44: Master Execution Plan](../../spec/docs/44_MASTER_EXECUTION_PLAN.md)
