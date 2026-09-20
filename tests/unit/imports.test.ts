@@ -235,6 +235,20 @@ it("preserves array-valued Spine animation channels", () => {
     ),
   ).toBe(true);
 });
+it("preserves Spine point attachments without inventing geometry", () => {
+  const fixture = structuredClone(spineFixture);
+  const attachment = fixture.skins[0]!.attachments.body!.logical!;
+  attachment.type = "point";
+  attachment.x = 3;
+  attachment.y = 4;
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "SP38_POINT_ATTACHMENT_PRESERVED",
+    ),
+  ).toBe(true);
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(

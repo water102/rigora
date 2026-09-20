@@ -326,6 +326,22 @@ export function importSpine38(text: string, options: ImportOptions) {
                   : {}),
               };
             }
+            if (item["type"] === "point") {
+              diagnostics.push({
+                code: "SP38_POINT_ATTACHMENT_PRESERVED",
+                severity: "warning",
+                message:
+                  "Spine point attachment is preserved until a canonical point attachment contract is available.",
+                jsonPointer: loc,
+              });
+              return {
+                type: "unknownPreserved" as const,
+                id,
+                name: string(item["name"], loc + "/name", key),
+                sourceFormat: "spine-point-attachment",
+                payload: item as unknown as JsonValue,
+              };
+            }
             if (item["type"] !== undefined && item["type"] !== "region")
               fail(
                 "SP38_UNSUPPORTED_ATTACHMENT",

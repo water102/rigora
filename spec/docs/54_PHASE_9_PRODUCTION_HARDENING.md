@@ -306,6 +306,15 @@ This phase is executed in independently verified batches. Every batch must pass
   successful Spine 4.2 imports; the same compatibility path preserves array
   channels in the Spine 3.8 probe as well.
 
+### Batch 35 — Spine point attachment preservation — partial
+
+- Spine `point` attachments are now preserved as `unknownPreserved` payloads
+  with warning `SP38_POINT_ATTACHMENT_PRESERVED`; no synthetic region or mesh
+  geometry is generated.
+- Added a regression test. The downloaded 4.2 set now reports the point case
+  explicitly; overall success remains 27/136 because that file has additional
+  mesh/reference failures.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
