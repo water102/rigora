@@ -243,6 +243,15 @@ This phase is executed in independently verified batches. Every batch must pass
   separate schema/feature failures, so the corpus total remains 39/172 and the
   DragonBones release gate remains open.
 
+### Batch 28 — DragonBones 5.0 schema admission — partial
+
+- The adapter now admits DragonBones 5.0 skeletal exports when their structure
+  is compatible with the normalized adapter path; unsupported families remain
+  rejected explicitly.
+- The corpus probe now reports eight fewer `DB55_UNSUPPORTED_VERSION`
+  diagnostics. Existing 5.0 files still have independent schema/feature
+  failures, so successful imports remain 39/172 and the release gate stays open.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

@@ -63,12 +63,12 @@
       "diagnosticCodes": {
         "CORE_SOURCE_SCHEMA": 8,
         "CORE_UNSUPPORTED_BEHAVIOR": 22,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 111,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 114,
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA": 161,
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA": 7,
         "DB55_NESTED_ARMATURE_PRESERVED": 25,
         "DB55_UNSUPPORTED_ARMATURE": 3,
-        "DB55_UNSUPPORTED_VERSION": 11
+        "DB55_UNSUPPORTED_VERSION": 8
       }
     }
   },
@@ -241,7 +241,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "dragonbones-js\\Cocos\\Demos\\assets\\resources\\skin_1502b\\skin_1502b_ske.json",
@@ -833,7 +833,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "dragonbones-js\\Egret\\Demos\\resource\\skin_1502b\\skin_1502b_ske.json",
@@ -1839,7 +1839,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["DB55_UNSUPPORTED_VERSION"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "dragonbones-js\\Pixi\\Demos\\resource\\skin_1502b\\skin_1502b_ske.json",
