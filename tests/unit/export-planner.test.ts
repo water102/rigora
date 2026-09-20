@@ -572,6 +572,58 @@ describe("export planning", () => {
     );
     expect(createExportPlan(skeleton, "spine-3.8").issues).toHaveLength(0);
   });
+  it("round-trips a Spine transform constraint", () => {
+    const skeleton = minimalSkeleton();
+    const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "region",
+        id: point.id,
+        name: "hero",
+        textureId: "hero.png",
+        transform: {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        width: 1,
+        height: 1,
+      },
+    ];
+    skeleton.constraints = [
+      {
+        id: "transform-1",
+        name: "follow",
+        type: "transform",
+        order: 0,
+        targetBoneId: "bone-1",
+        boneIds: ["bone-1"],
+        mixRotate: 0.5,
+        mixTranslateX: 0.25,
+        mixTranslateY: 0.75,
+        mixScaleX: 1,
+        mixScaleY: 1,
+        mixShearY: 0,
+        local: false,
+        relative: true,
+      },
+    ];
+    const ast = JSON.parse(serializeSpine38(skeleton));
+    expect(ast.constraints[0].type).toBe("transform");
+    expect(ast.constraints[0].mixRotate).toBe(0.5);
+    const result = importSpine38(serializeSpine38(skeleton), {
+      namespace: "transform-rt",
+      mode: "strict",
+      textures: new Map([["hero", { id: "hero.png", width: 1, height: 1 }]]),
+    });
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    if (result.success)
+      expect((result.skeletons[0]!.constraints[0] as any).relative).toBe(true);
+  });
   it("serializes DragonBones 5.5 and sorts atlas input", () => {
     const skeleton = minimalSkeleton();
     expect(JSON.parse(serializeDragonBones55(skeleton)).version).toBe("5.5");

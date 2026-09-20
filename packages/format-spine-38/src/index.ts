@@ -411,7 +411,7 @@ export function importSpine38(text: string, options: ImportOptions) {
                 boneIds,
                 `/constraints/${index}/target`,
               ),
-              boneIds,
+              boneIds: bones,
               mixRotate: number(
                 item["mixRotate"],
                 `/constraints/${index}/mixRotate`,
@@ -427,11 +427,23 @@ export function importSpine38(text: string, options: ImportOptions) {
                 `/constraints/${index}/mixY`,
                 1,
               ),
-              mixScaleX: 0,
-              mixScaleY: 0,
-              mixShearY: 0,
-              local: false,
-              relative: false,
+              mixScaleX: number(
+                item["mixScaleX"],
+                `/constraints/${index}/mixScaleX`,
+                0,
+              ),
+              mixScaleY: number(
+                item["mixScaleY"],
+                `/constraints/${index}/mixScaleY`,
+                0,
+              ),
+              mixShearY: number(
+                item["mixShearY"],
+                `/constraints/${index}/mixShearY`,
+                0,
+              ),
+              local: item["local"] === true,
+              relative: item["relative"] === true,
             } as any;
           if (type === "path")
             return {

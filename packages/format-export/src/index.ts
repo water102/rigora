@@ -399,6 +399,25 @@ export function toSpine38Ast(
                     spacing: constraint.spacing,
                   }
                 : {}),
+              ...(constraint.type === "transform"
+                ? {
+                    target: skeleton.bones.find(
+                      (bone) => bone.id === constraint.targetBoneId,
+                    )?.name,
+                    bones: constraint.boneIds.map(
+                      (id) =>
+                        skeleton.bones.find((bone) => bone.id === id)?.name,
+                    ),
+                    mixRotate: constraint.mixRotate,
+                    mixX: constraint.mixTranslateX,
+                    mixY: constraint.mixTranslateY,
+                    mixScaleX: constraint.mixScaleX,
+                    mixScaleY: constraint.mixScaleY,
+                    mixShearY: constraint.mixShearY,
+                    local: constraint.local,
+                    relative: constraint.relative,
+                  }
+                : {}),
             })),
         }
       : {}),
