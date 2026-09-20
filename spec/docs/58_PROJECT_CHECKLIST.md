@@ -88,13 +88,13 @@
 - [x] round-trip
 
 ## Spine 4.2
-- [ ] separate adapter
-- [ ] delta matrix
-- [ ] core import
+- [x] separate adapter
+- [x] delta matrix
+- [x] core import
 - [ ] mesh/deform
 - [ ] constraints
 - [ ] texture metadata
-- [ ] physics mapping
+- [x] physics mapping
 - [ ] export subset
 - [ ] downgrade
 
