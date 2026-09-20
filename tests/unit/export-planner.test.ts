@@ -108,6 +108,17 @@ describe("export planning", () => {
     expect(first.report.checksum).toBe(second.report.checksum);
     expect(first.bytes).toEqual(second.bytes);
   });
+  it("keeps export deterministic across a generated fixture corpus", () => {
+    for (let index = 0; index < 32; index += 1) {
+      const skeleton = minimalSkeleton();
+      skeleton.bones[0]!.setup.x = index * 0.125;
+      skeleton.bones[0]!.setup.rotation = index * 0.03125;
+      const first = exportSkeleton(skeleton, "spine-3.8");
+      const second = exportSkeleton(skeleton, "spine-3.8");
+      expect(first.report.checksum).toBe(second.report.checksum);
+      expect(first.bytes).toEqual(second.bytes);
+    }
+  });
   it("serializes DragonBones 5.5 and sorts atlas input", () => {
     const skeleton = minimalSkeleton();
     expect(JSON.parse(serializeDragonBones55(skeleton)).version).toBe("5.5");
