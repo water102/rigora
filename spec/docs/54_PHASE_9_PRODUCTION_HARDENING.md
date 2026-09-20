@@ -351,6 +351,17 @@ This phase is executed in independently verified batches. Every batch must pass
   imports with zero failed files. This is corpus evidence for the downloaded
   4.2 runtime exports, not yet the separate official release gate.
 
+### Batch 40 — Nested Spine animation preservation — partial
+
+- Non-keyed or nested animation channels such as deform/draw-order structures
+  are now preserved as `spine.raw.*` timelines with
+  `SP38_ANIMATION_TIMELINE_PRESERVED`, avoiding invalid targetless canonical
+  timelines.
+- Added a regression test. Spine 3.8 corpus improved from 32/116 to 94/116;
+  Spine 4.2 remains fully green at 136/136. Remaining 3.8 failures are
+  concentrated in explicit version, path/constraint, reference, and texture
+  qualification cases.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

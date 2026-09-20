@@ -254,6 +254,19 @@ it("preserves array-valued Spine animation channels", () => {
     ),
   ).toBe(true);
 });
+it("preserves nested Spine animation timelines without a flat target", () => {
+  const fixture = {
+    ...structuredClone(spineFixture),
+    animations: { idle: { deform: { default: { logical: { keys: [] } } } } },
+  };
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "SP38_ANIMATION_TIMELINE_PRESERVED",
+    ),
+  ).toBe(true);
+});
 it("preserves Spine point attachments without inventing geometry", () => {
   const fixture = structuredClone(spineFixture);
   const attachment = fixture.skins[0]!.attachments.body!.logical!;

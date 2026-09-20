@@ -552,6 +552,26 @@ export function importSpine38(text: string, options: ImportOptions) {
                 channel,
                 `/animations/${pointer(name)}/${pointer(type)}`,
               );
+              if (!Array.isArray(item["keys"])) {
+                diagnostics.push({
+                  code: "SP38_ANIMATION_TIMELINE_PRESERVED",
+                  severity: "warning",
+                  message:
+                    "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+                  jsonPointer: `/animations/${pointer(name)}/${pointer(type)}`,
+                });
+                return {
+                  id: `${options.namespace}:animation:${animationIndex}:${timelineIndex}`,
+                  type: `spine.raw.${type}`,
+                  keyframes: [
+                    {
+                      time: 0,
+                      value: channel as unknown as JsonValue,
+                      curve: { type: "linear" },
+                    },
+                  ],
+                };
+              }
               const keys = list(
                 item["keys"],
                 `/animations/${pointer(name)}/${pointer(type)}/keys`,
