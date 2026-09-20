@@ -429,6 +429,19 @@ export function toDragonBones55Ast(skeleton: SkeletonData): DragonBones55Ast {
             })),
           })),
         })),
+        ik: skeleton.constraints
+          .filter((constraint) => constraint.type === "ik")
+          .map((constraint) => ({
+            name: constraint.name,
+            target: skeleton.bones.find(
+              (bone) => bone.id === constraint.targetBoneId,
+            )?.name,
+            bone: constraint.boneIds.map(
+              (id) => skeleton.bones.find((bone) => bone.id === id)?.name,
+            ),
+            weight: constraint.mix,
+            bendPositive: constraint.bendDirection === 1,
+          })),
       },
     ],
   };

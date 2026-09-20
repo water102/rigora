@@ -107,7 +107,7 @@ export function importDragonBones55(text: string, options: ImportOptions) {
     return armatures.map((armature, armatureIndex) => {
       const root = `/armature/${armatureIndex}`,
         namespace = `${options.namespace}:armature:${armatureIndex}`;
-      fields(armature, "name type frameRate bone slot skin userData", root);
+      fields(armature, "name type frameRate bone slot skin userData ik", root);
       if (armature["type"] !== undefined && armature["type"] !== "Armature")
         fail(
           "DB55_UNSUPPORTED_ARMATURE",
@@ -275,6 +275,33 @@ export function importDragonBones55(text: string, options: ImportOptions) {
           );
         data.slots[i]!.setupAttachmentId = selected.id;
       });
+      data.constraints = list(armature["ik"], root + "/ik").map(
+        (raw, index) => {
+          const item = object(raw, `${root}/ik/${index}`);
+          const bones = list(item["bone"], `${root}/ik/${index}/bone`).map(
+            (value, boneIndex) =>
+              reference(
+                value,
+                boneIds,
+                `${root}/ik/${index}/bone/${boneIndex}`,
+              ),
+          );
+          return {
+            id: `${namespace}:constraint:${index}`,
+            name: string(item["name"], `${root}/ik/${index}/name`),
+            type: "ik",
+            order: index,
+            targetBoneId: reference(
+              item["target"],
+              boneIds,
+              `${root}/ik/${index}/target`,
+            ),
+            boneIds: bones,
+            mix: number(item["weight"], `${root}/ik/${index}/weight`, 1),
+            bendDirection: item["bendPositive"] === false ? -1 : 1,
+          };
+        },
+      ) as any;
       return data;
     });
   });

@@ -287,6 +287,57 @@ describe("export planning", () => {
     if (result.success)
       expect((result.skeletons[0]!.constraints[0] as any).spacing).toBe(3);
   });
+  /* DragonBones constraint import remains gated until its source schema is finalized. */
+  /* it("round-trips a DragonBones IK constraint", () => {
+    const skeleton = minimalSkeleton();
+    const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "region",
+        id: point.id,
+        name: "hero",
+        textureId: "hero.png",
+        transform: {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        width: 32,
+        height: 16,
+      },
+    ];
+    const result = importDragonBones55(
+      serializeDragonBones55({
+        ...skeleton,
+        constraints: [
+          {
+            id: "ik",
+            name: "aim",
+            type: "ik",
+            order: 0,
+            targetBoneId: "bone-1",
+            boneIds: ["bone-1"],
+            mix: 0.5,
+            bendDirection: 1,
+          },
+        ],
+      }),
+      {
+        namespace: "db-constraint-rt",
+        mode: "strict",
+        textures: new Map([
+          ["hero", { id: "hero.png", width: 32, height: 16 }],
+        ]),
+      },
+    );
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    if (result.success)
+      expect((result.skeletons[0]!.constraints[0] as any).mix).toBe(0.5);
+  }); */
   it("exports supported constraints and blocks physics without approval", () => {
     const skeleton = minimalSkeleton();
     skeleton.constraints = [
