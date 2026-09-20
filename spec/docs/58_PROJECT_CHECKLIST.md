@@ -195,40 +195,40 @@
 - [x] reports
 
 ## Native format
-- [ ] manifest
-- [ ] skeletons
-- [ ] assets
-- [ ] editor state
-- [ ] provenance
-- [ ] checksums
-- [ ] migration
-- [ ] atomic save
-- [ ] recovery
+- [x] manifest
+- [x] skeletons
+- [x] assets
+- [x] editor state
+- [x] provenance
+- [x] checksums
+- [x] migration
+- [x] atomic save
+- [x] recovery
 
 ## Tests
-- [ ] unit
+- [x] unit
 - [ ] property
-- [ ] parser
+- [x] parser
 - [ ] semantic fixtures
 - [ ] numeric pose
 - [ ] vertex diff
 - [ ] visual diff
-- [ ] round-trip
-- [ ] E2E
+- [x] round-trip
+- [x] E2E (Chromium smoke suite)
 - [ ] fuzz
-- [ ] security
-- [ ] performance
-- [ ] migration
-- [ ] recovery
+- [x] security (native archive boundary tests)
+- [x] performance (smoke report; selection follow-up remains)
+- [x] migration
+- [x] recovery
 
 ## Release/legal
-- [ ] dependency ledger
+- [x] dependency ledger
 - [ ] licenses reviewed
-- [ ] notices
-- [ ] SBOM
+- [x] notices
+- [x] SBOM
 - [ ] asset/font/icon licenses
-- [ ] clean-room record
-- [ ] precise compatibility claims
+- [x] clean-room record
+- [x] precise compatibility claims
 
 ## Release candidate
 - [ ] M0

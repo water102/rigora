@@ -131,6 +131,13 @@ This phase is executed in independently verified batches. Every batch must pass
 - MSI install/uninstall passed with clean removal.
 - Both configured Windows installer families are now qualified locally.
 
+### Batch 16 — Master checklist reconciliation — complete
+
+- Updated `58_PROJECT_CHECKLIST.md` to reflect only evidence-backed native,
+  test, release metadata and documentation work.
+- External vendor corpus, property-based/fuzz coverage and asset-license review
+  remain intentionally unchecked.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
