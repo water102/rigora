@@ -502,6 +502,40 @@ describe("export planning", () => {
     expect(first.report.checksum).toBe(second.report.checksum);
     expect(first.bytes).toEqual(second.bytes);
   });
+  it("imports back the exact Spine 3.8.75 profile", () => {
+    const skeleton = minimalSkeleton();
+    const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "region",
+        id: point.id,
+        name: "hero",
+        textureId: "hero.png",
+        transform: {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        width: 1,
+        height: 1,
+      },
+    ];
+    const result = importSpine38(serializeSpine38(skeleton, "3.8.75"), {
+      namespace: "spine-3875-rt",
+      mode: "strict",
+      textures: new Map([["hero", { id: "hero.png", width: 1, height: 1 }]]),
+    });
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    if (result.success) {
+      expect(result.source).toBeDefined();
+      expect(result.skeletons[0]!.bones[0]!.name).toBe("root");
+      expect(result.skeletons[0]!.source?.format).toBe("spine");
+    }
+  });
   it("keeps export deterministic across a generated fixture corpus", () => {
     for (let index = 0; index < 32; index += 1) {
       const skeleton = minimalSkeleton();
