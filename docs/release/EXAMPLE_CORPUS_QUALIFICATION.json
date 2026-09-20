@@ -46,7 +46,8 @@
         "CORE_UNSUPPORTED_SOURCE_FIELD": 104,
         "SP38_PATH_ATTACHMENT_PRESERVED": 5,
         "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 2,
-        "SP42_CORE_SUBSET_ADAPTER": 8
+        "SP42_CORE_SUBSET_ADAPTER": 8,
+        "SP42_PHYSICS_PRESERVED": 24
       }
     },
     "dragonbones": {
@@ -3831,8 +3832,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\chibi-stickers\\export\\chibi-stickers.json",
@@ -3849,8 +3853,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\coin\\export\\coin-pro.json",
@@ -4003,8 +4010,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\snowglobe\\export\\snowglobe-pro.json",
@@ -4012,8 +4022,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\speedy\\export\\speedy-ess.json",
@@ -4162,8 +4175,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\cloud-pot.json",
@@ -4171,8 +4187,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\coin-pro.json",
@@ -4240,8 +4259,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\snowglobe-pro.json",
@@ -4249,8 +4271,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\spineboy-pro.json",
@@ -4321,8 +4346,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\cloud-pot\\cloud-pot.json",
@@ -4330,8 +4358,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\coin\\coin-pro.json",
@@ -4430,8 +4461,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\snowglobe\\snowglobe-pro.json",
@@ -4439,8 +4473,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\spineboy\\spineboy-ess.json",
@@ -4475,8 +4512,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-monogame\\spine-monogame-example\\data\\coin-pro.json",
@@ -4529,8 +4569,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\cloud-pot.json",
@@ -4538,8 +4581,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\coin-pro.json",
@@ -4607,8 +4653,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\snowglobe-pro.json",
@@ -4616,8 +4665,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\spineboy-pro.json",
@@ -4670,8 +4722,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\cloud-pot.json",
@@ -4679,8 +4734,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\coin-pro.json",
@@ -4748,8 +4806,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\snowglobe-pro.json",
@@ -4757,8 +4818,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\spineboy-pro.json",
@@ -4811,8 +4875,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\chibi-stickers.json",
@@ -4880,8 +4947,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\spineboy-ess.json",
@@ -4997,8 +5067,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP42_PHYSICS_PRESERVED"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\Dragon\\dragon.json",

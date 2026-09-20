@@ -53,6 +53,8 @@ export function importSpine42(
   );
   const compatible = JSON.stringify({ ...source, skeleton: meta });
   const compatibleSource = JSON.parse(compatible) as Record<string, unknown>;
+  const topLevelPhysics = compatibleSource.physics;
+  delete compatibleSource.physics;
   compatibleSource.constraints = compatibleConstraints;
   const result = importSpine38(JSON.stringify(compatibleSource), options);
   if (result.success) {
@@ -105,6 +107,17 @@ export function importSpine42(
       });
       skeletonData.source!.version = version;
       skeletonData.source!.warnings.push("SP42_CORE_SUBSET_ADAPTER");
+      if (Array.isArray(topLevelPhysics))
+        skeletonData.constraints.push(
+          ...topLevelPhysics.map((payload, index) => ({
+            id: `${options.namespace}:physics-preserved:${index}`,
+            name: `physics-preserved-${index}`,
+            type: "unknownPreserved" as const,
+            order: skeletonData.constraints.length + index,
+            sourceFormat: "spine-4.2-physics",
+            payload: payload as any,
+          })),
+        );
       skeletonData.metadata = {
         ...(skeletonData.metadata ?? {}),
         spine42CapabilityMatrix,
@@ -118,5 +131,12 @@ export function importSpine42(
       jsonPointer: "/skeleton/spine",
     });
   }
+  if (Array.isArray(topLevelPhysics))
+    result.diagnostics.push({
+      code: "SP42_PHYSICS_PRESERVED",
+      severity: "warning",
+      message: "Top-level Spine 4.2 physics blocks are preserved explicitly.",
+      jsonPointer: "/physics",
+    });
   return result;
 }

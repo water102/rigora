@@ -47,4 +47,20 @@ describe("Spine 4.2 adapter", () => {
       });
     }
   });
+  it("preserves top-level 4.2 physics blocks explicitly", () => {
+    const result = importSpine42(
+      JSON.stringify({
+        skeleton: { spine: "4.2.1" },
+        bones: [{ name: "root" }],
+        physics: [{ name: "wind", strength: 1 }],
+      }),
+      { namespace: "test" },
+    );
+    expect(result.success).toBe(true);
+    expect(
+      result.diagnostics.some(
+        (diagnostic) => diagnostic.code === "SP42_PHYSICS_PRESERVED",
+      ),
+    ).toBe(true);
+  });
 });
