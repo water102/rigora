@@ -10,7 +10,7 @@ With Batch 13, all Phase 3 constraints (One-Bone IK, Two-Bone analytic IK, Trans
 
 ## Key Additions
 
-### 1. Path Geometry Compiler & Arc-Length Engine ([`packages/runtime/src/path.ts`](../packages/runtime/src/path.ts))
+### 1. Path Geometry Compiler & Arc-Length Engine ([`packages/runtime/src/path.ts`](../../packages/runtime/src/path.ts))
 
 - **Cubic Bezier Evaluation**:
   - Analytical point evaluation $B(t) = (1-t)^3 P_0 + 3(1-t)^2 t P_1 + 3(1-t) t^2 P_2 + t^3 P_3$.
@@ -29,7 +29,7 @@ With Batch 13, all Phase 3 constraints (One-Bone IK, Two-Bone analytic IK, Trans
 
 ---
 
-### 2. Path Constraint Solver ([`packages/runtime/src/constraints.ts`](../packages/runtime/src/constraints.ts))
+### 2. Path Constraint Solver ([`packages/runtime/src/constraints.ts`](../../packages/runtime/src/constraints.ts))
 
 - **Position Modes**:
   - `percent`: starting distance $s_0 = \text{position} \times L$.
@@ -52,12 +52,12 @@ With Batch 13, all Phase 3 constraints (One-Bone IK, Two-Bone analytic IK, Trans
 
 ### 3. Canonical Fixtures & Test Suites
 
-- **Fixture**: [`tests/fixtures/canonical/path-skeleton.ts`](../tests/fixtures/canonical/path-skeleton.ts):
+- **Fixture**: [`tests/fixtures/canonical/path-skeleton.ts`](../../tests/fixtures/canonical/path-skeleton.ts):
   - Multi-bone chain constrained to follow paths.
   - Open cubic Bezier path attachment with high curvature.
   - Closed loop path attachment.
   - Weighted path attachment driven by bone transforms.
-- **Unit Tests**: [`tests/unit/path-constraints.test.ts`](../tests/unit/path-constraints.test.ts) (12 tests):
+- **Unit Tests**: [`tests/unit/path-constraints.test.ts`](../../tests/unit/path-constraints.test.ts) (12 tests):
   - Exact arc length and sampling on straight cubic segment.
   - High-curvature arc length, midpoint peak, and start/end tangents.
   - Open path clamping and closed path modulo wrapping.
@@ -71,8 +71,8 @@ With Batch 13, all Phase 3 constraints (One-Bone IK, Two-Bone analytic IK, Trans
   - Constraint chaining (IK preceding Path constraint).
   - Child bone transform inheritance from path-constrained parent.
 - **Compatibility Lab & E2E**:
-  - [`apps/compatibility-lab/index.html`](../apps/compatibility-lab/index.html) & [`apps/compatibility-lab/src/main.ts`](../apps/compatibility-lab/src/main.ts): added `Canonical Path Constraint` option.
-  - [`tests/browser/preview.spec.ts`](../tests/browser/preview.spec.ts): browser assertion for path constraint live canvas rendering.
+  - [`apps/compatibility-lab/index.html`](../../apps/compatibility-lab/index.html) & [`apps/compatibility-lab/src/main.ts`](../../apps/compatibility-lab/src/main.ts): added `Canonical Path Constraint` option.
+  - [`tests/browser/preview.spec.ts`](../../tests/browser/preview.spec.ts): browser assertion for path constraint live canvas rendering.
 
 ---
 

@@ -11,7 +11,7 @@
 
 The foundational specification pack in `spec/` defines a clean-room canonical model for 2D skeletal animation, targeting Spine 3.8 and DragonBones 5.5 JSON.
 
-An empirical investigation of the active LoongBones Web Studio (`https://www.loongbones.app`) and its raw engine assets (archived in [`research/loongapp/raw/`](../research/loongapp/raw/)) demonstrates modern industry capabilities in browser-based skeletal authoring. This addendum documents 5 concrete technical upgrades for the Rigora roadmap.
+An empirical investigation of the active LoongBones Web Studio (`https://www.loongbones.app`) and its raw engine assets (archived in [`research/loongapp/raw/`](../../research/loongapp/raw/)) demonstrates modern industry capabilities in browser-based skeletal authoring. This addendum documents 5 concrete technical upgrades for the Rigora roadmap.
 
 ---
 
@@ -19,7 +19,7 @@ An empirical investigation of the active LoongBones Web Studio (`https://www.loo
 
 ### Addendum A — Advanced Auto-Weighting via BBW (Supersedes Spec 28 Part J)
 
-- **Referenced Spec:** [`spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md`](../spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md) (Part J: Auto weights V1).
+- **Referenced Spec:** [`spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md`](../../spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md) (Part J: Auto weights V1).
 - **Limitation in Spec V1:** The distance heuristic $s_i = 1 / (d_i + \epsilon)^p$ produces cross-limb weight bleeding, pinching at joints, and volume loss on bendable meshes.
 - **Modern Standard (LoongBones Reference):** Bounded Biharmonic Weights (**BBW**) over a 2D Constrained Delaunay Triangulation (CDT).
   - **Algorithm Formulation:** For each bone handle $j$, solve for weight function $w_j$ by minimizing the Laplacian energy subject to boundary and partition-of-unity constraints:
@@ -36,7 +36,7 @@ An empirical investigation of the active LoongBones Web Studio (`https://www.loo
 
 ### Addendum B — DragonBones 6.0.x Schema Evolution (Extends Spec 08)
 
-- **Referenced Spec:** [`spec/docs/08_DRAGONBONES_COMPATIBILITY.md`](../spec/docs/08_DRAGONBONES_COMPATIBILITY.md).
+- **Referenced Spec:** [`spec/docs/08_DRAGONBONES_COMPATIBILITY.md`](../../spec/docs/08_DRAGONBONES_COMPATIBILITY.md).
 - **Baseline Extension:** Extend `@rigora/format-dragonbones` from 5.5 to recognize DragonBones 6.0.x additions found in LoongBones:
   1. **Physics Constraints (`physicsConstraint`):**
      - Fields: `gravity`, `wind`, `damping`, `mass`, `friction`, `preheat`.
@@ -54,7 +54,7 @@ An empirical investigation of the active LoongBones Web Studio (`https://www.loo
 
 ### Addendum C — PixiJS v8 Deformable Mesh Pipeline (Extends Renderer Contract)
 
-- **Referenced Spec:** [`docs/renderer-contract.md`](renderer-contract.md) & [`spec/docs/10_RUNTIME_ARCHITECTURE.md`](../spec/docs/10_RUNTIME_ARCHITECTURE.md).
+- **Referenced Spec:** [`docs/renderer-contract.md`](../contracts/renderer-contract.md) & [`spec/docs/10_RUNTIME_ARCHITECTURE.md`](../../spec/docs/10_RUNTIME_ARCHITECTURE.md).
 - **Current State:** Batch 6 `PixiRegionRenderer` renders setup-only rectangular `PIXI.Sprite` instances.
 - **Upgrade Path to Skinned Deformable Mesh:**
   1. **Canonical Schema (`@rigora/model`):**
@@ -72,7 +72,7 @@ An empirical investigation of the active LoongBones Web Studio (`https://www.loo
 
 ### Addendum D — Editor Architecture: Command Bus & Docking (Extends Spec 11 & 12)
 
-- **Referenced Spec:** [`spec/docs/11_EDITOR_ARCHITECTURE.md`](../spec/docs/11_EDITOR_ARCHITECTURE.md) and [`spec/docs/12_COMMAND_UNDO_AI_ARCHITECTURE.md`](../spec/docs/12_COMMAND_UNDO_AI_ARCHITECTURE.md).
+- **Referenced Spec:** [`spec/docs/11_EDITOR_ARCHITECTURE.md`](../../spec/docs/11_EDITOR_ARCHITECTURE.md) and [`spec/docs/12_COMMAND_UNDO_AI_ARCHITECTURE.md`](../../spec/docs/12_COMMAND_UNDO_AI_ARCHITECTURE.md).
 - **Validation from LoongBones `GMVC` (`raw/editor/libs/gmvc.js`):**
   - **Symmetric Command Pattern:** Every editor action (`CreateBoneCommand`, `SetKeyframeCommand`, `ModifyWeightCommand`) executes symmetrically with explicit `undo()` reverting the canonical project store.
   - **Dual-Mode Authoring:**
@@ -87,13 +87,13 @@ An empirical investigation of the active LoongBones Web Studio (`https://www.loo
 
 The following reference implementations are validated and stored in `research/loongapp/raw/`:
 
-| Component          | Raw Path                                                                                                                          | License / Origin                 | Purpose in Rigora                                 |
-| :----------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :------------------------------- | :------------------------------------------------ |
-| **BBW Skinning**   | [`research/loongapp/raw/editor/libs/bbw.js`](../research/loongapp/raw/editor/libs/bbw.js)                                         | Academic / Permissive            | Reference oracle for Auto-Weights V2 solver       |
-| **Triangulation**  | [`research/loongapp/raw/editor/libs/triangle.js`](../research/loongapp/raw/editor/libs/triangle.js)                               | J. Shewchuk / Permissive JS port | 2D Constrained Delaunay Mesh generator            |
-| **Numeric Solver** | [`research/loongapp/raw/editor/libs/numeric-1.2.6.min.js`](../research/loongapp/raw/editor/libs/numeric-1.2.6.min.js)             | MIT                              | Sparse matrix linear equation solver              |
-| **DragonBones v6** | [`research/loongapp/raw/editor/libs/dragonBones/dragonBones.js`](../research/loongapp/raw/editor/libs/dragonBones/dragonBones.js) | MIT                              | Schema oracle for DB 6.0 constraints & AMF        |
-| **Command Engine** | [`research/loongapp/raw/editor/libs/gmvc.js`](../research/loongapp/raw/editor/libs/gmvc.js)                                       | LoongBones Web                   | Architecture reference for undoable command queue |
+| Component          | Raw Path                                                                                                                             | License / Origin                 | Purpose in Rigora                                 |
+| :----------------- | :----------------------------------------------------------------------------------------------------------------------------------- | :------------------------------- | :------------------------------------------------ |
+| **BBW Skinning**   | [`research/loongapp/raw/editor/libs/bbw.js`](../../research/loongapp/raw/editor/libs/bbw.js)                                         | Academic / Permissive            | Reference oracle for Auto-Weights V2 solver       |
+| **Triangulation**  | [`research/loongapp/raw/editor/libs/triangle.js`](../../research/loongapp/raw/editor/libs/triangle.js)                               | J. Shewchuk / Permissive JS port | 2D Constrained Delaunay Mesh generator            |
+| **Numeric Solver** | [`research/loongapp/raw/editor/libs/numeric-1.2.6.min.js`](../../research/loongapp/raw/editor/libs/numeric-1.2.6.min.js)             | MIT                              | Sparse matrix linear equation solver              |
+| **DragonBones v6** | [`research/loongapp/raw/editor/libs/dragonBones/dragonBones.js`](../../research/loongapp/raw/editor/libs/dragonBones/dragonBones.js) | MIT                              | Schema oracle for DB 6.0 constraints & AMF        |
+| **Command Engine** | [`research/loongapp/raw/editor/libs/gmvc.js`](../../research/loongapp/raw/editor/libs/gmvc.js)                                       | LoongBones Web                   | Architecture reference for undoable command queue |
 
 ---
 

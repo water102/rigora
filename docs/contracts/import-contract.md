@@ -1,6 +1,6 @@
 # Batch 5 setup import contract
 
-Batch 7 update: `detectDragonBonesVersion` and `inspectDragonBonesExtensions` now recognize DragonBones 6.0 and constraint extension locations. The 5.5 entry point returns `DB60_UNSUPPORTED_VERSION` and all recognized `DB60_UNSUPPORTED_FEATURE` pointers instead of attempting 5.5 normalization. This is recognition only, not DB6 import support. See [Batch 7 report](batch-7-mesh-db60.md).
+Batch 7 update: `detectDragonBonesVersion` and `inspectDragonBonesExtensions` now recognize DragonBones 6.0 and constraint extension locations. The 5.5 entry point returns `DB60_UNSUPPORTED_VERSION` and all recognized `DB60_UNSUPPORTED_FEATURE` pointers instead of attempting 5.5 normalization. This is recognition only, not DB6 import support. See [Batch 7 report](../batches/batch-7-mesh-db60.md).
 
 APIs: `importSpine38(jsonText, options)` and `importDragonBones55(jsonText, options)`. Both return a discriminated transactional result: success includes canonical skeletons, diagnostics and untouched parsed source; failure includes diagnostics only. `detectSpineVersion` lives in the independent Spine common package.
 
