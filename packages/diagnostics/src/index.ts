@@ -1,4 +1,4 @@
-/** Compatible with spec/spec/diagnostic.ts; codes are stable report identifiers. */
+/** Compatible with docs/spec/reference-models/diagnostic.ts; codes are stable report identifiers. */
 export type DiagnosticSeverity = "info" | "warning" | "error" | "fatal";
 
 export interface Diagnostic {

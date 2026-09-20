@@ -14,7 +14,7 @@ Dependencies are unmodified. Development tools are invoked through project scrip
 
 Runtime dependency: Zod 3.25.76, MIT, https://github.com/colinhacks/zod — canonical I/O schemas in `@rigora/model`.
 
-### Spec-analyzed candidate libraries (spec/docs/13_DEPENDENCIES.md)
+### Spec-analyzed candidate libraries (docs/spec/docs/13_DEPENDENCIES.md)
 
 | Category                 | Package              | Version | License    | Repository                                         | Primary Purpose / Boundary                                              |
 | ------------------------ | -------------------- | ------- | ---------- | -------------------------------------------------- | ----------------------------------------------------------------------- |

@@ -2,8 +2,8 @@
 
 > **Status:** Approved Extension Reference  
 > **Source Base:** Empirical analysis of LoongBones Web v1.2.3 (`research/loongapp/`)  
-> **Target Spec Base:** `spec/` (HNN Bones Technical Specification Pack)  
-> **Policy:** Clean-room implementation. Preserves `spec/CHECKSUMS.sha256` intact by operating as a modular addendum contract.
+> **Target Spec Base:** `docs/spec/` (HNN Bones Technical Specification Pack)  
+> **Policy:** Clean-room implementation, operating as a modular addendum contract.
 
 ---
 
@@ -19,7 +19,7 @@ An empirical investigation of the active LoongBones Web Studio (`https://www.loo
 
 ### Addendum A — Advanced Auto-Weighting via BBW (Supersedes Spec 28 Part J)
 
-- **Referenced Spec:** [`spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md`](../../spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md) (Part J: Auto weights V1).
+- **Referenced Spec:** [`spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md`](../spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md) (Part J: Auto weights V1).
 - **Limitation in Spec V1:** The distance heuristic $s_i = 1 / (d_i + \epsilon)^p$ produces cross-limb weight bleeding, pinching at joints, and volume loss on bendable meshes.
 - **Modern Standard (LoongBones Reference):** Bounded Biharmonic Weights (**BBW**) over a 2D Constrained Delaunay Triangulation (CDT).
   - **Algorithm Formulation:** For each bone handle $j$, solve for weight function $w_j$ by minimizing the Laplacian energy subject to boundary and partition-of-unity constraints:
@@ -36,7 +36,7 @@ An empirical investigation of the active LoongBones Web Studio (`https://www.loo
 
 ### Addendum B — DragonBones 6.0.x Schema Evolution (Extends Spec 08)
 
-- **Referenced Spec:** [`spec/docs/08_DRAGONBONES_COMPATIBILITY.md`](../../spec/docs/08_DRAGONBONES_COMPATIBILITY.md).
+- **Referenced Spec:** [`spec/docs/08_DRAGONBONES_COMPATIBILITY.md`](../spec/docs/08_DRAGONBONES_COMPATIBILITY.md).
 - **Baseline Extension:** Extend `@rigora/format-dragonbones` from 5.5 to recognize DragonBones 6.0.x additions found in LoongBones:
   1. **Physics Constraints (`physicsConstraint`):**
      - Fields: `gravity`, `wind`, `damping`, `mass`, `friction`, `preheat`.
@@ -54,7 +54,7 @@ An empirical investigation of the active LoongBones Web Studio (`https://www.loo
 
 ### Addendum C — PixiJS v8 Deformable Mesh Pipeline (Extends Renderer Contract)
 
-- **Referenced Spec:** [`docs/renderer-contract.md`](../contracts/renderer-contract.md) & [`spec/docs/10_RUNTIME_ARCHITECTURE.md`](../../spec/docs/10_RUNTIME_ARCHITECTURE.md).
+- **Referenced Spec:** [`docs/renderer-contract.md`](../contracts/renderer-contract.md) & [`spec/docs/10_RUNTIME_ARCHITECTURE.md`](../spec/docs/10_RUNTIME_ARCHITECTURE.md).
 - **Current State:** Batch 6 `PixiRegionRenderer` renders setup-only rectangular `PIXI.Sprite` instances.
 - **Upgrade Path to Skinned Deformable Mesh:**
   1. **Canonical Schema (`@rigora/model`):**
@@ -72,7 +72,7 @@ An empirical investigation of the active LoongBones Web Studio (`https://www.loo
 
 ### Addendum D — Editor Architecture: Command Bus & Docking (Extends Spec 11 & 12)
 
-- **Referenced Spec:** [`spec/docs/11_EDITOR_ARCHITECTURE.md`](../../spec/docs/11_EDITOR_ARCHITECTURE.md) and [`spec/docs/12_COMMAND_UNDO_AI_ARCHITECTURE.md`](../../spec/docs/12_COMMAND_UNDO_AI_ARCHITECTURE.md).
+- **Referenced Spec:** [`spec/docs/11_EDITOR_ARCHITECTURE.md`](../spec/docs/11_EDITOR_ARCHITECTURE.md) and [`spec/docs/12_COMMAND_UNDO_AI_ARCHITECTURE.md`](../spec/docs/12_COMMAND_UNDO_AI_ARCHITECTURE.md).
 - **Validation from LoongBones `GMVC` (`raw/editor/libs/gmvc.js`):**
   - **Symmetric Command Pattern:** Every editor action (`CreateBoneCommand`, `SetKeyframeCommand`, `ModifyWeightCommand`) executes symmetrically with explicit `undo()` reverting the canonical project store.
   - **Dual-Mode Authoring:**

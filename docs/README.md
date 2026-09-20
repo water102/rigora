@@ -8,16 +8,27 @@ Tài liệu kỹ thuật và nhật ký triển khai của dự án **Rigora** (
 
 ```text
 docs/
-├── batches/      # Nhật ký triển khai chi tiết theo từng Batch (Batch 7 -> Batch 73)
+├── spec/         # Bộ đặc tả kỹ thuật kiến trúc chuẩn (HNN Bones Technical Spec Pack)
 ├── contracts/    # Hợp đồng kỹ thuật (API & semantic contracts) của các package
 ├── plans/        # Kế hoạch mở rộng, addendum và lộ trình tương thích
+├── batches/      # Nhật ký triển khai chi tiết theo từng Batch (Batch 7 -> Batch 73)
 ├── release/      # Kết quả kiểm định bảo mật, parser mutation, SBOM và checklist
 └── README.md     # Mục lục này
 ```
 
 ---
 
-## 1. Hợp đồng kỹ thuật ([`contracts/`](contracts/))
+## 1. Đặc tả kỹ thuật chuẩn ([`spec/`](spec/))
+
+Gói đặc tả kiến trúc chuẩn (HNN Bones Specification Pack):
+
+- [Spec README & Reading Order](spec/README.md): Danh mục 64 tài liệu kiến trúc, thuật toán, semantic và quy chuẩn clean-room.
+- [Kiến trúc & Thuật toán](spec/docs/): 64 tài liệu chi tiết từ Product Scope, Transform Semantics, IK Solvers đến Mesh Geometry, Weight Algorithms và ADRs.
+- [Reference Models](spec/reference-models/): Các canonical schemas tham chiếu gốc (`canonical-model.ts`, `capabilities.ts`, `diagnostic.ts`).
+
+---
+
+## 2. Hợp đồng kỹ thuật ([`contracts/`](contracts/))
 
 Các tài liệu định nghĩa giao thức, semantic và ranh giới xử lý của từng module:
 
@@ -28,7 +39,7 @@ Các tài liệu định nghĩa giao thức, semantic và ranh giới xử lý c
 
 ---
 
-## 2. Kế hoạch & Addendum ([`plans/`](plans/))
+## 3. Kế hoạch & Addendum ([`plans/`](plans/))
 
 - [Spine Parity Plan](plans/SPINE_PARITY_PLAN.md): Chiến lược và ma trận đối chuẩn tương thích 100% tính năng Spine 3.8 / 4.2.
 - [LoongBones Engineering Addendum](plans/loongbones-spec-addendum.md): Nghiên cứu kiến trúc LoongBones Web v1.2.3, tích hợp BBW (Bounded Biharmonic Weights), Constrained Delaunay Triangulation và nhận diện DragonBones 6.0.
@@ -36,7 +47,7 @@ Các tài liệu định nghĩa giao thức, semantic và ranh giới xử lý c
 
 ---
 
-## 3. Nhật ký thực thi Batch ([`batches/`](batches/))
+## 4. Nhật ký thực thi Batch ([`batches/`](batches/))
 
 Lịch sử triển khai từ các batch nền tảng runtime đến các batch công cụ authoring nâng cao:
 
@@ -47,16 +58,9 @@ Lịch sử triển khai từ các batch nền tảng runtime đến các batch 
 
 ---
 
-## 4. Kiểm định & Phát hành ([`release/`](release/))
+## 5. Kiểm định & Phát hành ([`release/`](release/))
 
 - [Package Qualification](release/PACKAGE_QUALIFICATION.md)
 - [Install Qualification](release/INSTALL_QUALIFICATION.md)
 - [Release Gate Checklist](release/RELEASE_GATE_CHECKLIST.md)
 - SBOM & Third Party Notices: Được sinh tự động bởi `tools/generate-release-metadata.mjs`.
-
----
-
-## Mối quan hệ với thư mục [`spec/`](../spec/)
-
-- Thư mục [`spec/`](../spec/) ở root dự án là **HNN Bones — Technical Specification Pack** nguyên bản (đặc tả clean-room chuẩn, có [spec/CHECKSUMS.sha256](../spec/CHECKSUMS.sha256) và [spec/MANIFEST.md](../spec/MANIFEST.md)).
-- Thư mục `docs/` là tài liệu vận hành và nhật ký hiện thực hoá của dự án Rigora dựa trên bộ spec nền tảng đó.

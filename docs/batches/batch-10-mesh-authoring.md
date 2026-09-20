@@ -1,6 +1,6 @@
 # Batch 10 — Studio Authoring Lab: Automated Mesh and Weights
 
-This batch implements automated mesh generation and weight computation defined in [the LoongBones addendum](../plans/loongbones-spec-addendum.md) and [Spec 28 Mesh Geometry & Weight Algorithms](../../spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md).
+This batch implements automated mesh generation and weight computation defined in [the LoongBones addendum](../plans/loongbones-spec-addendum.md) and [Spec 28 Mesh Geometry & Weight Algorithms](../spec/docs/28_MESH_GEOMETRY_AND_WEIGHT_ALGORITHMS.md).
 
 ## Implemented
 
