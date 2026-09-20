@@ -293,6 +293,18 @@ it("accepts DragonBones display dimensions when exported", () => {
   const result = importDragonBones55(JSON.stringify(fixture), options);
   expect(result.success).toBe(true);
 });
+it("accepts DragonBones isGlobal export metadata with a warning", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.isGlobal = true;
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) =>
+        diagnostic.code === "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+    ),
+  ).toBe(true);
+});
 it("isolates armature namespaces and rejects invalid display indices", () => {
   const fixture = structuredClone(dragonFixture);
   fixture.armature.push({

@@ -88,9 +88,17 @@ export function importDragonBones55(text: string, options: ImportOptions) {
       );
     fields(
       source,
-      "name version compatibleVersion frameRate armature userData",
+      "name version compatibleVersion frameRate armature userData isGlobal",
       "",
     );
+    if (source["isGlobal"] !== undefined)
+      diagnostics.push({
+        code: "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        severity: "warning",
+        message:
+          "DragonBones isGlobal metadata is not used by the canonical runtime.",
+        jsonPointer: "/isGlobal",
+      });
     if (
       source["compatibleVersion"] !== undefined &&
       source["compatibleVersion"] !== "5.5"

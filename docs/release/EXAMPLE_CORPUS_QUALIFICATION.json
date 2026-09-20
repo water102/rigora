@@ -53,8 +53,8 @@
     "dragonbones": {
       "files": 172,
       "noThrow": 172,
-      "success": 13,
-      "failed": 159,
+      "success": 14,
+      "failed": 158,
       "versions": {
         "5.0": 8,
         "5.5": 161,
@@ -62,8 +62,9 @@
       },
       "diagnosticCodes": {
         "CORE_SOURCE_SCHEMA": 8,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 120,
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA": 154,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 119,
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA": 161,
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA": 7,
         "DB55_UNSUPPORTED_DISPLAY": 20,
         "DB55_UNSUPPORTED_VERSION": 11
       }
@@ -166,8 +167,14 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Cocos\\Demos\\assets\\resources\\mecha_2903\\mecha_2903_ske.json",
@@ -248,8 +255,12 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Cocos\\Demos\\assets\\resources\\you_xin\\body\\body_ske.json",
@@ -716,8 +727,14 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Egret\\Demos\\resource\\mecha_2903\\mecha_2903_ske.json",
@@ -786,8 +803,12 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Egret\\Demos\\resource\\you_xin\\body\\body_ske.json",
@@ -1004,9 +1025,12 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "success": true,
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"
+      ]
     },
     {
       "file": "dragonbones-js\\Hilo\\Demos\\resource\\assets\\replace_slot_display\\main_ske.json",
@@ -1110,8 +1134,14 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Phaser\\Demos\\resource\\mecha_2903\\mecha_2903_ske.json",
@@ -1633,8 +1663,14 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "dragonbones-js\\Pixi\\Demos\\resource\\mecha_2903\\mecha_2903_ske.json",
