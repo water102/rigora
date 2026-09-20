@@ -574,3 +574,13 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
   an official exact-version export.
 - Spine 4.2 provenance is likewise recorded and its supported corpus remains
   green at `136/136`.
+
+## Batch 47 — Spine beta-version family compatibility
+
+- Spine version detection now accepts semver-like prerelease suffixes such as
+  `3.8.26-beta` and `3.8.33-beta` while retaining the exact source version.
+- Added regression coverage for prerelease detection; no version is rewritten
+  to `3.8.75`.
+- The official 3.8 branch corpus now qualifies `116/116` without throws. This
+  proves family compatibility only; the exact 3.8.75 release gate remains
+  pending because no exact-version export is present in that checkout.

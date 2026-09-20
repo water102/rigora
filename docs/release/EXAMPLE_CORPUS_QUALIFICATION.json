@@ -4,8 +4,8 @@
     "spine-3.8": {
       "files": 116,
       "noThrow": 116,
-      "success": 94,
-      "failed": 22,
+      "success": 116,
+      "failed": 0,
       "versions": {
         "3.8.26-beta": 4,
         "3.8.33-beta": 18,
@@ -15,15 +15,15 @@
         "3.8.99": 3
       },
       "diagnosticCodes": {
-        "ASSET_TEXTURE_NOT_FOUND": 1,
-        "CORE_UNSUPPORTED_BEHAVIOR": 47,
-        "SP38_ANIMATION_CHANNEL_PRESERVED": 37,
-        "SP38_ANIMATION_TIMELINE_PRESERVED": 93,
-        "SP38_PATH_ATTACHMENT_PRESERVED": 31,
-        "SP38_SETUP_ATTACHMENT_UNRESOLVED": 21,
+        "ASSET_TEXTURE_NOT_FOUND": 2,
+        "CORE_UNSUPPORTED_BEHAVIOR": 57,
+        "SP38_ANIMATION_CHANNEL_PRESERVED": 42,
+        "SP38_ANIMATION_TIMELINE_PRESERVED": 114,
+        "SP38_PATH_ATTACHMENT_PRESERVED": 37,
+        "SP38_POINT_ATTACHMENT_PRESERVED": 1,
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED": 24,
         "SP38_SKIN_BONE_UNRESOLVED": 9,
-        "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 39,
-        "SPINE_VERSION_INVALID": 22
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 49
       }
     },
     "spine-4.2": {
@@ -23135,14 +23135,88 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 13,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/back-leg-path/back-leg-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/front-arm-path/front-arm-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/front-leg-path/front-leg-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/rear-arm-path/rear-arm-path"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/sneak/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/sneak/deform"
+        },
+        {
+          "code": "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+          "message": "Spine transform constraints are preserved but not executed by the canonical runtime.",
+          "jsonPointer": "/transform"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/8"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/9"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:5/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:7/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:6/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:8/0"
         }
       ]
     },
@@ -23577,14 +23651,94 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 14,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/deform"
         }
       ]
     },
@@ -23593,14 +23747,268 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 43,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_CHANNEL_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_CHANNEL_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_CHANNEL_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/aim/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/aim/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/aim/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/aim/transform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/aim/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/death/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/death/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/death/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hoverboard/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hoverboard/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hoverboard/transform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hoverboard/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle-turn/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle-turn/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle-turn/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_CHANNEL_PRESERVED",
+          "message": "Array-valued animation channel is preserved until a canonical evaluator is available.",
+          "jsonPointer": "/animations/jump/events"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/portal/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/portal/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/portal/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_CHANNEL_PRESERVED",
+          "message": "Array-valued animation channel is preserved until a canonical evaluator is available.",
+          "jsonPointer": "/animations/run/events"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run-to-idle/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run-to-idle/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/shoot/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/shoot/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_CHANNEL_PRESERVED",
+          "message": "Array-valued animation channel is preserved until a canonical evaluator is available.",
+          "jsonPointer": "/animations/walk/events"
+        },
+        {
+          "code": "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+          "message": "Spine transform constraints are preserved but not executed by the canonical runtime.",
+          "jsonPointer": "/transform"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/7"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/8"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/9"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/10"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/11"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/12"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/13"
         }
       ]
     },
@@ -23609,14 +24017,22 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/flying/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/flying/bones"
         }
       ]
     },
@@ -23625,30 +24041,140 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
-      "diagnosticDetails": [
-        {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
-        }
-      ]
+      "success": true,
+      "diagnostics": 0,
+      "diagnosticCodes": [],
+      "diagnosticDetails": []
     },
     {
       "file": "spine-runtimes-3.8\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\FootSoldier\\FootSoldier.json",
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 20,
+      "diagnosticCodes": [
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_CHANNEL_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/0/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/2/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/3/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/4/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/5/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/6/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/7/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/8/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/9/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/10/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/12/attachment"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/Attack/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_CHANNEL_PRESERVED",
+          "message": "Array-valued animation channel is preserved until a canonical evaluator is available.",
+          "jsonPointer": "/animations/Attack/events"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/DeathBackward/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/DeathForward/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/Idle/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/Idle2/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/Idle3/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/Move/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/Parried/bones"
         }
       ]
     },
@@ -23657,14 +24183,14 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
+      "success": true,
       "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "diagnosticCodes": ["SP38_ANIMATION_TIMELINE_PRESERVED"],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/Fill/bones"
         }
       ]
     },
@@ -23673,14 +24199,256 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 41,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblin/eyes-closed",
+          "jsonPointer": "/skins/1/attachments/eyes/eyes-closed"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/eyes-closed",
+          "jsonPointer": "/skins/2/attachments/eyes/eyes-closed"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/head",
+          "jsonPointer": "/skins/2/attachments/head/head"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/left-arm",
+          "jsonPointer": "/skins/2/attachments/left-arm/left-arm"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/left-hand",
+          "jsonPointer": "/skins/2/attachments/left-hand/left-hand"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/left-lower-leg",
+          "jsonPointer": "/skins/2/attachments/left-lower-leg/left-lower-leg"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/left-shoulder",
+          "jsonPointer": "/skins/2/attachments/left-shoulder/left-shoulder"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/left-upper-leg",
+          "jsonPointer": "/skins/2/attachments/left-upper-leg/left-upper-leg"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/neck",
+          "jsonPointer": "/skins/2/attachments/neck/neck"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/pelvis",
+          "jsonPointer": "/skins/2/attachments/pelvis/pelvis"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/right-arm",
+          "jsonPointer": "/skins/2/attachments/right-arm/right-arm"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/right-hand",
+          "jsonPointer": "/skins/2/attachments/right-hand/right-hand"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/right-hand",
+          "jsonPointer": "/skins/2/attachments/right-hand-thumb/right-hand-thumb"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/right-lower-leg",
+          "jsonPointer": "/skins/2/attachments/right-lower-leg/right-lower-leg"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/right-shoulder",
+          "jsonPointer": "/skins/2/attachments/right-shoulder/right-shoulder"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/right-upper-leg",
+          "jsonPointer": "/skins/2/attachments/right-upper-leg/right-upper-leg"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/torso",
+          "jsonPointer": "/skins/2/attachments/torso/torso"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/undie-straps",
+          "jsonPointer": "/skins/2/attachments/undie-straps/undie-straps"
+        },
+        {
+          "code": "ASSET_TEXTURE_NOT_FOUND",
+          "message": "Unresolved texture: goblingirl/undies",
+          "jsonPointer": "/skins/2/attachments/undies/undies"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/0/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/1/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/3/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/4/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/5/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/6/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/7/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/8/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/9/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/10/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/11/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/12/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/13/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/14/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/15/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/17/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/18/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/19/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/21/attachment"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/deform"
         }
       ]
     },
@@ -25111,14 +25879,14 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
+      "success": true,
       "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "diagnosticCodes": ["SP38_ANIMATION_TIMELINE_PRESERVED"],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/animation/bones"
         }
       ]
     },
@@ -25127,14 +25895,76 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 11,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_CHANNEL_PRESERVED"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/Jump/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/debugfade/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gungrab/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gungrab/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gungrab/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gunkeep/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gunkeep/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gunkeep/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_CHANNEL_PRESERVED",
+          "message": "Array-valued animation channel is preserved until a canonical evaluator is available.",
+          "jsonPointer": "/animations/walk/events"
         }
       ]
     },
@@ -25143,14 +25973,94 @@
       "format": "spine-3.8",
       "version": "3.8.26-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 14,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/deform"
         }
       ]
     },
@@ -25159,14 +26069,268 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 43,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_CHANNEL_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_CHANNEL_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_CHANNEL_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/aim/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/aim/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/aim/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/aim/transform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/aim/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/death/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/death/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/death/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hoverboard/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hoverboard/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hoverboard/transform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hoverboard/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle-turn/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle-turn/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle-turn/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_CHANNEL_PRESERVED",
+          "message": "Array-valued animation channel is preserved until a canonical evaluator is available.",
+          "jsonPointer": "/animations/jump/events"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/portal/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/portal/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/portal/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_CHANNEL_PRESERVED",
+          "message": "Array-valued animation channel is preserved until a canonical evaluator is available.",
+          "jsonPointer": "/animations/run/events"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run-to-idle/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run-to-idle/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/shoot/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/shoot/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_CHANNEL_PRESERVED",
+          "message": "Array-valued animation channel is preserved until a canonical evaluator is available.",
+          "jsonPointer": "/animations/walk/events"
+        },
+        {
+          "code": "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+          "message": "Spine transform constraints are preserved but not executed by the canonical runtime.",
+          "jsonPointer": "/transform"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/7"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/8"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/9"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/10"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/11"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/12"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/13"
         }
       ]
     },
@@ -25175,14 +26339,328 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 53,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_POINT_ATTACHMENT_PRESERVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_CHANNEL_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_CHANNEL_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/gunspath/gunspath"
+        },
+        {
+          "code": "SP38_POINT_ATTACHMENT_PRESERVED",
+          "message": "Spine point attachment is preserved until a canonical point attachment contract is available.",
+          "jsonPointer": "/skins/0/attachments/projectile source/projectile source"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/2/attachment"
+        },
+        {
+          "code": "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          "message": "Slot setup attachment is not present in the default skin and is left unset.",
+          "jsonPointer": "/slots/16/attachment"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/death/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/death/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/diagonal/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/frozen/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/frozen/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun toss/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun toss/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun toss/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun toss/transform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun toss/path"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hit/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hit/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hit old/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/hit old/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idlebag/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idlebag/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle footplant/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/idle footplant/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump old/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump old/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump rm/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump rm/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/one frame/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/pole/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/pole/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_CHANNEL_PRESERVED",
+          "message": "Array-valued animation channel is preserved until a canonical evaluator is available.",
+          "jsonPointer": "/animations/run/events"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run rm/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/run rm/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_CHANNEL_PRESERVED",
+          "message": "Array-valued animation channel is preserved until a canonical evaluator is available.",
+          "jsonPointer": "/animations/run rm/events"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/shoot/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/shoot/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/shoot/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk rm/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk rm/bones"
+        },
+        {
+          "code": "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+          "message": "Spine transform constraints are preserved but not executed by the canonical runtime.",
+          "jsonPointer": "/transform"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/3"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/4"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/5"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/6"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:27/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:28/0"
         }
       ]
     },
@@ -25191,14 +26669,52 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 7,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/blink/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/blink/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/main/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/main/deform"
+        },
+        {
+          "code": "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+          "message": "Spine transform constraints are preserved but not executed by the canonical runtime.",
+          "jsonPointer": "/transform"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/1"
         }
       ]
     },
@@ -25207,14 +26723,88 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 13,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/back-leg-path/back-leg-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/front-arm-path/front-arm-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/front-leg-path/front-leg-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/rear-arm-path/rear-arm-path"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/sneak/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/sneak/deform"
+        },
+        {
+          "code": "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+          "message": "Spine transform constraints are preserved but not executed by the canonical runtime.",
+          "jsonPointer": "/transform"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/8"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/9"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:5/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:7/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:6/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:8/0"
         }
       ]
     },
@@ -25223,14 +26813,28 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/animation/bones"
+        },
+        {
+          "code": "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+          "message": "Spine transform constraints are preserved but not executed by the canonical runtime.",
+          "jsonPointer": "/transform"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/0"
         }
       ]
     },
@@ -25239,14 +26843,94 @@
       "format": "spine-3.8",
       "version": "3.8.26-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 14,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/deform"
         }
       ]
     },
@@ -25255,14 +26939,88 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 13,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/back-leg-path/back-leg-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/front-arm-path/front-arm-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/front-leg-path/front-leg-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/rear-arm-path/rear-arm-path"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/sneak/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/sneak/deform"
+        },
+        {
+          "code": "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+          "message": "Spine transform constraints are preserved but not executed by the canonical runtime.",
+          "jsonPointer": "/transform"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/8"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/9"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:5/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:7/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:6/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:8/0"
         }
       ]
     },
@@ -25271,14 +27029,94 @@
       "format": "spine-3.8",
       "version": "3.8.26-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 14,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/deform"
         }
       ]
     },
@@ -25287,14 +27125,88 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 13,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/back-leg-path/back-leg-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/front-arm-path/front-arm-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/front-leg-path/front-leg-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/rear-arm-path/rear-arm-path"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/sneak/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/sneak/deform"
+        },
+        {
+          "code": "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+          "message": "Spine transform constraints are preserved but not executed by the canonical runtime.",
+          "jsonPointer": "/transform"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/8"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/9"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:5/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:7/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:6/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:8/0"
         }
       ]
     },
@@ -25303,14 +27215,94 @@
       "format": "spine-3.8",
       "version": "3.8.26-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 14,
+      "diagnosticCodes": [
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-grab/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/gun-holster/ik"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/jump/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/roar/deform"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/slots"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/walk/deform"
         }
       ]
     },
@@ -25319,14 +27311,88 @@
       "format": "spine-3.8",
       "version": "3.8.33-beta",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SPINE_VERSION_INVALID"],
+      "success": true,
+      "diagnostics": 13,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_ANIMATION_TIMELINE_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ],
       "diagnosticDetails": [
         {
-          "code": "SPINE_VERSION_INVALID",
-          "message": "Expected Spine 3.8.x JSON.",
-          "jsonPointer": "/skeleton/spine"
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/back-leg-path/back-leg-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/front-arm-path/front-arm-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/front-leg-path/front-leg-path"
+        },
+        {
+          "code": "SP38_PATH_ATTACHMENT_PRESERVED",
+          "message": "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+          "jsonPointer": "/skins/0/attachments/rear-arm-path/rear-arm-path"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/sneak/bones"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/sneak/deform"
+        },
+        {
+          "code": "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+          "message": "Spine transform constraints are preserved but not executed by the canonical runtime.",
+          "jsonPointer": "/transform"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/8"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved constraint has no evaluator.",
+          "jsonPointer": "/constraints/9"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:5/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:7/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:6/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:slot:8/0"
         }
       ]
     },

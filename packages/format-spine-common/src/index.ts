@@ -10,7 +10,10 @@ export function detectSpineVersion(input: unknown): SpineVersionDetection {
   if (!skeleton || typeof skeleton !== "object" || !("spine" in skeleton))
     return { family: "unknown", code: "SPINE_VERSION_MISSING" };
   const raw = skeleton.spine;
-  if (typeof raw !== "string" || !/^\d+\.\d+(?:\.\d+)?$/.test(raw))
+  if (
+    typeof raw !== "string" ||
+    !/^\d+\.\d+(?:\.\d+)?(?:-[A-Za-z0-9.-]+)?$/.test(raw)
+  )
     return { family: "unknown", code: "SPINE_VERSION_INVALID" };
   const family = raw.split(".").slice(0, 2).join(".");
   return {

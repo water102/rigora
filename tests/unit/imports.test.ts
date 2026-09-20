@@ -53,6 +53,9 @@ it("always warns on exact 3.8.75 and persists stable IDs independent of display 
   expect(detectSpineVersion({ skeleton: { spine: "3.8.75junk" } }).code).toBe(
     "SPINE_VERSION_INVALID",
   );
+  expect(
+    detectSpineVersion({ skeleton: { spine: "3.8.33-beta" } }),
+  ).toMatchObject({ family: "3.8", exact: "3.8.33-beta" });
 });
 it("accepts Spine mesh edge metadata without changing canonical geometry", () => {
   const fixture = structuredClone(spineFixture);
