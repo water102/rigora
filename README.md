@@ -23,6 +23,7 @@ Rigora is a format-neutral 2D skeletal animation engine, runtime, and authoring 
 - **`@rigora/authoring-mesh`**: Delaunay triangulation, automatic bone weighting, and Web Worker thread RPC.
 - **`@rigora/format-spine-38`**: Clean-room Spine 3.8 / 3.8.75 import adapter and schema mapping.
 - **`@rigora/format-dragonbones`**: DragonBones 5.5 / 6.0 import adapter with unsupported-constraint diagnostics.
+- **`@rigora/format-export`**: Deterministic Spine 3.8/3.8.75 and DragonBones 5.5 serializers, capability scanning, interactive export planning, atlas packing, and round-trip verification.
 - **`@rigora/project`**: Native `.hbone` ZIP/CRC32 persistence, project repository abstraction, ProjectLifecycle, and AutosaveManager/Controller.
 - **`@rigora/editor-core`**: Foundation editor services: CommandHistory (transactions, merging, subscriptions), SelectionStore, Camera2D, Grid mathematical snapping, HierarchyModel, InspectorModel, and EditorPreferencesStore.
 
@@ -65,5 +66,5 @@ pnpm tauri:dev
 | **Phase 4** | Editor Foundation (Shell, Docking, Stage, Hierarchy, Inspector, Lifecycle, Tauri 2) | ✅ Complete |
 | **Phase 5** | Animation Authoring (Timeline, Dope Sheet, Curves, Keyframes)                       | ✅ Complete |
 | **Phase 6** | Mesh & Weight Authoring UI                                                          | ✅ Complete |
-| **Phase 7** | Export Compatibility (Spine / DragonBones / Native)                                 |   🚀 Next   |
-| **Phase 8** | Spine 4.2 & Physics Engine                                                          |  Scheduled  |
+| **Phase 7** | Export Compatibility (Spine / DragonBones / Native)                                 | ✅ Complete |
+| **Phase 8** | Spine 4.2 & Physics Engine                                                          |   🚀 Next   |

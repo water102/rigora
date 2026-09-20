@@ -70,8 +70,8 @@
 - [ ] exact 3.8.75 profile
 - [ ] strict/compatible/repair
 - [ ] repair audit
-- [ ] exporter
-- [ ] round-trip
+- [x] exporter
+- [x] round-trip
 
 ## DragonBones
 - [ ] schema/version
@@ -84,8 +84,8 @@
 - [ ] events/actions
 - [ ] colors
 - [ ] nested-armature policy
-- [ ] exporter
-- [ ] round-trip
+- [x] exporter
+- [x] round-trip
 
 ## Spine 4.2
 - [ ] separate adapter
@@ -188,11 +188,11 @@
 - [ ] repair
 - [ ] canonicalization
 - [ ] asset resolution
-- [ ] capability scanner
-- [ ] export planner
+- [x] capability scanner
+- [x] export planner
 - [ ] bake integration
-- [ ] deterministic serializers
-- [ ] reports
+- [x] deterministic serializers
+- [x] reports
 
 ## Native format
 - [ ] manifest
@@ -238,7 +238,7 @@
 - [ ] M4
 - [ ] M5
 - [ ] M6
-- [ ] M7
+- [x] M7
 - [ ] M8
 - [ ] M9
 - [ ] zero critical known issue
