@@ -510,7 +510,7 @@ Run:
 
 ## Exit gate
 - [x] zero known critical data-loss defect in covered native save/recovery paths
-- [ ] zero known critical compatibility regression
+- [x] zero known critical compatibility regression
 - [ ] mandatory Spine 3.8.75 corpus green (fixture/package evidence required)
 - [x] supported 4.2 corpus green (fixture/package evidence required)
 - [x] DragonBones corpus green (fixture/package evidence required)
@@ -634,3 +634,14 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
 - Re-ran the expanded corpus: Spine 3.8 now qualifies `167/167`, including all
   51 user-provided Wukong `3.8.99` files. The previous false cycle in
   `gold_houzi.json` is gone.
+
+## Batch 53 — covered compatibility gate reconciliation
+
+- Marked “zero known critical compatibility regression” green for the covered
+  evidence set: Spine 3.8 family `167/167`, Spine 4.2 `136/136`, DragonBones
+  `172/172`, browser E2E `3/3`, internal corpus `3/3`, and native security
+  mutations `20/20`.
+- The wording remains bounded by the available corpora; it does not claim
+  exact-version behavior for the missing Spine 3.8.75 export.
+- The only remaining Phase 9 checkbox is the mandatory exact Spine 3.8.75
+  corpus gate.
