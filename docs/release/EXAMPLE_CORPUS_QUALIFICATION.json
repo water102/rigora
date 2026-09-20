@@ -52,8 +52,10 @@
         "5.6": 3
       },
       "diagnosticCodes": {
-        "CORE_SOURCE_SCHEMA": 81,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 80,
+        "ASSET_REGION_SIZE_REQUIRED": 3,
+        "ASSET_TEXTURE_NOT_FOUND": 3,
+        "CORE_SOURCE_SCHEMA": 135,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 23,
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA": 154,
         "DB55_UNSUPPORTED_VERSION": 11
       }
@@ -69,7 +71,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -81,7 +83,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -93,7 +95,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -105,7 +107,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -117,7 +119,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -126,10 +128,11 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 3,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_REGION_SIZE_REQUIRED"
       ]
     },
     {
@@ -141,7 +144,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -153,7 +156,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -174,7 +177,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -186,7 +189,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -207,7 +210,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -219,7 +222,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -231,7 +234,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -252,7 +255,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -264,7 +267,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -360,7 +363,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -372,7 +375,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -456,7 +459,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -468,7 +471,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -564,7 +567,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -576,7 +579,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -612,7 +615,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -624,7 +627,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -633,10 +636,11 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 3,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_REGION_SIZE_REQUIRED"
       ]
     },
     {
@@ -648,7 +652,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -660,7 +664,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -672,7 +676,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -684,7 +688,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -696,7 +700,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -708,7 +712,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -729,7 +733,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -741,7 +745,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -762,7 +766,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -774,7 +778,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -792,10 +796,11 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 3,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_REGION_SIZE_REQUIRED"
       ]
     },
     {
@@ -819,7 +824,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -831,7 +836,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -855,7 +860,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -867,7 +872,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -891,7 +896,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -903,7 +908,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -927,7 +932,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -939,7 +944,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -1032,7 +1037,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1044,7 +1049,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1056,7 +1061,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1068,7 +1073,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1080,7 +1085,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1092,7 +1097,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1104,7 +1109,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1125,7 +1130,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1137,7 +1142,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1149,7 +1154,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1161,7 +1166,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1185,7 +1190,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1197,7 +1202,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1293,7 +1298,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1305,7 +1310,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1389,7 +1394,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1401,7 +1406,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1497,7 +1502,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1509,7 +1514,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1545,7 +1550,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1557,7 +1562,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1569,7 +1574,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {
@@ -1581,7 +1586,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1593,7 +1598,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1605,7 +1610,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1617,7 +1622,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1629,7 +1634,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1650,7 +1655,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1662,7 +1667,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1683,7 +1688,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1695,7 +1700,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1719,7 +1724,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1731,7 +1736,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1827,7 +1832,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1839,7 +1844,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1923,7 +1928,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -1935,7 +1940,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -2031,7 +2036,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -2043,7 +2048,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {

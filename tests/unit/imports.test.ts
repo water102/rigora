@@ -147,6 +147,23 @@ it("preserves DragonBones animation payloads as raw timelines", () => {
     ),
   ).toBe(true);
 });
+it("maps DragonBones inheritance flags to canonical bone inheritance", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.armature[0]!.bone[1]!.inheritScale = false;
+  fixture.armature[0]!.bone[1]!.inheritRotation = false;
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.bones[1]!.inherit).toBe("noScaleOrReflection");
+});
+it("defaults an unnamed DragonBones skin to the default skin", () => {
+  const fixture = structuredClone(dragonFixture);
+  delete fixture.armature[0]!.skin[0]!.name;
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.skins[0]!.name).toBe("default");
+});
 it("isolates armature namespaces and rejects invalid display indices", () => {
   const fixture = structuredClone(dragonFixture);
   fixture.armature.push({

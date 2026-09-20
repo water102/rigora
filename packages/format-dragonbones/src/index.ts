@@ -149,7 +149,13 @@ export function importDragonBones55(text: string, options: ImportOptions) {
         slotIds = names(slots, namespace, "slot", root + "/slot");
       data.bones = bones.map((bone, i) => {
         const path = `${root}/bone/${i}`;
-        fields(bone, "name parent length transform userData", path);
+        fields(
+          bone,
+          "name parent length transform userData inheritScale inheritRotation",
+          path,
+        );
+        const inheritScale = bone["inheritScale"] !== false;
+        const inheritRotation = bone["inheritRotation"] !== false;
         return {
           id: boneIds.get(String(bone["name"]))!,
           name: String(bone["name"]),
@@ -160,7 +166,14 @@ export function importDragonBones55(text: string, options: ImportOptions) {
               }),
           setup: transform(bone["transform"], path + "/transform"),
           length: number(bone["length"], path + "/length"),
-          inherit: "normal",
+          inherit:
+            inheritScale && inheritRotation
+              ? "normal"
+              : inheritScale
+                ? "noRotationOrReflection"
+                : inheritRotation
+                  ? "noScale"
+                  : "noScaleOrReflection",
         };
       });
       data.slots = slots.map((slot, i): SlotData => {
@@ -190,12 +203,20 @@ export function importDragonBones55(text: string, options: ImportOptions) {
       const skins = list(armature["skin"], root + "/skin").map((v, i) =>
         object(v, `${root}/skin/${i}`),
       );
-      const skinIds = names(skins, namespace, "skin", root + "/skin");
+      const normalizedSkins = skins.map((skin, i) =>
+        skin["name"] === undefined
+          ? {
+              ...skin,
+              name: i === 0 ? "default" : `skin-${i}`,
+            }
+          : skin,
+      );
+      const skinIds = names(normalizedSkins, namespace, "skin", root + "/skin");
       const defaultIndex = Math.max(
         0,
-        skins.findIndex((skin) => skin["name"] === "default"),
+        normalizedSkins.findIndex((skin) => skin["name"] === "default"),
       );
-      data.skins = skins.map((skin, i): SkinData => {
+      data.skins = normalizedSkins.map((skin, i): SkinData => {
         const path = `${root}/skin/${i}`;
         fields(skin, "name slot", path);
         const attachments: SkinData["attachments"] = Object.create(
@@ -296,9 +317,10 @@ export function importDragonBones55(text: string, options: ImportOptions) {
             },
           );
         });
+        const skinName = string(skin["name"], `${path}/name`);
         return {
-          id: skinIds.get(String(skin["name"]))!,
-          name: String(skin["name"]),
+          id: skinIds.get(String(skin["name"])) ?? `${namespace}:skin:${i}`,
+          name: skinName,
           attachments,
         };
       });
