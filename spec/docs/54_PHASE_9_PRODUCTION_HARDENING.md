@@ -138,6 +138,13 @@ This phase is executed in independently verified batches. Every batch must pass
 - External vendor corpus, property-based/fuzz coverage and asset-license review
   remain intentionally unchecked.
 
+### Batch 17 — Asset license record — complete
+
+- Added `docs/release/ASSET_LICENSES.md` for the in-house application icon,
+  fonts, dependency-provided UI icons and research-material boundary.
+- Product asset provenance is now explicit; research material remains excluded
+  from release assets.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

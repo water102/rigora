@@ -226,7 +226,7 @@
 - [ ] licenses reviewed
 - [x] notices
 - [x] SBOM
-- [ ] asset/font/icon licenses
+- [x] asset/font/icon licenses (in-house icon and no bundled fonts recorded)
 - [x] clean-room record
 - [x] precise compatibility claims
 
