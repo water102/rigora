@@ -114,6 +114,9 @@ importers:
       '@rigora/format-dragonbones':
         specifier: workspace:*
         version: link:../../packages/format-dragonbones
+      '@rigora/format-export':
+        specifier: workspace:*
+        version: link:../../packages/format-export
       '@rigora/format-spine-38':
         specifier: workspace:*
         version: link:../../packages/format-spine-38

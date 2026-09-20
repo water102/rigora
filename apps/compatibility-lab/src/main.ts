@@ -2,6 +2,7 @@ import { Application, CanvasSource } from "pixi.js";
 import * as Comlink from "comlink";
 import { importSpine38 } from "@rigora/format-spine-38";
 import { importDragonBones55 } from "@rigora/format-dragonbones";
+import { ExportPlannerSession, type ExportPlan } from "@rigora/format-export";
 import {
   createSetupSnapshot,
   createPoseSnapshot,
@@ -65,6 +66,10 @@ const stage = document.querySelector<HTMLElement>("#stage")!;
 const status = document.querySelector<HTMLElement>("#status")!;
 const select = document.querySelector<HTMLSelectElement>("#source")!;
 const debug = document.querySelector<HTMLInputElement>("#debug")!;
+const exportTarget =
+  document.querySelector<HTMLSelectElement>("#export-target")!;
+const exportSkeletonButton =
+  document.querySelector<HTMLButtonElement>("#export-skeleton")!;
 const playBtn = document.querySelector<HTMLButtonElement>("#play-btn")!;
 const timeSlider = document.querySelector<HTMLInputElement>("#time-slider")!;
 const timeDisplay = document.querySelector<HTMLElement>("#time-display")!;
@@ -952,6 +957,39 @@ async function start() {
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     });
+
+  exportSkeletonButton.addEventListener("click", () => {
+    if (!currentSkeleton) {
+      status.textContent = "Load a skeleton before exporting.";
+      return;
+    }
+    try {
+      const session = new ExportPlannerSession(
+        currentSkeleton,
+        exportTarget.value as ExportPlan["target"],
+      );
+      const unresolved = session.unresolved();
+      if (unresolved.length) {
+        status.textContent = `Export blocked: ${unresolved.map((issue) => issue.feature).join(", ")}`;
+        return;
+      }
+      const artifact = session.export();
+      const url = URL.createObjectURL(
+        new Blob([artifact.bytes.buffer as ArrayBuffer], {
+          type: "application/json",
+        }),
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${currentSkeleton.name}.${exportTarget.value}.json`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      status.textContent = `Exported ${exportTarget.value}; checksum ${artifact.report.checksum}.`;
+    } catch (error) {
+      status.textContent =
+        error instanceof Error ? error.message : "Export failed.";
+    }
+  });
 
   refresh();
   rafId = requestAnimationFrame(tick);

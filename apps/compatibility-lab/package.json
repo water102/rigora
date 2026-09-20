@@ -11,6 +11,7 @@
   "dependencies": {
     "@rigora/format-spine-38": "workspace:*",
     "@rigora/format-dragonbones": "workspace:*",
+    "@rigora/format-export": "workspace:*",
     "@rigora/runtime": "workspace:*",
     "@rigora/renderer-pixi": "workspace:*",
     "@rigora/authoring-mesh": "workspace:*",
