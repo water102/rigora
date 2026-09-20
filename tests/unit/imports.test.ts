@@ -305,6 +305,17 @@ it("accepts DragonBones isGlobal export metadata with a warning", () => {
     ),
   ).toBe(true);
 });
+it("preserves DragonBones nested armature displays", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.armature[0]!.skin[0]!.slot[0]!.display[0]!.type = "armature";
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "DB55_NESTED_ARMATURE_PRESERVED",
+    ),
+  ).toBe(true);
+});
 it("isolates armature namespaces and rejects invalid display indices", () => {
   const fixture = structuredClone(dragonFixture);
   fixture.armature.push({

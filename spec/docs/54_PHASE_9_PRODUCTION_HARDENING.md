@@ -201,6 +201,19 @@ This phase is executed in independently verified batches. Every batch must pass
   downloaded export set; remaining failures represent schema, mesh, behavior,
   preservation, or version coverage rather than missing atlas lookup data.
 
+### Batch 24 — DragonBones nested-armature preservation — partial
+
+- Preserved nested DragonBones armature display records as explicit
+  `unknownPreserved` attachments with diagnostic
+  `DB55_NESTED_ARMATURE_PRESERVED`; the importer does not fabricate skeleton
+  links before canonical linking support exists.
+- Added a regression fixture test and reran the local ignored corpus probe:
+  424 files were recognized and no importer threw. DragonBones success rose to
+  34/172, with 20 nested-armature preservation diagnostics.
+- This improves loss-minimizing inspection behavior but does not make the
+  DragonBones corpus gate green; unsupported source fields and schema cases
+  remain release blockers.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

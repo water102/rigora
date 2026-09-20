@@ -53,8 +53,8 @@
     "dragonbones": {
       "files": 172,
       "noThrow": 172,
-      "success": 14,
-      "failed": 158,
+      "success": 34,
+      "failed": 138,
       "versions": {
         "5.0": 8,
         "5.5": 161,
@@ -62,10 +62,11 @@
       },
       "diagnosticCodes": {
         "CORE_SOURCE_SCHEMA": 8,
+        "CORE_UNSUPPORTED_BEHAVIOR": 20,
         "CORE_UNSUPPORTED_SOURCE_FIELD": 119,
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA": 161,
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA": 7,
-        "DB55_UNSUPPORTED_DISPLAY": 20,
+        "DB55_NESTED_ARMATURE_PRESERVED": 20,
         "DB55_UNSUPPORTED_VERSION": 11
       }
     }
@@ -76,11 +77,20 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 11,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -109,11 +119,15 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 6,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -121,11 +135,13 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -133,11 +149,23 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 14,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -194,11 +222,13 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -627,11 +657,20 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 11,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -669,11 +708,15 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 6,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -681,11 +724,13 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -693,11 +738,27 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 18,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -754,11 +815,13 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1055,11 +1118,20 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 11,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1076,11 +1148,15 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 6,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1088,11 +1164,13 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1100,11 +1178,27 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 18,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1161,11 +1255,13 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1572,11 +1668,20 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 11,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1605,11 +1710,15 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 6,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1617,11 +1726,13 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1629,11 +1740,27 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 18,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1690,11 +1817,13 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {

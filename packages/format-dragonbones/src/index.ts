@@ -247,6 +247,22 @@ export function importDragonBones55(text: string, options: ImportOptions) {
                 "name path type transform pivot width height vertices uvs triangles",
                 loc,
               );
+              if (item["type"] === "armature") {
+                diagnostics.push({
+                  code: "DB55_NESTED_ARMATURE_PRESERVED",
+                  severity: "warning",
+                  message:
+                    "Nested DragonBones armature displays are preserved until skeleton linking is available.",
+                  jsonPointer: loc,
+                });
+                return {
+                  type: "unknownPreserved" as const,
+                  id: `${namespace}:attachment:${i}:${j}:${k}`,
+                  name: string(item["name"], loc + "/name"),
+                  sourceFormat: "dragonbones-5.5-armature-display",
+                  payload: item as any,
+                };
+              }
               if (
                 item["type"] !== undefined &&
                 item["type"] !== "image" &&
