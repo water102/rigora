@@ -153,6 +153,15 @@ This phase is executed in independently verified batches. Every batch must pass
 - This is deterministic security regression coverage, not a substitute for
   long-running fuzzing or third-party archive corpus testing.
 
+### Batch 19 — Parser mutation qualification — complete
+
+- Added `pnpm release:parser-mutations` with 20 deterministic malformed Spine
+  and DragonBones mutations.
+- Every mutation is required to reject transactionally without an importer
+  throw.
+- The generated evidence is published at
+  `docs/release/PARSER_MUTATION_QUALIFICATION.json`.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

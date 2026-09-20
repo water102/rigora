@@ -1,0 +1,145 @@
+{
+  "date": "2026-09-20",
+  "cases": [
+    {
+      "family": "spine",
+      "mutation": 0,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "spine",
+      "mutation": 1,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "spine",
+      "mutation": 2,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "spine",
+      "mutation": 3,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "spine",
+      "mutation": 4,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "spine",
+      "mutation": 5,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "spine",
+      "mutation": 6,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "spine",
+      "mutation": 7,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "spine",
+      "mutation": 8,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "spine",
+      "mutation": 9,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "dragonbones",
+      "mutation": 0,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "dragonbones",
+      "mutation": 1,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "dragonbones",
+      "mutation": 2,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "dragonbones",
+      "mutation": 3,
+      "success": true,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "dragonbones",
+      "mutation": 4,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "dragonbones",
+      "mutation": 5,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "dragonbones",
+      "mutation": 6,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "dragonbones",
+      "mutation": 7,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "dragonbones",
+      "mutation": 8,
+      "success": false,
+      "skeletons": 0,
+      "passed": true
+    },
+    {
+      "family": "dragonbones",
+      "mutation": 9,
+      "success": true,
+      "skeletons": 0,
+      "passed": true
+    }
+  ]
+}
