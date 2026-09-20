@@ -12,7 +12,7 @@ import {
   fail,
   type ImportOptions,
 } from "@rigora/format-common";
-import type { SkinData, SlotData } from "@rigora/model";
+import type { JsonValue, SkinData, SlotData } from "@rigora/model";
 import {
   detectDragonBonesVersion,
   inspectDragonBonesExtensions,
@@ -111,9 +111,16 @@ export function importDragonBones55(text: string, options: ImportOptions) {
       // culling. It is metadata, not part of the canonical skeleton model.
       fields(
         armature,
-        "name type frameRate bone slot skin userData ik aabb",
+        "name type frameRate bone slot skin userData ik aabb animation defaultActions",
         root,
       );
+      if (armature["defaultActions"] !== undefined)
+        diagnostics.push({
+          code: "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          severity: "warning",
+          message: "Default actions are not executed by the canonical runtime.",
+          jsonPointer: root + "/defaultActions",
+        });
       if (armature["type"] !== undefined && armature["type"] !== "Armature")
         fail(
           "DB55_UNSUPPORTED_ARMATURE",
@@ -344,6 +351,32 @@ export function importDragonBones55(text: string, options: ImportOptions) {
           };
         },
       ) as any;
+      if (armature["animation"] !== undefined) {
+        const animations = list(armature["animation"], root + "/animation").map(
+          (value, i) => object(value, `${root}/animation/${i}`),
+        );
+        data.animations = animations.map((animation, i) => ({
+          id: `${namespace}:animation:${i}`,
+          name: string(animation["name"], `${root}/animation/${i}/name`),
+          duration:
+            number(animation["duration"], `${root}/animation/${i}/duration`) /
+            number(armature["frameRate"], root + "/frameRate", 24),
+          timelines: [
+            {
+              id: `${namespace}:animation:${i}:raw`,
+              type: "dragonbones.raw",
+              keyframes: [
+                {
+                  time: 0,
+                  value: animation as unknown as JsonValue,
+                  curve: { type: "linear" },
+                },
+              ],
+              metadata: { source: "dragonbones", preserved: true },
+            },
+          ],
+        }));
+      }
       return data;
     });
   });

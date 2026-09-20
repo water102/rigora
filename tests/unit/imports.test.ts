@@ -128,6 +128,25 @@ it("accepts DragonBones armature AABB preview metadata", () => {
   const result = importDragonBones55(JSON.stringify(fixture), options);
   expect(result.success).toBe(true);
 });
+it("preserves DragonBones animation payloads as raw timelines", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.armature[0]!.animation = [{ name: "idle", duration: 24 }];
+  fixture.armature[0]!.defaultActions = [{ gotoAndPlay: "idle" }];
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.animations[0]).toMatchObject({
+      name: "idle",
+      duration: 1,
+      timelines: [{ type: "dragonbones.raw" }],
+    });
+  expect(
+    result.diagnostics.some(
+      (diagnostic) =>
+        diagnostic.code === "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+    ),
+  ).toBe(true);
+});
 it("isolates armature namespaces and rejects invalid display indices", () => {
   const fixture = structuredClone(dragonFixture);
   fixture.armature.push({
