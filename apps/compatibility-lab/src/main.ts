@@ -1003,9 +1003,10 @@ async function start() {
   });
   const resolveExportAction = (action: "bake" | "convert" | "remove") => {
     const session = activeExportSession;
+    const plannerAction = action === "remove" ? "drop" : action;
     const issue = session
       ?.unresolved()
-      .find((candidate) => candidate.action === action);
+      .find((candidate) => candidate.action === plannerAction);
     if (!session || !issue) {
       status.textContent = `No unresolved ${action} action is available.`;
       return;

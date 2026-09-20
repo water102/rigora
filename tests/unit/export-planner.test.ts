@@ -453,7 +453,13 @@ describe("export planning", () => {
   it("does not produce bytes until the export plan is approved", () => {
     const skeleton = minimalSkeleton();
     skeleton.constraints = [
-      { id: "physics-1", name: "physics", type: "physics", order: 0 },
+      {
+        id: "physics-1",
+        name: "physics",
+        type: "physics",
+        order: 0,
+        boneId: "bone-1",
+      },
     ];
     expect(() => exportSkeleton(skeleton, "spine-3.8")).toThrow(
       "EXPORT_PLAN_UNRESOLVED",
@@ -466,6 +472,25 @@ describe("export planning", () => {
     expect(() => session.approve("missing")).toThrow(
       "EXPORT_PLAN_UNKNOWN_ENTITY",
     );
+  });
+  it("resolves a drop action without writing bytes early", () => {
+    const skeleton = minimalSkeleton();
+    skeleton.constraints = [
+      {
+        id: "physics-1",
+        name: "physics",
+        type: "physics",
+        order: 0,
+        boneId: "bone-1",
+      },
+    ];
+    const session = new ExportPlannerSession(skeleton, "dragonbones-5.5");
+    expect(session.unresolved()).toHaveLength(1);
+    expect(session.plan.issues[0]!.action).toBe("drop");
+    expect(() => session.export()).toThrow("EXPORT_PLAN_UNRESOLVED");
+    session.approve("physics-1");
+    expect(session.unresolved()).toHaveLength(0);
+    expect(session.export().bytes.length).toBeGreaterThan(0);
   });
   it("reports the exact 3.8.75 profile risk and stable checksum", () => {
     const skeleton = minimalSkeleton();
