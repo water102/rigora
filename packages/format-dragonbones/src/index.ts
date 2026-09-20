@@ -204,7 +204,7 @@ export function importDragonBones55(text: string, options: ImportOptions) {
         object(v, `${root}/skin/${i}`),
       );
       const normalizedSkins = skins.map((skin, i) =>
-        skin["name"] === undefined
+        typeof skin["name"] !== "string" || skin["name"].length === 0
           ? {
               ...skin,
               name: i === 0 ? "default" : `skin-${i}`,
@@ -236,7 +236,7 @@ export function importDragonBones55(text: string, options: ImportOptions) {
                 item = object(value, loc);
               fields(
                 item,
-                "name path type transform pivot vertices uvs triangles",
+                "name path type transform pivot width height vertices uvs triangles",
                 loc,
               );
               if (
@@ -256,8 +256,12 @@ export function importDragonBones55(text: string, options: ImportOptions) {
                   : string(item["path"], loc + "/path", name);
               const region = texture(
                 image,
-                undefined,
-                undefined,
+                item["width"] === undefined
+                  ? undefined
+                  : number(item["width"], loc + "/width"),
+                item["height"] === undefined
+                  ? undefined
+                  : number(item["height"], loc + "/height"),
                 options,
                 diagnostics,
                 loc,

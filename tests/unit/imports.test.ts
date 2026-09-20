@@ -158,11 +158,20 @@ it("maps DragonBones inheritance flags to canonical bone inheritance", () => {
 });
 it("defaults an unnamed DragonBones skin to the default skin", () => {
   const fixture = structuredClone(dragonFixture);
-  delete fixture.armature[0]!.skin[0]!.name;
+  fixture.armature[0]!.skin[0]!.name = null;
   const result = importDragonBones55(JSON.stringify(fixture), options);
   expect(result.success).toBe(true);
   if (result.success)
     expect(result.skeletons[0]!.skins[0]!.name).toBe("default");
+});
+it("accepts DragonBones display dimensions when exported", () => {
+  const fixture = structuredClone(dragonFixture);
+  Object.assign(fixture.armature[0]!.skin[0]!.slot[0]!.display[0]!, {
+    width: 20,
+    height: 10,
+  });
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
 });
 it("isolates armature namespaces and rejects invalid display indices", () => {
   const fixture = structuredClone(dragonFixture);
