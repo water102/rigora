@@ -359,6 +359,7 @@ export interface AtlasRegionPlan {
 export function planDeterministicAtlas(
   regions: readonly { name: string; width: number; height: number }[],
   pageWidth = 2048,
+  allowRotation = true,
 ): AtlasRegionPlan[] {
   let x = 0,
     y = 0,
@@ -366,7 +367,14 @@ export function planDeterministicAtlas(
   return [...regions]
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((r) => {
-      if (x + r.width > pageWidth) {
+      const rotate =
+        allowRotation &&
+        r.width > r.height &&
+        x + r.width > pageWidth &&
+        x + r.height <= pageWidth;
+      const width = rotate ? r.height : r.width;
+      const height = rotate ? r.width : r.height;
+      if (x + width > pageWidth) {
         x = 0;
         y += row;
         row = 0;
@@ -375,12 +383,12 @@ export function planDeterministicAtlas(
         name: r.name,
         x,
         y,
-        width: r.width,
-        height: r.height,
-        rotate: false,
+        width,
+        height,
+        rotate,
       };
-      x += r.width;
-      row = Math.max(row, r.height);
+      x += width;
+      row = Math.max(row, height);
       return result;
     });
 }

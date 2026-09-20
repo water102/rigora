@@ -87,6 +87,13 @@ describe("export planning", () => {
         { name: "a", width: 5, height: 5 },
       ]).map((x) => x.name),
     ).toEqual(["a", "z"]);
+    const rotated = planDeterministicAtlas(
+      [{ name: "wide", width: 8, height: 3 }],
+      5,
+      true,
+    )[0]!;
+    expect(rotated.rotate).toBe(true);
+    expect([rotated.width, rotated.height]).toEqual([3, 8]);
     const report = createCrossFormatReport(
       skeleton,
       "spine-3.8",
