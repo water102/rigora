@@ -333,6 +333,15 @@ This phase is executed in independently verified batches. Every batch must pass
   from 33/136 to 111/136 successful imports. Remaining failures are explicit
   reference/schema/texture/behavior cases.
 
+### Batch 38 — Skin-specific Spine setup attachments — partial
+
+- Slots whose setup attachment exists only in a non-default skin are now
+  imported with no fabricated setup reference and warning
+  `SP38_SETUP_ATTACHMENT_UNRESOLVED`.
+- Added a regression test. Spine 4.2 corpus success improved from 111/136 to
+  126/136; remaining failures are concentrated in texture/schema/reference
+  validation and preserved behavior warnings.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

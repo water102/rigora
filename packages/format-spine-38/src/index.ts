@@ -477,12 +477,16 @@ export function importSpine38(text: string, options: ImportOptions) {
         return;
       const key = string(slot["attachment"], `/slots/${i}/attachment`);
       const id = setup.get(`${data.slots[i]!.id}\0${key}`);
-      if (!id)
-        fail(
-          "CORE_INVALID_REFERENCE",
-          "Setup attachment not found in default skin.",
-          `/slots/${i}/attachment`,
-        );
+      if (!id) {
+        diagnostics.push({
+          code: "SP38_SETUP_ATTACHMENT_UNRESOLVED",
+          severity: "warning",
+          message:
+            "Slot setup attachment is not present in the default skin and is left unset.",
+          jsonPointer: `/slots/${i}/attachment`,
+        });
+        return;
+      }
       data.slots[i]!.setupAttachmentId = id;
     });
     if (source["animations"] !== undefined) {
