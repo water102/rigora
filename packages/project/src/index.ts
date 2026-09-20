@@ -36,6 +36,7 @@ export interface ProjectRepository {
 
 export interface ProjectParseLimits {
   maxArchiveBytes?: number;
+  maxExpandedBytes?: number;
   maxFiles?: number;
   maxAssetBytes?: number;
   maxTotalAssetBytes?: number;
@@ -43,6 +44,7 @@ export interface ProjectParseLimits {
 
 const DEFAULT_PARSE_LIMITS: Required<ProjectParseLimits> = {
   maxArchiveBytes: 256 * 1024 * 1024,
+  maxExpandedBytes: 512 * 1024 * 1024,
   maxFiles: 10_000,
   maxAssetBytes: 64 * 1024 * 1024,
   maxTotalAssetBytes: 192 * 1024 * 1024,
@@ -374,6 +376,12 @@ export function parseProject(
   const fileEntries = Object.entries(files);
   if (fileEntries.length > limits.maxFiles)
     throw new Error("NATIVE_TOO_MANY_FILES");
+  const expandedBytes = fileEntries.reduce(
+    (total, [, content]) => total + content.byteLength,
+    0,
+  );
+  if (expandedBytes > limits.maxExpandedBytes)
+    throw new Error("NATIVE_EXPANDED_ARCHIVE_TOO_LARGE");
   for (const [filePath] of fileEntries) {
     if (
       filePath.startsWith("/") ||

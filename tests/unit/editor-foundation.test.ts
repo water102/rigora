@@ -851,6 +851,15 @@ describe("Phase 9 native project hardening", () => {
         { limits: { maxAssetBytes: 4 } },
       ),
     ).toThrow("NATIVE_ASSET_TOO_LARGE");
+    expect(() =>
+      parseProject(
+        zipSync({
+          "manifest.json": strToU8(JSON.stringify(manifest)),
+          "skeletons/payload.json": new Uint8Array(8),
+        }),
+        { limits: { maxExpandedBytes: 4 } },
+      ),
+    ).toThrow("NATIVE_EXPANDED_ARCHIVE_TOO_LARGE");
   });
 
   it("rejects syntactically valid but malformed manifests safely", async () => {

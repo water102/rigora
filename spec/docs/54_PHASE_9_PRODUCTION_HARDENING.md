@@ -103,6 +103,12 @@ This phase is executed in independently verified batches. Every batch must pass
 - The verifier intentionally fails when Cargo/build artifacts are absent; it
   cannot substitute for clean-machine install, upgrade and uninstall tests.
 
+### Batch 12 — Decompression expansion limits — complete
+
+- Added a total expanded-byte limit to native archive parsing, covering
+  skeletons, editor state, provenance and assets.
+- Added regression coverage for an oversized expanded archive.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
