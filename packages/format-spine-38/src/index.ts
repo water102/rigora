@@ -57,7 +57,7 @@ export function importSpine38(text: string, options: ImportOptions) {
         "Expected Spine 3.8.x JSON.",
         "/skeleton/spine",
       );
-    fields(source, "skeleton bones slots skins animations", "");
+    fields(source, "skeleton bones slots skins animations constraints", "");
     const meta = object(source["skeleton"], "/skeleton");
     const data = base(
       options.originalFile ?? "Spine skeleton",
@@ -317,6 +317,85 @@ export function importSpine38(text: string, options: ImportOptions) {
             ),
             timelines,
           };
+        },
+      );
+    }
+    if (source["constraints"] !== undefined) {
+      data.constraints = list(source["constraints"], "/constraints").map(
+        (raw, index) => {
+          const item = object(raw, `/constraints/${index}`);
+          const type = string(item["type"], `/constraints/${index}/type`);
+          const name = string(
+            item["name"],
+            `/constraints/${index}/name`,
+            `constraint-${index}`,
+          );
+          const order = number(
+            item["order"],
+            `/constraints/${index}/order`,
+            index,
+          );
+          const bones = list(item["bones"], `/constraints/${index}/bones`).map(
+            (value, boneIndex) =>
+              reference(
+                value,
+                boneIds,
+                `/constraints/${index}/bones/${boneIndex}`,
+              ),
+          );
+          if (type === "ik")
+            return {
+              id: `${options.namespace}:constraint:${index}`,
+              name,
+              type,
+              order,
+              targetBoneId: reference(
+                item["target"],
+                boneIds,
+                `/constraints/${index}/target`,
+              ),
+              boneIds: bones,
+              mix: number(item["mix"], `/constraints/${index}/mix`, 1),
+              bendDirection: item["bendPositive"] === false ? -1 : 1,
+            } as any;
+          if (type === "transform")
+            return {
+              id: `${options.namespace}:constraint:${index}`,
+              name,
+              type,
+              order,
+              targetBoneId: reference(
+                item["target"],
+                boneIds,
+                `/constraints/${index}/target`,
+              ),
+              boneIds,
+              mixRotate: number(
+                item["mixRotate"],
+                `/constraints/${index}/mixRotate`,
+                1,
+              ),
+              mixTranslateX: number(
+                item["mixX"],
+                `/constraints/${index}/mixX`,
+                1,
+              ),
+              mixTranslateY: number(
+                item["mixY"],
+                `/constraints/${index}/mixY`,
+                1,
+              ),
+              mixScaleX: 0,
+              mixScaleY: 0,
+              mixShearY: 0,
+              local: false,
+              relative: false,
+            } as any;
+          fail(
+            "SP38_UNSUPPORTED_CONSTRAINT",
+            `Unsupported constraint type: ${type}`,
+            `/constraints/${index}/type`,
+          );
         },
       );
     }
