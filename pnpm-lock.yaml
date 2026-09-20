@@ -292,6 +292,15 @@ importers:
         specifier: workspace:*
         version: link:../model
 
+  packages/format-spine-42:
+    dependencies:
+      '@rigora/format-common':
+        specifier: workspace:*
+        version: link:../format-common
+      '@rigora/format-spine-38':
+        specifier: workspace:*
+        version: link:../format-spine-38
+
   packages/format-spine-common: {}
 
   packages/math: {}
