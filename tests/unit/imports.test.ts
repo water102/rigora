@@ -248,6 +248,12 @@ it("accepts DragonBones armature AABB preview metadata", () => {
   const result = importDragonBones55(JSON.stringify(fixture), options);
   expect(result.success).toBe(true);
 });
+it("accepts DragonBones 5.6 exports with the 5.5-compatible schema", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.version = "5.6";
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+});
 it("accepts DragonBones mesh edge metadata", () => {
   const fixture = structuredClone(dragonFixture);
   const display = fixture.armature[0]!.skin[0]!.slot[0]!.display[0]!;

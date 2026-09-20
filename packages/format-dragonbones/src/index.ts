@@ -88,10 +88,10 @@ export function importDragonBones55(text: string, options: ImportOptions) {
     }
     if (extensionDiagnostics.length) return [];
     const version = string(source["version"], "/version");
-    if (!/^5\.5(?:\.\d+)?$/.test(version))
+    if (!/^5\.(?:5|6)(?:\.\d+)?$/.test(version))
       fail(
         "DB55_UNSUPPORTED_VERSION",
-        "Expected DragonBones 5.5 JSON.",
+        "Expected DragonBones 5.5 or 5.6 JSON.",
         "/version",
       );
     fields(

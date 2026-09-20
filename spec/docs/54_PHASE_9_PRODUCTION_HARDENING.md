@@ -234,6 +234,15 @@ This phase is executed in independently verified batches. Every batch must pass
   imports. The warning is intentionally retained because canonical color
   evaluation does not yet apply offset channels.
 
+### Batch 27 — DragonBones 5.6 schema admission — partial
+
+- The DragonBones adapter now admits versioned 5.6 exports when they use the
+  5.5-compatible JSON schema, while continuing to reject unsupported 5.0 and
+  other families explicitly.
+- Added a version regression test. The downloaded 5.6 examples still contain
+  separate schema/feature failures, so the corpus total remains 39/172 and the
+  DragonBones release gate remains open.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
