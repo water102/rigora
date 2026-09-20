@@ -853,6 +853,27 @@ describe("Phase 9 native project hardening", () => {
     ).toThrow("NATIVE_ASSET_TOO_LARGE");
   });
 
+  it("rejects syntactically valid but malformed manifests safely", async () => {
+    const { strToU8, zipSync } = await import("fflate");
+    const malformed = {
+      format: "hnn-bones",
+      formatVersion: 1,
+      generator: "test",
+      createdAt: "now",
+      modifiedAt: "now",
+      skeletons: "not-an-array",
+      assets: [],
+      checksums: {},
+    };
+    expect(() =>
+      parseProject(
+        zipSync({
+          "manifest.json": strToU8(JSON.stringify(malformed)),
+        }),
+      ),
+    ).toThrow("NATIVE_INVALID_MANIFEST");
+  });
+
   it("leaves the original project intact when temporary validation fails", async () => {
     const repository = new InMemoryProjectRepository();
     const project = createProject({}, "2026-01-01T00:00:00.000Z");

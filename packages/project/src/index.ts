@@ -399,6 +399,32 @@ export function parseProject(
   if (manifest.format !== "hnn-bones" || manifest.formatVersion !== 1) {
     throw new Error("NATIVE_INVALID_PROJECT");
   }
+  if (
+    typeof manifest.generator !== "string" ||
+    typeof manifest.createdAt !== "string" ||
+    typeof manifest.modifiedAt !== "string" ||
+    !Array.isArray(manifest.skeletons) ||
+    !manifest.skeletons.every(
+      (id) => typeof id === "string" && id.length > 0,
+    ) ||
+    !Array.isArray(manifest.assets) ||
+    !manifest.assets.every((path) => typeof path === "string") ||
+    typeof manifest.checksums !== "object" ||
+    manifest.checksums === null ||
+    Array.isArray(manifest.checksums)
+  ) {
+    throw new Error("NATIVE_INVALID_MANIFEST");
+  }
+  if (
+    manifest.skeletons.some(
+      (id, index) => manifest.skeletons.indexOf(id) !== index,
+    ) ||
+    manifest.assets.some(
+      (path, index) => manifest.assets.indexOf(path) !== index,
+    )
+  ) {
+    throw new Error("NATIVE_INVALID_MANIFEST");
+  }
 
   const skeletons: Record<string, SkeletonData> = {};
   for (const id of manifest.skeletons) {

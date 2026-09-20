@@ -90,6 +90,12 @@ This phase is executed in independently verified batches. Every batch must pass
 - External mandatory corpora remain separate release blockers; checked-in
   fixtures are not claimed as vendor corpus coverage.
 
+### Batch 10 — Native manifest security hardening — complete
+
+- Native parsing now validates manifest field types, required arrays and
+  duplicate IDs before traversing project content.
+- Added malformed-manifest coverage to the security tests.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
