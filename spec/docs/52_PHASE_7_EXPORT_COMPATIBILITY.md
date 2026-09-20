@@ -95,12 +95,12 @@ Export report includes:
 - checksums.
 
 ## Exit gate
-- [ ] all canonical feature types scanned
-- [ ] silent drop impossible by architecture
-- [ ] Spine 3.8 mandatory round-trip green
-- [ ] 3.8.75 exact-profile tests green
-- [ ] DragonBones round-trip green
-- [ ] rotated atlas green
-- [ ] deterministic serialization policy tested
-- [ ] export-planner E2E tests green
-- [ ] non-native conversions appear in report
+- [x] all canonical feature types scanned
+- [x] silent drop impossible by architecture
+- [x] Spine 3.8 mandatory round-trip green
+- [x] 3.8.75 exact-profile tests green
+- [x] DragonBones round-trip green
+- [x] rotated atlas green
+- [x] deterministic serialization policy tested
+- [x] export-planner E2E tests green
+- [x] non-native conversions appear in report
