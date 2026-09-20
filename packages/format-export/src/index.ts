@@ -294,7 +294,10 @@ export function toSpine38Ast(
                 animation.timelines.map((timeline) => [
                   timeline.type,
                   {
-                    target: timeline.targetId,
+                    target:
+                      skeleton.bones.find(
+                        (bone) => bone.id === timeline.targetId,
+                      )?.name ?? timeline.targetId,
                     keys: timeline.keyframes.map((key) => ({
                       time: round(key.time),
                       value: key.value,

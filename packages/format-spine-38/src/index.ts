@@ -15,7 +15,7 @@ import {
   type ImportOptions,
   type ObjectData,
 } from "@rigora/format-common";
-import type { SkinData, SlotData } from "@rigora/model";
+import type { JsonValue, SkinData, SlotData } from "@rigora/model";
 const radians = Math.PI / 180;
 function transform(item: ObjectData, path: string) {
   return {
@@ -57,7 +57,7 @@ export function importSpine38(text: string, options: ImportOptions) {
         "Expected Spine 3.8.x JSON.",
         "/skeleton/spine",
       );
-    fields(source, "skeleton bones slots skins", "");
+    fields(source, "skeleton bones slots skins animations", "");
     const meta = object(source["skeleton"], "/skeleton");
     const data = base(
       options.originalFile ?? "Spine skeleton",
@@ -197,6 +197,62 @@ export function importSpine38(text: string, options: ImportOptions) {
         );
       data.slots[i]!.setupAttachmentId = id;
     });
+    if (source["animations"] !== undefined) {
+      const animations = object(source["animations"], "/animations");
+      data.animations = Object.entries(animations).map(
+        ([name, raw], animationIndex) => {
+          const channels = object(raw, `/animations/${pointer(name)}`);
+          if (!Object.keys(channels).length)
+            fail(
+              "CORE_UNSUPPORTED_SOURCE_FIELD",
+              "Animation has no supported timelines.",
+              `/animations/${pointer(name)}`,
+            );
+          const timelines = Object.entries(channels).map(
+            ([type, channel], timelineIndex) => {
+              const item = object(
+                channel,
+                `/animations/${pointer(name)}/${pointer(type)}`,
+              );
+              const keys = list(
+                item["keys"],
+                `/animations/${pointer(name)}/${pointer(type)}/keys`,
+              ).map((key, keyIndex) => {
+                const value = object(
+                  key,
+                  `/animations/${pointer(name)}/${pointer(type)}/keys/${keyIndex}`,
+                );
+                return {
+                  time: number(value["time"], "", 0),
+                  value: (value["value"] ?? null) as JsonValue,
+                  curve: (value["curve"] ?? { type: "linear" }) as any,
+                };
+              });
+              return {
+                id: `${options.namespace}:animation:${animationIndex}:${timelineIndex}`,
+                type,
+                ...(typeof item["target"] === "string" &&
+                boneIds.get(item["target"])
+                  ? { targetId: boneIds.get(item["target"]) }
+                  : {}),
+                keyframes: keys,
+              };
+            },
+          );
+          return {
+            id: `${options.namespace}:animation:${animationIndex}`,
+            name,
+            duration: Math.max(
+              0,
+              ...timelines.flatMap((timeline) =>
+                timeline.keyframes.map((key) => key.time),
+              ),
+            ),
+            timelines,
+          };
+        },
+      );
+    }
     return [data];
   });
 }

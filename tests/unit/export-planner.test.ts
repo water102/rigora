@@ -19,6 +19,26 @@ import { importDragonBones55 } from "../../packages/format-dragonbones/src/index
 describe("export planning", () => {
   it("blocks unresolved preserved semantics before bytes are written", () => {
     const skeleton = minimalSkeleton();
+    const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "region",
+        id: point.id,
+        name: "hero",
+        textureId: "hero.png",
+        transform: {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        width: 32,
+        height: 16,
+      },
+    ];
     skeleton.skins[0]!.attachments[skeleton.slots[0]!.id]!.push({
       type: "unknownPreserved",
       id: "unknown",
@@ -56,6 +76,54 @@ describe("export planning", () => {
     expect(JSON.parse(first).animations.walk["bone.rotate"].keys[0].time).toBe(
       0,
     );
+  });
+  it("imports exported Spine animation timelines", () => {
+    const skeleton = minimalSkeleton();
+    const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "region",
+        id: point.id,
+        name: "hero",
+        textureId: "hero.png",
+        transform: {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        width: 32,
+        height: 16,
+      },
+    ];
+    skeleton.animations = [
+      {
+        id: "walk-id",
+        name: "walk",
+        duration: 1,
+        timelines: [
+          {
+            id: "rotate",
+            type: "bone.rotate",
+            targetId: "bone-1",
+            keyframes: [{ time: 0.5, value: 1, curve: { type: "linear" } }],
+          },
+        ],
+      },
+    ];
+    const result = importSpine38(serializeSpine38(skeleton), {
+      namespace: "animation-rt",
+      mode: "strict",
+      textures: new Map([["hero", { id: "hero.png", width: 32, height: 16 }]]),
+    });
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    if (result.success)
+      expect(
+        result.skeletons[0]!.animations[0]!.timelines[0]!.keyframes[0]!.time,
+      ).toBe(0.5);
   });
   it("exports supported constraints and blocks physics without approval", () => {
     const skeleton = minimalSkeleton();
