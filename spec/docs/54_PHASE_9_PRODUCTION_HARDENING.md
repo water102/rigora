@@ -612,3 +612,15 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
 - This closes the repository-history search path without weakening the exact
   version gate. A licensed/exported exact 3.8.75 fixture is still required to
   close that gate.
+
+## Batch 51 — user-provided Wukong 3.8.99 corpus
+
+- Ingested the user-provided `wukong` export set into ignored
+  `example/spine-3.8.99-wukong/`; no asset files were added to the repository.
+- The corpus contains 51 Spine `3.8.99` JSON files with adjacent atlas and
+  texture data. Provenance is recorded in `docs/release/USER_CORPUS_PROVENANCE.json`.
+- Qualification currently passes 50/51 files. The single remaining failure is
+  an actual `CORE_CYCLIC_LINKED_MESH` graph in `gold_houzi.json`, now isolated
+  for the next adapter batch.
+- This is valuable 3.8-family compatibility evidence, but it is not an exact
+  3.8.75 export and does not close that release gate.

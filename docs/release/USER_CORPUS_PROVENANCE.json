@@ -1,0 +1,21 @@
+{
+  "corpora": [
+    {
+      "name": "wukong-spines",
+      "format": "spine-3.8-family",
+      "source": "user-provided-local-corpus",
+      "localPath": "example/spine-3.8.99-wukong",
+      "files": 51,
+      "versionCounts": {
+        "3.8.99": 51
+      },
+      "includes": ["json", "atlas", "texture-images"],
+      "qualification": {
+        "success": 50,
+        "failed": 1,
+        "remainingFailure": "CORE_CYCLIC_LINKED_MESH"
+      },
+      "officialSpine3875Evidence": false
+    }
+  ]
+}
