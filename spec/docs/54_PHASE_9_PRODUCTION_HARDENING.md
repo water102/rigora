@@ -96,6 +96,13 @@ This phase is executed in independently verified batches. Every batch must pass
   duplicate IDs before traversing project content.
 - Added malformed-manifest coverage to the security tests.
 
+### Batch 11 — Package artifact verification — complete
+
+- Added `pnpm release:verify-artifacts` to require non-empty MSI and NSIS
+  bundle outputs under `src-tauri/target/release/bundle`.
+- The verifier intentionally fails when Cargo/build artifacts are absent; it
+  cannot substitute for clean-machine install, upgrade and uninstall tests.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

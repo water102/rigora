@@ -22,3 +22,10 @@ Expected artifacts are the configured NSIS and MSI bundles from
 stopped before compilation because `cargo` was not available on PATH. No
 package-qualified claim is made until the command completes and the generated
 artifacts are installed in a clean Windows environment.
+
+After a successful build, verify that both configured bundle families contain
+non-empty files:
+
+```text
+pnpm release:verify-artifacts
+```
