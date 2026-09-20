@@ -96,7 +96,7 @@
 - [ ] texture metadata
 - [x] physics mapping
 - [ ] export subset
-- [ ] downgrade
+- [x] downgrade
 
 ## Renderer
 - [ ] regions
@@ -190,7 +190,7 @@
 - [ ] asset resolution
 - [x] capability scanner
 - [x] export planner
-- [ ] bake integration
+- [x] bake integration
 - [x] deterministic serializers
 - [x] reports
 
@@ -239,6 +239,6 @@
 - [ ] M5
 - [ ] M6
 - [x] M7
-- [ ] M8
+- [x] M8
 - [ ] M9
 - [ ] zero critical known issue
