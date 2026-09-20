@@ -260,6 +260,80 @@ export function importSpine38(text: string, options: ImportOptions) {
               const uvs = list(item["uvs"], loc + "/uvs").map((value, index) =>
                 number(value, `${loc}/uvs/${index}`),
               );
+              const packedWeights =
+                vertices.length !== uvs.length
+                  ? (() => {
+                      let cursor = 0;
+                      const positions: number[] = [];
+                      const weightedVertices: {
+                        bindPosition: { x: number; y: number };
+                        influences: {
+                          boneId: string;
+                          weight: number;
+                          localPosition: { x: number; y: number };
+                        }[];
+                      }[] = [];
+                      for (
+                        let vertexIndex = 0;
+                        vertexIndex < uvs.length / 2;
+                        vertexIndex++
+                      ) {
+                        const influenceCount = Math.trunc(
+                          number(vertices[cursor], `${loc}/vertices/${cursor}`),
+                        );
+                        cursor += 1;
+                        const influences = [];
+                        for (
+                          let influenceIndex = 0;
+                          influenceIndex < influenceCount;
+                          influenceIndex++
+                        ) {
+                          const boneIndex = Math.trunc(
+                            number(
+                              vertices[cursor],
+                              `${loc}/vertices/${cursor}`,
+                            ),
+                          );
+                          const x = number(
+                            vertices[cursor + 1],
+                            `${loc}/vertices/${cursor + 1}`,
+                          );
+                          const y = number(
+                            vertices[cursor + 2],
+                            `${loc}/vertices/${cursor + 2}`,
+                          );
+                          const weight = number(
+                            vertices[cursor + 3],
+                            `${loc}/vertices/${cursor + 3}`,
+                          );
+                          cursor += 4;
+                          influences.push({
+                            boneId:
+                              [...boneIds.values()][boneIndex] ??
+                              `bone-${boneIndex}`,
+                            weight,
+                            localPosition: { x, y },
+                          });
+                        }
+                        const first = influences[0]?.localPosition ?? {
+                          x: 0,
+                          y: 0,
+                        };
+                        positions.push(first.x, first.y);
+                        weightedVertices.push({
+                          bindPosition: first,
+                          influences,
+                        });
+                      }
+                      if (cursor !== vertices.length)
+                        fail(
+                          "CORE_SOURCE_SCHEMA",
+                          "Packed weighted mesh vertices contain trailing data.",
+                          loc + "/vertices",
+                        );
+                      return { positions, weightedVertices };
+                    })()
+                  : undefined;
               const pair = (values: number[]) =>
                 values.reduce<{ x: number; y: number }[]>(
                   (result, value, index) =>
@@ -279,7 +353,7 @@ export function importSpine38(text: string, options: ImportOptions) {
                 type: "mesh",
                 id,
                 name: string(item["name"], loc + "/name", key),
-                vertices: pair(vertices),
+                vertices: pair(packedWeights?.positions ?? vertices),
                 uvs: pair(uvs),
                 triangles: list(item["triangles"], loc + "/triangles")
                   .map((value, index) =>
@@ -323,6 +397,9 @@ export function importSpine38(text: string, options: ImportOptions) {
                         }),
                       })),
                     }
+                  : {}),
+                ...(packedWeights
+                  ? { weightedVertices: packedWeights.weightedVertices }
                   : {}),
               };
             }

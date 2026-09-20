@@ -315,6 +315,15 @@ This phase is executed in independently verified batches. Every batch must pass
   explicitly; overall success remains 27/136 because that file has additional
   mesh/reference failures.
 
+### Batch 36 — Spine packed weighted mesh decoding — partial
+
+- Added decoding for Spine packed weighted mesh vertices (`boneCount` followed
+  by bone index, local position, and weight tuples) and mapped them to
+  canonical `weightedVertices`.
+- Added a regression test. The local Spine 4.2 corpus improved from 27/136 to
+  33/136 successful imports. Remaining weighted assets expose explicit weight
+  sum/reference validation issues for the next qualification batch.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

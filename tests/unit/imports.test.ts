@@ -61,6 +61,25 @@ it("accepts Spine mesh edge metadata without changing canonical geometry", () =>
   const result = importSpine38(JSON.stringify(fixture), options);
   expect(result.success).toBe(true);
 });
+it("decodes packed Spine weighted mesh vertices", () => {
+  const fixture = structuredClone(spineFixture);
+  const attachment = fixture.skins[0]!.attachments.body!.logical!;
+  Object.assign(attachment, {
+    type: "mesh",
+    vertices: [1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+    uvs: [0, 0, 1, 0, 1, 1],
+    triangles: [0, 1, 2],
+  });
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success) {
+    const mesh = Object.values(
+      result.skeletons[0]!.skins[0]!.attachments,
+    )[0]![0]!;
+    expect(mesh.type).toBe("mesh");
+    if (mesh.type === "mesh") expect(mesh.weightedVertices).toHaveLength(3);
+  }
+});
 it("accepts Spine 4.2 sequence attachment metadata", () => {
   const fixture = structuredClone(spineFixture);
   fixture.skeleton.spine = "4.2.22";
