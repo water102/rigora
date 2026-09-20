@@ -16,6 +16,7 @@
     "release:verify-artifacts": "node tools/verify-package-artifacts.mjs",
     "release:security": "pnpm build && node tools/qualify-native-security.mjs",
     "release:parser-mutations": "pnpm build && node tools/qualify-parser-mutations.mjs",
+    "release:example-corpus": "pnpm build && node tools/qualify-example-corpus.mjs",
     "release:qualification": "node tools/run-release-qualification.mjs",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r build && pnpm -r typecheck",

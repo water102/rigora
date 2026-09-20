@@ -169,6 +169,21 @@ This phase is executed in independently verified batches. Every batch must pass
 - External vendor corpus and clean-machine qualification remain intentionally
   outside this local orchestrator.
 
+### Batch 21 — Local example corpus probe — partial
+
+- Added `pnpm release:example-corpus` to scan the ignored `example/` directory
+  and exercise the Spine 3.8, Spine 4.2 and DragonBones adapters against the
+  downloaded public runtime/demo repositories.
+- The probe discovered 116 Spine 3.8 JSON files, 136 Spine 4.2 JSON files and
+  172 DragonBones JSON files without importer throws.
+- This is diagnostic evidence only: the current adapters accept 5/116 Spine
+  3.8 files, 7/136 Spine 4.2 files and 0/172 DragonBones files when atlas
+  metadata is not supplied, so the official corpus gates remain open. The
+  detailed per-file result is recorded in
+  `docs/release/EXAMPLE_CORPUS_QUALIFICATION.json`.
+- The downloaded assets remain local-only under ignored `example/` and are not
+  part of the repository or release artifacts.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
