@@ -122,7 +122,7 @@
 - [x] config/state
 - [x] fixed step
 - [x] damping
-- [ ] inertia
+- [x] inertia
 - [x] gravity/wind
 - [x] mix
 - [x] reset/seek/prewarm

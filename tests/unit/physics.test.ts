@@ -69,4 +69,15 @@ describe("PhysicsWorld", () => {
     });
     expect(result.keys).toHaveLength(2);
   });
+
+  it("applies inertia from target motion only after an initial target sample", () => {
+    const world = new PhysicsWorld({ fixedDt: 0.1 });
+    world.register("b", { x: 0, y: 0, velocityX: 0, velocityY: 0 });
+    const targets = new Map([["b", { x: 0, y: 0 }]]);
+    const inertial = { ...constraint, inertia: 1 };
+    world.stepWithTargets(0.1, [inertial], targets);
+    targets.set("b", { x: 1, y: 0 });
+    world.stepWithTargets(0.1, [inertial], targets);
+    expect(world.get("b")!.velocityX).toBeCloseTo(-10);
+  });
 });

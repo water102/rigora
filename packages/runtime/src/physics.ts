@@ -6,6 +6,10 @@ export interface PhysicsBodyState {
   velocityX: number;
   velocityY: number;
 }
+export interface PhysicsTarget {
+  x: number;
+  y: number;
+}
 
 export interface PhysicsStepOptions {
   fixedDt?: number;
@@ -41,6 +45,7 @@ export class PhysicsWorld {
   private accumulator = 0;
   private readonly initial = new Map<string, PhysicsBodyState>();
   private readonly bodies = new Map<string, PhysicsBodyState>();
+  private readonly previousTargets = new Map<string, PhysicsTarget>();
 
   constructor(options: PhysicsStepOptions = {}) {
     this.fixedDt = options.fixedDt ?? 1 / 60;
@@ -78,10 +83,35 @@ export class PhysicsWorld {
     return count;
   }
 
+  /** Steps with the non-physics target pose, applying inertia from target motion. */
+  stepWithTargets(
+    elapsed: number,
+    constraints: readonly PhysicsConstraint[],
+    targets: ReadonlyMap<string, PhysicsTarget>,
+    wind = 0,
+  ): number {
+    if (!Number.isFinite(elapsed) || elapsed < 0)
+      throw new RangeError("elapsed must be finite and nonnegative");
+    this.accumulator += elapsed;
+    let count = 0;
+    while (this.accumulator >= this.fixedDt && count < this.maxSubsteps) {
+      for (const constraint of constraints) {
+        const target = targets.get(constraint.boneId);
+        const previous = this.previousTargets.get(constraint.boneId);
+        this.integrate(constraint, this.fixedDt, wind, target, previous);
+        if (target) this.previousTargets.set(constraint.boneId, { ...target });
+      }
+      this.accumulator -= this.fixedDt;
+      count++;
+    }
+    return count;
+  }
+
   reset(): void {
     for (const [id, initial] of this.initial)
       this.bodies.set(id, { ...initial });
     this.accumulator = 0;
+    this.previousTargets.clear();
   }
 
   seek(
@@ -101,6 +131,8 @@ export class PhysicsWorld {
     constraint: PhysicsConstraint,
     dt: number,
     wind: number,
+    target?: PhysicsTarget,
+    previousTarget?: PhysicsTarget,
   ): void {
     if (constraint.enabled === false) return;
     const state = this.bodies.get(constraint.boneId);
@@ -111,6 +143,11 @@ export class PhysicsWorld {
     const gravity = constraint.gravity ?? 0;
     const forceX = (constraint.wind ?? wind) * strength;
     const forceY = gravity * strength;
+    const inertia = Math.max(0, constraint.inertia ?? 0);
+    if (target && previousTarget) {
+      state.velocityX -= ((target.x - previousTarget.x) / dt) * inertia;
+      state.velocityY -= ((target.y - previousTarget.y) / dt) * inertia;
+    }
     state.velocityX += forceX * massInverse * dt;
     state.velocityY += forceY * massInverse * dt;
     const decay = Math.max(0, 1 - damping * dt);
