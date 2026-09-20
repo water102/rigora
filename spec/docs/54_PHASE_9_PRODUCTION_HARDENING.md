@@ -162,6 +162,13 @@ This phase is executed in independently verified batches. Every batch must pass
 - The generated evidence is published at
   `docs/release/PARSER_MUTATION_QUALIFICATION.json`.
 
+### Batch 20 — Qualification orchestrator — complete
+
+- Added `pnpm release:qualification` to run all internal release gates in a
+  deterministic fail-fast sequence.
+- External vendor corpus and clean-machine qualification remain intentionally
+  outside this local orchestrator.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

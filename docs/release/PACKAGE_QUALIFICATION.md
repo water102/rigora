@@ -30,6 +30,15 @@ non-empty files:
 pnpm release:verify-artifacts
 ```
 
+The complete internal qualification sequence can be run with:
+
+```text
+pnpm release:qualification
+```
+
+This runs repository checks, browser E2E, internal corpus, native security,
+parser mutation and package-artifact gates in order.
+
 ## Build evidence
 
 Captured on 2026-09-20 after installing Rustup and the stable MSVC toolchain:
