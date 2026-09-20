@@ -248,6 +248,18 @@ it("accepts DragonBones armature AABB preview metadata", () => {
   const result = importDragonBones55(JSON.stringify(fixture), options);
   expect(result.success).toBe(true);
 });
+it("accepts DragonBones mesh edge metadata", () => {
+  const fixture = structuredClone(dragonFixture);
+  const display = fixture.armature[0]!.skin[0]!.slot[0]!.display[0]!;
+  Object.assign(display, { edges: [0, 1], userEdges: [1, 0] });
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "CORE_UNSUPPORTED_SOURCE_FIELD",
+    ),
+  ).toBe(false);
+});
 it("preserves DragonBones animation payloads as raw timelines", () => {
   const fixture = structuredClone(dragonFixture);
   fixture.armature[0]!.animation = [{ name: "idle", duration: 24 }];

@@ -214,6 +214,16 @@ This phase is executed in independently verified batches. Every batch must pass
   DragonBones corpus gate green; unsupported source fields and schema cases
   remain release blockers.
 
+### Batch 25 — DragonBones mesh edge metadata acceptance — partial
+
+- DragonBones mesh displays may contain exporter topology hints in `edges` and
+  `userEdges`; these fields are now accepted during import instead of being
+  rejected as unsupported source fields. Canonical triangle topology remains
+  authoritative until an explicit edge contract is added.
+- Added a regression test covering both fields. The local corpus remains at
+  34/172 successful DragonBones imports, confirming this batch is a compatibility
+  expansion rather than a claim that the vendor corpus is release-green.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

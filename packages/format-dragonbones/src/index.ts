@@ -244,7 +244,7 @@ export function importDragonBones55(text: string, options: ImportOptions) {
                 item = object(value, loc);
               fields(
                 item,
-                "name path type transform pivot width height vertices uvs triangles",
+                "name path type transform pivot width height vertices uvs triangles edges userEdges",
                 loc,
               );
               if (item["type"] === "armature") {
