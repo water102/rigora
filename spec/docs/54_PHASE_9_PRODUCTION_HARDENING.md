@@ -593,3 +593,12 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
   including inline atlas coverage and preserved unsupported payloads.
 - Kept the exact Spine 3.8.75 gate and the broad zero-regression gate open;
   family compatibility is not substituted for exact-version evidence.
+
+## Batch 49 — internal release qualification evidence
+
+- Ran `pnpm release:qualification` end to end successfully.
+- Recorded the result in `docs/release/INTERNAL_RELEASE_QUALIFICATION.md`:
+  repository checks (262 tests), browser E2E (3/3), internal corpus (3/3),
+  native security (20/20), and MSI/NSIS artifact verification all passed.
+- The report explicitly limits the claim to deterministic local evidence; it
+  does not close the exact Spine 3.8.75 or clean-machine compatibility gates.
