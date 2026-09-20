@@ -193,6 +193,14 @@ This phase is executed in independently verified batches. Every batch must pass
   remaining failures are now dominated by source-schema and unsupported
   feature diagnostics rather than absent atlas dimensions.
 
+### Batch 23 — Spine atlas metadata probe — complete
+
+- The corpus runner now parses adjacent Spine `.atlas` text exports and loads
+  real region dimensions into the qualification options.
+- The Spine 3.8 probe no longer reports unresolved texture warnings for the
+  downloaded export set; remaining failures represent schema, mesh, behavior,
+  preservation, or version coverage rather than missing atlas lookup data.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

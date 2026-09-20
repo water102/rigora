@@ -23,7 +23,8 @@ not a release-green vendor corpus gate: the current run exercises every
 recognized JSON file without importer throws, but many files require atlas
 metadata and fields not yet covered by the adapters. Adjacent DragonBones
 `*_tex.json` files are loaded when present so their real subtexture dimensions
-are available to the probe. The exact 3.8.75 and 4.2
+are available to the probe. Adjacent Spine `.atlas` files are also parsed for
+region names and dimensions. The exact 3.8.75 and 4.2
 vendor-version gates therefore remain open until the adapter and golden
 expectations are qualified against the appropriate exports.
 

@@ -23,6 +23,30 @@ function textureOptions(source, file) {
     }
   }
   for (const atlasFile of readdirSync(dirname(file))) {
+    if (atlasFile.endsWith(".atlas")) {
+      const lines = readFileSync(join(dirname(file), atlasFile), "utf8").split(
+        /\r?\n/,
+      );
+      for (let index = 0; index < lines.length; index += 1) {
+        const name = lines[index];
+        if (!name || /^\s/.test(name) || name.includes(": ")) continue;
+        for (
+          let next = index + 1;
+          next < Math.min(index + 8, lines.length);
+          next += 1
+        ) {
+          const match = lines[next].match(/^\s+size:\s*(\d+)\s*,\s*(\d+)/);
+          if (!match) continue;
+          textures.set(name, {
+            id: `example:${name}`,
+            width: Number(match[1]),
+            height: Number(match[2]),
+          });
+          break;
+        }
+      }
+      continue;
+    }
     if (!atlasFile.endsWith("_tex.json")) continue;
     try {
       const atlas = JSON.parse(
