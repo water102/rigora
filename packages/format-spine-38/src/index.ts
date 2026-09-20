@@ -67,9 +67,19 @@ export function importSpine38(text: string, options: ImportOptions) {
         ...ikConstraints,
       ];
     }
+    if (Array.isArray(source["path"])) {
+      const pathConstraints = source["path"].map((item) => ({
+        ...(item as Record<string, unknown>),
+        type: "path",
+      }));
+      source["constraints"] = [
+        ...(Array.isArray(source["constraints"]) ? source["constraints"] : []),
+        ...pathConstraints,
+      ];
+    }
     fields(
       source,
-      "skeleton bones slots skins animations events constraints ik",
+      "skeleton bones slots skins animations events constraints ik path",
       "",
     );
     const meta = object(source["skeleton"], "/skeleton");

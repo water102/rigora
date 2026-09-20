@@ -93,6 +93,20 @@ it("normalizes Spine 3.8 top-level IK constraints", () => {
       bendDirection: -1,
     });
 });
+it("normalizes Spine 3.8 top-level path constraints", () => {
+  const fixture = structuredClone(spineFixture);
+  fixture.path = [
+    { name: "path", bones: ["tip"], target: "body", rotateMode: "chain" },
+  ];
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.constraints[0]).toMatchObject({
+      type: "path",
+      name: "path",
+      targetSlotId: result.skeletons[0]!.slots[0]!.id,
+    });
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(
