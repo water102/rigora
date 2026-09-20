@@ -103,7 +103,7 @@ export function importSpine38(text: string, options: ImportOptions) {
       const path = `/bones/${i}`;
       fields(
         bone,
-        "name parent length x y rotation scaleX scaleY shearX shearY transform color",
+        "name parent length x y rotation scaleX scaleY shearX shearY transform color skin",
         path,
       );
       const inheritance = bone["transform"] ?? "normal";
@@ -136,6 +136,7 @@ export function importSpine38(text: string, options: ImportOptions) {
           | "noRotationOrReflection"
           | "noScale"
           | "noScaleOrReflection",
+        ...(bone["skin"] === true ? { tags: ["skin"] } : {}),
         ...(bone["color"] === undefined
           ? {}
           : { color: color(bone["color"], path + "/color") }),

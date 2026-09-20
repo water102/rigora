@@ -165,6 +165,14 @@ it("preserves Spine weighted path attachments until decoding is supported", () =
     ),
   ).toBe(true);
 });
+it("preserves Spine skin-required bone metadata as a canonical tag", () => {
+  const fixture = structuredClone(spineFixture);
+  fixture.bones[1]!.skin = true;
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.bones[1]!.tags).toEqual(["skin"]);
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(

@@ -22,7 +22,7 @@
         "CORE_SOURCE_SCHEMA": 35,
         "CORE_UNSUPPORTED_BEHAVIOR": 17,
         "CORE_UNSUPPORTED_SOURCE_FIELD": 21,
-        "SP38_PATH_ATTACHMENT_PRESERVED": 29,
+        "SP38_PATH_ATTACHMENT_PRESERVED": 31,
         "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 11,
         "SPINE_VERSION_INVALID": 22
       }
@@ -2197,8 +2197,11 @@
       "version": "3.8.76",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\mix-and-match\\export\\mix-and-match-pro.json",
@@ -3856,8 +3859,11 @@
       "version": "3.8.76",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\mix-and-match\\mix-and-match-pro.json",
