@@ -173,6 +173,19 @@ export class PixiRegionRenderer {
           .stroke({ color: 0x66e3ff, width: 1 });
         this.#debug.circle(bone.origin.x, -bone.origin.y, 1.5).fill(0xffffff);
       }
+    if (debug && snapshot.physics)
+      for (const marker of snapshot.physics) {
+        this.#debug
+          .circle(marker.position.x, -marker.position.y, 3)
+          .fill(0xffb000);
+        this.#debug
+          .moveTo(marker.position.x, -marker.position.y)
+          .lineTo(
+            marker.position.x + marker.velocity.x * 0.05,
+            -(marker.position.y + marker.velocity.y * 0.05),
+          )
+          .stroke({ color: 0xffb000, width: 1 });
+      }
     return diagnostics;
   }
   destroy(): void {

@@ -62,11 +62,17 @@ export interface DebugBone {
   origin: Vec2;
   tip: Vec2;
 }
+export interface PhysicsDebugMarker {
+  id: string;
+  position: Vec2;
+  velocity: Vec2;
+}
 /** Region and mesh order are authoritative. Renderer must not inspect authored source data. */
 export interface RenderSnapshot {
   regions: RegionSnapshot[];
   meshes: MeshSnapshot[];
   bones: DebugBone[];
+  physics?: PhysicsDebugMarker[];
 }
 export type SnapshotResult =
   | { success: true; snapshot: RenderSnapshot; diagnostics: Diagnostic[] }
