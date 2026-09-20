@@ -776,6 +776,9 @@ function Timeline() {
   const [snapInterval, setSnapInterval] = useState(1 / 30);
   const [slotTargetId, setSlotTargetId] = useState("");
   const [constraintTargetId, setConstraintTargetId] = useState("");
+  const [physicsEnabled, setPhysicsEnabled] = useState(true);
+  const [physicsAccurateSeek, setPhysicsAccurateSeek] = useState(true);
+  const [physicsResetVersion, setPhysicsResetVersion] = useState(0);
   const nudgeSelectedValues = (delta: number) => {
     if (!store.view.selectedKeyIds.size) return;
     store.runAtomic(
@@ -1456,6 +1459,60 @@ function Timeline() {
             <button onClick={() => addSpecialChannel("constraint", "physics")}>
               Physics
             </button>
+            <fieldset className="timeline-physics-panel">
+              <legend>Physics preview</legend>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={physicsEnabled}
+                  onChange={(event) => setPhysicsEnabled(event.target.checked)}
+                />
+                Enabled
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={physicsAccurateSeek}
+                  onChange={(event) =>
+                    setPhysicsAccurateSeek(event.target.checked)
+                  }
+                />
+                Accurate seek
+              </label>
+              <button
+                type="button"
+                onClick={() => setPhysicsResetVersion((value) => value + 1)}
+              >
+                Reset physics
+              </button>
+              <small className="muted">
+                {physicsEnabled ? "Live preview enabled" : "Physics disabled"} ·{" "}
+                {physicsAccurateSeek ? "resimulate on seek" : "fast seek"} ·
+                reset #{physicsResetVersion}
+              </small>
+              {skeleton?.constraints
+                .filter((constraint) => constraint.type === "physics")
+                .map((constraint) => (
+                  <label key={constraint.id}>
+                    {constraint.name} mix
+                    <input
+                      type="number"
+                      min={0}
+                      max={1}
+                      step={0.05}
+                      value={constraint.mix ?? 1}
+                      disabled={!physicsEnabled}
+                      onChange={(event) => {
+                        constraint.mix = Math.max(
+                          0,
+                          Math.min(1, Number(event.target.value)),
+                        );
+                        redraw((value) => value + 1);
+                      }}
+                    />
+                  </label>
+                ))}
+            </fieldset>
             <button onClick={toggleLoop}>
               {playback.loop ? "Loop on" : "Loop off"}
             </button>
