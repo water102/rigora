@@ -107,6 +107,23 @@ it("normalizes Spine 3.8 top-level path constraints", () => {
       targetSlotId: result.skeletons[0]!.slots[0]!.id,
     });
 });
+it("imports Spine bounding-box attachments", () => {
+  const fixture = structuredClone(spineFixture);
+  const attachment = fixture.skins[0]!.attachments.body!.logical!;
+  Object.assign(attachment, {
+    type: "boundingbox",
+    vertices: [0, 0, 20, 0, 20, 10],
+    vertexCount: 3,
+  });
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(
+      Object.values(result.skeletons[0]!.skins[0]!.attachments)[0]![0],
+    ).toMatchObject({
+      type: "boundingBox",
+    });
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(

@@ -18,10 +18,9 @@
         "ASSET_TEXTURE_NOT_FOUND": 12,
         "CORE_INVALID_MESH": 1,
         "CORE_INVALID_REFERENCE": 3,
-        "CORE_SOURCE_SCHEMA": 11,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 57,
-        "SP38_UNSUPPORTED_ATTACHMENT": 4,
-        "SP38_UNSUPPORTED_INHERITANCE": 14,
+        "CORE_SOURCE_SCHEMA": 15,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 55,
+        "SP38_UNSUPPORTED_INHERITANCE": 16,
         "SPINE_VERSION_INVALID": 22
       }
     },
@@ -40,9 +39,8 @@
         "CORE_DEGENERATE_TRIANGLE": 1,
         "CORE_INVALID_MESH": 2,
         "CORE_INVALID_REFERENCE": 3,
-        "CORE_SOURCE_SCHEMA": 8,
+        "CORE_SOURCE_SCHEMA": 12,
         "CORE_UNSUPPORTED_SOURCE_FIELD": 112,
-        "SP38_UNSUPPORTED_ATTACHMENT": 4,
         "SP42_CORE_SUBSET_ADAPTER": 7
       }
     },
@@ -2194,7 +2192,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\mix-and-match\\export\\mix-and-match-pro.json",
@@ -2261,7 +2259,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\spineboy\\export\\spineboy-pro.json",
@@ -2324,7 +2322,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2d-objc\\Resources\\coin-pro.json",
@@ -2702,7 +2700,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-libgdx\\spine-libgdx-tests\\assets\\spineboy\\spineboy-pro.json",
@@ -3120,7 +3118,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-ts\\player\\example\\assets\\raptor-pro.json",
@@ -3210,7 +3208,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\mix-and-match\\mix-and-match-pro.json",
@@ -3607,7 +3605,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\spineboy\\export\\spineboy-pro.json",
@@ -4007,7 +4005,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\spineboy\\spineboy-pro.json",
@@ -4025,7 +4023,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-monogame\\spine-monogame-example\\data\\celestial-circus-pro.json",
@@ -4430,7 +4428,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\spineboy-pro.json",

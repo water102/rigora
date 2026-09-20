@@ -195,6 +195,23 @@ export function importSpine38(text: string, options: ImportOptions) {
                     }),
               };
             }
+            if (item["type"] === "boundingbox") {
+              const vertices = list(item["vertices"], loc + "/vertices").map(
+                (value, index) => number(value, `${loc}/vertices/${index}`),
+              );
+              return {
+                type: "boundingBox" as const,
+                id,
+                name: string(item["name"], loc + "/name", key),
+                vertices: vertices.reduce<{ x: number; y: number }[]>(
+                  (result, value, index) =>
+                    index % 2
+                      ? result
+                      : [...result, { x: value, y: vertices[index + 1] ?? 0 }],
+                  [],
+                ),
+              };
+            }
             if (item["type"] === "mesh") {
               const linkedIndex =
                 item["parent"] === undefined
