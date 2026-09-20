@@ -148,11 +148,33 @@ export function importSpine38(text: string, options: ImportOptions) {
               item = object(value, loc);
             fields(
               item,
-              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights parent inheritDeform edges",
+              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights parent inheritDeform edges end vertexCount color",
               loc,
             );
             const id = `${options.namespace}:attachment:${i}:${slotId}:${j}`;
             if (skin["name"] === "default") setup.set(`${slotId}\0${key}`, id);
+            if (item["type"] === "clipping") {
+              const vertices = list(item["vertices"], loc + "/vertices").map(
+                (value, index) => number(value, `${loc}/vertices/${index}`),
+              );
+              return {
+                type: "clipping" as const,
+                id,
+                name: string(item["name"], loc + "/name", key),
+                vertices: vertices.reduce<{ x: number; y: number }[]>(
+                  (result, value, index) =>
+                    index % 2
+                      ? result
+                      : [...result, { x: value, y: vertices[index + 1] ?? 0 }],
+                  [],
+                ),
+                ...(item["end"] === undefined
+                  ? {}
+                  : {
+                      endSlotId: reference(item["end"], slotIds, loc + "/end"),
+                    }),
+              };
+            }
             if (item["type"] === "mesh") {
               const linkedIndex =
                 item["parent"] === undefined
