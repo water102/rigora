@@ -57,7 +57,11 @@ export function importSpine38(text: string, options: ImportOptions) {
         "Expected Spine 3.8.x JSON.",
         "/skeleton/spine",
       );
-    fields(source, "skeleton bones slots skins animations constraints", "");
+    fields(
+      source,
+      "skeleton bones slots skins animations events constraints",
+      "",
+    );
     const meta = object(source["skeleton"], "/skeleton");
     const data = base(
       options.originalFile ?? "Spine skeleton",
@@ -280,6 +284,15 @@ export function importSpine38(text: string, options: ImportOptions) {
       data.slots[i]!.setupAttachmentId = id;
     });
     if (source["animations"] !== undefined) {
+      const attachmentIds = new Map(
+        data.skins.flatMap((skin) =>
+          Object.values(skin.attachments).flatMap((attachments) =>
+            attachments.map(
+              (attachment) => [attachment.name, attachment.id] as const,
+            ),
+          ),
+        ),
+      );
       const animations = object(source["animations"], "/animations");
       data.animations = Object.entries(animations).map(
         ([name, raw], animationIndex) => {
@@ -314,8 +327,13 @@ export function importSpine38(text: string, options: ImportOptions) {
                 id: `${options.namespace}:animation:${animationIndex}:${timelineIndex}`,
                 type,
                 ...(typeof item["target"] === "string" &&
-                boneIds.get(item["target"])
-                  ? { targetId: boneIds.get(item["target"]) }
+                (boneIds.get(item["target"]) ??
+                  attachmentIds.get(item["target"]))
+                  ? {
+                      targetId:
+                        boneIds.get(item["target"]) ??
+                        attachmentIds.get(item["target"]),
+                    }
                   : {}),
                 keyframes: keys,
               };
@@ -333,6 +351,15 @@ export function importSpine38(text: string, options: ImportOptions) {
             timelines,
           };
         },
+      );
+    }
+    if (source["events"] !== undefined) {
+      data.events = Object.entries(object(source["events"], "/events")).map(
+        ([name, value], index) => ({
+          id: `${options.namespace}:event:${index}`,
+          name,
+          defaults: object(value, `/events/${pointer(name)}`) as any,
+        }),
       );
     }
     if (source["constraints"] !== undefined) {

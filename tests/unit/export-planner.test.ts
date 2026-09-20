@@ -232,6 +232,57 @@ describe("export planning", () => {
       expect((attachments[1] as any).inheritDeform).toBe(true);
     }
   });
+  it("round-trips Spine deform timelines and events", () => {
+    const skeleton = minimalSkeleton();
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "mesh",
+        id: "mesh-deform",
+        name: "mesh-deform",
+        vertices: [{ x: 0, y: 0 }],
+        uvs: [{ x: 0, y: 0 }],
+        triangles: [],
+      },
+    ];
+    skeleton.slots[0]!.setupAttachmentId = "mesh-deform";
+    skeleton.animations = [
+      {
+        id: "deform-animation",
+        name: "squash",
+        duration: 0.5,
+        timelines: [
+          {
+            id: "deform-timeline",
+            type: "deform",
+            targetId: "mesh-deform",
+            keyframes: [
+              {
+                time: 0.25,
+                value: { offset: [1, 2] },
+                curve: { type: "linear" },
+              },
+            ],
+          },
+        ],
+      },
+    ];
+    skeleton.events = [
+      { id: "event-1", name: "hit", defaults: { sound: "hit.wav" } },
+    ];
+    const result = importSpine38(serializeSpine38(skeleton), {
+      namespace: "deform-rt",
+      mode: "strict",
+    });
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    if (result.success) {
+      expect(result.skeletons[0]!.animations[0]!.timelines[0]!.targetId).toBe(
+        "deform-rt:attachment:0:deform-rt:slot:0:0",
+      );
+      expect(result.skeletons[0]!.events[0]!.defaults).toEqual({
+        sound: "hit.wav",
+      });
+    }
+  });
   it("round-trips an exported Spine IK constraint", () => {
     const skeleton = minimalSkeleton();
     const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;

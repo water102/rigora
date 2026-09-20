@@ -321,7 +321,15 @@ export function toSpine38Ast(
                     target:
                       skeleton.bones.find(
                         (bone) => bone.id === timeline.targetId,
-                      )?.name ?? timeline.targetId,
+                      )?.name ??
+                      skeleton.skins
+                        .flatMap((skin) =>
+                          Object.values(skin.attachments).flat(),
+                        )
+                        .find(
+                          (attachment) => attachment.id === timeline.targetId,
+                        )?.name ??
+                      timeline.targetId,
                     keys: timeline.keyframes.map((key) => ({
                       time: round(key.time),
                       value: key.value,
