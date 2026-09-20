@@ -39,6 +39,15 @@ pnpm release:qualification
 This runs repository checks, browser E2E, internal corpus, native security,
 parser mutation and package-artifact gates in order.
 
+## Current native build evidence
+
+On 2026-09-20, `cargo 1.98.1` was discovered at
+`C:\Users\PC\.cargo\bin\cargo.exe` and added to the build-process `PATH`.
+`pnpm tauri:build` then completed successfully and produced both configured
+bundles. `pnpm release:verify-artifacts` confirmed that the NSIS and MSI files
+are non-empty. The earlier PATH-only preflight failure is therefore an
+environment configuration note, not a native build failure.
+
 ## Build evidence
 
 Captured on 2026-09-20 after installing Rustup and the stable MSVC toolchain:
