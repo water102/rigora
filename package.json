@@ -11,6 +11,7 @@
     "test:browser": "playwright test",
     "benchmark:selection": "node tools/benchmark-selection.mjs",
     "release:metadata": "node tools/generate-release-metadata.mjs",
+    "release:preflight": "node tools/release-preflight.mjs",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r build && pnpm -r typecheck",
     "test": "vitest run",

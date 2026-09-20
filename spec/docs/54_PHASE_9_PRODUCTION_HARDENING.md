@@ -58,6 +58,15 @@ This phase is executed in independently verified batches. Every batch must pass
 - Migration output is validated before use and the input bytes are untouched.
 - Added migration and major-version rejection tests.
 
+### Batch 6 — Windows package preflight — environment-blocked
+
+- Added `pnpm release:preflight` to validate release manifests and detect a
+  missing Rust toolchain before invoking Tauri.
+- Attempted `pnpm tauri:build` on 2026-09-20.
+- Result: blocked because `cargo` is not available on PATH. Frontend builds
+  remain covered by `pnpm check`; MSI/NSIS qualification cannot be claimed
+  until Cargo/Rust is installed in the build environment.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
@@ -191,7 +200,7 @@ Run:
 - [x] native migration green (version 0 → 1 path covered)
 - [x] crash recovery baseline green (autosave corruption is handled safely)
 - [x] performance report published (selection follow-up remains)
-- [ ] package qualified
+- [ ] package qualified (blocked: Cargo/Rust toolchain unavailable)
 - [x] SBOM/notices generated (legal review and bundled license texts remain)
 - [ ] user/developer docs complete
 
