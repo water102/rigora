@@ -512,8 +512,8 @@ Run:
 - [x] zero known critical data-loss defect in covered native save/recovery paths
 - [ ] zero known critical compatibility regression
 - [ ] mandatory Spine 3.8.75 corpus green (fixture/package evidence required)
-- [ ] supported 4.2 corpus green (fixture/package evidence required)
-- [ ] DragonBones corpus green (fixture/package evidence required)
+- [x] supported 4.2 corpus green (fixture/package evidence required)
+- [x] DragonBones corpus green (fixture/package evidence required)
 - [x] native migration green (version 0 → 1 path covered)
 - [x] crash recovery baseline green (autosave corruption is handled safely)
 - [x] performance report published (selection follow-up remains)
@@ -584,3 +584,12 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
 - The official 3.8 branch corpus now qualifies `116/116` without throws. This
   proves family compatibility only; the exact 3.8.75 release gate remains
   pending because no exact-version export is present in that checkout.
+
+## Batch 48 — corpus exit-gate reconciliation
+
+- Marked the supported Spine 4.2 gate green from the 136/136 qualification
+  report and recorded provenance.
+- Marked the DragonBones gate green from the 172/172 qualification report,
+  including inline atlas coverage and preserved unsupported payloads.
+- Kept the exact Spine 3.8.75 gate and the broad zero-regression gate open;
+  family compatibility is not substituted for exact-version evidence.
