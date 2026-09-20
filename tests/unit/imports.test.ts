@@ -83,6 +83,50 @@ it("decodes packed Spine weighted mesh vertices", () => {
     if (mesh.type === "mesh") expect(mesh.weightedVertices).toHaveLength(3);
   }
 });
+it("resolves Spine linked meshes across the declared source skin", () => {
+  const fixture = structuredClone(spineFixture);
+  fixture.skins = [
+    {
+      name: "J",
+      attachments: {
+        body: {
+          base: {
+            type: "mesh",
+            name: "base",
+            path: "body-image",
+            vertices: [0, 0, 20, 0, 20, 10],
+            uvs: [0, 0, 1, 0, 1, 1],
+            triangles: [0, 1, 2],
+          },
+        },
+      },
+    },
+    {
+      name: "K",
+      attachments: {
+        body: {
+          linked: {
+            type: "linkedmesh",
+            name: "linked",
+            path: "body-image",
+            skin: "J",
+            parent: "base",
+            vertices: [0, 0, 20, 0, 20, 10],
+            uvs: [0, 0, 1, 0, 1, 1],
+            triangles: [0, 1, 2],
+          },
+        },
+      },
+    },
+  ];
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "CORE_CYCLIC_LINKED_MESH",
+    ),
+  ).toBe(false);
+});
 it("accepts Spine 4.2 sequence attachment metadata", () => {
   const fixture = structuredClone(spineFixture);
   fixture.skeleton.spine = "4.2.22";

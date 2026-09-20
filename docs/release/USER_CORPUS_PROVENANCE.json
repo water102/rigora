@@ -11,9 +11,9 @@
       },
       "includes": ["json", "atlas", "texture-images"],
       "qualification": {
-        "success": 50,
-        "failed": 1,
-        "remainingFailure": "CORE_CYCLIC_LINKED_MESH"
+        "success": 51,
+        "failed": 0,
+        "remainingFailure": null
       },
       "officialSpine3875Evidence": false
     }

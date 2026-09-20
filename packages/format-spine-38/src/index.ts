@@ -245,10 +245,28 @@ export function importSpine38(text: string, options: ImportOptions) {
               };
             }
             if (item["type"] === "mesh" || item["type"] === "linkedmesh") {
+              const linkedSkinIndex =
+                item["parent"] === undefined
+                  ? -1
+                  : item["skin"] === undefined
+                    ? i
+                    : skins.findIndex(
+                        (candidate) =>
+                          String(candidate["name"]) === String(item["skin"]),
+                      );
+              const linkedSource =
+                linkedSkinIndex < 0
+                  ? undefined
+                  : object(
+                      object(skins[linkedSkinIndex]!["attachments"] ?? {}, "")[
+                        slotName
+                      ] ?? {},
+                      "",
+                    );
               const linkedIndex =
                 item["parent"] === undefined
                   ? -1
-                  : Object.entries(object(raw, at)).findIndex(
+                  : Object.entries(linkedSource ?? {}).findIndex(
                       ([candidateKey, candidate]) =>
                         String(
                           object(candidate, "")["name"] ?? candidateKey,
@@ -370,7 +388,7 @@ export function importSpine38(text: string, options: ImportOptions) {
                   .map(Math.trunc),
                 ...(linkedIndex >= 0
                   ? {
-                      linkedMeshId: `${options.namespace}:attachment:${i}:${slotId}:${linkedIndex}`,
+                      linkedMeshId: `${options.namespace}:attachment:${linkedSkinIndex}:${slotId}:${linkedIndex}`,
                       inheritDeform: item["inheritDeform"] === true,
                     }
                   : {}),

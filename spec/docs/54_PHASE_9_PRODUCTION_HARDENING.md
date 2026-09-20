@@ -624,3 +624,13 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
   for the next adapter batch.
 - This is valuable 3.8-family compatibility evidence, but it is not an exact
   3.8.75 export and does not close that release gate.
+
+## Batch 52 — cross-skin Spine linked meshes
+
+- Fixed linked-mesh resolution to honor the source `skin` field and resolve the
+  parent attachment from the declared skin and slot instead of the current
+  skin only.
+- Added regression coverage for cross-skin linked meshes.
+- Re-ran the expanded corpus: Spine 3.8 now qualifies `167/167`, including all
+  51 user-provided Wukong `3.8.99` files. The previous false cycle in
+  `gold_houzi.json` is gone.
