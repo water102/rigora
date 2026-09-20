@@ -468,3 +468,49 @@ export function parseProject(
     ...(manifest.extensions ? { extensions: manifest.extensions } : {}),
   };
 }
+
+export interface ProjectMigrationResult {
+  bytes: Uint8Array;
+  fromVersion: number;
+  toVersion: 1;
+}
+
+/**
+ * Migrates a native project without mutating the caller's bytes. Version 0 was
+ * the pre-release manifest shape and is intentionally the only implicit path;
+ * future major versions must opt into an explicit migration.
+ */
+export function migrateProject(bytes: Uint8Array): ProjectMigrationResult {
+  let files: Record<string, Uint8Array>;
+  try {
+    files = unzipSync(bytes);
+  } catch {
+    throw new Error("NATIVE_CORRUPT_ARCHIVE");
+  }
+  const manifestFile = files["manifest.json"];
+  if (!manifestFile) throw new Error("NATIVE_MISSING_MANIFEST");
+  let manifest: HboneManifest;
+  try {
+    manifest = JSON.parse(strFromU8(manifestFile)) as HboneManifest;
+  } catch {
+    throw new Error("NATIVE_INVALID_MANIFEST");
+  }
+  if (manifest.format !== "hnn-bones")
+    throw new Error("NATIVE_INVALID_PROJECT");
+  if (manifest.formatVersion === 1) {
+    parseProject(bytes, { verifyChecksums: true });
+    return { bytes: bytes.slice(), fromVersion: 1, toVersion: 1 };
+  }
+  if (manifest.formatVersion !== 0) {
+    throw new Error(`NATIVE_MIGRATION_REQUIRED: ${manifest.formatVersion}`);
+  }
+  const migratedManifest = { ...manifest, formatVersion: 1 as const };
+  const migratedFiles = {
+    ...files,
+    "manifest.json": strToU8(text(migratedManifest)),
+  };
+  const migrated = zipSync(migratedFiles, { level: 6 });
+  // A migration is not successful until the resulting project is fully valid.
+  parseProject(migrated, { verifyChecksums: false });
+  return { bytes: migrated, fromVersion: 0, toVersion: 1 };
+}

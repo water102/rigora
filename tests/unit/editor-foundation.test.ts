@@ -8,6 +8,7 @@ import {
   parseProject,
   ProjectLifecycle,
   serializeProject,
+  migrateProject,
 } from "../../packages/project/src/index.js";
 import {
   boundsFromPoints,
@@ -795,6 +796,32 @@ describe("Batch 23 autosave recovery", () => {
 });
 
 describe("Phase 9 native project hardening", () => {
+  it("migrates the pre-release manifest and preserves the source bytes", async () => {
+    const { strFromU8, strToU8, unzipSync, zipSync } = await import("fflate");
+    const project = createProject({}, "2026-01-01T00:00:00.000Z");
+    const files = unzipSync(serializeProject(project));
+    const legacyManifest = JSON.parse(strFromU8(files["manifest.json"]!));
+    legacyManifest.formatVersion = 0;
+    const legacy = zipSync({
+      ...files,
+      "manifest.json": strToU8(JSON.stringify(legacyManifest)),
+    });
+    const result = migrateProject(legacy);
+    expect(result.fromVersion).toBe(0);
+    expect(parseProject(result.bytes).manifest.formatVersion).toBe(1);
+    expect(legacy).not.toEqual(result.bytes);
+    expect(() =>
+      migrateProject(
+        zipSync({
+          ...files,
+          "manifest.json": strToU8(
+            JSON.stringify({ ...legacyManifest, formatVersion: 99 }),
+          ),
+        }),
+      ),
+    ).toThrow("NATIVE_MIGRATION_REQUIRED");
+  });
+
   it("rejects unsafe archive paths and oversized assets", async () => {
     const { strToU8, zipSync } = await import("fflate");
     const manifest = {

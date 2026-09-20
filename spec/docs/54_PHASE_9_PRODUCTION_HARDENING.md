@@ -49,6 +49,15 @@ This phase is executed in independently verified batches. Every batch must pass
 - Selection is 8.833 ms/sample against the <8 ms typical target and remains an
   optimization candidate; this does not block correctness qualification.
 
+### Batch 5 — Native migration path — complete
+
+- Added explicit `migrateProject()` handling for pre-release manifest version 0.
+- Current version 1 projects are verified before being returned.
+- Unknown versions fail with `NATIVE_MIGRATION_REQUIRED` and are never
+  rewritten implicitly.
+- Migration output is validated before use and the input bytes are untouched.
+- Added migration and major-version rejection tests.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
@@ -179,7 +188,7 @@ Run:
 - [ ] mandatory Spine 3.8.75 corpus green (fixture/package evidence required)
 - [ ] supported 4.2 corpus green (fixture/package evidence required)
 - [ ] DragonBones corpus green (fixture/package evidence required)
-- [ ] native migration green (migration implementation required)
+- [x] native migration green (version 0 → 1 path covered)
 - [x] crash recovery baseline green (autosave corruption is handled safely)
 - [x] performance report published (selection follow-up remains)
 - [ ] package qualified
