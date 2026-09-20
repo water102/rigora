@@ -427,3 +427,23 @@ export function createCrossFormatReport(
     checksums: [reportA.checksum, reportB.checksum],
   };
 }
+
+export interface ExportArtifact {
+  bytes: Uint8Array;
+  report: ExportReport;
+}
+export function exportSkeleton(
+  skeleton: SkeletonData,
+  target: ExportPlan["target"],
+  approved = new Set<string>(),
+): ExportArtifact {
+  const plan = createExportPlan(skeleton, target);
+  assertExportable(plan, approved);
+  const text = target.startsWith("spine")
+    ? serializeSpine38(skeleton, target === "spine-3.8.75" ? "3.8.75" : "3.8")
+    : serializeDragonBones55(skeleton);
+  return {
+    bytes: new TextEncoder().encode(text),
+    report: createExportReport(skeleton, plan, approved),
+  };
+}

@@ -7,6 +7,7 @@ import {
   serializeDragonBones55,
   planDeterministicAtlas,
   createCrossFormatReport,
+  exportSkeleton,
 } from "../../packages/format-export/src/index.js";
 import { minimalSkeleton } from "../fixtures/canonical/minimal.js";
 import { importSpine38 } from "../../packages/format-spine-38/src/index.js";
@@ -77,6 +78,15 @@ describe("export planning", () => {
       order: 1,
     });
     expect(() => serializeSpine38(skeleton)).toThrow("EXPORT_PLAN_UNRESOLVED");
+  });
+  it("does not produce bytes until the export plan is approved", () => {
+    const skeleton = minimalSkeleton();
+    skeleton.constraints = [
+      { id: "physics-1", name: "physics", type: "physics", order: 0 },
+    ];
+    expect(() => exportSkeleton(skeleton, "spine-3.8")).toThrow(
+      "EXPORT_PLAN_UNRESOLVED",
+    );
   });
   it("serializes DragonBones 5.5 and sorts atlas input", () => {
     const skeleton = minimalSkeleton();
