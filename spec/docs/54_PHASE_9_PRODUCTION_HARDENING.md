@@ -342,6 +342,15 @@ This phase is executed in independently verified batches. Every batch must pass
   126/136; remaining failures are concentrated in texture/schema/reference
   validation and preserved behavior warnings.
 
+### Batch 39 — Spine reference and packed-weight tolerance — complete
+
+- Tiny negative packed weights caused by exporter rounding are clamped before
+  normalization; unresolved skin-required bone names are omitted with
+  `SP38_SKIN_BONE_UNRESOLVED` instead of failing the import.
+- The complete downloaded Spine 4.2 corpus is now green at 136/136 successful
+  imports with zero failed files. This is corpus evidence for the downloaded
+  4.2 runtime exports, not yet the separate official release gate.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

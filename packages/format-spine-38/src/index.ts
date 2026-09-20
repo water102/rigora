@@ -311,7 +311,7 @@ export function importSpine38(text: string, options: ImportOptions) {
                             boneId:
                               [...boneIds.values()][boneIndex] ??
                               `bone-${boneIndex}`,
-                            weight,
+                            weight: Math.max(0, weight),
                             localPosition: { x, y },
                           });
                         }
@@ -466,9 +466,24 @@ export function importSpine38(text: string, options: ImportOptions) {
               requiredBoneIds: [
                 ...list(skin["bones"], path + "/bones"),
                 ...list(skin["transform"], path + "/transform"),
-              ].map((value, index) =>
-                reference(value, boneIds, `${path}/requiredBoneIds/${index}`),
-              ),
+              ].flatMap((value, index) => {
+                if (boneIds.has(String(value)))
+                  return [
+                    reference(
+                      value,
+                      boneIds,
+                      `${path}/requiredBoneIds/${index}`,
+                    ),
+                  ];
+                diagnostics.push({
+                  code: "SP38_SKIN_BONE_UNRESOLVED",
+                  severity: "warning",
+                  message:
+                    "Skin-required bone is not present in the export and is omitted.",
+                  jsonPointer: `${path}/requiredBoneIds/${index}`,
+                });
+                return [];
+              }),
             }),
       };
     });
