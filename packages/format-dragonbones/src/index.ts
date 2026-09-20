@@ -107,7 +107,13 @@ export function importDragonBones55(text: string, options: ImportOptions) {
     return armatures.map((armature, armatureIndex) => {
       const root = `/armature/${armatureIndex}`,
         namespace = `${options.namespace}:armature:${armatureIndex}`;
-      fields(armature, "name type frameRate bone slot skin userData ik", root);
+      // DragonBones exports an optional armature AABB for preview/runtime
+      // culling. It is metadata, not part of the canonical skeleton model.
+      fields(
+        armature,
+        "name type frameRate bone slot skin userData ik aabb",
+        root,
+      );
       if (armature["type"] !== undefined && armature["type"] !== "Armature")
         fail(
           "DB55_UNSUPPORTED_ARMATURE",

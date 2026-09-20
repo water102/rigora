@@ -122,6 +122,12 @@ it("converts DragonBones pivot offset and rejects color offsets", () => {
     ),
   ).toBe(true);
 });
+it("accepts DragonBones armature AABB preview metadata", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.armature[0]!.aabb = { x: -10, y: -5, width: 20, height: 10 };
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+});
 it("isolates armature namespaces and rejects invalid display indices", () => {
   const fixture = structuredClone(dragonFixture);
   fixture.armature.push({
