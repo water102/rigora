@@ -41,4 +41,5 @@ Captured on 2026-09-20 after installing Rustup and the stable MSVC toolchain:
 
 `pnpm release:verify-artifacts` reported both required bundle families present.
 Install/upgrade/uninstall on a clean Windows machine remains a separate manual
-qualification step.
+qualification step. Current local results are recorded in
+`docs/release/INSTALL_QUALIFICATION.md`.

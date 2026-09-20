@@ -117,6 +117,13 @@ This phase is executed in independently verified batches. Every batch must pass
 - `pnpm release:verify-artifacts` passed for both non-empty artifacts.
 - Hashes and sizes are recorded in `docs/release/PACKAGE_QUALIFICATION.md`.
 
+### Batch 14 — Installer qualification — partial
+
+- NSIS install/uninstall passed locally with clean removal.
+- MSI install returned `1603` and rolled back without residue; the failure is
+  recorded in `docs/release/INSTALL_QUALIFICATION.md`.
+- MSI clean-install qualification remains an explicit blocker.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
@@ -250,7 +257,7 @@ Run:
 - [x] native migration green (version 0 → 1 path covered)
 - [x] crash recovery baseline green (autosave corruption is handled safely)
 - [x] performance report published (selection follow-up remains)
-- [x] package artifacts built and verified (clean-machine install tests remain)
+- [ ] package fully qualified (NSIS passes; MSI install returns 1603)
 - [x] browser E2E smoke suite green (native package tests remain separate)
 - [x] SBOM/notices generated (legal review and bundled license texts remain)
 - [x] user/developer docs complete
