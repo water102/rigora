@@ -224,6 +224,16 @@ This phase is executed in independently verified batches. Every batch must pass
   34/172 successful DragonBones imports, confirming this batch is a compatibility
   expansion rather than a claim that the vendor corpus is release-green.
 
+### Batch 26 — DragonBones color-offset tolerance — partial
+
+- DragonBones slot color offsets (`aO`, `rO`, `gO`, `bO`) no longer abort an
+  otherwise importable skeleton. Nonzero offsets now emit
+  `DB55_COLOR_OFFSET_PRESERVED` while the canonical color multipliers remain
+  usable.
+- The local corpus probe improved DragonBones from 34/172 to 39/172 successful
+  imports. The warning is intentionally retained because canonical color
+  evaluation does not yet apply offset channels.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

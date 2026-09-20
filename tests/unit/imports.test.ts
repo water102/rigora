@@ -238,7 +238,7 @@ it("converts DragonBones pivot offset and rejects color offsets", () => {
   Object.assign(armature.slot[0]!, { color: { rO: 1 } });
   expect(
     importDragonBones55(JSON.stringify(fixture), options).diagnostics.some(
-      (d) => d.code === "DB55_UNSUPPORTED_COLOR_OFFSET",
+      (d) => d.code === "DB55_COLOR_OFFSET_PRESERVED",
     ),
   ).toBe(true);
 });

@@ -53,8 +53,8 @@
     "dragonbones": {
       "files": 172,
       "noThrow": 172,
-      "success": 34,
-      "failed": 138,
+      "success": 39,
+      "failed": 133,
       "versions": {
         "5.0": 8,
         "5.5": 161,
@@ -62,11 +62,12 @@
       },
       "diagnosticCodes": {
         "CORE_SOURCE_SCHEMA": 8,
-        "CORE_UNSUPPORTED_BEHAVIOR": 20,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 119,
+        "CORE_UNSUPPORTED_BEHAVIOR": 22,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 111,
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA": 161,
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA": 7,
-        "DB55_NESTED_ARMATURE_PRESERVED": 20,
+        "DB55_NESTED_ARMATURE_PRESERVED": 25,
+        "DB55_UNSUPPORTED_ARMATURE": 3,
         "DB55_UNSUPPORTED_VERSION": 11
       }
     }
@@ -108,10 +109,12 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_UNSUPPORTED_ARMATURE"
       ]
     },
     {
@@ -257,12 +260,9 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
-      ]
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"]
     },
     {
       "file": "dragonbones-js\\Cocos\\Demos\\assets\\resources\\weapon_1000\\weapon_1000_ske.json",
@@ -284,12 +284,12 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
+      "success": true,
       "diagnostics": 3,
       "diagnosticCodes": [
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"
       ]
     },
     {
@@ -697,10 +697,12 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_UNSUPPORTED_ARMATURE"
       ]
     },
     {
@@ -865,12 +867,12 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
+      "success": true,
       "diagnostics": 3,
       "diagnosticCodes": [
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"
       ]
     },
     {
@@ -1296,11 +1298,13 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {
@@ -1699,10 +1703,12 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_UNSUPPORTED_ARMATURE"
       ]
     },
     {
@@ -1867,11 +1873,13 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ]
     },
     {

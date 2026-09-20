@@ -26,6 +26,12 @@ export type {
   DragonBonesFeatureDiagnostic,
 } from "./detection.js";
 const radians = Math.PI / 180;
+type ImportDiagnostic = {
+  code: string;
+  severity: "info" | "warning" | "error" | "fatal";
+  message: string;
+  jsonPointer?: string;
+};
 function transform(value: unknown, path: string) {
   const item = value === undefined || value === null ? {} : object(value, path);
   fields(item, "x y skX skY scX scY", path);
@@ -40,16 +46,18 @@ function transform(value: unknown, path: string) {
     scaleY: number(item["scY"], path + "/scY", 1),
   };
 }
-function color(value: unknown, path: string) {
+function color(value: unknown, path: string, diagnostics: ImportDiagnostic[]) {
   const item = value === undefined || value === null ? {} : object(value, path);
   fields(item, "aM rM gM bM aO rO gO bO", path);
   for (const key of ["aO", "rO", "gO", "bO"])
     if (number(item[key], `${path}/${key}`) !== 0)
-      fail(
-        "DB55_UNSUPPORTED_COLOR_OFFSET",
-        "Color offsets require an extended canonical color contract.",
-        `${path}/${key}`,
-      );
+      diagnostics.push({
+        code: "DB55_COLOR_OFFSET_PRESERVED",
+        severity: "warning",
+        message:
+          "DragonBones color offsets are preserved in source diagnostics until the canonical color contract supports them.",
+        jsonPointer: `${path}/${key}`,
+      });
   return {
     a: number(item["aM"], path + "/aM", 100) / 100,
     r: number(item["rM"], path + "/rM", 100) / 100,
@@ -201,7 +209,7 @@ export function importDragonBones55(text: string, options: ImportOptions) {
           id: slotIds.get(String(slot["name"]))!,
           name: String(slot["name"]),
           boneId: reference(slot["parent"], boneIds, path + "/parent"),
-          color: color(slot["color"], path + "/color"),
+          color: color(slot["color"], path + "/color", diagnostics),
           blendMode: (blend === "add"
             ? "additive"
             : blend) as SlotData["blendMode"],
