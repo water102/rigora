@@ -109,6 +109,14 @@ This phase is executed in independently verified batches. Every batch must pass
   skeletons, editor state, provenance and assets.
 - Added regression coverage for an oversized expanded archive.
 
+### Batch 13 — Windows package build — complete
+
+- Installed Rustup/stable MSVC toolchain with explicit user approval.
+- Added an internal Rigora icon and declared it explicitly in Tauri config.
+- `pnpm tauri:build` produced both NSIS and MSI bundles.
+- `pnpm release:verify-artifacts` passed for both non-empty artifacts.
+- Hashes and sizes are recorded in `docs/release/PACKAGE_QUALIFICATION.md`.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
@@ -242,7 +250,7 @@ Run:
 - [x] native migration green (version 0 → 1 path covered)
 - [x] crash recovery baseline green (autosave corruption is handled safely)
 - [x] performance report published (selection follow-up remains)
-- [ ] package qualified (blocked: Cargo/Rust toolchain unavailable)
+- [x] package artifacts built and verified (clean-machine install tests remain)
 - [x] browser E2E smoke suite green (native package tests remain separate)
 - [x] SBOM/notices generated (legal review and bundled license texts remain)
 - [x] user/developer docs complete
