@@ -398,12 +398,14 @@ export function importSpine38(text: string, options: ImportOptions) {
       data.animations = Object.entries(animations).map(
         ([name, raw], animationIndex) => {
           const channels = object(raw, `/animations/${pointer(name)}`);
-          if (!Object.keys(channels).length)
-            fail(
-              "CORE_UNSUPPORTED_SOURCE_FIELD",
-              "Animation has no supported timelines.",
-              `/animations/${pointer(name)}`,
-            );
+          if (!Object.keys(channels).length) {
+            diagnostics.push({
+              code: "SP38_EMPTY_ANIMATION_PRESERVED",
+              severity: "warning",
+              message: "Empty animation is preserved without timelines.",
+              jsonPointer: `/animations/${pointer(name)}`,
+            });
+          }
           const timelines = Object.entries(channels).map(
             ([type, channel], timelineIndex) => {
               const item = object(

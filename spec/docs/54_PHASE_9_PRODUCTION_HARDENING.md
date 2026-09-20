@@ -288,6 +288,15 @@ This phase is executed in independently verified batches. Every batch must pass
   (down from 11). The remaining failures are explicit reference, mesh,
   schema, behavior, and texture qualification issues.
 
+### Batch 33 — Empty Spine animation preservation — partial
+
+- Empty Spine animation maps such as `{ "animation": {} }` are now preserved
+  as valid animations with no timelines and warning
+  `SP38_EMPTY_ANIMATION_PRESERVED`, instead of rejecting the whole skeleton.
+- Added a regression test. The 4.2 corpus improved from 13/136 to 14/136
+  successful imports; the remaining failures are no longer unsupported-field
+  rejection for this case.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

@@ -29,8 +29,8 @@
     "spine-4.2": {
       "files": 136,
       "noThrow": 136,
-      "success": 13,
-      "failed": 123,
+      "success": 14,
+      "failed": 122,
       "versions": {
         "4.2.22": 134,
         "4.2.37": 1,
@@ -43,11 +43,11 @@
         "CORE_INVALID_REFERENCE": 22,
         "CORE_SOURCE_SCHEMA": 59,
         "CORE_UNSUPPORTED_BEHAVIOR": 34,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 1,
+        "SP38_EMPTY_ANIMATION_PRESERVED": 1,
         "SP38_PATH_ATTACHMENT_PRESERVED": 31,
         "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 29,
         "SP38_UNSUPPORTED_ATTACHMENT": 1,
-        "SP42_CORE_SUBSET_ADAPTER": 13,
+        "SP42_CORE_SUBSET_ADAPTER": 14,
         "SP42_PHYSICS_PRESERVED": 24
       }
     },
@@ -7779,9 +7779,12 @@
       "format": "spine-4.2",
       "version": "4.2.22",
       "threw": false,
-      "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "success": true,
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_EMPTY_ANIMATION_PRESERVED",
+        "SP42_CORE_SUBSET_ADAPTER"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\FootSoldier\\FootSoldier.json",

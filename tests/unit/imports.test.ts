@@ -209,6 +209,19 @@ it("preserves Spine skin-required bone metadata as a canonical tag", () => {
   if (result.success)
     expect(result.skeletons[0]!.bones[1]!.tags).toEqual(["skin"]);
 });
+it("preserves empty Spine animations without rejecting the skeleton", () => {
+  const fixture = {
+    ...structuredClone(spineFixture),
+    animations: { idle: {} },
+  };
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "SP38_EMPTY_ANIMATION_PRESERVED",
+    ),
+  ).toBe(true);
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(
@@ -229,16 +242,16 @@ it("rejects malformed JSON, foreign versions, missing parents and duplicate name
     ),
   ).toBe(true);
 });
-it("does not silently drop unsupported behaviors in compatible or repair mode", () => {
+it("preserves empty animations in compatible or repair mode", () => {
   for (const mode of ["compatible", "repair"] as const) {
     const result = importSpine38(
       JSON.stringify({ ...spineFixture, animations: { walk: {} } }),
       { ...options, mode },
     );
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
     expect(
       result.diagnostics.some(
-        (d) => d.code === "CORE_UNSUPPORTED_SOURCE_FIELD",
+        (d) => d.code === "SP38_EMPTY_ANIMATION_PRESERVED",
       ),
     ).toBe(true);
   }
