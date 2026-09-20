@@ -511,7 +511,7 @@ Run:
 ## Exit gate
 - [x] zero known critical data-loss defect in covered native save/recovery paths
 - [x] zero known critical compatibility regression
-- [ ] mandatory Spine 3.8.75 corpus green (fixture/package evidence required)
+- [x] mandatory Spine 3.8.75 corpus green (fixture/package evidence required)
 - [x] supported 4.2 corpus green (fixture/package evidence required)
 - [x] DragonBones corpus green (fixture/package evidence required)
 - [x] native migration green (version 0 → 1 path covered)
@@ -522,8 +522,9 @@ Run:
 - [x] SBOM/notices generated (legal review and bundled license texts remain)
 - [x] user/developer docs complete
 
-The remaining unchecked items are deliberate release blockers, not claims of
-completion. Phase 9 is not release-qualified until each has attached evidence.
+All Phase 9 exit-gate checkboxes are now green for the covered release scope.
+The evidence remains versioned in the release reports below; future vendor
+corpora may add coverage without invalidating this qualification.
 
 ## Batch 43 — DragonBones export metadata tolerance
 
@@ -645,3 +646,14 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
   exact-version behavior for the missing Spine 3.8.75 export.
 - The only remaining Phase 9 checkbox is the mandatory exact Spine 3.8.75
   corpus gate.
+
+## Batch 54 — exact Spine 3.8.75 fixture qualification
+
+- Added the user-provided exact-version fixture under ignored
+  `example/spine-3.8.75-sea/` with JSON, atlas, and texture metadata.
+- Verified `/skeleton/spine` is exactly `3.8.75`; the adapter emitted only the
+  intentional `SP38_3875_KNOWN_VERSION_RISK` warning.
+- Qualification passed the exact fixture `1/1`, expanding the Spine 3.8
+  corpus result to `168/168` and closing the final Phase 9 compatibility gate.
+- Provenance is recorded in `docs/release/USER_CORPUS_PROVENANCE.json`; no
+  downloaded asset is tracked in the repository.

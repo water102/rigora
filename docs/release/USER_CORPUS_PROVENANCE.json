@@ -16,6 +16,23 @@
         "remainingFailure": null
       },
       "officialSpine3875Evidence": false
+    },
+    {
+      "name": "shark-bounty-sea",
+      "format": "spine-3.8.75",
+      "source": "user-provided-local-corpus",
+      "localPath": "example/spine-3.8.75-sea",
+      "files": 1,
+      "versionCounts": {
+        "3.8.75": 1
+      },
+      "includes": ["json", "atlas", "texture-image"],
+      "qualification": {
+        "success": 1,
+        "failed": 0,
+        "diagnosticCodes": ["SP38_3875_KNOWN_VERSION_RISK"]
+      },
+      "officialSpine3875Evidence": false
     }
   ]
 }

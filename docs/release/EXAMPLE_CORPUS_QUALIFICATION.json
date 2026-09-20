@@ -2,14 +2,15 @@
   "sourceRoot": "example",
   "summary": {
     "spine-3.8": {
-      "files": 167,
-      "noThrow": 167,
-      "success": 167,
+      "files": 168,
+      "noThrow": 168,
+      "success": 168,
       "failed": 0,
       "versions": {
         "3.8.26-beta": 4,
         "3.8.33-beta": 18,
         "3.8.55": 87,
+        "3.8.75": 1,
         "3.8.76": 3,
         "3.8.95": 1,
         "3.8.99": 54
@@ -17,8 +18,9 @@
       "diagnosticCodes": {
         "ASSET_TEXTURE_NOT_FOUND": 2,
         "CORE_UNSUPPORTED_BEHAVIOR": 75,
+        "SP38_3875_KNOWN_VERSION_RISK": 1,
         "SP38_ANIMATION_CHANNEL_PRESERVED": 46,
-        "SP38_ANIMATION_TIMELINE_PRESERVED": 165,
+        "SP38_ANIMATION_TIMELINE_PRESERVED": 166,
         "SP38_EMPTY_ANIMATION_PRESERVED": 8,
         "SP38_PATH_ATTACHMENT_PRESERVED": 41,
         "SP38_POINT_ATTACHMENT_PRESERVED": 1,
@@ -9772,6 +9774,30 @@
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
+        }
+      ]
+    },
+    {
+      "file": "spine-3.8.75-sea\\sea.json",
+      "format": "spine-3.8",
+      "version": "3.8.75",
+      "threw": false,
+      "success": true,
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_3875_KNOWN_VERSION_RISK",
+        "SP38_ANIMATION_TIMELINE_PRESERVED"
+      ],
+      "diagnosticDetails": [
+        {
+          "code": "SP38_3875_KNOWN_VERSION_RISK",
+          "message": "Exact 3.8.75 profile: no speculative repairs applied; compatibility goldens are required.",
+          "jsonPointer": "/skeleton/spine"
+        },
+        {
+          "code": "SP38_ANIMATION_TIMELINE_PRESERVED",
+          "message": "Nested or non-keyed animation timeline is preserved until canonical target mapping is available.",
+          "jsonPointer": "/animations/animation/slots"
         }
       ]
     },
