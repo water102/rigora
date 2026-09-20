@@ -14,6 +14,26 @@ export interface PhysicsStepOptions {
 
 export type PhysicsConstraint = Extract<ConstraintData, { type: "physics" }>;
 
+export interface BakedPhysicsKey {
+  time: number;
+  x: number;
+  y: number;
+}
+
+export interface PhysicsBakeOptions {
+  duration: number;
+  sampleRate?: number;
+  prewarm?: number;
+  tolerance?: number;
+  wind?: number;
+}
+
+export interface PhysicsBakeResult {
+  keys: BakedPhysicsKey[];
+  sampleRate: number;
+  prewarm: number;
+}
+
 /** Deterministic, fixed-step clean-room secondary-motion solver. */
 export class PhysicsWorld {
   readonly fixedDt: number;
@@ -100,4 +120,76 @@ export class PhysicsWorld {
     state.x += state.velocityX * dt * mix;
     state.y += state.velocityY * dt * mix;
   }
+}
+
+function perpendicularDistance(
+  key: BakedPhysicsKey,
+  left: BakedPhysicsKey,
+  right: BakedPhysicsKey,
+): number {
+  const span = right.time - left.time;
+  if (span <= 0) return Math.hypot(key.x - left.x, key.y - left.y);
+  const alpha = (key.time - left.time) / span;
+  return Math.hypot(
+    key.x - (left.x + (right.x - left.x) * alpha),
+    key.y - (left.y + (right.y - left.y) * alpha),
+  );
+}
+
+function reduceKeys(
+  keys: BakedPhysicsKey[],
+  tolerance: number,
+): BakedPhysicsKey[] {
+  if (keys.length <= 2 || tolerance < 0) return keys;
+  const keep = new Set([0, keys.length - 1]);
+  const visit = (start: number, end: number): void => {
+    let max = tolerance;
+    let index = -1;
+    for (let i = start + 1; i < end; i++) {
+      const error = perpendicularDistance(keys[i]!, keys[start]!, keys[end]!);
+      if (error > max) {
+        max = error;
+        index = i;
+      }
+    }
+    if (index >= 0) {
+      keep.add(index);
+      visit(start, index);
+      visit(index, end);
+    }
+  };
+  visit(0, keys.length - 1);
+  return keys.filter((_, index) => keep.has(index));
+}
+
+/** Runs a deterministic physics simulation and returns reduced transform keys. */
+export function bakePhysics(
+  createWorld: () => PhysicsWorld,
+  constraints: readonly PhysicsConstraint[],
+  boneId: string,
+  options: PhysicsBakeOptions,
+): PhysicsBakeResult {
+  const sampleRate = options.sampleRate ?? 60;
+  const prewarm = options.prewarm ?? 0;
+  if (!(sampleRate > 0) || !Number.isFinite(sampleRate))
+    throw new RangeError("sampleRate must be finite and positive");
+  if (!(options.duration >= 0) || !Number.isFinite(options.duration))
+    throw new RangeError("duration must be finite and nonnegative");
+  if (!(prewarm >= 0) || !Number.isFinite(prewarm))
+    throw new RangeError("prewarm must be finite and nonnegative");
+  const world = createWorld();
+  const step = 1 / sampleRate;
+  world.seek(prewarm, constraints, options.wind ?? 0);
+  const keys: BakedPhysicsKey[] = [];
+  const count = Math.round(options.duration * sampleRate);
+  for (let frame = 0; frame <= count; frame++) {
+    if (frame > 0) world.step(step, constraints, options.wind ?? 0);
+    const state = world.get(boneId);
+    if (state) keys.push({ time: frame * step, x: state.x, y: state.y });
+  }
+  return {
+    keys: reduceKeys(keys, options.tolerance ?? 0),
+    sampleRate,
+    prewarm,
+  };
 }

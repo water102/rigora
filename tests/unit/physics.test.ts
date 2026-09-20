@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { PhysicsWorld } from "../../packages/runtime/src/physics.js";
+import {
+  bakePhysics,
+  PhysicsWorld,
+} from "../../packages/runtime/src/physics.js";
 
 const constraint = {
   id: "p",
@@ -32,5 +35,38 @@ describe("PhysicsWorld", () => {
     a.seek(0.9, [constraint]);
     for (let i = 0; i < 54; i++) b.step(1 / 60, [constraint]);
     expect(a.get("b")).toEqual(b.get("b"));
+  });
+
+  it("bakes deterministic samples with prewarm and preserves endpoints", () => {
+    const create = () => {
+      const world = new PhysicsWorld({ fixedDt: 0.1, maxSubsteps: 100 });
+      world.register("b", { x: 0, y: 0, velocityX: 0, velocityY: 0 });
+      return world;
+    };
+    const options = {
+      duration: 0.5,
+      sampleRate: 10,
+      prewarm: 0.2,
+      tolerance: 0,
+    };
+    const first = bakePhysics(create, [constraint], "b", options);
+    const second = bakePhysics(create, [constraint], "b", options);
+    expect(first).toEqual(second);
+    expect(first.keys[0]!.time).toBe(0);
+    expect(first.keys.at(-1)!.time).toBe(0.5);
+  });
+
+  it("reduces linear samples within tolerance", () => {
+    const create = () => {
+      const world = new PhysicsWorld({ fixedDt: 0.1 });
+      world.register("b", { x: 0, y: 0, velocityX: 1, velocityY: 0 });
+      return world;
+    };
+    const result = bakePhysics(create, [], "b", {
+      duration: 0.5,
+      sampleRate: 10,
+      tolerance: 0.001,
+    });
+    expect(result.keys).toHaveLength(2);
   });
 });
