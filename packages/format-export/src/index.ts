@@ -272,6 +272,14 @@ export function toSpine38Ast(
                   ? {
                       name: a.name,
                       type: "mesh",
+                      ...(a.linkedMeshId
+                        ? {
+                            parent: as.find(
+                              (candidate) => candidate.id === a.linkedMeshId,
+                            )?.name,
+                            inheritDeform: a.inheritDeform ?? false,
+                          }
+                        : {}),
                       uvs: a.uvs.flatMap((v) => [round(v.x), round(v.y)]),
                       triangles: a.triangles,
                       vertices: a.vertices.flatMap((v) => [

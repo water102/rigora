@@ -144,12 +144,21 @@ export function importSpine38(text: string, options: ImportOptions) {
               item = object(value, loc);
             fields(
               item,
-              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights",
+              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights parent inheritDeform",
               loc,
             );
             const id = `${options.namespace}:attachment:${i}:${slotId}:${j}`;
             if (skin["name"] === "default") setup.set(`${slotId}\0${key}`, id);
             if (item["type"] === "mesh") {
+              const linkedIndex =
+                item["parent"] === undefined
+                  ? -1
+                  : Object.entries(object(raw, at)).findIndex(
+                      ([candidateKey, candidate]) =>
+                        String(
+                          object(candidate, "")["name"] ?? candidateKey,
+                        ) === String(item["parent"]),
+                    );
               const vertices = list(item["vertices"], loc + "/vertices").map(
                 (value, index) => number(value, `${loc}/vertices/${index}`),
               );
@@ -182,6 +191,12 @@ export function importSpine38(text: string, options: ImportOptions) {
                     number(value, `${loc}/triangles/${index}`),
                   )
                   .map(Math.trunc),
+                ...(linkedIndex >= 0
+                  ? {
+                      linkedMeshId: `${options.namespace}:attachment:${i}:${slotId}:${linkedIndex}`,
+                      inheritDeform: item["inheritDeform"] === true,
+                    }
+                  : {}),
                 ...(weights
                   ? {
                       weightedVertices: weights.map((weight, index) => ({

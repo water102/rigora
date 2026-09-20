@@ -195,6 +195,43 @@ describe("export planning", () => {
         ).weightedVertices[0].influences[0].weight,
       ).toBe(1);
   });
+  it("round-trips linked mesh metadata", () => {
+    const skeleton = minimalSkeleton();
+    skeleton.slots[0]!.setupAttachmentId = "mesh-1";
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "mesh",
+        id: "mesh-1",
+        name: "base",
+        vertices: [{ x: 0, y: 0 }],
+        uvs: [{ x: 0, y: 0 }],
+        triangles: [],
+      },
+      {
+        type: "mesh",
+        id: "mesh-2",
+        name: "linked",
+        vertices: [{ x: 0, y: 0 }],
+        uvs: [{ x: 0, y: 0 }],
+        triangles: [],
+        linkedMeshId: "mesh-1",
+        inheritDeform: true,
+      },
+    ];
+    const result = importSpine38(serializeSpine38(skeleton), {
+      namespace: "linked-rt",
+      mode: "strict",
+    });
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    if (result.success) {
+      const attachments =
+        result.skeletons[0]!.skins[0]!.attachments["linked-rt:slot:0"]!;
+      expect((attachments[1] as any).linkedMeshId).toBe(
+        "linked-rt:attachment:0:linked-rt:slot:0:0",
+      );
+      expect((attachments[1] as any).inheritDeform).toBe(true);
+    }
+  });
   it("round-trips an exported Spine IK constraint", () => {
     const skeleton = minimalSkeleton();
     const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;
