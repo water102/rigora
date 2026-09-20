@@ -287,8 +287,7 @@ describe("export planning", () => {
     if (result.success)
       expect((result.skeletons[0]!.constraints[0] as any).spacing).toBe(3);
   });
-  /* DragonBones constraint import remains gated until its source schema is finalized. */
-  /* it("round-trips a DragonBones IK constraint", () => {
+  it("round-trips a DragonBones IK constraint", () => {
     const skeleton = minimalSkeleton();
     const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;
     skeleton.skins[0]!.attachments["slot-1"] = [
@@ -337,7 +336,7 @@ describe("export planning", () => {
     expect(result.success, JSON.stringify(result)).toBe(true);
     if (result.success)
       expect((result.skeletons[0]!.constraints[0] as any).mix).toBe(0.5);
-  }); */
+  });
   it("exports supported constraints and blocks physics without approval", () => {
     const skeleton = minimalSkeleton();
     skeleton.constraints = [
