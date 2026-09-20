@@ -90,10 +90,11 @@ it("maps Spine 4.2 skin bone dependencies", () => {
   const fixture = structuredClone(spineFixture);
   fixture.skeleton.spine = "4.2.22";
   fixture.skins[0]!.bones = ["root"];
+  fixture.skins[0]!.transform = ["tip"];
   const result = importSpine42(JSON.stringify(fixture), options);
   expect(result.success).toBe(true);
   if (result.success)
-    expect(result.skeletons[0]!.skins[0]!.requiredBoneIds).toHaveLength(1);
+    expect(result.skeletons[0]!.skins[0]!.requiredBoneIds).toHaveLength(2);
 });
 it("imports Spine clipping attachments with an end slot", () => {
   const fixture = structuredClone(spineFixture);

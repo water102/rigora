@@ -169,7 +169,7 @@ export function importSpine38(text: string, options: ImportOptions) {
     const setup = new Map<string, string>();
     data.skins = skins.map((skin, i): SkinData => {
       const path = `/skins/${i}`;
-      fields(skin, "name bones attachments", path);
+      fields(skin, "name bones transform path attachments", path);
       const attachments: SkinData["attachments"] = Object.create(
         null,
       ) as SkinData["attachments"];
@@ -362,9 +362,11 @@ export function importSpine38(text: string, options: ImportOptions) {
         ...(skin["bones"] === undefined
           ? {}
           : {
-              requiredBoneIds: list(skin["bones"], path + "/bones").map(
-                (value, index) =>
-                  reference(value, boneIds, `${path}/bones/${index}`),
+              requiredBoneIds: [
+                ...list(skin["bones"], path + "/bones"),
+                ...list(skin["transform"], path + "/transform"),
+              ].map((value, index) =>
+                reference(value, boneIds, `${path}/requiredBoneIds/${index}`),
               ),
             }),
       };

@@ -279,6 +279,15 @@ This phase is executed in independently verified batches. Every batch must pass
   imports, while unsupported-source-field diagnostics are now down to 11;
   remaining failures are primarily mesh validation, schema, and texture data.
 
+### Batch 32 — Spine 4.2 skin transform metadata — partial
+
+- Spine skin-level `transform` bone lists now join `bones` and map to
+  canonical `requiredBoneIds`; skin-level `path` metadata is accepted as an
+  export hint.
+- The 4.2 corpus now has only one `CORE_UNSUPPORTED_SOURCE_FIELD` diagnostic
+  (down from 11). The remaining failures are explicit reference, mesh,
+  schema, behavior, and texture qualification issues.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

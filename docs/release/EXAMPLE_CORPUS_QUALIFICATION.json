@@ -18,10 +18,9 @@
         "ASSET_TEXTURE_NOT_FOUND": 1,
         "CORE_DEGENERATE_TRIANGLE": 24,
         "CORE_INVALID_MESH": 31,
-        "CORE_INVALID_REFERENCE": 32,
-        "CORE_SOURCE_SCHEMA": 35,
+        "CORE_INVALID_REFERENCE": 41,
+        "CORE_SOURCE_SCHEMA": 37,
         "CORE_UNSUPPORTED_BEHAVIOR": 17,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 11,
         "SP38_PATH_ATTACHMENT_PRESERVED": 31,
         "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 11,
         "SPINE_VERSION_INVALID": 22
@@ -41,10 +40,10 @@
         "ASSET_TEXTURE_NOT_FOUND": 21,
         "CORE_DEGENERATE_TRIANGLE": 25,
         "CORE_INVALID_MESH": 40,
-        "CORE_INVALID_REFERENCE": 14,
-        "CORE_SOURCE_SCHEMA": 57,
+        "CORE_INVALID_REFERENCE": 22,
+        "CORE_SOURCE_SCHEMA": 59,
         "CORE_UNSUPPORTED_BEHAVIOR": 34,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 11,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 1,
         "SP38_PATH_ATTACHMENT_PRESERVED": 31,
         "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 29,
         "SP38_UNSUPPORTED_ATTACHMENT": 1,
@@ -2349,7 +2348,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -2364,7 +2363,7 @@
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -2777,7 +2776,7 @@
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -2958,7 +2957,7 @@
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -3045,7 +3044,7 @@
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -3179,7 +3178,7 @@
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -3342,7 +3341,7 @@
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -3505,7 +3504,7 @@
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -3800,7 +3799,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -3809,7 +3808,7 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 11,
+      "diagnostics": 26,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
@@ -3821,7 +3820,22 @@
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -3971,7 +3985,7 @@
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -4735,7 +4749,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -4744,7 +4758,7 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 10,
+      "diagnostics": 17,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
@@ -4755,7 +4769,14 @@
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -5169,7 +5190,7 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 10,
+      "diagnostics": 17,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
@@ -5180,7 +5201,14 @@
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -5523,7 +5551,7 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 10,
+      "diagnostics": 17,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
@@ -5534,7 +5562,14 @@
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -5701,7 +5736,7 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 10,
+      "diagnostics": 17,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
@@ -5712,7 +5747,14 @@
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -5896,7 +5938,7 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 10,
+      "diagnostics": 17,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
@@ -5907,7 +5949,14 @@
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -6192,7 +6241,7 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 10,
+      "diagnostics": 17,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
@@ -6203,7 +6252,14 @@
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -6949,7 +7005,7 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 10,
+      "diagnostics": 17,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
@@ -6960,7 +7016,14 @@
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
@@ -7777,7 +7840,7 @@
       "diagnostics": 2,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "CORE_SOURCE_SCHEMA"
       ]
     },
     {
@@ -7786,7 +7849,7 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 10,
+      "diagnostics": 17,
       "diagnosticCodes": [
         "SP38_PATH_ATTACHMENT_PRESERVED",
         "SP38_PATH_ATTACHMENT_PRESERVED",
@@ -7797,7 +7860,14 @@
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
         "ASSET_TEXTURE_NOT_FOUND",
-        "CORE_UNSUPPORTED_SOURCE_FIELD"
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_INVALID_REFERENCE"
       ]
     },
     {
