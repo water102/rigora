@@ -32,10 +32,77 @@ export function importSpine42(
   if (typeof version !== "string" || !version.startsWith("4.2"))
     return importSpine38(text, options);
   meta.spine = "3.8.99";
+  const rawConstraints = Array.isArray(source.constraints)
+    ? source.constraints
+    : [];
+  const physicsConstraints = rawConstraints.filter(
+    (value): value is Record<string, unknown> =>
+      !!value &&
+      typeof value === "object" &&
+      !Array.isArray(value) &&
+      value.type === "physics",
+  );
+  const compatibleConstraints = rawConstraints.filter(
+    (value) =>
+      !(
+        !!value &&
+        typeof value === "object" &&
+        !Array.isArray(value) &&
+        value.type === "physics"
+      ),
+  );
   const compatible = JSON.stringify({ ...source, skeleton: meta });
-  const result = importSpine38(compatible, options);
+  const compatibleSource = JSON.parse(compatible) as Record<string, unknown>;
+  compatibleSource.constraints = compatibleConstraints;
+  const result = importSpine38(JSON.stringify(compatibleSource), options);
   if (result.success) {
     for (const skeletonData of result.skeletons) {
+      physicsConstraints.forEach((constraint, index) => {
+        const boneName =
+          typeof constraint.bone === "string" ? constraint.bone : undefined;
+        const bone = skeletonData.bones.find(
+          (candidate) => candidate.name === boneName,
+        );
+        if (!bone) return;
+        skeletonData.constraints.push({
+          id: `${options.namespace}:physics:${index}`,
+          name:
+            typeof constraint.name === "string"
+              ? constraint.name
+              : `physics-${index}`,
+          type: "physics",
+          order:
+            typeof constraint.order === "number"
+              ? constraint.order
+              : skeletonData.constraints.length,
+          boneId: bone.id,
+          ...(typeof constraint.inertia === "number"
+            ? { inertia: constraint.inertia }
+            : {}),
+          ...(typeof constraint.strength === "number"
+            ? { strength: constraint.strength }
+            : {}),
+          ...(typeof constraint.damping === "number"
+            ? { damping: constraint.damping }
+            : {}),
+          ...(typeof constraint.massInverse === "number"
+            ? { massInverse: constraint.massInverse }
+            : {}),
+          ...(typeof constraint.wind === "number"
+            ? { wind: constraint.wind }
+            : {}),
+          ...(typeof constraint.gravity === "number"
+            ? { gravity: constraint.gravity }
+            : {}),
+          ...(typeof constraint.mix === "number"
+            ? { mix: constraint.mix }
+            : {}),
+          sourceExtensions: {
+            mapping: "approximated",
+            sourceFieldCount: Object.keys(constraint).length,
+          },
+        });
+      });
       skeletonData.source!.version = version;
       skeletonData.source!.warnings.push("SP42_CORE_SUBSET_ADAPTER");
       skeletonData.metadata = {
