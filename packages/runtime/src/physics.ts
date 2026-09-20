@@ -1,4 +1,4 @@
-import type { ConstraintData } from "@rigora/model";
+import type { ConstraintData, TimelineData } from "@rigora/model";
 
 export interface PhysicsBodyState {
   x: number;
@@ -17,6 +17,59 @@ export interface PhysicsStepOptions {
 }
 
 export type PhysicsConstraint = Extract<ConstraintData, { type: "physics" }>;
+
+export function samplePhysicsParameters(
+  constraints: readonly PhysicsConstraint[],
+  timelines: readonly TimelineData[],
+  time: number,
+): PhysicsConstraint[] {
+  if (!Number.isFinite(time) || time < 0)
+    throw new RangeError("time must be finite and nonnegative");
+  return constraints.map((constraint) => {
+    let result: PhysicsConstraint = { ...constraint };
+    for (const timeline of timelines) {
+      if (
+        timeline.targetId !== constraint.id ||
+        !timeline.type.startsWith("physics.")
+      )
+        continue;
+      const parameter = timeline.type.slice(
+        "physics.".length,
+      ) as keyof PhysicsConstraint;
+      if (
+        !(parameter in constraint) ||
+        parameter === "id" ||
+        parameter === "name" ||
+        parameter === "type" ||
+        parameter === "order" ||
+        parameter === "boneId"
+      )
+        continue;
+      const numeric = timeline.keyframes.filter(
+        (key) => typeof key.value === "number",
+      ) as Array<{
+        time: number;
+        value: number;
+        curve: { type: string };
+      }>;
+      if (!numeric.length) continue;
+      let value = numeric[0]!.value;
+      for (let index = 0; index < numeric.length; index++) {
+        const current = numeric[index]!;
+        if (current.time > time) break;
+        value = current.value;
+        const next = numeric[index + 1];
+        if (next && time < next.time && current.curve.type !== "stepped") {
+          const alpha = (time - current.time) / (next.time - current.time);
+          value = current.value + (next.value - current.value) * alpha;
+          break;
+        }
+      }
+      (result as Record<string, unknown>)[parameter] = value;
+    }
+    return result;
+  });
+}
 
 export interface BakedPhysicsKey {
   time: number;

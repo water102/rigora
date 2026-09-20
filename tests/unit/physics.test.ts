@@ -3,6 +3,7 @@ import {
   bakePhysics,
   PhysicsController,
   PhysicsWorld,
+  samplePhysicsParameters,
 } from "../../packages/runtime/src/physics.js";
 
 const constraint = {
@@ -91,5 +92,25 @@ describe("PhysicsWorld", () => {
     controller.setEnabled(false);
     expect(controller.step(1)).toBe(0);
     expect(controller.debugSnapshot().enabled).toBe(false);
+  });
+
+  it("samples animated physics parameters without mutating authored constraints", () => {
+    const animated = samplePhysicsParameters(
+      [constraint],
+      [
+        {
+          id: "g",
+          type: "physics.gravity",
+          targetId: "p",
+          keyframes: [
+            { time: 0, value: 0, curve: { type: "linear" } },
+            { time: 1, value: 10, curve: { type: "linear" } },
+          ],
+        },
+      ],
+      0.5,
+    );
+    expect(animated[0]!.gravity).toBe(5);
+    expect(constraint.gravity).toBe(10);
   });
 });
