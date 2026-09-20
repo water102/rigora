@@ -9,6 +9,7 @@ import {
   createCrossFormatReport,
   exportSkeleton,
   ExportPlannerSession,
+  compareRoundTripSemantics,
 } from "../../packages/format-export/src/index.js";
 import { minimalSkeleton } from "../fixtures/canonical/minimal.js";
 import { importSpine38 } from "../../packages/format-spine-38/src/index.js";
@@ -160,5 +161,13 @@ describe("export planning", () => {
     expect(dragon.success, JSON.stringify(dragon)).toBe(true);
     if (dragon.success)
       expect(dragon.skeletons[0]!.skins[0]!.attachments).toBeTruthy();
+    if (spine.success)
+      expect(
+        compareRoundTripSemantics(skeleton, spine.skeletons[0]!),
+      ).toHaveLength(0);
+    if (dragon.success)
+      expect(
+        compareRoundTripSemantics(skeleton, dragon.skeletons[0]!),
+      ).toHaveLength(0);
   });
 });

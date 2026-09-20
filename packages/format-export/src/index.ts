@@ -462,6 +462,51 @@ export class ExportPlannerSession {
     return exportSkeleton(this.skeleton, this.plan.target, this.approved);
   }
 }
+export interface RoundTripMismatch {
+  path: string;
+  expected: unknown;
+  actual: unknown;
+}
+export function compareRoundTripSemantics(
+  expected: SkeletonData,
+  actual: SkeletonData,
+): RoundTripMismatch[] {
+  const mismatches: RoundTripMismatch[] = [];
+  const compare = (path: string, left: unknown, right: unknown) => {
+    if (JSON.stringify(left) !== JSON.stringify(right))
+      mismatches.push({ path, expected: left, actual: right });
+  };
+  compare(
+    "/bones/names",
+    expected.bones.map((b) => b.name),
+    actual.bones.map((b) => b.name),
+  );
+  compare(
+    "/slots/names",
+    expected.slots.map((s) => s.name),
+    actual.slots.map((s) => s.name),
+  );
+  compare(
+    "/skins/names",
+    expected.skins.map((s) => s.name),
+    actual.skins.map((s) => s.name),
+  );
+  compare(
+    "/attachments/count",
+    expected.skins.flatMap((s) => Object.values(s.attachments)).flat().length,
+    actual.skins.flatMap((s) => Object.values(s.attachments)).flat().length,
+  );
+  expected.bones.forEach((bone, index) => {
+    const other = actual.bones[index];
+    if (other)
+      compare(
+        `/bones/${index}/setup`,
+        [bone.setup.x, bone.setup.y, bone.length],
+        [other.setup.x, other.setup.y, other.length],
+      );
+  });
+  return mismatches;
+}
 export function exportSkeleton(
   skeleton: SkeletonData,
   target: ExportPlan["target"],
