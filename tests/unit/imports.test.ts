@@ -506,6 +506,34 @@ it("accepts DragonBones surface bone metadata with a preservation warning", () =
     ),
   ).toBe(true);
 });
+it("normalizes DragonBones scalar IK bone references", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.armature[0]!.ik = [
+    {
+      name: "ik",
+      bone: fixture.armature[0]!.bone[0]!.name,
+      target: fixture.armature[0]!.bone[0]!.name,
+      chain: 1,
+    },
+  ];
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.constraints[0]!.type).toBe("ik");
+});
+it("preserves unsupported DragonBones armatures and displays", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.armature[0]!.type = "Sheet";
+  fixture.armature[0]!.skin[0]!.slot[0]!.display[0]!.type = "boundingBox";
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toEqual(
+    expect.arrayContaining([
+      "DB55_ARMATURE_TYPE_PRESERVED",
+      "DB55_DISPLAY_PRESERVED",
+    ]),
+  );
+});
 it("accepts DragonBones isGlobal export metadata with a warning", () => {
   const fixture = structuredClone(dragonFixture);
   fixture.isGlobal = true;

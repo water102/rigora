@@ -54,8 +54,8 @@
     "dragonbones": {
       "files": 172,
       "noThrow": 172,
-      "success": 129,
-      "failed": 43,
+      "success": 169,
+      "failed": 3,
       "versions": {
         "5.0": 8,
         "5.5": 161,
@@ -64,19 +64,18 @@
       "diagnosticCodes": {
         "ASSET_REGION_SIZE_REQUIRED": 3,
         "ASSET_TEXTURE_NOT_FOUND": 3,
-        "CORE_SOURCE_SCHEMA": 32,
-        "CORE_UNSUPPORTED_BEHAVIOR": 23,
+        "CORE_UNSUPPORTED_BEHAVIOR": 36,
+        "DB55_ARMATURE_TYPE_PRESERVED": 4,
         "DB55_BONE_TYPE_PRESERVED": 3,
         "DB55_CANVAS_PRESERVED_AS_METADATA": 3,
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA": 169,
-        "DB55_FILTER_TYPE_PRESERVED": 6,
+        "DB55_DISPLAY_PRESERVED": 4,
+        "DB55_FILTER_TYPE_PRESERVED": 7,
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA": 15,
-        "DB55_NESTED_ARMATURE_PRESERVED": 31,
+        "DB55_NESTED_ARMATURE_PRESERVED": 32,
         "DB55_SKIN_BLEND_MODE_PRESERVED": 5,
         "DB55_SLOT_ALPHA_PRESERVED": 3,
-        "DB55_SLOT_Z_INDEX_PRESERVED": 3,
-        "DB55_UNSUPPORTED_ARMATURE": 4,
-        "DB55_UNSUPPORTED_DISPLAY": 4
+        "DB55_SLOT_Z_INDEX_PRESERVED": 3
       }
     }
   },
@@ -180,13 +179,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 4,
+      "success": true,
+      "diagnostics": 5,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
         "DB55_NESTED_ARMATURE_PRESERVED",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_ARMATURE"
+        "DB55_ARMATURE_TYPE_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -205,9 +205,14 @@
           "jsonPointer": "/armature/1/defaultActions"
         },
         {
-          "code": "DB55_UNSUPPORTED_ARMATURE",
-          "message": "Only skeletal armatures are supported.",
+          "code": "DB55_ARMATURE_TYPE_PRESERVED",
+          "message": "Non-skeletal DragonBones armature metadata is preserved while its canonical skeleton content is imported when available.",
           "jsonPointer": "/armature/1/type"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:0:slot:31/0"
         }
       ]
     },
@@ -412,22 +417,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -436,8 +433,8 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 15,
+      "success": true,
+      "diagnostics": 20,
       "diagnosticCodes": [
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
@@ -453,7 +450,12 @@
         "DB55_NESTED_ARMATURE_PRESERVED",
         "DB55_FILTER_TYPE_PRESERVED",
         "DB55_NESTED_ARMATURE_PRESERVED",
-        "CORE_SOURCE_SCHEMA"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -527,9 +529,34 @@
           "jsonPointer": "/armature/3/skin/0/slot/13/display/0"
         },
         {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/3/ik/0/bone"
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/4/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/5/defaultActions"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:7/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:9/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:0/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:15/0"
         }
       ]
     },
@@ -538,12 +565,21 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 3,
+      "success": true,
+      "diagnostics": 12,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -557,9 +593,54 @@
           "jsonPointer": "/armature/1/defaultActions"
         },
         {
-          "code": "DB55_UNSUPPORTED_DISPLAY",
-          "message": "Only image and mesh displays are supported.",
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
           "jsonPointer": "/armature/1/skin/0/slot/2/display/0/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/2/display/1/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/22/display/0/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/31/display/0/type"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/2/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/3/defaultActions"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:35/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:35/1"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:37/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:36/0"
         }
       ]
     },
@@ -2194,11 +2275,12 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 3,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"
       ],
       "diagnosticDetails": [
         {
@@ -2207,9 +2289,14 @@
           "jsonPointer": "/armature/0/defaultActions"
         },
         {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/1/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/2/defaultActions"
         }
       ]
     },
@@ -2306,22 +2393,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -2458,22 +2537,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -2482,22 +2553,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -2746,22 +2809,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -2770,22 +2825,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -2936,13 +2983,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 4,
+      "success": true,
+      "diagnostics": 5,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
         "DB55_NESTED_ARMATURE_PRESERVED",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_ARMATURE"
+        "DB55_ARMATURE_TYPE_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -2961,9 +3009,14 @@
           "jsonPointer": "/armature/1/defaultActions"
         },
         {
-          "code": "DB55_UNSUPPORTED_ARMATURE",
-          "message": "Only skeletal armatures are supported.",
+          "code": "DB55_ARMATURE_TYPE_PRESERVED",
+          "message": "Non-skeletal DragonBones armature metadata is preserved while its canonical skeleton content is imported when available.",
           "jsonPointer": "/armature/1/type"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:0:slot:31/0"
         }
       ]
     },
@@ -3192,22 +3245,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -3216,8 +3261,8 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 15,
+      "success": true,
+      "diagnostics": 20,
       "diagnosticCodes": [
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
@@ -3233,7 +3278,12 @@
         "DB55_NESTED_ARMATURE_PRESERVED",
         "DB55_FILTER_TYPE_PRESERVED",
         "DB55_NESTED_ARMATURE_PRESERVED",
-        "CORE_SOURCE_SCHEMA"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -3307,9 +3357,34 @@
           "jsonPointer": "/armature/3/skin/0/slot/13/display/0"
         },
         {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/3/ik/0/bone"
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/4/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/5/defaultActions"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:7/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:9/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:0/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:15/0"
         }
       ]
     },
@@ -3318,12 +3393,21 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 3,
+      "success": true,
+      "diagnostics": 12,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -3337,9 +3421,54 @@
           "jsonPointer": "/armature/1/defaultActions"
         },
         {
-          "code": "DB55_UNSUPPORTED_DISPLAY",
-          "message": "Only image and mesh displays are supported.",
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
           "jsonPointer": "/armature/1/skin/0/slot/2/display/0/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/2/display/1/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/22/display/0/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/31/display/0/type"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/2/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/3/defaultActions"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:35/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:35/1"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:37/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:36/0"
         }
       ]
     },
@@ -4974,11 +5103,12 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 3,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"
       ],
       "diagnosticDetails": [
         {
@@ -4987,9 +5117,14 @@
           "jsonPointer": "/armature/0/defaultActions"
         },
         {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/1/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/2/defaultActions"
         }
       ]
     },
@@ -5070,22 +5205,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -5142,22 +5269,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -5246,22 +5365,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -5350,8 +5461,8 @@
       "format": "dragonbones",
       "version": "5.0",
       "threw": false,
-      "success": false,
-      "diagnostics": 15,
+      "success": true,
+      "diagnostics": 20,
       "diagnosticCodes": [
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
@@ -5367,7 +5478,12 @@
         "DB55_NESTED_ARMATURE_PRESERVED",
         "DB55_FILTER_TYPE_PRESERVED",
         "DB55_NESTED_ARMATURE_PRESERVED",
-        "CORE_SOURCE_SCHEMA"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -5441,9 +5557,34 @@
           "jsonPointer": "/armature/3/skin/0/slot/15/display/0"
         },
         {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/3/ik/0/bone"
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/4/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/5/defaultActions"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:7/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:9/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:15/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:0/0"
         }
       ]
     },
@@ -5494,12 +5635,13 @@
       "format": "dragonbones",
       "version": "5.0",
       "threw": false,
-      "success": false,
-      "diagnostics": 3,
+      "success": true,
+      "diagnostics": 4,
       "diagnosticCodes": [
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"
       ],
       "diagnosticDetails": [
         {
@@ -5513,9 +5655,14 @@
           "jsonPointer": "/armature/0/defaultActions"
         },
         {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/1/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/2/defaultActions"
         }
       ]
     },
@@ -5644,13 +5791,16 @@
       "format": "dragonbones",
       "version": "5.0",
       "threw": false,
-      "success": false,
-      "diagnostics": 4,
+      "success": true,
+      "diagnostics": 7,
       "diagnosticCodes": [
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_ARMATURE"
+        "DB55_ARMATURE_TYPE_PRESERVED",
+        "DB55_FILTER_TYPE_PRESERVED",
+        "DB55_NESTED_ARMATURE_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -5669,9 +5819,24 @@
           "jsonPointer": "/armature/1/defaultActions"
         },
         {
-          "code": "DB55_UNSUPPORTED_ARMATURE",
-          "message": "Only skeletal armatures are supported.",
+          "code": "DB55_ARMATURE_TYPE_PRESERVED",
+          "message": "Non-skeletal DragonBones armature metadata is preserved while its canonical skeleton content is imported when available.",
           "jsonPointer": "/armature/1/type"
+        },
+        {
+          "code": "DB55_FILTER_TYPE_PRESERVED",
+          "message": "DragonBones display filterType is preserved as metadata until canonical filter support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/0/display/9/filterType"
+        },
+        {
+          "code": "DB55_NESTED_ARMATURE_PRESERVED",
+          "message": "Nested DragonBones armature displays are preserved until skeleton linking is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/0/display/9"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:0/9"
         }
       ]
     },
@@ -5994,22 +6159,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -6018,8 +6175,8 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 15,
+      "success": true,
+      "diagnostics": 20,
       "diagnosticCodes": [
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
@@ -6035,7 +6192,12 @@
         "DB55_NESTED_ARMATURE_PRESERVED",
         "DB55_FILTER_TYPE_PRESERVED",
         "DB55_NESTED_ARMATURE_PRESERVED",
-        "CORE_SOURCE_SCHEMA"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -6109,9 +6271,34 @@
           "jsonPointer": "/armature/3/skin/0/slot/13/display/0"
         },
         {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/3/ik/0/bone"
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/4/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/5/defaultActions"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:7/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:9/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:0/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:15/0"
         }
       ]
     },
@@ -6120,12 +6307,21 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 3,
+      "success": true,
+      "diagnostics": 12,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -6139,9 +6335,54 @@
           "jsonPointer": "/armature/1/defaultActions"
         },
         {
-          "code": "DB55_UNSUPPORTED_DISPLAY",
-          "message": "Only image and mesh displays are supported.",
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
           "jsonPointer": "/armature/1/skin/0/slot/2/display/0/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/2/display/1/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/22/display/0/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/31/display/0/type"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/2/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/3/defaultActions"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:35/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:35/1"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:37/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:36/0"
         }
       ]
     },
@@ -6186,11 +6427,12 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 3,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"
       ],
       "diagnosticDetails": [
         {
@@ -6199,9 +6441,14 @@
           "jsonPointer": "/armature/0/defaultActions"
         },
         {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/1/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/2/defaultActions"
         }
       ]
     },
@@ -6288,22 +6535,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -6440,22 +6679,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -6464,22 +6695,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -6728,22 +6951,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -6752,22 +6967,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -6902,13 +7109,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 4,
+      "success": true,
+      "diagnostics": 5,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
         "DB55_NESTED_ARMATURE_PRESERVED",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_ARMATURE"
+        "DB55_ARMATURE_TYPE_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -6927,9 +7135,14 @@
           "jsonPointer": "/armature/1/defaultActions"
         },
         {
-          "code": "DB55_UNSUPPORTED_ARMATURE",
-          "message": "Only skeletal armatures are supported.",
+          "code": "DB55_ARMATURE_TYPE_PRESERVED",
+          "message": "Non-skeletal DragonBones armature metadata is preserved while its canonical skeleton content is imported when available.",
           "jsonPointer": "/armature/1/type"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:0:slot:31/0"
         }
       ]
     },
@@ -7158,22 +7371,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -7182,8 +7387,8 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 15,
+      "success": true,
+      "diagnostics": 20,
       "diagnosticCodes": [
         "DB55_IS_GLOBAL_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
@@ -7199,7 +7404,12 @@
         "DB55_NESTED_ARMATURE_PRESERVED",
         "DB55_FILTER_TYPE_PRESERVED",
         "DB55_NESTED_ARMATURE_PRESERVED",
-        "CORE_SOURCE_SCHEMA"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -7273,9 +7483,34 @@
           "jsonPointer": "/armature/3/skin/0/slot/13/display/0"
         },
         {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/3/ik/0/bone"
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/4/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/5/defaultActions"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:7/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:9/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:0/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:3:slot:15/0"
         }
       ]
     },
@@ -7284,12 +7519,21 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 3,
+      "success": true,
+      "diagnostics": 12,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "DB55_UNSUPPORTED_DISPLAY"
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DISPLAY_PRESERVED",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
       ],
       "diagnosticDetails": [
         {
@@ -7303,9 +7547,54 @@
           "jsonPointer": "/armature/1/defaultActions"
         },
         {
-          "code": "DB55_UNSUPPORTED_DISPLAY",
-          "message": "Only image and mesh displays are supported.",
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
           "jsonPointer": "/armature/1/skin/0/slot/2/display/0/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/2/display/1/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/22/display/0/type"
+        },
+        {
+          "code": "DB55_DISPLAY_PRESERVED",
+          "message": "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+          "jsonPointer": "/armature/1/skin/0/slot/31/display/0/type"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/2/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/3/defaultActions"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:35/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:35/1"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:37/0"
+        },
+        {
+          "code": "CORE_UNSUPPORTED_BEHAVIOR",
+          "message": "Preserved attachment has no evaluator.",
+          "jsonPointer": "/skins/0/attachments/example-corpus:armature:1:slot:36/0"
         }
       ]
     },
@@ -8940,11 +9229,12 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
+      "success": true,
+      "diagnostics": 3,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"
       ],
       "diagnosticDetails": [
         {
@@ -8953,9 +9243,14 @@
           "jsonPointer": "/armature/0/defaultActions"
         },
         {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/1/defaultActions"
+        },
+        {
+          "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
+          "message": "Default actions are not executed by the canonical runtime.",
+          "jsonPointer": "/armature/2/defaultActions"
         }
       ]
     },
@@ -9042,22 +9337,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -9194,22 +9481,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -9218,22 +9497,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -9482,22 +9753,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },
@@ -9506,22 +9769,14 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 2,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "CORE_SOURCE_SCHEMA"
-      ],
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"],
       "diagnosticDetails": [
         {
           "code": "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
           "message": "Default actions are not executed by the canonical runtime.",
           "jsonPointer": "/armature/0/defaultActions"
-        },
-        {
-          "code": "CORE_SOURCE_SCHEMA",
-          "message": "Expected array.",
-          "jsonPointer": "/armature/0/ik/0/bone"
         }
       ]
     },

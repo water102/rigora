@@ -539,3 +539,16 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
   exposes downstream texture-region requirements in three files; the
   remaining failures are tracked as schema/behavior/version work rather than
   being hidden.
+
+## Batch 44 — DragonBones scalar IK and preserved unsupported content
+
+- DragonBones IK entries with a scalar `bone` reference are normalized to the
+  canonical one-element bone list.
+- Non-skeletal armatures and unsupported display types are preserved as
+  `unknownPreserved` payloads with explicit diagnostics instead of aborting the
+  whole import.
+- Added regression coverage for scalar IK, preserved armatures, and preserved
+  displays.
+- Rebuilt and re-ran the 424-file corpus: DragonBones improved from 129/172 to
+  169/172 successful files. The remaining three files are texture-region
+  requirements (`ASSET_REGION_SIZE_REQUIRED`/`ASSET_TEXTURE_NOT_FOUND`).

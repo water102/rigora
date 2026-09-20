@@ -146,11 +146,13 @@ export function importDragonBones55(text: string, options: ImportOptions) {
           jsonPointer: root + "/defaultActions",
         });
       if (armature["type"] !== undefined && armature["type"] !== "Armature")
-        fail(
-          "DB55_UNSUPPORTED_ARMATURE",
-          "Only skeletal armatures are supported.",
-          root + "/type",
-        );
+        diagnostics.push({
+          code: "DB55_ARMATURE_TYPE_PRESERVED",
+          severity: "warning",
+          message:
+            "Non-skeletal DragonBones armature metadata is preserved while its canonical skeleton content is imported when available.",
+          jsonPointer: root + "/type",
+        });
       const data = base(
         String(armature["name"]),
         namespace,
@@ -327,12 +329,22 @@ export function importDragonBones55(text: string, options: ImportOptions) {
                 item["type"] !== undefined &&
                 item["type"] !== "image" &&
                 item["type"] !== "mesh"
-              )
-                fail(
-                  "DB55_UNSUPPORTED_DISPLAY",
-                  "Only image and mesh displays are supported.",
-                  loc + "/type",
-                );
+              ) {
+                diagnostics.push({
+                  code: "DB55_DISPLAY_PRESERVED",
+                  severity: "warning",
+                  message:
+                    "Unsupported DragonBones display types are preserved until canonical attachment support is available.",
+                  jsonPointer: loc + "/type",
+                });
+                return {
+                  type: "unknownPreserved" as const,
+                  id: `${namespace}:attachment:${i}:${j}:${k}`,
+                  name: string(item["name"], loc + "/name"),
+                  sourceFormat: `dragonbones-5.5-${String(item["type"])}`,
+                  payload: item as any,
+                };
+              }
               const name = string(item["name"], loc + "/name");
               const image =
                 item["path"] === null
@@ -507,7 +519,10 @@ export function importDragonBones55(text: string, options: ImportOptions) {
       data.constraints = list(armature["ik"], root + "/ik").map(
         (raw, index) => {
           const item = object(raw, `${root}/ik/${index}`);
-          const bones = list(item["bone"], `${root}/ik/${index}/bone`).map(
+          const boneValue = Array.isArray(item["bone"])
+            ? item["bone"]
+            : [item["bone"]];
+          const bones = list(boneValue, `${root}/ik/${index}/bone`).map(
             (value, boneIndex) =>
               reference(
                 value,
