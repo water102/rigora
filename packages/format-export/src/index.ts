@@ -122,15 +122,32 @@ export function createExportPlan(
         "Convert point attachment to Spine compatible metadata.",
       );
   }
-  for (const c of skeleton.constraints)
-    if (c.type === "physics")
-      issues.push({
-        entityId: c.id,
-        entityType: "constraint",
-        feature: "physics",
-        action: target.startsWith("spine") ? "bake" : "drop",
-        message: "Physics requires explicit baking or approved removal.",
-      });
+  for (const c of skeleton.constraints) {
+    const unsupported =
+      c.type === "physics" ||
+      c.type === "unknownPreserved" ||
+      (target.startsWith("dragonbones") && c.type !== "ik");
+    if (!unsupported) continue;
+    issues.push({
+      entityId: c.id,
+      entityType: "constraint",
+      feature: c.type,
+      action:
+        c.type === "unknownPreserved"
+          ? "block"
+          : c.type === "physics"
+            ? target.startsWith("dragonbones")
+              ? "drop"
+              : "bake"
+            : target.startsWith("dragonbones")
+              ? "bake"
+              : "block",
+      message:
+        c.type === "physics"
+          ? "Physics requires explicit baking or approved removal."
+          : `Constraint type ${c.type} has no lossless ${target} serializer.`,
+    });
+  }
   return {
     target,
     issues,

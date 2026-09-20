@@ -525,6 +525,53 @@ describe("export planning", () => {
     );
     expect(capabilities.every((entry) => entry.action)).toBe(true);
   });
+  it("blocks unsupported constraint serialization instead of dropping it", () => {
+    const skeleton = minimalSkeleton();
+    const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "region",
+        id: point.id,
+        name: "hero",
+        textureId: "hero.png",
+        transform: {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        width: 1,
+        height: 1,
+      },
+    ];
+    skeleton.constraints = [
+      {
+        id: "path-1",
+        name: "path",
+        type: "path",
+        order: 0,
+        targetSlotId: "slot-1",
+        boneIds: ["bone-1"],
+        positionMode: "fixed",
+        spacingMode: "length",
+        rotateMode: "tangent",
+        position: 0,
+        spacing: 0,
+        mixRotate: 1,
+        mixX: 1,
+        mixY: 1,
+      },
+    ];
+    expect(createExportPlan(skeleton, "dragonbones-5.5").issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ feature: "path", action: "bake" }),
+      ]),
+    );
+    expect(createExportPlan(skeleton, "spine-3.8").issues).toHaveLength(0);
+  });
   it("serializes DragonBones 5.5 and sorts atlas input", () => {
     const skeleton = minimalSkeleton();
     expect(JSON.parse(serializeDragonBones55(skeleton)).version).toBe("5.5");
