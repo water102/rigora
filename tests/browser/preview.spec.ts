@@ -84,3 +84,18 @@ test("canonical weighted mesh and auto-mesh worker render on canvas", async ({
 
   expect(errors).toEqual([]);
 });
+
+test("export planner UI emits a guarded compatibility artifact", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("http://127.0.0.1:4173");
+  await expect(page.locator("#stage")).toHaveAttribute("data-ready", "true");
+  await expect(page.locator("#export-target")).toHaveValue("spine-3.8");
+  const download = page.waitForEvent("download");
+  await page.locator("#export-skeleton").click();
+  await expect(page.locator("#status")).toContainText("Exported spine-3.8");
+  expect((await download).suggestedFilename()).toContain("spine-3.8.json");
+  expect(errors).toEqual([]);
+});
