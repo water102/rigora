@@ -94,12 +94,12 @@ For other 4.2-only features:
 Every 4.2 merge runs full Spine 3.8.75 and DragonBones suites.
 
 ## Exit gate
-- [ ] version routing isolated
-- [ ] mandatory 4.2 import subset green
-- [ ] delta matrix complete for supported scope
-- [ ] physics fixed-step deterministic
-- [ ] reset/seek tests green
-- [ ] bake deterministic
-- [ ] downgrade reports correct
-- [ ] 3.8/DB regressions unchanged
-- [ ] exact vs approximate support labels documented
+- [x] version routing isolated
+- [x] mandatory 4.2 import subset green
+- [x] delta matrix complete for supported scope
+- [x] physics fixed-step deterministic
+- [x] reset/seek tests green
+- [x] bake deterministic
+- [x] downgrade reports correct
+- [x] 3.8/DB regressions unchanged
+- [x] exact vs approximate support labels documented
