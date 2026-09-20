@@ -57,9 +57,19 @@ export function importSpine38(text: string, options: ImportOptions) {
         "Expected Spine 3.8.x JSON.",
         "/skeleton/spine",
       );
+    if (Array.isArray(source["ik"])) {
+      const ikConstraints = source["ik"].map((item) => ({
+        ...(item as Record<string, unknown>),
+        type: "ik",
+      }));
+      source["constraints"] = [
+        ...(Array.isArray(source["constraints"]) ? source["constraints"] : []),
+        ...ikConstraints,
+      ];
+    }
     fields(
       source,
-      "skeleton bones slots skins animations events constraints",
+      "skeleton bones slots skins animations events constraints ik",
       "",
     );
     const meta = object(source["skeleton"], "/skeleton");

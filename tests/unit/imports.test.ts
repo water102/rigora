@@ -79,6 +79,20 @@ it("imports Spine clipping attachments with an end slot", () => {
       endSlotId: result.skeletons[0]!.slots[0]!.id,
     });
 });
+it("normalizes Spine 3.8 top-level IK constraints", () => {
+  const fixture = structuredClone(spineFixture);
+  fixture.ik = [
+    { name: "leg", bones: ["tip"], target: "tip", bendPositive: false },
+  ];
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.constraints[0]).toMatchObject({
+      type: "ik",
+      name: "leg",
+      bendDirection: -1,
+    });
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(

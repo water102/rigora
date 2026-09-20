@@ -15,11 +15,13 @@
         "3.8.99": 3
       },
       "diagnosticCodes": {
-        "ASSET_TEXTURE_NOT_FOUND": 2,
-        "CORE_INVALID_REFERENCE": 2,
-        "CORE_SOURCE_SCHEMA": 2,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 84,
-        "SP38_UNSUPPORTED_INHERITANCE": 1,
+        "ASSET_TEXTURE_NOT_FOUND": 12,
+        "CORE_INVALID_MESH": 1,
+        "CORE_INVALID_REFERENCE": 3,
+        "CORE_SOURCE_SCHEMA": 11,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 57,
+        "SP38_UNSUPPORTED_ATTACHMENT": 4,
+        "SP38_UNSUPPORTED_INHERITANCE": 14,
         "SPINE_VERSION_INVALID": 22
       }
     },
@@ -34,10 +36,13 @@
         "4.2.38": 1
       },
       "diagnosticCodes": {
-        "ASSET_TEXTURE_NOT_FOUND": 2,
+        "ASSET_TEXTURE_NOT_FOUND": 10,
+        "CORE_DEGENERATE_TRIANGLE": 1,
+        "CORE_INVALID_MESH": 2,
         "CORE_INVALID_REFERENCE": 3,
-        "CORE_SOURCE_SCHEMA": 1,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 125,
+        "CORE_SOURCE_SCHEMA": 8,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 112,
+        "SP38_UNSUPPORTED_ATTACHMENT": 4,
         "SP42_CORE_SUBSET_ADAPTER": 7
       }
     },
@@ -2085,7 +2090,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\dragon\\export\\dragon-ess.json",
@@ -2151,8 +2156,27 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 18,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\hero\\export\\hero-ess.json",
@@ -2205,8 +2229,12 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 3,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\raptor\\export\\raptor-pro.json",
@@ -2215,7 +2243,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\speedy\\export\\speedy-ess.json",
@@ -2233,7 +2261,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\spineboy\\export\\spineboy-pro.json",
@@ -2296,7 +2324,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2d-objc\\Resources\\coin-pro.json",
@@ -2305,7 +2333,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2d-objc\\Resources\\goblins-pro.json",
@@ -2313,8 +2341,27 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 18,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2d-objc\\Resources\\raptor-pro.json",
@@ -2323,7 +2370,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2d-objc\\Resources\\spineboy-pro.json",
@@ -2349,8 +2396,27 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 18,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2dx\\example\\Resources\\common\\raptor-pro.json",
@@ -2359,7 +2425,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2dx\\example\\Resources\\common\\spineboy-pro.json",
@@ -2376,8 +2442,27 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 18,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2dx\\example-v4\\Resources\\common\\raptor-pro.json",
@@ -2386,7 +2471,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2dx\\example-v4\\Resources\\common\\spineboy-pro.json",
@@ -2404,7 +2489,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-corona\\data\\goblins-pro.json",
@@ -2412,8 +2497,27 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 18,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-corona\\data\\mix-and-match-pro.json",
@@ -2440,7 +2544,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-corona\\data\\spineboy-pro.json",
@@ -2494,7 +2598,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-libgdx\\spine-libgdx-tests\\assets\\goblins\\goblins-ess.json",
@@ -2551,8 +2655,27 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 18,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-libgdx\\spine-libgdx-tests\\assets\\mix-and-match\\mix-and-match-pro.json",
@@ -2570,7 +2693,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-libgdx\\spine-libgdx-tests\\assets\\spineboy\\spineboy-ess.json",
@@ -2579,7 +2702,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-libgdx\\spine-libgdx-tests\\assets\\spineboy\\spineboy-pro.json",
@@ -2597,7 +2720,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-love\\data\\goblins-pro.json",
@@ -2605,8 +2728,27 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 18,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-love\\data\\mix-and-match-pro.json",
@@ -2624,7 +2766,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-love\\data\\spineboy-pro.json",
@@ -2669,7 +2811,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\c\\data\\goblins-pro.json",
@@ -2677,8 +2819,27 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 18,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\c\\data\\mix-and-match-pro.json",
@@ -2705,7 +2866,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\c\\data\\spineboy-pro.json",
@@ -2750,7 +2911,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\cpp\\data\\goblins-pro.json",
@@ -2758,8 +2919,27 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 18,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\cpp\\data\\mix-and-match-pro.json",
@@ -2786,7 +2966,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\cpp\\data\\spineboy-pro.json",
@@ -2831,7 +3011,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-starling\\spine-starling-example\\src\\goblins-pro.json",
@@ -2839,8 +3019,27 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 18,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-starling\\spine-starling-example\\src\\mix-and-match-pro.json",
@@ -2867,7 +3066,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-starling\\spine-starling-example\\src\\spineboy-pro.json",
@@ -2921,7 +3120,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-ts\\player\\example\\assets\\raptor-pro.json",
@@ -2930,7 +3129,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-ts\\threejs\\example\\assets\\raptor-pro.json",
@@ -2939,7 +3138,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-ue4\\Content\\GettingStarted\\Assets\\Raptor\\raptor.json",
@@ -3155,7 +3354,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-xna\\example\\data\\mix-and-match-pro.json",
@@ -3173,7 +3372,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-xna\\example\\data\\tank-pro.json",
@@ -3236,7 +3435,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\dragon\\export\\dragon-ess.json",
@@ -3302,8 +3501,14 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\hero\\export\\hero-ess.json",
@@ -3356,8 +3561,8 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": ["CORE_INVALID_MESH", "CORE_INVALID_MESH"]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\raptor\\export\\raptor-pro.json",
@@ -3402,7 +3607,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\spineboy\\export\\spineboy-pro.json",
@@ -3473,8 +3678,14 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-cocos2dx\\example\\Resources\\common\\raptor-pro.json",
@@ -3537,7 +3748,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\dragon-ess.json",
@@ -3554,8 +3765,14 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\mix-and-match-pro.json",
@@ -3681,7 +3898,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\goblins\\goblins-ess.json",
@@ -3738,8 +3955,14 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\mix-and-match\\mix-and-match-pro.json",
@@ -3784,7 +4007,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\spineboy\\spineboy-pro.json",
@@ -3802,7 +4025,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-monogame\\spine-monogame-example\\data\\celestial-circus-pro.json",
@@ -3820,7 +4043,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-monogame\\spine-monogame-example\\data\\mix-and-match-pro.json",
@@ -3883,7 +4106,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\dragon-ess.json",
@@ -3900,8 +4123,14 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\mix-and-match-pro.json",
@@ -4009,7 +4238,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\dragon-ess.json",
@@ -4026,8 +4255,14 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\mix-and-match-pro.json",
@@ -4135,7 +4370,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\goblins-pro.json",
@@ -4143,8 +4378,14 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\mix-and-match-pro.json",
@@ -4189,7 +4430,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["SP38_UNSUPPORTED_ATTACHMENT"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\spineboy-pro.json",
@@ -4332,8 +4573,14 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 5,
+      "diagnosticCodes": [
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\Hero\\hero-pro.json",
@@ -4359,8 +4606,17 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 8,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\Raptor\\raptor.json",
