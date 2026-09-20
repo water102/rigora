@@ -315,6 +315,14 @@ export function importSpine38(text: string, options: ImportOptions) {
                             localPosition: { x, y },
                           });
                         }
+                        const weightSum = influences.reduce(
+                          (sum, influence) => sum + influence.weight,
+                          0,
+                        );
+                        if (weightSum > 0 && weightSum !== 1)
+                          influences.forEach(
+                            (influence) => (influence.weight /= weightSum),
+                          );
                         const first = influences[0]?.localPosition ?? {
                           x: 0,
                           y: 0,

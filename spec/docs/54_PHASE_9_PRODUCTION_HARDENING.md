@@ -324,6 +324,15 @@ This phase is executed in independently verified batches. Every batch must pass
   33/136 successful imports. Remaining weighted assets expose explicit weight
   sum/reference validation issues for the next qualification batch.
 
+### Batch 37 — Spine packed weight normalization — partial
+
+- Packed weighted mesh influence weights are normalized to a unit sum before
+  canonical validation, correcting exporter rounding such as `0.99999` and
+  `1.00001` without changing relative influence ratios.
+- Corpus qualification improved Spine 3.8 from 5/116 to 32/116 and Spine 4.2
+  from 33/136 to 111/136 successful imports. Remaining failures are explicit
+  reference/schema/texture/behavior cases.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
