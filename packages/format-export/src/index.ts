@@ -27,6 +27,12 @@ export function scanExportCapabilities(
   target: ExportPlan["target"],
 ): CapabilityEntry[] {
   const entries: CapabilityEntry[] = [];
+  for (const bone of skeleton.bones)
+    entries.push({ entityId: bone.id, feature: "bone", action: "native" });
+  for (const slot of skeleton.slots)
+    entries.push({ entityId: slot.id, feature: "slot", action: "native" });
+  for (const skin of skeleton.skins)
+    entries.push({ entityId: skin.id, feature: "skin", action: "native" });
   for (const skin of skeleton.skins)
     for (const list of Object.values(skin.attachments))
       for (const attachment of list) {

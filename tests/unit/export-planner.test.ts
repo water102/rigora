@@ -556,7 +556,14 @@ describe("export planning", () => {
     skeleton.events = [{ id: "event", name: "hit" }];
     const capabilities = scanExportCapabilities(skeleton, "spine-3.8");
     expect(capabilities.map((entry) => entry.feature)).toEqual(
-      expect.arrayContaining(["point", "animation", "event"]),
+      expect.arrayContaining([
+        "bone",
+        "slot",
+        "skin",
+        "point",
+        "animation",
+        "event",
+      ]),
     );
     expect(capabilities.every((entry) => entry.action)).toBe(true);
   });
