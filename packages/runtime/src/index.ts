@@ -35,6 +35,7 @@ export {
   type ConstraintContext,
 };
 export * from "./path.js";
+export * from "./physics.js";
 
 export interface RegionSnapshot {
   slotId: string;
