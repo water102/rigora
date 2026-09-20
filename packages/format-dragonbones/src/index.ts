@@ -127,9 +127,17 @@ export function importDragonBones55(text: string, options: ImportOptions) {
       // culling. It is metadata, not part of the canonical skeleton model.
       fields(
         armature,
-        "name type frameRate bone slot skin userData ik aabb animation defaultActions",
+        "name type frameRate bone slot skin userData ik aabb canvas animation defaultActions",
         root,
       );
+      if (armature["canvas"] !== undefined)
+        diagnostics.push({
+          code: "DB55_CANVAS_PRESERVED_AS_METADATA",
+          severity: "warning",
+          message:
+            "DragonBones canvas metadata is preserved as a diagnostic until the canonical runtime exposes canvas settings.",
+          jsonPointer: root + "/canvas",
+        });
       if (armature["defaultActions"] !== undefined)
         diagnostics.push({
           code: "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
@@ -167,9 +175,17 @@ export function importDragonBones55(text: string, options: ImportOptions) {
         const path = `${root}/bone/${i}`;
         fields(
           bone,
-          "name parent length transform userData inheritScale inheritRotation",
+          "name parent length transform userData inheritScale inheritRotation type segmentX segmentY vertices",
           path,
         );
+        if (bone["type"] !== undefined && bone["type"] !== "bone")
+          diagnostics.push({
+            code: "DB55_BONE_TYPE_PRESERVED",
+            severity: "warning",
+            message:
+              "DragonBones non-standard bone deformation metadata is preserved until canonical surface deformation is available.",
+            jsonPointer: path + "/type",
+          });
         const inheritScale = bone["inheritScale"] !== false;
         const inheritRotation = bone["inheritRotation"] !== false;
         return {
@@ -196,9 +212,25 @@ export function importDragonBones55(text: string, options: ImportOptions) {
         const path = `${root}/slot/${i}`;
         fields(
           slot,
-          "name parent displayIndex blendMode color userData z",
+          "name parent displayIndex blendMode color userData z zIndex alpha",
           path,
         );
+        if (slot["alpha"] !== undefined)
+          diagnostics.push({
+            code: "DB55_SLOT_ALPHA_PRESERVED",
+            severity: "warning",
+            message:
+              "DragonBones slot alpha is preserved as metadata until canonical slot opacity support is available.",
+            jsonPointer: path + "/alpha",
+          });
+        if (slot["zIndex"] !== undefined)
+          diagnostics.push({
+            code: "DB55_SLOT_Z_INDEX_PRESERVED",
+            severity: "warning",
+            message:
+              "DragonBones slot zIndex is preserved as metadata; canonical slot order remains authoritative.",
+            jsonPointer: path + "/zIndex",
+          });
         const blend =
           slot["blendMode"] === null
             ? "normal"
@@ -248,7 +280,15 @@ export function importDragonBones55(text: string, options: ImportOptions) {
         names(skinSlots, namespace, "skinSlot", path + "/slot");
         skinSlots.forEach((slot, j) => {
           const at = `${path}/slot/${j}`;
-          fields(slot, "name display", at);
+          fields(slot, "name display blendMode", at);
+          if (slot["blendMode"] !== undefined)
+            diagnostics.push({
+              code: "DB55_SKIN_BLEND_MODE_PRESERVED",
+              severity: "warning",
+              message:
+                "DragonBones skin-slot blendMode is preserved as metadata; canonical slot setup remains authoritative.",
+              jsonPointer: at + "/blendMode",
+            });
           const slotId = reference(slot["name"], slotIds, at + "/name");
           attachments[slotId] = list(slot["display"], at + "/display").map(
             (value, k) => {
@@ -256,9 +296,17 @@ export function importDragonBones55(text: string, options: ImportOptions) {
                 item = object(value, loc);
               fields(
                 item,
-                "name path type transform pivot width height vertices uvs triangles weights slotPose bonePose edges userEdges subType",
+                "name path type transform pivot width height vertices uvs triangles weights slotPose bonePose edges userEdges subType filterType",
                 loc,
               );
+              if (item["filterType"] !== undefined)
+                diagnostics.push({
+                  code: "DB55_FILTER_TYPE_PRESERVED",
+                  severity: "warning",
+                  message:
+                    "DragonBones display filterType is preserved as metadata until canonical filter support is available.",
+                  jsonPointer: loc + "/filterType",
+                });
               if (item["type"] === "armature") {
                 diagnostics.push({
                   code: "DB55_NESTED_ARMATURE_PRESERVED",

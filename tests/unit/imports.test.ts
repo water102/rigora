@@ -471,6 +471,41 @@ it("accepts DragonBones display dimensions when exported", () => {
   const result = importDragonBones55(JSON.stringify(fixture), options);
   expect(result.success).toBe(true);
 });
+it("accepts DragonBones canvas, skin blend and display filter metadata", () => {
+  const fixture = structuredClone(dragonFixture);
+  fixture.armature[0]!.canvas = { x: 0, y: 0, width: 128, height: 128 };
+  fixture.armature[0]!.skin[0]!.slot[0]!.blendMode = "add";
+  fixture.armature[0]!.slot[0]!.zIndex = 2;
+  fixture.armature[0]!.slot[0]!.alpha = 0.75;
+  fixture.armature[0]!.skin[0]!.slot[0]!.display[0]!.filterType = "blur";
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toEqual(
+    expect.arrayContaining([
+      "DB55_CANVAS_PRESERVED_AS_METADATA",
+      "DB55_SKIN_BLEND_MODE_PRESERVED",
+      "DB55_FILTER_TYPE_PRESERVED",
+      "DB55_SLOT_Z_INDEX_PRESERVED",
+      "DB55_SLOT_ALPHA_PRESERVED",
+    ]),
+  );
+});
+it("accepts DragonBones surface bone metadata with a preservation warning", () => {
+  const fixture = structuredClone(dragonFixture);
+  Object.assign(fixture.armature[0]!.bone[0]!, {
+    type: "surface",
+    segmentX: 2,
+    segmentY: 2,
+    vertices: [0, 0, 1, 0, 0, 1, 1, 1],
+  });
+  const result = importDragonBones55(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "DB55_BONE_TYPE_PRESERVED",
+    ),
+  ).toBe(true);
+});
 it("accepts DragonBones isGlobal export metadata with a warning", () => {
   const fixture = structuredClone(dragonFixture);
   fixture.isGlobal = true;

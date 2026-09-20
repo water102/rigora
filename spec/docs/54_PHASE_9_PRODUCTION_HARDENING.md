@@ -524,3 +524,18 @@ Run:
 
 The remaining unchecked items are deliberate release blockers, not claims of
 completion. Phase 9 is not release-qualified until each has attached evidence.
+
+## Batch 43 — DragonBones export metadata tolerance
+
+- The DragonBones adapter now accepts armature `canvas`, skin-slot
+  `blendMode`, display `filterType`, slot `zIndex`/`alpha`, and non-standard
+  surface-bone metadata found in the downloaded 5.x corpus.
+- These fields are reported with explicit metadata-preservation diagnostics;
+  they do not silently alter canonical slot blending or introduce unsupported
+  rendering semantics.
+- Added importer regression coverage for all three fields.
+- Rebuilt and re-ran the 424-file example qualification corpus. DragonBones
+  remains at 129/172 successful files because the newly accepted metadata
+  exposes downstream texture-region requirements in three files; the
+  remaining failures are tracked as schema/behavior/version work rather than
+  being hidden.
