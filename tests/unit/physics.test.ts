@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   bakePhysics,
+  PhysicsController,
   PhysicsWorld,
 } from "../../packages/runtime/src/physics.js";
 
@@ -79,5 +80,16 @@ describe("PhysicsWorld", () => {
     targets.set("b", { x: 1, y: 0 });
     world.stepWithTargets(0.1, [inertial], targets);
     expect(world.get("b")!.velocityX).toBeCloseTo(-10);
+  });
+
+  it("provides editor controls and a debug snapshot", () => {
+    const world = new PhysicsWorld({ fixedDt: 0.1 });
+    world.register("b", { x: 0, y: 0, velocityX: 0, velocityY: 0 });
+    const controller = new PhysicsController(world, [constraint]);
+    controller.step(0.1);
+    expect(controller.debugSnapshot().bodies.b).toBeDefined();
+    controller.setEnabled(false);
+    expect(controller.step(1)).toBe(0);
+    expect(controller.debugSnapshot().enabled).toBe(false);
   });
 });

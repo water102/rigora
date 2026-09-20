@@ -37,6 +37,11 @@ export interface PhysicsBakeResult {
   sampleRate: number;
   prewarm: number;
 }
+export interface PhysicsDebugSnapshot {
+  enabled: boolean;
+  accurateSeek: boolean;
+  bodies: Readonly<Record<string, PhysicsBodyState>>;
+}
 
 /** Deterministic, fixed-step clean-room secondary-motion solver. */
 export class PhysicsWorld {
@@ -156,6 +161,45 @@ export class PhysicsWorld {
     const mix = Math.min(1, Math.max(0, constraint.mix ?? 1));
     state.x += state.velocityX * dt * mix;
     state.y += state.velocityY * dt * mix;
+  }
+}
+
+/** Editor/runtime façade for toggling, seeking and inspecting one physics world. */
+export class PhysicsController {
+  enabled = true;
+  accurateSeek = true;
+
+  constructor(
+    readonly world: PhysicsWorld,
+    readonly constraints: readonly PhysicsConstraint[],
+  ) {}
+
+  setEnabled(enabled: boolean): void {
+    this.enabled = enabled;
+    if (!enabled) this.world.reset();
+  }
+
+  reset(): void {
+    this.world.reset();
+  }
+
+  step(elapsed: number, wind = 0): number {
+    return this.enabled ? this.world.step(elapsed, this.constraints, wind) : 0;
+  }
+
+  seek(seconds: number, wind = 0): void {
+    if (!this.enabled) return;
+    if (this.accurateSeek) this.world.seek(seconds, this.constraints, wind);
+    else this.world.reset();
+  }
+
+  debugSnapshot(): PhysicsDebugSnapshot {
+    const bodies: Record<string, PhysicsBodyState> = {};
+    for (const constraint of this.constraints) {
+      const state = this.world.get(constraint.boneId);
+      if (state) bodies[constraint.boneId] = state;
+    }
+    return { enabled: this.enabled, accurateSeek: this.accurateSeek, bodies };
   }
 }
 
