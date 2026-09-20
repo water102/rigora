@@ -148,7 +148,7 @@ export function importSpine38(text: string, options: ImportOptions) {
               item = object(value, loc);
             fields(
               item,
-              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights parent inheritDeform",
+              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights parent inheritDeform edges",
               loc,
             );
             const id = `${options.namespace}:attachment:${i}:${slotId}:${j}`;

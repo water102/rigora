@@ -53,6 +53,13 @@ it("always warns on exact 3.8.75 and persists stable IDs independent of display 
     "SPINE_VERSION_INVALID",
   );
 });
+it("accepts Spine mesh edge metadata without changing canonical geometry", () => {
+  const fixture = structuredClone(spineFixture);
+  const attachment = fixture.skins[0]!.attachments.body!.logical!;
+  attachment.edges = [0, 1, 2, 3];
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(
