@@ -145,6 +145,14 @@ This phase is executed in independently verified batches. Every batch must pass
 - Product asset provenance is now explicit; research material remains excluded
   from release assets.
 
+### Batch 18 — Native security qualification — complete
+
+- Added `pnpm release:security` with five hostile/malformed native archive
+  cases and expected diagnostic assertions.
+- Published `docs/release/NATIVE_SECURITY_QUALIFICATION.json`.
+- This is deterministic security regression coverage, not a substitute for
+  long-running fuzzing or third-party archive corpus testing.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

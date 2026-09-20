@@ -14,6 +14,7 @@
     "release:preflight": "node tools/release-preflight.mjs",
     "release:corpus": "pnpm build && node tools/qualify-corpus.mjs",
     "release:verify-artifacts": "node tools/verify-package-artifacts.mjs",
+    "release:security": "pnpm build && node tools/qualify-native-security.mjs",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r build && pnpm -r typecheck",
     "test": "vitest run",

@@ -1,0 +1,35 @@
+{
+  "date": "2026-09-20",
+  "results": [
+    {
+      "name": "corrupt archive",
+      "expected": "NATIVE_CORRUPT_ARCHIVE",
+      "actual": "NATIVE_CORRUPT_ARCHIVE",
+      "passed": true
+    },
+    {
+      "name": "path traversal",
+      "expected": "NATIVE_UNSAFE_PATH",
+      "actual": "NATIVE_UNSAFE_PATH: ../escape",
+      "passed": true
+    },
+    {
+      "name": "malformed manifest",
+      "expected": "NATIVE_INVALID_MANIFEST",
+      "actual": "NATIVE_INVALID_MANIFEST",
+      "passed": true
+    },
+    {
+      "name": "asset limit",
+      "expected": "NATIVE_ASSET_TOO_LARGE",
+      "actual": "NATIVE_ASSET_TOO_LARGE: a",
+      "passed": true
+    },
+    {
+      "name": "expanded limit",
+      "expected": "NATIVE_EXPANDED_ARCHIVE_TOO_LARGE",
+      "actual": "NATIVE_EXPANDED_ARCHIVE_TOO_LARGE",
+      "passed": true
+    }
+  ]
+}
