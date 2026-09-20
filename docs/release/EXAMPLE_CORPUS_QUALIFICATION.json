@@ -37,15 +37,16 @@
         "4.2.38": 1
       },
       "diagnosticCodes": {
-        "ASSET_TEXTURE_NOT_FOUND": 10,
-        "CORE_DEGENERATE_TRIANGLE": 7,
-        "CORE_INVALID_MESH": 8,
+        "ASSET_TEXTURE_NOT_FOUND": 18,
+        "CORE_DEGENERATE_TRIANGLE": 25,
+        "CORE_INVALID_MESH": 40,
         "CORE_INVALID_REFERENCE": 3,
-        "CORE_SOURCE_SCHEMA": 13,
-        "CORE_UNSUPPORTED_BEHAVIOR": 7,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 99,
-        "SP38_PATH_ATTACHMENT_PRESERVED": 5,
-        "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 2,
+        "CORE_SOURCE_SCHEMA": 57,
+        "CORE_UNSUPPORTED_BEHAVIOR": 34,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 22,
+        "SP38_PATH_ATTACHMENT_PRESERVED": 31,
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 29,
+        "SP38_UNSUPPORTED_ATTACHMENT": 1,
         "SP42_CORE_SUBSET_ADAPTER": 13,
         "SP42_PHYSICS_PRESERVED": 24
       }
@@ -4038,9 +4039,81 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 74,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4059,9 +4132,10 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 3,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4154,7 +4228,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\hero\\export\\hero-pro.json",
@@ -4162,8 +4236,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\mix-and-match\\export\\mix-and-match-pro.json",
@@ -4171,8 +4248,15 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 6,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\owl\\export\\owl-pro.json",
@@ -4180,8 +4264,28 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 19,
+      "diagnosticCodes": [
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\powerup\\export\\powerup-ess.json",
@@ -4208,7 +4312,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\sack\\export\\sack-pro.json",
@@ -4216,9 +4320,17 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 10,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4229,10 +4341,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 2,
-      "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
-        "SP42_PHYSICS_PRESERVED"
-      ]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA", "SP42_PHYSICS_PRESERVED"]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\speedy\\export\\speedy-ess.json",
@@ -4259,7 +4368,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\spinosaurus\\export\\spinosaurus-ess.json",
@@ -4276,8 +4385,24 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 15,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\tank\\export\\tank-pro.json",
@@ -4285,8 +4410,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "CORE_SOURCE_SCHEMA"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\examples\\vine\\export\\vine-pro.json",
@@ -4322,7 +4450,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-cocos2dx\\example\\Resources\\common\\goblins-pro.json",
@@ -4346,7 +4474,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-cocos2dx\\example\\Resources\\common\\spineboy-pro.json",
@@ -4355,7 +4483,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-flutter\\example\\assets\\spineboy-pro.json",
@@ -4364,7 +4492,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-glfw\\data\\spineboy-pro.json",
@@ -4373,7 +4501,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\celestial-circus-pro.json",
@@ -4381,9 +4509,81 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 74,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4393,9 +4593,10 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 3,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4438,8 +4639,15 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 6,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\owl-pro.json",
@@ -4447,8 +4655,28 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 19,
+      "diagnosticCodes": [
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\raptor-pro.json",
@@ -4457,7 +4685,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\sack-pro.json",
@@ -4465,9 +4693,17 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 10,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4478,10 +4714,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 2,
-      "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
-        "SP42_PHYSICS_PRESERVED"
-      ]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA", "SP42_PHYSICS_PRESERVED"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\spineboy-pro.json",
@@ -4490,7 +4723,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\stretchyman-pro.json",
@@ -4498,8 +4731,24 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 15,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\tank-pro.json",
@@ -4507,8 +4756,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "CORE_SOURCE_SCHEMA"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-haxe\\example\\assets\\vine-pro.json",
@@ -4535,7 +4787,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ios\\Example - Cocoapods\\Spine iOS Example\\spineboy\\spineboy-pro.json",
@@ -4544,7 +4796,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\celestial-circus\\celestial-circus-pro.json",
@@ -4552,9 +4804,81 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 74,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4564,9 +4888,10 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 3,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4649,8 +4974,15 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 6,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\raptor\\raptor-pro.json",
@@ -4659,7 +4991,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\sack\\sack-pro.json",
@@ -4667,9 +4999,17 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 10,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4680,10 +5020,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 2,
-      "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
-        "SP42_PHYSICS_PRESERVED"
-      ]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA", "SP42_PHYSICS_PRESERVED"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\spineboy\\spineboy-ess.json",
@@ -4701,7 +5038,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-libgdx\\spine-libgdx-tests\\assets\\spineboy-old\\spineboy-old.json",
@@ -4718,9 +5055,81 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 74,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4739,8 +5148,15 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 6,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-monogame\\spine-monogame-example\\data\\raptor-pro.json",
@@ -4749,7 +5165,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-monogame\\spine-monogame-example\\data\\tank-pro.json",
@@ -4757,8 +5173,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "CORE_SOURCE_SCHEMA"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sdl\\data\\spineboy-pro.json",
@@ -4767,7 +5186,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\celestial-circus-pro.json",
@@ -4775,9 +5194,81 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 74,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4787,9 +5278,10 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 3,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4832,8 +5324,15 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 6,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\owl-pro.json",
@@ -4841,8 +5340,28 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 19,
+      "diagnosticCodes": [
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\raptor-pro.json",
@@ -4851,7 +5370,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\sack-pro.json",
@@ -4859,9 +5378,17 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 10,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4872,10 +5399,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 2,
-      "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
-        "SP42_PHYSICS_PRESERVED"
-      ]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA", "SP42_PHYSICS_PRESERVED"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\spineboy-pro.json",
@@ -4884,7 +5408,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\stretchyman-pro.json",
@@ -4892,8 +5416,24 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 15,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\tank-pro.json",
@@ -4901,8 +5441,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "CORE_SOURCE_SCHEMA"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\c\\data\\vine-pro.json",
@@ -4928,9 +5471,81 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 74,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4940,9 +5555,10 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 3,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -4985,8 +5601,15 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 6,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\owl-pro.json",
@@ -4994,8 +5617,28 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 19,
+      "diagnosticCodes": [
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\raptor-pro.json",
@@ -5004,7 +5647,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\sack-pro.json",
@@ -5012,9 +5655,17 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 10,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -5025,10 +5676,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 2,
-      "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
-        "SP42_PHYSICS_PRESERVED"
-      ]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA", "SP42_PHYSICS_PRESERVED"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\spineboy-pro.json",
@@ -5037,7 +5685,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\stretchyman-pro.json",
@@ -5045,8 +5693,24 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 15,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\tank-pro.json",
@@ -5054,8 +5718,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "CORE_SOURCE_SCHEMA"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-sfml\\cpp\\data\\vine-pro.json",
@@ -5081,9 +5748,81 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 74,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -5126,8 +5865,15 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 6,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\owl-pro.json",
@@ -5135,8 +5881,28 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 19,
+      "diagnosticCodes": [
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\raptor-pro.json",
@@ -5145,7 +5911,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\snowglobe-pro.json",
@@ -5154,10 +5920,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 2,
-      "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
-        "SP42_PHYSICS_PRESERVED"
-      ]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA", "SP42_PHYSICS_PRESERVED"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\spineboy-ess.json",
@@ -5175,7 +5938,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\stretchyman-pro.json",
@@ -5183,8 +5946,24 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 15,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\tank-pro.json",
@@ -5192,8 +5971,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "CORE_SOURCE_SCHEMA"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\assets\\vine-pro.json",
@@ -5229,7 +6011,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ts\\spine-webcomponents\\example\\assets\\pwd\\button.json",
@@ -5256,7 +6038,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-ue\\Content\\GettingStarted\\Assets\\Spineboy\\spineboy-pro.json",
@@ -5265,7 +6047,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\celestial-circus\\celestial-circus-pro.json",
@@ -5273,9 +6055,81 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 2,
+      "diagnostics": 74,
       "diagnosticCodes": [
-        "CORE_UNSUPPORTED_SOURCE_FIELD",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
         "SP42_PHYSICS_PRESERVED"
       ]
     },
@@ -5336,8 +6190,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\mix-and-match\\mix-and-match-pro.json",
@@ -5345,8 +6202,15 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 6,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "ASSET_TEXTURE_NOT_FOUND",
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\Raggedy Spineboy\\raggedy spineboy.json",
@@ -5373,7 +6237,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\raptor-pro-and-mask\\raptor-pro.json",
@@ -5382,7 +6246,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\spineboy-pro\\spineboy-pro.json",
@@ -5391,7 +6255,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\spineboy-unity\\spineboy-unity.json",
@@ -5399,8 +6263,11 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 2,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_UNSUPPORTED_ATTACHMENT"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\Spineunitygirl\\Doi.json",
@@ -5432,8 +6299,24 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 15,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\whirlyblendmodes\\whirlyblendmodes.json",
@@ -5455,7 +6338,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Modules\\com.esotericsoftware.spine.lwrp-shaders\\Spine Skeletons\\StretchymanLWRP\\stretchyman.json",
@@ -5463,8 +6346,24 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 15,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Modules\\com.esotericsoftware.spine.ui-toolkit\\Samples~\\Examples\\Spine Skeletons\\Raptor\\raptor-pro.json",
@@ -5473,7 +6372,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Modules\\com.esotericsoftware.spine.urp-shaders\\Samples~\\Examples\\2D\\Spine Skeletons\\RaptorURP\\raptor-pro.json",
@@ -5482,7 +6381,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Modules\\com.esotericsoftware.spine.urp-shaders\\Samples~\\Examples\\2D\\Spine Skeletons\\StretchymanURP\\stretchyman.json",
@@ -5490,8 +6389,24 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 15,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Modules\\com.esotericsoftware.spine.urp-shaders\\Samples~\\Examples\\3D\\Spine Skeletons\\RaptorURP\\raptor-pro.json",
@@ -5500,7 +6415,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-4.2\\spine-unity\\Modules\\com.esotericsoftware.spine.urp-shaders\\Samples~\\Examples\\3D\\Spine Skeletons\\StretchymanURP\\stretchyman.json",
@@ -5508,8 +6423,24 @@
       "version": "4.2.22",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
+      "diagnostics": 15,
+      "diagnosticCodes": [
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_PATH_ATTACHMENT_PRESERVED",
+        "SP38_TRANSFORM_CONSTRAINT_PRESERVED",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_UNSUPPORTED_BEHAVIOR",
+        "CORE_UNSUPPORTED_BEHAVIOR"
+      ]
     }
   ]
 }

@@ -261,6 +261,15 @@ This phase is executed in independently verified batches. Every batch must pass
   improved from 8/136 to 13/136 successful imports and reduced
   `CORE_UNSUPPORTED_SOURCE_FIELD` diagnostics from 104 to 99.
 
+### Batch 30 — Spine 4.2 bone metadata mapping — partial
+
+- Spine 4.2 bone `inherit` is now mapped to the canonical inheritance field;
+  editor-only `icon` metadata is accepted without affecting runtime pose
+  evaluation.
+- Added a regression test. The corpus still has 13/136 successful 4.2 imports,
+  but unsupported-source-field diagnostics dropped from 99 to 22, exposing the
+  remaining mesh/schema/texture issues for subsequent batches.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

@@ -74,6 +74,18 @@ it("accepts Spine 4.2 sequence attachment metadata", () => {
     ),
   ).toBe(false);
 });
+it("maps Spine 4.2 bone inherit metadata and accepts editor icons", () => {
+  const fixture = structuredClone(spineFixture);
+  fixture.skeleton.spine = "4.2.22";
+  fixture.bones[1]!.inherit = "noRotationOrReflection";
+  fixture.bones[1]!.icon = "diamond";
+  const result = importSpine42(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.bones[1]!.inherit).toBe(
+      "noRotationOrReflection",
+    );
+});
 it("imports Spine clipping attachments with an end slot", () => {
   const fixture = structuredClone(spineFixture);
   const attachment = fixture.skins[0]!.attachments.body!.logical!;

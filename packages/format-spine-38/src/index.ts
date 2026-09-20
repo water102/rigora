@@ -103,10 +103,10 @@ export function importSpine38(text: string, options: ImportOptions) {
       const path = `/bones/${i}`;
       fields(
         bone,
-        "name parent length x y rotation scaleX scaleY shearX shearY transform color skin",
+        "name parent length x y rotation scaleX scaleY shearX shearY transform inherit icon color skin",
         path,
       );
-      const inheritance = bone["transform"] ?? "normal";
+      const inheritance = bone["transform"] ?? bone["inherit"] ?? "normal";
       if (
         typeof inheritance !== "string" ||
         ![
