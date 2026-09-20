@@ -81,6 +81,15 @@ This phase is executed in independently verified batches. Every batch must pass
 - Published `docs/release/DEVELOPER_GUIDE.md` covering package boundaries,
   adapter rules, native migration and release commands.
 
+### Batch 9 — Internal corpus qualification — complete
+
+- Added `pnpm release:corpus` to build adapters and qualify the checked-in
+  Spine 3.8 and DragonBones fixtures, including an expected DragonBones 6.0
+  rejection.
+- Published `docs/release/CORPUS_QUALIFICATION.json`.
+- External mandatory corpora remain separate release blockers; checked-in
+  fixtures are not claimed as vendor corpus coverage.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

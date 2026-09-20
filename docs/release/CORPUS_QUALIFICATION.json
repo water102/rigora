@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-20",
+  "results": [
+    {
+      "file": "spine38-region.json",
+      "expectedSuccess": true,
+      "success": true,
+      "diagnostics": 1
+    },
+    {
+      "file": "dragonbones55-region.json",
+      "expectedSuccess": true,
+      "success": true,
+      "diagnostics": 0
+    },
+    {
+      "file": "dragonbones60-constraints.json",
+      "expectedSuccess": false,
+      "success": false,
+      "diagnostics": 3
+    }
+  ]
+}

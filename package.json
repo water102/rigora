@@ -12,6 +12,7 @@
     "benchmark:selection": "node tools/benchmark-selection.mjs",
     "release:metadata": "node tools/generate-release-metadata.mjs",
     "release:preflight": "node tools/release-preflight.mjs",
+    "release:corpus": "pnpm build && node tools/qualify-corpus.mjs",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r build && pnpm -r typecheck",
     "test": "vitest run",
