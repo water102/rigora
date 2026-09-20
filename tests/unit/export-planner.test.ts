@@ -8,6 +8,7 @@ import {
   planDeterministicAtlas,
   createCrossFormatReport,
   exportSkeleton,
+  ExportPlannerSession,
 } from "../../packages/format-export/src/index.js";
 import { minimalSkeleton } from "../fixtures/canonical/minimal.js";
 import { importSpine38 } from "../../packages/format-spine-38/src/index.js";
@@ -86,6 +87,14 @@ describe("export planning", () => {
     ];
     expect(() => exportSkeleton(skeleton, "spine-3.8")).toThrow(
       "EXPORT_PLAN_UNRESOLVED",
+    );
+  });
+  it("supports UI/E2E-style approve and reject transitions", () => {
+    const session = new ExportPlannerSession(minimalSkeleton(), "spine-3.8");
+    expect(session.unresolved()).toHaveLength(0);
+    expect(session.export().bytes.length).toBeGreaterThan(0);
+    expect(() => session.approve("missing")).toThrow(
+      "EXPORT_PLAN_UNKNOWN_ENTITY",
     );
   });
   it("serializes DragonBones 5.5 and sorts atlas input", () => {

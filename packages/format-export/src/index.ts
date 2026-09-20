@@ -432,6 +432,36 @@ export interface ExportArtifact {
   bytes: Uint8Array;
   report: ExportReport;
 }
+export class ExportPlannerSession {
+  readonly plan: ExportPlan;
+  private readonly approved = new Set<string>();
+  constructor(
+    readonly skeleton: SkeletonData,
+    target: ExportPlan["target"],
+  ) {
+    this.plan = createExportPlan(skeleton, target);
+  }
+  approve(entityId: string): void {
+    if (!this.plan.issues.some((issue) => issue.entityId === entityId))
+      throw new Error(`EXPORT_PLAN_UNKNOWN_ENTITY:${entityId}`);
+    this.approved.add(entityId);
+  }
+  reject(entityId: string): void {
+    this.approved.delete(entityId);
+  }
+  unresolved(): ExportIssue[] {
+    return this.plan.issues.filter(
+      (issue) =>
+        (issue.action === "block" ||
+          issue.action === "bake" ||
+          issue.action === "drop") &&
+        !this.approved.has(issue.entityId),
+    );
+  }
+  export(): ExportArtifact {
+    return exportSkeleton(this.skeleton, this.plan.target, this.approved);
+  }
+}
 export function exportSkeleton(
   skeleton: SkeletonData,
   target: ExportPlan["target"],
