@@ -391,6 +391,35 @@ export function importSpine38(text: string, options: ImportOptions) {
               local: false,
               relative: false,
             } as any;
+          if (type === "path")
+            return {
+              id: `${options.namespace}:constraint:${index}`,
+              name,
+              type,
+              order,
+              targetSlotId: reference(
+                item["target"],
+                slotIds,
+                `/constraints/${index}/target`,
+              ),
+              boneIds: bones,
+              positionMode: "fixed",
+              spacingMode: "fixed",
+              rotateMode: "tangent",
+              position: number(
+                item["position"],
+                `/constraints/${index}/position`,
+                0,
+              ),
+              spacing: number(
+                item["spacing"],
+                `/constraints/${index}/spacing`,
+                0,
+              ),
+              mixRotate: 1,
+              mixX: 1,
+              mixY: 1,
+            } as any;
           fail(
             "SP38_UNSUPPORTED_CONSTRAINT",
             `Unsupported constraint type: ${type}`,

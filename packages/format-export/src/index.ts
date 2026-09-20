@@ -353,6 +353,19 @@ export function toSpine38Ast(
                     bendPositive: constraint.bendDirection === 1,
                   }
                 : {}),
+              ...(constraint.type === "path"
+                ? {
+                    target: skeleton.slots.find(
+                      (slot) => slot.id === constraint.targetSlotId,
+                    )?.name,
+                    bones: constraint.boneIds.map(
+                      (id) =>
+                        skeleton.bones.find((bone) => bone.id === id)?.name,
+                    ),
+                    position: constraint.position,
+                    spacing: constraint.spacing,
+                  }
+                : {}),
             })),
         }
       : {}),

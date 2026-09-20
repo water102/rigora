@@ -238,6 +238,55 @@ describe("export planning", () => {
     if (result.success)
       expect((result.skeletons[0]!.constraints[0] as any).mix).toBe(0.75);
   });
+  it("round-trips an exported Spine path constraint", () => {
+    const skeleton = minimalSkeleton();
+    const point = skeleton.skins[0]!.attachments["slot-1"]![0]!;
+    skeleton.skins[0]!.attachments["slot-1"] = [
+      {
+        type: "region",
+        id: point.id,
+        name: "hero",
+        textureId: "hero.png",
+        transform: {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+          shearX: 0,
+          shearY: 0,
+        },
+        width: 32,
+        height: 16,
+      },
+    ];
+    skeleton.constraints = [
+      {
+        id: "path-1",
+        name: "path",
+        type: "path",
+        order: 0,
+        targetSlotId: "slot-1",
+        boneIds: ["bone-1"],
+        positionMode: "fixed",
+        spacingMode: "fixed",
+        rotateMode: "tangent",
+        position: 2,
+        spacing: 3,
+        mixRotate: 1,
+        mixX: 1,
+        mixY: 1,
+      },
+    ];
+    const result = importSpine38(serializeSpine38(skeleton), {
+      namespace: "path-rt",
+      mode: "strict",
+      textures: new Map([["hero", { id: "hero.png", width: 32, height: 16 }]]),
+    });
+    expect(result.success, JSON.stringify(result)).toBe(true);
+    if (result.success)
+      expect((result.skeletons[0]!.constraints[0] as any).spacing).toBe(3);
+  });
   it("exports supported constraints and blocks physics without approval", () => {
     const skeleton = minimalSkeleton();
     skeleton.constraints = [
