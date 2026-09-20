@@ -297,6 +297,15 @@ This phase is executed in independently verified batches. Every batch must pass
   successful imports; the remaining failures are no longer unsupported-field
   rejection for this case.
 
+### Batch 34 — Array-valued Spine animation channels — partial
+
+- Spine animation channels represented as arrays, including `drawOrder` and
+  `events`, are now preserved as `spine.raw.*` timelines with warning
+  `SP38_ANIMATION_CHANNEL_PRESERVED` instead of failing object validation.
+- Added a regression test. The local corpus improved from 14/136 to 27/136
+  successful Spine 4.2 imports; the same compatibility path preserves array
+  channels in the Spine 3.8 probe as well.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

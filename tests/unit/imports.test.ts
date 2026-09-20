@@ -222,6 +222,19 @@ it("preserves empty Spine animations without rejecting the skeleton", () => {
     ),
   ).toBe(true);
 });
+it("preserves array-valued Spine animation channels", () => {
+  const fixture = {
+    ...structuredClone(spineFixture),
+    animations: { idle: { drawOrder: [] } },
+  };
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "SP38_ANIMATION_CHANNEL_PRESERVED",
+    ),
+  ).toBe(true);
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(

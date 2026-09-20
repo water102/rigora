@@ -408,6 +408,26 @@ export function importSpine38(text: string, options: ImportOptions) {
           }
           const timelines = Object.entries(channels).map(
             ([type, channel], timelineIndex) => {
+              if (Array.isArray(channel)) {
+                diagnostics.push({
+                  code: "SP38_ANIMATION_CHANNEL_PRESERVED",
+                  severity: "warning",
+                  message:
+                    "Array-valued animation channel is preserved until a canonical evaluator is available.",
+                  jsonPointer: `/animations/${pointer(name)}/${pointer(type)}`,
+                });
+                return {
+                  id: `${options.namespace}:animation:${animationIndex}:${timelineIndex}`,
+                  type: `spine.raw.${type}`,
+                  keyframes: [
+                    {
+                      time: 0,
+                      value: channel as unknown as JsonValue,
+                      curve: { type: "linear" },
+                    },
+                  ],
+                };
+              }
               const item = object(
                 channel,
                 `/animations/${pointer(name)}/${pointer(type)}`,
