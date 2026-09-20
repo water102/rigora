@@ -552,3 +552,14 @@ completion. Phase 9 is not release-qualified until each has attached evidence.
 - Rebuilt and re-ran the 424-file corpus: DragonBones improved from 129/172 to
   169/172 successful files. The remaining three files are texture-region
   requirements (`ASSET_REGION_SIZE_REQUIRED`/`ASSET_TEXTURE_NOT_FOUND`).
+
+## Batch 45 — inline DragonBones atlas qualification
+
+- The qualification harness now reads DragonBones inline
+  `textureAtlas[].SubTexture` metadata in addition to adjacent atlas files.
+- This resolves the three downloaded `shizuku` corpora without weakening
+  texture validation or inventing dimensions.
+- The complete 424-file corpus now qualifies without importer throws:
+  DragonBones `172/172`, Spine 4.2 `136/136`, and Spine 3.8 `94/116`.
+- Spine 3.8’s remaining failures are explicitly unsupported beta versions
+  (`3.8.26-beta`/`3.8.33-beta`), so the official 3.8.75 gate remains open.

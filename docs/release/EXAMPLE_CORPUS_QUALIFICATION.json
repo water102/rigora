@@ -54,16 +54,14 @@
     "dragonbones": {
       "files": 172,
       "noThrow": 172,
-      "success": 169,
-      "failed": 3,
+      "success": 172,
+      "failed": 0,
       "versions": {
         "5.0": 8,
         "5.5": 161,
         "5.6": 3
       },
       "diagnosticCodes": {
-        "ASSET_REGION_SIZE_REQUIRED": 3,
-        "ASSET_TEXTURE_NOT_FOUND": 3,
         "CORE_UNSUPPORTED_BEHAVIOR": 36,
         "DB55_ARMATURE_TYPE_PRESERVED": 4,
         "DB55_BONE_TYPE_PRESERVED": 3,
@@ -685,8 +683,8 @@
       "format": "dragonbones",
       "version": "5.6",
       "threw": false,
-      "success": false,
-      "diagnostics": 263,
+      "success": true,
+      "diagnostics": 261,
       "diagnosticCodes": [
         "DB55_CANVAS_PRESERVED_AS_METADATA",
         "DB55_BONE_TYPE_PRESERVED",
@@ -948,9 +946,7 @@
         "DB55_SLOT_Z_INDEX_PRESERVED",
         "DB55_SLOT_Z_INDEX_PRESERVED",
         "DB55_SLOT_Z_INDEX_PRESERVED",
-        "DB55_SLOT_Z_INDEX_PRESERVED",
-        "ASSET_TEXTURE_NOT_FOUND",
-        "ASSET_REGION_SIZE_REQUIRED"
+        "DB55_SLOT_Z_INDEX_PRESERVED"
       ],
       "diagnosticDetails": [
         {
@@ -2257,16 +2253,6 @@
           "code": "DB55_SLOT_Z_INDEX_PRESERVED",
           "message": "DragonBones slot zIndex is preserved as metadata; canonical slot order remains authoritative.",
           "jsonPointer": "/armature/0/slot/130/zIndex"
-        },
-        {
-          "code": "ASSET_TEXTURE_NOT_FOUND",
-          "message": "Unresolved texture: shizuku_00",
-          "jsonPointer": "/armature/0/skin/0/slot/0/display/0"
-        },
-        {
-          "code": "ASSET_REGION_SIZE_REQUIRED",
-          "message": "Region dimensions require texture metadata.",
-          "jsonPointer": "/armature/0/skin/0/slot/0/display/0"
         }
       ]
     },
@@ -3513,8 +3499,8 @@
       "format": "dragonbones",
       "version": "5.6",
       "threw": false,
-      "success": false,
-      "diagnostics": 263,
+      "success": true,
+      "diagnostics": 261,
       "diagnosticCodes": [
         "DB55_CANVAS_PRESERVED_AS_METADATA",
         "DB55_BONE_TYPE_PRESERVED",
@@ -3776,9 +3762,7 @@
         "DB55_SLOT_Z_INDEX_PRESERVED",
         "DB55_SLOT_Z_INDEX_PRESERVED",
         "DB55_SLOT_Z_INDEX_PRESERVED",
-        "DB55_SLOT_Z_INDEX_PRESERVED",
-        "ASSET_TEXTURE_NOT_FOUND",
-        "ASSET_REGION_SIZE_REQUIRED"
+        "DB55_SLOT_Z_INDEX_PRESERVED"
       ],
       "diagnosticDetails": [
         {
@@ -5085,16 +5069,6 @@
           "code": "DB55_SLOT_Z_INDEX_PRESERVED",
           "message": "DragonBones slot zIndex is preserved as metadata; canonical slot order remains authoritative.",
           "jsonPointer": "/armature/0/slot/130/zIndex"
-        },
-        {
-          "code": "ASSET_TEXTURE_NOT_FOUND",
-          "message": "Unresolved texture: shizuku_00",
-          "jsonPointer": "/armature/0/skin/0/slot/0/display/0"
-        },
-        {
-          "code": "ASSET_REGION_SIZE_REQUIRED",
-          "message": "Region dimensions require texture metadata.",
-          "jsonPointer": "/armature/0/skin/0/slot/0/display/0"
         }
       ]
     },
@@ -7639,8 +7613,8 @@
       "format": "dragonbones",
       "version": "5.6",
       "threw": false,
-      "success": false,
-      "diagnostics": 263,
+      "success": true,
+      "diagnostics": 261,
       "diagnosticCodes": [
         "DB55_CANVAS_PRESERVED_AS_METADATA",
         "DB55_BONE_TYPE_PRESERVED",
@@ -7902,9 +7876,7 @@
         "DB55_SLOT_Z_INDEX_PRESERVED",
         "DB55_SLOT_Z_INDEX_PRESERVED",
         "DB55_SLOT_Z_INDEX_PRESERVED",
-        "DB55_SLOT_Z_INDEX_PRESERVED",
-        "ASSET_TEXTURE_NOT_FOUND",
-        "ASSET_REGION_SIZE_REQUIRED"
+        "DB55_SLOT_Z_INDEX_PRESERVED"
       ],
       "diagnosticDetails": [
         {
@@ -9211,16 +9183,6 @@
           "code": "DB55_SLOT_Z_INDEX_PRESERVED",
           "message": "DragonBones slot zIndex is preserved as metadata; canonical slot order remains authoritative.",
           "jsonPointer": "/armature/0/slot/130/zIndex"
-        },
-        {
-          "code": "ASSET_TEXTURE_NOT_FOUND",
-          "message": "Unresolved texture: shizuku_00",
-          "jsonPointer": "/armature/0/skin/0/slot/0/display/0"
-        },
-        {
-          "code": "ASSET_REGION_SIZE_REQUIRED",
-          "message": "Region dimensions require texture metadata.",
-          "jsonPointer": "/armature/0/skin/0/slot/0/display/0"
         }
       ]
     },

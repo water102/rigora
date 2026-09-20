@@ -22,6 +22,16 @@ function textureOptions(source, file) {
       }
     }
   }
+  for (const atlas of source?.textureAtlas ?? []) {
+    for (const region of atlas?.SubTexture ?? []) {
+      if (typeof region?.name === "string")
+        textures.set(region.name, {
+          id: `example:${region.name}`,
+          width: Number(region.width) || 1,
+          height: Number(region.height) || 1,
+        });
+    }
+  }
   for (const atlasFile of readdirSync(dirname(file))) {
     if (atlasFile.endsWith(".atlas")) {
       const lines = readFileSync(join(dirname(file), atlasFile), "utf8").split(
