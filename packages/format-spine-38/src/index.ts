@@ -183,7 +183,7 @@ export function importSpine38(text: string, options: ImportOptions) {
               item = object(value, loc);
             fields(
               item,
-              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights parent inheritDeform edges end vertexCount color",
+              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights parent inheritDeform edges end vertexCount color lengths closed constantSpeed",
               loc,
             );
             const id = `${options.namespace}:attachment:${i}:${slotId}:${j}`;
@@ -225,6 +225,22 @@ export function importSpine38(text: string, options: ImportOptions) {
                       : [...result, { x: value, y: vertices[index + 1] ?? 0 }],
                   [],
                 ),
+              };
+            }
+            if (item["type"] === "path") {
+              diagnostics.push({
+                code: "SP38_PATH_ATTACHMENT_PRESERVED",
+                severity: "warning",
+                message:
+                  "Spine path attachment payload is preserved until weighted-vertex decoding is available.",
+                jsonPointer: loc,
+              });
+              return {
+                type: "unknownPreserved" as const,
+                id,
+                name: string(item["name"], loc + "/name", key),
+                sourceFormat: "spine-3.8-path-attachment",
+                payload: item as unknown as JsonValue,
               };
             }
             if (item["type"] === "mesh") {

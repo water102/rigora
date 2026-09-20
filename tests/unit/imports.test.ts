@@ -148,6 +148,23 @@ it("maps Spine bone inheritance modes to canonical values", () => {
   if (result.success)
     expect(result.skeletons[0]!.bones[1]!.inherit).toBe("onlyTranslation");
 });
+it("preserves Spine weighted path attachments until decoding is supported", () => {
+  const fixture = structuredClone(spineFixture);
+  const attachment = fixture.skins[0]!.attachments.body!.logical!;
+  Object.assign(attachment, {
+    type: "path",
+    lengths: [10],
+    vertices: [1, 0, 0, 1],
+    vertexCount: 1,
+  });
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  expect(
+    result.diagnostics.some(
+      (diagnostic) => diagnostic.code === "SP38_PATH_ATTACHMENT_PRESERVED",
+    ),
+  ).toBe(true);
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(
