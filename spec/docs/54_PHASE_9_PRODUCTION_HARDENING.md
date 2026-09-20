@@ -74,6 +74,13 @@ This phase is executed in independently verified batches. Every batch must pass
   guarded export planner output.
 - Published `docs/release/E2E_QUALIFICATION.md`.
 
+### Batch 8 — Release documentation — complete
+
+- Published `docs/release/USER_GUIDE.md` covering quick start, workflow,
+  import/export caveats and recovery behavior.
+- Published `docs/release/DEVELOPER_GUIDE.md` covering package boundaries,
+  adapter rules, native migration and release commands.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
@@ -210,7 +217,7 @@ Run:
 - [ ] package qualified (blocked: Cargo/Rust toolchain unavailable)
 - [x] browser E2E smoke suite green (native package tests remain separate)
 - [x] SBOM/notices generated (legal review and bundled license texts remain)
-- [ ] user/developer docs complete
+- [x] user/developer docs complete
 
 The remaining unchecked items are deliberate release blockers, not claims of
 completion. Phase 9 is not release-qualified until each has attached evidence.
