@@ -24,3 +24,10 @@ recognized JSON file without importer throws, but many files require atlas
 metadata and fields not yet covered by the adapters. The exact 3.8.75 and 4.2
 vendor-version gates therefore remain open until the adapter and golden
 expectations are qualified against the appropriate exports.
+
+The downloaded runtime branch is not an exact Spine 3.8.75 corpus: observed
+Spine 3.8 files are mostly 3.8.55, with smaller groups from 3.8.26-beta,
+3.8.33-beta, 3.8.76, 3.8.95 and 3.8.99. Spine 4.2 files are mostly 4.2.22.
+DragonBones contains mainly 5.5 files plus 5.0 and 5.6 files. These version
+distributions are included in the JSON report so they are not mistaken for
+exact-version qualification.

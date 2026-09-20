@@ -5,10 +5,28 @@ import { importSpine42 } from "../packages/format-spine-42/dist/index.js";
 import { importDragonBones55 } from "../packages/format-dragonbones/dist/index.js";
 
 const root = "example";
-const options = {
-  namespace: "example-corpus",
-  textures: new Map(),
-};
+function textureOptions(source) {
+  const textures = new Map();
+  const skins = source?.skins;
+  if (Array.isArray(skins)) {
+    for (const skin of skins) {
+      for (const slots of Object.values(skin?.attachments ?? {})) {
+        for (const [name, attachment] of Object.entries(slots ?? {})) {
+          const path = attachment?.path ?? name;
+          textures.set(path, {
+            id: `example:${path}`,
+            width: 4096,
+            height: 4096,
+          });
+        }
+      }
+    }
+  }
+  return {
+    namespace: "example-corpus",
+    textures,
+  };
+}
 
 const results = [];
 function jsonFiles(directory) {
@@ -42,7 +60,7 @@ for (const file of jsonFiles(root)) {
   if (!importer) continue;
   let result;
   try {
-    result = importer(JSON.stringify(source), options);
+    result = importer(JSON.stringify(source), textureOptions(source));
     results.push({
       file: relative(root, file),
       format:
@@ -84,6 +102,23 @@ const summary = Object.fromEntries(
         noThrow: entries.filter((item) => !item.threw).length,
         success: entries.filter((item) => item.success).length,
         failed: entries.filter((item) => item.threw || !item.success).length,
+        versions: Object.fromEntries(
+          [...new Set(entries.map((item) => item.version))]
+            .sort()
+            .map((version) => [
+              version,
+              entries.filter((item) => item.version === version).length,
+            ]),
+        ),
+        diagnosticCodes: Object.fromEntries(
+          [...new Set(entries.flatMap((item) => item.diagnosticCodes ?? []))]
+            .sort()
+            .map((code) => [
+              code,
+              entries.filter((item) => item.diagnosticCodes?.includes(code))
+                .length,
+            ]),
+        ),
       },
     ];
   }),
