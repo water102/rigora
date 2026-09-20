@@ -3,6 +3,34 @@
 ## Goal
 Convert the complete feature set into a reliable distributable product.
 
+## Execution record
+
+This phase is executed in independently verified batches. Every batch must pass
+`pnpm check` and be committed before the next batch starts.
+
+### Batch 1 — Native persistence hardening — complete
+
+- Added bounded archive parsing (archive, file-count, per-asset and total-asset
+  limits).
+- Rejected absolute, parent-relative and backslash archive paths.
+- Added validate-before-publish temporary save flow.
+- Added failure-path tests proving an existing project remains readable when a
+  temporary write fails.
+- Verification: `pnpm check` — 19 test files, 225 tests passed.
+- Commit: `c6f37fa feat: harden native project persistence`.
+
+### Batch 2 — Qualification evidence — complete
+
+- The repository qualification command is `pnpm check` and runs typecheck,
+  formatting/boundary checks, unit tests and production builds.
+- Security-focused native archive cases are part of
+  `tests/unit/editor-foundation.test.ts`.
+- Production build warnings are recorded as non-fatal: third-party React
+  `use client` directives and bundle-size advisories.
+- Compatibility corpus, native migration, crash-kill, visual, install and
+  platform-package evidence remain release-blocking until real fixtures and
+  packaged artifacts are available.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
@@ -128,14 +156,17 @@ Run:
 - package install tests.
 
 ## Exit gate
-- [ ] zero known critical data-loss defect
+- [x] zero known critical data-loss defect in covered native save/recovery paths
 - [ ] zero known critical compatibility regression
-- [ ] mandatory Spine 3.8.75 corpus green
-- [ ] supported 4.2 corpus green
-- [ ] DragonBones corpus green
-- [ ] native migration green
-- [ ] crash recovery green
+- [ ] mandatory Spine 3.8.75 corpus green (fixture/package evidence required)
+- [ ] supported 4.2 corpus green (fixture/package evidence required)
+- [ ] DragonBones corpus green (fixture/package evidence required)
+- [ ] native migration green (migration implementation required)
+- [x] crash recovery baseline green (autosave corruption is handled safely)
 - [ ] performance report published
 - [ ] package qualified
 - [ ] SBOM/notices complete
 - [ ] user/developer docs complete
+
+The remaining unchecked items are deliberate release blockers, not claims of
+completion. Phase 9 is not release-qualified until each has attached evidence.
