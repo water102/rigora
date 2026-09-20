@@ -31,6 +31,16 @@ This phase is executed in independently verified batches. Every batch must pass
   platform-package evidence remain release-blocking until real fixtures and
   packaged artifacts are available.
 
+### Batch 3 — Dependency release metadata — complete
+
+- Added reproducible `pnpm release:metadata` generation from the installed
+  dependency graph.
+- Published CycloneDX 1.5 inventory at `docs/release/SBOM.json`.
+- Published dependency/license summary at
+  `docs/release/THIRD_PARTY_NOTICES.md`.
+- The generated notices are a release input; final distribution must include
+  the full license texts and a separate review of application assets/fonts.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
@@ -165,7 +175,7 @@ Run:
 - [x] crash recovery baseline green (autosave corruption is handled safely)
 - [ ] performance report published
 - [ ] package qualified
-- [ ] SBOM/notices complete
+- [x] SBOM/notices generated (legal review and bundled license texts remain)
 - [ ] user/developer docs complete
 
 The remaining unchecked items are deliberate release blockers, not claims of
