@@ -124,6 +124,13 @@ This phase is executed in independently verified batches. Every batch must pass
   recorded in `docs/release/INSTALL_QUALIFICATION.md`.
 - MSI clean-install qualification remains an explicit blocker.
 
+### Batch 15 — Elevated MSI qualification — complete
+
+- Re-ran MSI through UAC elevation after diagnosing Windows Installer Error
+  1925 from the non-elevated attempt.
+- MSI install/uninstall passed with clean removal.
+- Both configured Windows installer families are now qualified locally.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
@@ -257,7 +264,7 @@ Run:
 - [x] native migration green (version 0 → 1 path covered)
 - [x] crash recovery baseline green (autosave corruption is handled safely)
 - [x] performance report published (selection follow-up remains)
-- [ ] package fully qualified (NSIS passes; MSI install returns 1603)
+- [x] package fully qualified locally (MSI/NSIS install and uninstall pass)
 - [x] browser E2E smoke suite green (native package tests remain separate)
 - [x] SBOM/notices generated (legal review and bundled license texts remain)
 - [x] user/developer docs complete

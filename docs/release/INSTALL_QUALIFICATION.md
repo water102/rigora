@@ -14,13 +14,18 @@ NSIS install/uninstall qualification passes on this machine.
 
 ## MSI
 
-Executed with `msiexec /i ... /qn /norestart`:
+An initial non-elevated silent invocation returned `1603` with Windows
+Installer Error 1925 (insufficient per-machine privileges) and rolled back.
 
-- install exit code: `1603`;
-- no uninstall entry was left;
-- no installed executable remained;
-- Windows Installer rollback completed.
+The corrected qualification was executed through UAC elevation (`RunAs`) with
+`msiexec /i ... /qn /norestart`:
 
-MSI clean-install qualification is not passing yet. The verbose log is retained
-locally at `test-results/rigora-msi-install.log`; this remains a release
-blocker until the MSI install path is corrected and rerun.
+- install exit code: `0`;
+- `C:\Program Files\Rigora\rigora.exe` present;
+- uninstall entry present;
+- uninstall exit code: `0`;
+- installation directory cleanup: clean.
+
+MSI install/uninstall qualification passes with administrator elevation. The
+non-elevated 1603 log remains locally at `test-results/rigora-msi-install.log`
+as evidence that per-machine packages must be run elevated.
