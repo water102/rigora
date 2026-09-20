@@ -98,6 +98,16 @@ describe("export planning", () => {
       "EXPORT_PLAN_UNKNOWN_ENTITY",
     );
   });
+  it("reports the exact 3.8.75 profile risk and stable checksum", () => {
+    const skeleton = minimalSkeleton();
+    const first = exportSkeleton(skeleton, "spine-3.8.75");
+    const second = exportSkeleton(skeleton, "spine-3.8.75");
+    expect(first.report.warnings).toContain(
+      "Exact Spine 3.8.75 profile requires golden verification.",
+    );
+    expect(first.report.checksum).toBe(second.report.checksum);
+    expect(first.bytes).toEqual(second.bytes);
+  });
   it("serializes DragonBones 5.5 and sorts atlas input", () => {
     const skeleton = minimalSkeleton();
     expect(JSON.parse(serializeDragonBones55(skeleton)).version).toBe("5.5");

@@ -116,7 +116,12 @@ export function createExportReport(
       .map((i) => i.feature),
     bakes: plan.issues.filter((i) => i.action === "bake").map((i) => i.feature),
     drops: plan.issues.filter((i) => i.action === "drop").map((i) => i.feature),
-    warnings: plan.issues.map((i) => i.message),
+    warnings: [
+      ...(plan.target === "spine-3.8.75"
+        ? ["Exact Spine 3.8.75 profile requires golden verification."]
+        : []),
+      ...plan.issues.map((i) => i.message),
+    ],
     checksum: (hash >>> 0).toString(16).padStart(8, "0"),
   };
 }
