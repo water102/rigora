@@ -44,19 +44,18 @@
     "dragonbones": {
       "files": 172,
       "noThrow": 172,
-      "success": 0,
-      "failed": 172,
+      "success": 1,
+      "failed": 171,
       "versions": {
         "5.0": 8,
         "5.5": 161,
         "5.6": 3
       },
       "diagnosticCodes": {
-        "ASSET_REGION_SIZE_REQUIRED": 3,
-        "ASSET_TEXTURE_NOT_FOUND": 3,
         "CORE_SOURCE_SCHEMA": 135,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 23,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 24,
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA": 154,
+        "DB55_UNSUPPORTED_DISPLAY": 1,
         "DB55_UNSUPPORTED_VERSION": 11
       }
     }
@@ -128,11 +127,10 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 3,
+      "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "ASSET_TEXTURE_NOT_FOUND",
-        "ASSET_REGION_SIZE_REQUIRED"
+        "DB55_UNSUPPORTED_DISPLAY"
       ]
     },
     {
@@ -635,13 +633,9 @@
       "format": "dragonbones",
       "version": "5.5",
       "threw": false,
-      "success": false,
-      "diagnostics": 3,
-      "diagnosticCodes": [
-        "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "ASSET_TEXTURE_NOT_FOUND",
-        "ASSET_REGION_SIZE_REQUIRED"
-      ]
+      "success": true,
+      "diagnostics": 1,
+      "diagnosticCodes": ["DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA"]
     },
     {
       "file": "dragonbones-js\\Egret\\Demos\\resource\\effect\\effect_ske.json",
@@ -796,11 +790,10 @@
       "version": "5.5",
       "threw": false,
       "success": false,
-      "diagnostics": 3,
+      "diagnostics": 2,
       "diagnosticCodes": [
         "DB55_DEFAULT_ACTIONS_PRESERVED_AS_METADATA",
-        "ASSET_TEXTURE_NOT_FOUND",
-        "ASSET_REGION_SIZE_REQUIRED"
+        "CORE_UNSUPPORTED_SOURCE_FIELD"
       ]
     },
     {

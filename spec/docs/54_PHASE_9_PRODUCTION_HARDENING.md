@@ -184,6 +184,15 @@ This phase is executed in independently verified batches. Every batch must pass
 - The downloaded assets remain local-only under ignored `example/` and are not
   part of the repository or release artifacts.
 
+### Batch 22 — Example atlas metadata probe — complete
+
+- The example corpus runner now reads adjacent DragonBones `*_tex.json` atlas
+  files and supplies their real subtexture dimensions to the adapter.
+- This separates missing-atlas-data failures from parser failures. The latest
+  probe run improved DragonBones from 0/172 to 1/172 successful imports; the
+  remaining failures are now dominated by source-schema and unsupported
+  feature diagnostics rather than absent atlas dimensions.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 

@@ -1,11 +1,11 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
-import { join, relative } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { importSpine38 } from "../packages/format-spine-38/dist/index.js";
 import { importSpine42 } from "../packages/format-spine-42/dist/index.js";
 import { importDragonBones55 } from "../packages/format-dragonbones/dist/index.js";
 
 const root = "example";
-function textureOptions(source) {
+function textureOptions(source, file) {
   const textures = new Map();
   const skins = source?.skins;
   if (Array.isArray(skins)) {
@@ -20,6 +20,25 @@ function textureOptions(source) {
           });
         }
       }
+    }
+  }
+  for (const atlasFile of readdirSync(dirname(file))) {
+    if (!atlasFile.endsWith("_tex.json")) continue;
+    try {
+      const atlas = JSON.parse(
+        readFileSync(join(dirname(file), atlasFile), "utf8"),
+      );
+      for (const region of atlas.SubTexture ?? []) {
+        if (typeof region.name === "string")
+          textures.set(region.name, {
+            id: `example:${region.name}`,
+            width: Number(region.width) || 1,
+            height: Number(region.height) || 1,
+          });
+      }
+    } catch {
+      // The corpus probe records importer behavior; malformed atlas files are
+      // intentionally left for the importer/security qualification stages.
     }
   }
   return {
@@ -60,7 +79,7 @@ for (const file of jsonFiles(root)) {
   if (!importer) continue;
   let result;
   try {
-    result = importer(JSON.stringify(source), textureOptions(source));
+    result = importer(JSON.stringify(source), textureOptions(source, file));
     results.push({
       file: relative(root, file),
       format:
