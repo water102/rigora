@@ -86,6 +86,15 @@ it("maps Spine 4.2 bone inherit metadata and accepts editor icons", () => {
       "noRotationOrReflection",
     );
 });
+it("maps Spine 4.2 skin bone dependencies", () => {
+  const fixture = structuredClone(spineFixture);
+  fixture.skeleton.spine = "4.2.22";
+  fixture.skins[0]!.bones = ["root"];
+  const result = importSpine42(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.skins[0]!.requiredBoneIds).toHaveLength(1);
+});
 it("imports Spine clipping attachments with an end slot", () => {
   const fixture = structuredClone(spineFixture);
   const attachment = fixture.skins[0]!.attachments.body!.logical!;

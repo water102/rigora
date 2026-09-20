@@ -169,7 +169,7 @@ export function importSpine38(text: string, options: ImportOptions) {
     const setup = new Map<string, string>();
     data.skins = skins.map((skin, i): SkinData => {
       const path = `/skins/${i}`;
-      fields(skin, "name attachments", path);
+      fields(skin, "name bones attachments", path);
       const attachments: SkinData["attachments"] = Object.create(
         null,
       ) as SkinData["attachments"];
@@ -184,7 +184,7 @@ export function importSpine38(text: string, options: ImportOptions) {
               item = object(value, loc);
             fields(
               item,
-              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights parent inheritDeform edges end vertexCount color lengths closed constantSpeed sequence",
+              "name path type x y rotation scaleX scaleY width height uvs vertices triangles hull weights parent skin inheritDeform edges end vertexCount color lengths closed constantSpeed sequence",
               loc,
             );
             const id = `${options.namespace}:attachment:${i}:${slotId}:${j}`;
@@ -244,7 +244,7 @@ export function importSpine38(text: string, options: ImportOptions) {
                 payload: item as unknown as JsonValue,
               };
             }
-            if (item["type"] === "mesh") {
+            if (item["type"] === "mesh" || item["type"] === "linkedmesh") {
               const linkedIndex =
                 item["parent"] === undefined
                   ? -1
@@ -359,6 +359,14 @@ export function importSpine38(text: string, options: ImportOptions) {
         id: skinIds.get(String(skin["name"]))!,
         name: String(skin["name"]),
         attachments,
+        ...(skin["bones"] === undefined
+          ? {}
+          : {
+              requiredBoneIds: list(skin["bones"], path + "/bones").map(
+                (value, index) =>
+                  reference(value, boneIds, `${path}/bones/${index}`),
+              ),
+            }),
       };
     });
     slots.forEach((slot, i) => {

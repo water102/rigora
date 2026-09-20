@@ -270,6 +270,15 @@ This phase is executed in independently verified batches. Every batch must pass
   but unsupported-source-field diagnostics dropped from 99 to 22, exposing the
   remaining mesh/schema/texture issues for subsequent batches.
 
+### Batch 31 — Spine 4.2 skin dependencies — partial
+
+- Spine 4.2 skin-level `bones` metadata now maps to canonical
+  `requiredBoneIds`; attachment `skin` metadata is accepted and `linkedmesh`
+  attachments use the existing linked-mesh normalization path.
+- Added a regression test. The corpus remains at 13/136 successful 4.2
+  imports, while unsupported-source-field diagnostics are now down to 11;
+  remaining failures are primarily mesh validation, schema, and texture data.
+
 ## Entry
 P0–P8 functional gates green. Feature freeze except critical fixes.
 
