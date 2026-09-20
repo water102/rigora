@@ -140,6 +140,14 @@ it("preserves Spine transform constraints when runtime mapping is incomplete", (
       sourceFormat: "spine-3.8-transform",
     });
 });
+it("maps Spine bone inheritance modes to canonical values", () => {
+  const fixture = structuredClone(spineFixture);
+  fixture.bones[1]!.transform = "onlyTranslation";
+  const result = importSpine38(JSON.stringify(fixture), options);
+  expect(result.success).toBe(true);
+  if (result.success)
+    expect(result.skeletons[0]!.bones[1]!.inherit).toBe("onlyTranslation");
+});
 it("rejects malformed JSON, foreign versions, missing parents and duplicate names transactionally", () => {
   expect(importSpine38("{", options).success).toBe(false);
   expect(

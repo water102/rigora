@@ -16,14 +16,13 @@
       },
       "diagnosticCodes": {
         "ASSET_TEXTURE_NOT_FOUND": 12,
-        "CORE_DEGENERATE_TRIANGLE": 5,
-        "CORE_INVALID_MESH": 6,
-        "CORE_INVALID_REFERENCE": 3,
-        "CORE_SOURCE_SCHEMA": 16,
+        "CORE_DEGENERATE_TRIANGLE": 18,
+        "CORE_INVALID_MESH": 19,
+        "CORE_INVALID_REFERENCE": 16,
+        "CORE_SOURCE_SCHEMA": 27,
         "CORE_UNSUPPORTED_BEHAVIOR": 5,
-        "CORE_UNSUPPORTED_SOURCE_FIELD": 24,
+        "CORE_UNSUPPORTED_SOURCE_FIELD": 41,
         "SP38_TRANSFORM_CONSTRAINT_PRESERVED": 5,
-        "SP38_UNSUPPORTED_INHERITANCE": 41,
         "SPINE_VERSION_INVALID": 22
       }
     },
@@ -2188,7 +2187,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\hero\\export\\hero-pro.json",
@@ -2197,7 +2196,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\mix-and-match\\export\\mix-and-match-pro.json",
@@ -2206,7 +2205,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\owl\\export\\owl-pro.json",
@@ -2265,8 +2264,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\speedy\\export\\speedy-ess.json",
@@ -2293,7 +2319,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\spinosaurus\\export\\spinosaurus-ess.json",
@@ -2311,7 +2337,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\examples\\tank\\export\\tank-pro.json",
@@ -2392,8 +2418,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2d-objc\\Resources\\spineboy-pro.json",
@@ -2402,7 +2455,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2d-objc\\Resources\\tank-pro.json",
@@ -2447,8 +2500,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2dx\\example\\Resources\\common\\spineboy-pro.json",
@@ -2457,7 +2537,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2dx\\example-v4\\Resources\\common\\goblins-pro.json",
@@ -2493,8 +2573,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-cocos2dx\\example-v4\\Resources\\common\\spineboy-pro.json",
@@ -2503,7 +2610,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-corona\\data\\coin-pro.json",
@@ -2549,7 +2656,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-corona\\data\\owl-pro.json",
@@ -2586,8 +2693,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-corona\\data\\spineboy-pro.json",
@@ -2596,7 +2730,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-corona\\data\\stretchyman-pro.json",
@@ -2605,7 +2739,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-corona\\data\\tank-pro.json",
@@ -2727,7 +2861,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-libgdx\\spine-libgdx-tests\\assets\\raptor\\raptor-pro.json",
@@ -2735,8 +2869,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-libgdx\\spine-libgdx-tests\\assets\\spineboy\\spineboy-ess.json",
@@ -2754,7 +2915,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-love\\data\\coin-pro.json",
@@ -2800,7 +2961,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-love\\data\\raptor-pro.json",
@@ -2808,8 +2969,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-love\\data\\spineboy-pro.json",
@@ -2818,7 +3006,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-love\\data\\stretchyman-pro.json",
@@ -2827,7 +3015,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-love\\data\\tank-pro.json",
@@ -2891,7 +3079,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\c\\data\\owl-pro.json",
@@ -2928,8 +3116,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\c\\data\\spineboy-pro.json",
@@ -2938,7 +3153,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\c\\data\\stretchyman-pro.json",
@@ -2947,7 +3162,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\c\\data\\tank-pro.json",
@@ -3011,7 +3226,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\cpp\\data\\owl-pro.json",
@@ -3048,8 +3263,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\cpp\\data\\spineboy-pro.json",
@@ -3058,7 +3300,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\cpp\\data\\stretchyman-pro.json",
@@ -3067,7 +3309,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-sfml\\cpp\\data\\tank-pro.json",
@@ -3131,7 +3373,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-starling\\spine-starling-example\\src\\owl-pro.json",
@@ -3168,8 +3410,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-starling\\spine-starling-example\\src\\spineboy-pro.json",
@@ -3178,7 +3447,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_SOURCE_SCHEMA"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-starling\\spine-starling-example\\src\\stretchyman-pro.json",
@@ -3187,7 +3456,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-starling\\spine-starling-example\\src\\stretchyman-stretchy-ik-pro.json",
@@ -3231,8 +3500,35 @@
       "version": "3.8.99",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-ts\\threejs\\example\\assets\\raptor-pro.json",
@@ -3240,8 +3536,35 @@
       "version": "3.8.99",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-ue4\\Content\\GettingStarted\\Assets\\Raptor\\raptor.json",
@@ -3313,7 +3636,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\mix-and-match\\mix-and-match-pro.json",
@@ -3322,7 +3645,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-unity\\Assets\\Spine Examples\\Spine Skeletons\\Raggedy Spineboy\\raggedy spineboy.json",
@@ -3466,7 +3789,7 @@
       "threw": false,
       "success": false,
       "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnosticCodes": ["CORE_UNSUPPORTED_SOURCE_FIELD"]
     },
     {
       "file": "spine-runtimes-3.8\\spine-xna\\example\\data\\raptor-pro.json",
@@ -3474,8 +3797,35 @@
       "version": "3.8.55",
       "threw": false,
       "success": false,
-      "diagnostics": 1,
-      "diagnosticCodes": ["SP38_UNSUPPORTED_INHERITANCE"]
+      "diagnostics": 26,
+      "diagnosticCodes": [
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_DEGENERATE_TRIANGLE",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_MESH",
+        "CORE_INVALID_REFERENCE",
+        "CORE_INVALID_REFERENCE"
+      ]
     },
     {
       "file": "spine-runtimes-3.8\\spine-xna\\example\\data\\tank-pro.json",

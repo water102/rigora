@@ -106,10 +106,20 @@ export function importSpine38(text: string, options: ImportOptions) {
         "name parent length x y rotation scaleX scaleY shearX shearY transform color",
         path,
       );
-      if (bone["transform"] !== undefined && bone["transform"] !== "normal")
+      const inheritance = bone["transform"] ?? "normal";
+      if (
+        typeof inheritance !== "string" ||
+        ![
+          "normal",
+          "onlyTranslation",
+          "noRotationOrReflection",
+          "noScale",
+          "noScaleOrReflection",
+        ].includes(inheritance)
+      )
         fail(
           "SP38_UNSUPPORTED_INHERITANCE",
-          "Non-normal source inheritance requires source-specific normalization fixtures.",
+          "Unsupported source inheritance mode.",
           path + "/transform",
         );
       return {
@@ -120,7 +130,12 @@ export function importSpine38(text: string, options: ImportOptions) {
           : { parentId: reference(bone["parent"], boneIds, path + "/parent") }),
         setup: transform(bone, path),
         length: number(bone["length"], path + "/length"),
-        inherit: "normal",
+        inherit: inheritance as
+          | "normal"
+          | "onlyTranslation"
+          | "noRotationOrReflection"
+          | "noScale"
+          | "noScaleOrReflection",
         ...(bone["color"] === undefined
           ? {}
           : { color: color(bone["color"], path + "/color") }),
