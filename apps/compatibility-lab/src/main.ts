@@ -70,6 +70,14 @@ const exportTarget =
   document.querySelector<HTMLSelectElement>("#export-target")!;
 const exportSkeletonButton =
   document.querySelector<HTMLButtonElement>("#export-skeleton")!;
+const exportActions = document.querySelector<HTMLElement>("#export-actions")!;
+const exportActionButtons = {
+  bake: document.querySelector<HTMLButtonElement>("#export-bake")!,
+  convert: document.querySelector<HTMLButtonElement>("#export-convert")!,
+  remove: document.querySelector<HTMLButtonElement>("#export-remove")!,
+  cancel: document.querySelector<HTMLButtonElement>("#export-cancel")!,
+};
+let activeExportSession: ExportPlannerSession | undefined;
 const playBtn = document.querySelector<HTMLButtonElement>("#play-btn")!;
 const timeSlider = document.querySelector<HTMLInputElement>("#time-slider")!;
 const timeDisplay = document.querySelector<HTMLElement>("#time-display")!;
@@ -968,11 +976,14 @@ async function start() {
         currentSkeleton,
         exportTarget.value as ExportPlan["target"],
       );
+      activeExportSession = session;
       const unresolved = session.unresolved();
       if (unresolved.length) {
-        status.textContent = `Export blocked: ${unresolved.map((issue) => issue.feature).join(", ")}`;
+        exportActions.hidden = false;
+        status.textContent = `Export blocked: ${unresolved.map((issue) => `${issue.feature} (${issue.action})`).join(", ")}. Choose Bake, Convert, Remove, or Cancel.`;
         return;
       }
+      exportActions.hidden = true;
       const artifact = session.export();
       const url = URL.createObjectURL(
         new Blob([artifact.bytes.buffer as ArrayBuffer], {
@@ -989,6 +1000,36 @@ async function start() {
       status.textContent =
         error instanceof Error ? error.message : "Export failed.";
     }
+  });
+  const resolveExportAction = (action: "bake" | "convert" | "remove") => {
+    const session = activeExportSession;
+    const issue = session
+      ?.unresolved()
+      .find((candidate) => candidate.action === action);
+    if (!session || !issue) {
+      status.textContent = `No unresolved ${action} action is available.`;
+      return;
+    }
+    session.approve(issue.entityId);
+    const remaining = session.unresolved();
+    status.textContent = remaining.length
+      ? `Approved ${action} for ${issue.feature}; remaining: ${remaining.map((item) => item.feature).join(", ")}.`
+      : `Approved ${action} for ${issue.feature}; export is ready.`;
+    if (!remaining.length) exportActions.hidden = true;
+  };
+  exportActionButtons.bake.addEventListener("click", () =>
+    resolveExportAction("bake"),
+  );
+  exportActionButtons.convert.addEventListener("click", () =>
+    resolveExportAction("convert"),
+  );
+  exportActionButtons.remove.addEventListener("click", () =>
+    resolveExportAction("remove"),
+  );
+  exportActionButtons.cancel.addEventListener("click", () => {
+    activeExportSession = undefined;
+    exportActions.hidden = true;
+    status.textContent = "Export cancelled; no bytes were written.";
   });
 
   refresh();
