@@ -119,16 +119,16 @@
 - [ ] dependency/order
 
 ## Physics
-- [ ] config/state
-- [ ] fixed step
-- [ ] damping
+- [x] config/state
+- [x] fixed step
+- [x] damping
 - [ ] inertia
-- [ ] gravity/wind
-- [ ] mix
-- [ ] reset/seek/prewarm
-- [ ] bake
-- [ ] key reduction
-- [ ] deterministic tests
+- [x] gravity/wind
+- [x] mix
+- [x] reset/seek/prewarm
+- [x] bake
+- [x] key reduction
+- [x] deterministic tests
 
 ## Editor
 - [x] web shell
